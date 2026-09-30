@@ -1,7 +1,7 @@
 # Dependencies
 node_modules/
 vendor/
-
+HANDOFF-*
 # Python
 __pycache__/
 *.py[cod]
@@ -45,3 +45,5 @@ override.tf.json
 # Local tools & logs
 *.log
 .claude/
+# Local MCP server config (OAuth client IDs; secrets live in macOS Keychain)
+.mcp.json
