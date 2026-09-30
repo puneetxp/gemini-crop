@@ -88,6 +88,8 @@ class AnnualStrategyResponse(BaseModel):
     quota_status: Optional[QuotaStatus] = None
     # True when Gemini was unavailable and a generic regional plan was returned instead
     is_fallback: bool = False
+    # practice, season, why, data_used (the farm data point it responds to)
+    regenerative_practices: List[Dict[str, Any]] = []
 
 
 class CropRecommendationRequest(BaseModel):

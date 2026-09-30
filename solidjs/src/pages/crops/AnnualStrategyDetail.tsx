@@ -32,6 +32,7 @@ interface Plan {
   monthly_action_plan?: { month: string; actions: string[] }[];
   generated_at: string;
   is_fallback?: boolean;
+  regenerative_practices?: { practice: string; season?: string; why?: string; data_used?: string }[];
 }
 
 const rupees = (n?: number) => (n == null ? "—" : `₹${Math.round(n).toLocaleString("en-IN")}`);
@@ -164,6 +165,33 @@ export const AnnualStrategyDetail: Component = () => {
                 </For>
               </div>
             </div>
+
+            <Show when={p().regenerative_practices?.length}>
+              <div class="bg-white p-6 rounded-2xl border border-emerald-200 shadow-sm space-y-3">
+                <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+                  <span class="material-symbols-outlined text-base text-forest">eco</span>
+                  Regenerative practices for this field
+                </h3>
+                <For each={p().regenerative_practices}>
+                  {(r) => (
+                    <div class="text-xs border-t border-slate-100 pt-2 space-y-0.5">
+                      <div>
+                        <strong class="text-slate-900">{r.practice}</strong>
+                        <Show when={r.season}>
+                          <span class="ml-2 text-[10px] font-bold uppercase text-emerald-700">{r.season}</span>
+                        </Show>
+                      </div>
+                      <Show when={r.why}>
+                        <p class="text-slate-600">{r.why}</p>
+                      </Show>
+                      <Show when={r.data_used}>
+                        <p class="text-[11px] text-slate-500">Based on: {r.data_used}</p>
+                      </Show>
+                    </div>
+                  )}
+                </For>
+              </div>
+            </Show>
 
             <Show when={p().alternative_options?.length}>
               <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">

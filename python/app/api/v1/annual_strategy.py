@@ -178,6 +178,16 @@ class AnnualStrategyRequest(BaseModel):
     )
 
 
+def _practices(response: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Regenerative practices from the model output, keeping only well-formed entries"""
+    items = response.get("regenerative_practices") or []
+    return [
+        {k: str(p.get(k, "")) for k in ("practice", "season", "why", "data_used")}
+        for p in items
+        if isinstance(p, dict) and p.get("practice")
+    ][:6]
+
+
 async def _district_coordinates(district: str, state: Optional[str]):
     """Approximate (lat, lon) of an Indian district, or (None, None)"""
     try:
@@ -495,6 +505,7 @@ async def generate_annual_strategy(
             generated_at=datetime.now().isoformat(),
             quota_status=quota_status,
             is_fallback=bool(bedrock_response.get("is_fallback")),
+            regenerative_practices=_practices(bedrock_response),
         )
 
     except Exception as e:
@@ -676,6 +687,7 @@ async def get_strategy(id: str, current_user: CurrentUser):
                 else datetime.now().isoformat()
             ),
             is_fallback=bool(bedrock_response.get("is_fallback")),
+            regenerative_practices=_practices(bedrock_response),
         )
     except Exception as e:
         logger.error(f"Error getting strategy: {e}")
