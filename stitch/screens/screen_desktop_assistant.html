@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriSense Premier - Pashu Livestock Listing Console</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#2f312e",
+            "on-tertiary-container": "#50e0a4",
+            "surface-bright": "#faf9f5",
+            "on-secondary-container": "#663500",
+            "tertiary-container": "#006041",
+            "on-tertiary-fixed": "#002113",
+            "on-background": "#1b1c1a",
+            "secondary-fixed": "#ffdcc3",
+            "primary-fixed": "#a6f2d1",
+            "surface-dim": "#dbdad6",
+            "background": "#faf9f5",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-primary": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "outline": "#6f7973",
+            "on-primary-fixed-variant": "#00513b",
+            "on-error": "#ffffff",
+            "secondary-container": "#fe932c",
+            "on-primary-fixed": "#002116",
+            "primary-container": "#065f46",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e3e2df",
+            "inverse-primary": "#8bd6b6",
+            "surface-tint": "#1b6b51",
+            "tertiary-fixed": "#6ffbbe",
+            "outline-variant": "#bec9c2",
+            "error": "#ba1a1a",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-highest": "#e3e2df",
+            "primary": "#004532",
+            "on-surface-variant": "#3f4944",
+            "on-surface": "#1b1c1a",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#ffb77d",
+            "surface-container-high": "#e9e8e4",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-container": "#8bd6b7",
+            "inverse-on-surface": "#f2f1ed",
+            "tertiary": "#00462e",
+            "error-container": "#ffdad6",
+            "on-secondary-fixed": "#2f1500",
+            "surface": "#faf9f5",
+            "secondary": "#904d00",
+            "surface-container-low": "#f4f4f0",
+            "surface-container": "#efeeea",
+            "on-error-container": "#93000a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-xl": "2.25rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "gutter": "1rem",
+            "margin-desktop": "3rem",
+            "margin-tablet": "2rem",
+            "gutter-desktop": "2rem",
+            "space-xs": "0.25rem",
+            "space-lg": "1.5rem",
+            "gutter-tablet": "1.5rem"
+          },
+          "fontFamily": {
+            "label-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    @keyframes pulse-wave {
+      0%, 100% { height: 12px; }
+      50% { height: 38px; }
+    }
+    .wave-bar {
+      animation: pulse-wave 1.4s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.2s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.35s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.1s; }
+    .wave-bar:nth-child(8) { animation-delay: 0.5s; }
+    .wave-bar:nth-child(9) { animation-delay: 0.25s; }
+    .wave-bar:nth-child(10) { animation-delay: 0.4s; }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md">
+<!-- TOP APP BAR (Shared Component: desktop_institutional) -->
+<header class="sticky top-0 z-50 flex items-center justify-between w-full px-margin-desktop bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm h-16">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">eco</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">AgriSense Premier</span>
+</div>
+<!-- Institutional Search Bar (on_left) -->
+<div class="relative w-72 hidden xl:block">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-outline text-lg">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-lg pl-9 pr-3 py-1.5 text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary" placeholder="Search Mandis, Contracts, Ear Tag ID..." type="text"/>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-8 h-full pt-3">
+<a class="text-primary dark:text-inverse-primary font-bold border-b-2 border-primary dark:border-inverse-primary pb-3 text-label-md font-label-md" href="#">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant pb-3 hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors text-label-md font-label-md" href="#">Contracts</a>
+<a class="text-on-surface-variant dark:text-surface-variant pb-3 hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors text-label-md font-label-md" href="#">Escrow Ledger</a>
+<a class="text-on-surface-variant dark:text-surface-variant pb-3 hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors text-label-md font-label-md" href="#">Telemetry</a>
+<a class="text-on-surface-variant dark:text-surface-variant pb-3 hover:text-on-surface dark:hover:text-inverse-on-surface transition-colors text-label-md font-label-md" href="#">Assay Vault</a>
+</nav>
+<!-- Trailing Actions Cluster -->
+<div class="flex items-center gap-3">
+<div class="hidden lg:flex items-center gap-1 border-r border-outline-variant pr-3 mr-1 text-on-surface-variant">
+<button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors" title="Account Balance">
+<span class="material-symbols-outlined text-xl">account_balance</span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors relative" title="Notifications">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 rounded-lg hover:bg-surface-container-high transition-colors" title="Settings / Tune">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</div>
+<button class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 border border-outline rounded-lg text-label-md font-label-md text-primary hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+        Escrow Audit
+      </button>
+<button class="inline-flex items-center gap-1.5 bg-primary text-on-primary px-3.5 py-1.5 rounded-lg text-label-md font-label-md hover:bg-primary-container active:scale-[0.98] transition-all shadow-sm">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+<span>Create Booking</span>
+</button>
+<!-- Institutional Avatar -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs shadow-inner" title="ICICI Institutional Node Operations Avatar">
+          IC
+        </div>
+</div>
+</div>
+</header>
+<!-- BODY WRAPPER: SIDEBAR + MAIN WORKSPACE -->
+<div class="flex flex-1">
+<!-- SIDEBAR (Shared Component: SideNavBar) -->
+<aside class="w-64 bg-surface-container-low dark:bg-inverse-surface border-r border-outline-variant dark:border-outline flex flex-col justify-between p-4 shrink-0 hidden lg:flex">
+<div>
+<!-- Node Identity Header -->
+<div class="flex items-center gap-3 p-2 mb-4 bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center text-primary" title="ICICI Agritech Custody Vault Node">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div class="overflow-hidden">
+<h4 class="text-title-md font-title-md font-bold text-primary dark:text-inverse-primary truncate">ICICI Escrow Node #409</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1 truncate">
+<span class="w-2 h-2 rounded-full bg-emerald-600 inline-block"></span>
+              Institutional Custody Active
+            </p>
+</div>
+</div>
+<!-- Navigation Tabs -->
+<div class="space-y-1">
+<!-- Active Tab: Advance Bookings (Pashu & Marketplace Context) -->
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container dark:bg-primary-fixed dark:text-on-primary-fixed rounded-lg px-3 py-2.5 font-semibold text-label-md font-label-md active:scale-[0.98] transition-transform" href="#">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">receipt_long</span>
+<span>Advance Bookings</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant rounded-lg px-3 py-2.5 hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors text-label-md font-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl">show_chart</span>
+<span>Live Mandi Ticker</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant rounded-lg px-3 py-2.5 hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors text-label-md font-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl">lock_clock</span>
+<span>Escrow Settlements</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant rounded-lg px-3 py-2.5 hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors text-label-md font-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl">science</span>
+<span>Assay &amp; Weighbridge</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant rounded-lg px-3 py-2.5 hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors text-label-md font-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl">local_shipping</span>
+<span>Reefer Cold Chain</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant dark:text-surface-variant rounded-lg px-3 py-2.5 hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors text-label-md font-label-md active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined text-xl">verified_user</span>
+<span>Audit &amp; Compliance</span>
+</a>
+</div>
+<!-- Pashu Sub-Cluster Quick Switcher -->
+<div class="mt-6 pt-4 border-t border-outline-variant">
+<p class="text-label-sm font-label-sm uppercase tracking-wider text-outline px-3 mb-2">Live Agronomist Voice</p>
+<div class="p-3 bg-surface-container-lowest rounded-xl border border-outline-variant flex items-center gap-3">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-600"></span>
+</span>
+<div class="text-xs">
+<div class="font-bold text-on-surface">Pashu Multi-Dialect</div>
+<div class="text-outline">Latency: 280ms • INAPH Ready</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action & Nav Tabs -->
+<div class="pt-4 border-t border-outline-variant space-y-2">
+<button class="w-full bg-surface-container-highest hover:bg-surface-container-high text-primary font-bold py-2 px-3 rounded-lg text-label-md font-label-md flex items-center justify-center gap-2 border border-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span>Audit Ledger</span>
+</button>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-3 py-2 text-label-md font-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">router</span>
+<span>Node Health</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg px-3 py-2 text-label-md font-label-md transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- MAIN INTERACTIVE WORKSPACE -->
+<main class="flex-1 min-w-0 bg-background flex flex-col overflow-y-auto">
+<!-- 1. Header & Context Ribbon -->
+<section class="border-b border-outline-variant bg-surface-container-lowest px-6 py-4 shadow-sm">
+<div class="max-w-[1440px] mx-auto space-y-3">
+<!-- Breadcrumb -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-outline flex-wrap">
+<a class="hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-sm">home</span> Home
+            </a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Pashu &amp; Livestock Hub</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-on-surface-variant">AI Voice Agronomist</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-bold">Livestock Listing Wizard</span>
+</div>
+<!-- Title Bar + Status Ribbon -->
+<div class="flex flex-col xl:flex-row xl:items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3">
+<h1 class="text-headline-sm font-headline-sm font-bold text-on-background flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl" style="font-variation-settings: 'FILL' 1;">mic</span>
+                  CropSense AI Conversational Pashu Assistant
+                </h1>
+<span class="bg-[#d1fae5] text-primary px-2.5 py-0.5 rounded-full text-label-sm font-label-sm flex items-center gap-1 border border-primary/20">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  Gemini 2.0 Multimodal Kisan Voice
+                </span>
+</div>
+<p class="text-body-sm font-body-sm text-outline mt-0.5">
+                Active Farm: <span class="font-semibold text-on-surface">Krishna Valley Dairy Unit #04</span> • Synchronized with <span class="font-semibold text-on-surface">INAPH &amp; Bharat Pashudhan Portal</span>
+</p>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-2 flex-wrap">
+<button class="px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant text-label-sm font-label-sm text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary">translate</span>
+<span>मराठी (Switch to Marathi)</span>
+</button>
+<button class="px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant text-label-sm font-label-sm text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary">headset_mic</span>
+<span>Hands-Free Auto</span>
+</button>
+<button class="px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant text-label-sm font-label-sm text-outline hover:text-error hover:border-error transition-colors flex items-center gap-1.5" title="Reset Session">
+<span class="material-symbols-outlined text-sm">refresh</span>
+<span>Restart Session</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. Main Grid Layout (7 / 5 Column Split) -->
+<section class="max-w-[1440px] w-full mx-auto p-4 sm:p-6 lg:p-8 flex-1">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- LEFT COLUMN (7 Cols): Conversational AI Voice Dialogue & Interactive Speech Console -->
+<div class="lg:col-span-7 flex flex-col gap-5">
+<!-- Live Glowing Voice Waveform Visualizer Banner -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shadow-md animate-pulse">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full"></span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-bold text-on-surface text-title-md font-title-md">Listening...</span>
+<span class="text-xs bg-[#fef3c7] text-[#92400e] px-2 py-0.5 rounded-full font-bold">54 dB (Clear Stream)</span>
+</div>
+<p class="text-label-md font-label-md text-primary italic">"बोलिए, हम सुन रहे हैं..." (Say breed, age, or expected rate)</p>
+</div>
+</div>
+<!-- Animated Waveform Visualizer Bars -->
+<div class="flex items-center gap-1 h-10 px-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
+<div class="w-1.5 bg-primary rounded-full wave-bar h-3"></div>
+<div class="w-1.5 bg-primary-container rounded-full wave-bar h-6"></div>
+<div class="w-1.5 bg-emerald-600 rounded-full wave-bar h-8"></div>
+<div class="w-1.5 bg-primary rounded-full wave-bar h-4"></div>
+<div class="w-1.5 bg-emerald-500 rounded-full wave-bar h-9"></div>
+<div class="w-1.5 bg-primary-container rounded-full wave-bar h-7"></div>
+<div class="w-1.5 bg-primary rounded-full wave-bar h-5"></div>
+<div class="w-1.5 bg-emerald-600 rounded-full wave-bar h-8"></div>
+<div class="w-1.5 bg-primary rounded-full wave-bar h-4"></div>
+<div class="w-1.5 bg-emerald-400 rounded-full wave-bar h-3"></div>
+</div>
+</div>
+</div>
+<!-- Dialogue History & Interactive Turns -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-sm space-y-5 flex-1 flex flex-col justify-between">
+<div class="space-y-4 overflow-y-auto pr-1 max-h-[520px]">
+<!-- Turn 1: AI Greeting & Question 1 -->
+<div class="flex gap-3 items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="space-y-1.5 max-w-[85%]">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-primary">CropSense Pashu AI</span>
+<span class="text-[10px] text-outline">10:41 AM</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center text-xs">
+<span class="material-symbols-outlined text-sm">volume_up</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-2xl rounded-tl-sm border border-outline-variant/60 text-body-sm text-on-surface leading-relaxed">
+                      Namaste Ramesh ji! Let's register your livestock for the AgriSense Escrow Marketplace. First, what breed is your buffalo?
+                    </div>
+</div>
+</div>
+<!-- User Turn 1 Response -->
+<div class="flex gap-3 items-start justify-end">
+<div class="space-y-1.5 max-w-[80%] text-right">
+<div class="flex items-center justify-end gap-2">
+<span class="text-[10px] text-outline">10:41 AM</span>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Ramesh Patil</span>
+</div>
+<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-sm text-body-sm text-left shadow-sm">
+                      Murrah Buffalo (मुरा म्हैस)
+                      <div class="mt-1.5 inline-flex items-center gap-1 bg-white/20 text-white px-2 py-0.5 rounded text-[11px] font-semibold">
+<span class="material-symbols-outlined text-xs">verified</span> Standard ICAR-NBAGR Recognized
+                      </div>
+</div>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 mt-1 font-bold text-xs border border-outline-variant">
+                    RP
+                  </div>
+</div>
+<!-- Turn 2: Question 2 -->
+<div class="flex gap-3 items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="space-y-1.5 max-w-[85%]">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-primary">CropSense Pashu AI</span>
+<span class="text-[10px] text-outline">10:42 AM</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center text-xs">
+<span class="material-symbols-outlined text-sm">volume_up</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-2xl rounded-tl-sm border border-outline-variant/60 text-body-sm text-on-surface leading-relaxed">
+                      Great choice. Murrah buffaloes command premium spot prices! What is the primary purpose of this listing?
+                    </div>
+</div>
+</div>
+<!-- User Turn 2 Response -->
+<div class="flex gap-3 items-start justify-end">
+<div class="space-y-1.5 max-w-[80%] text-right">
+<div class="flex items-center justify-end gap-2">
+<span class="text-[10px] text-outline">10:42 AM</span>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Ramesh Patil</span>
+</div>
+<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-sm text-body-sm text-left shadow-sm">
+                      Dairy / High Commercial Yield (14.5 L/day)
+                    </div>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 mt-1 font-bold text-xs border border-outline-variant">
+                    RP
+                  </div>
+</div>
+<!-- Turn 3: Question 3 -->
+<div class="flex gap-3 items-start">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">smart_toy</span>
+</div>
+<div class="space-y-1.5 max-w-[85%]">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-primary">CropSense Pashu AI</span>
+<span class="text-[10px] text-outline">10:43 AM</span>
+<button class="text-outline hover:text-primary transition-colors flex items-center text-xs">
+<span class="material-symbols-outlined text-sm">volume_up</span>
+</button>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-2xl rounded-tl-sm border border-outline-variant/60 text-body-sm text-on-surface leading-relaxed">
+                      Understood. What is the current age and lactation cycle?
+                    </div>
+</div>
+</div>
+<!-- User Turn 3 Response -->
+<div class="flex gap-3 items-start justify-end">
+<div class="space-y-1.5 max-w-[80%] text-right">
+<div class="flex items-center justify-end gap-2">
+<span class="text-[10px] text-outline">10:43 AM</span>
+<span class="text-label-sm font-label-sm font-bold text-on-surface">Ramesh Patil</span>
+</div>
+<div class="bg-primary text-on-primary p-3 rounded-2xl rounded-tr-sm text-body-sm text-left shadow-sm">
+                      4.5 Years • 2nd Lactation • Calved 45 days ago
+                    </div>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-on-surface flex items-center justify-center shrink-0 mt-1 font-bold text-xs border border-outline-variant">
+                    RP
+                  </div>
+</div>
+<!-- ACTIVE QUESTION: Turn 4 -->
+<div class="flex gap-3 items-start pt-1">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-1 shadow-md ring-2 ring-emerald-500/50">
+<span class="material-symbols-outlined text-sm">auto_awesome</span>
+</div>
+<div class="space-y-2.5 w-full">
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm font-bold text-primary">CropSense Pashu AI</span>
+<span class="text-[10px] bg-[#d1fae5] text-primary px-1.5 py-0.5 rounded font-bold">Now Active</span>
+<button class="text-primary hover:text-primary-container flex items-center text-xs gap-1 font-semibold ml-auto">
+<span class="material-symbols-outlined text-sm">volume_up</span> Play Voice Prompt
+                      </button>
+</div>
+<!-- Highlighted Assistant Bubble -->
+<div class="bg-primary/5 border-2 border-primary/30 p-4 rounded-2xl rounded-tl-sm text-body-md text-on-surface font-medium leading-relaxed">
+                      "Perfect. Now, what is your expected selling price or asking rate?"
+                    </div>
+<!-- Quick-Reply Interactive Pill Chips -->
+<div class="pt-1">
+<p class="text-label-sm font-label-sm text-outline mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">touch_app</span> Tap a Quick-Reply or speak your quote:
+                      </p>
+<div class="flex flex-wrap gap-2">
+<button class="px-3.5 py-2 rounded-full border border-outline-variant bg-surface hover:bg-[#d1fae5] hover:border-primary text-on-surface hover:text-primary text-label-md font-label-md transition-all active:scale-[0.98] shadow-sm flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+<span>₹1,20,000 (Current Benchmark)</span>
+</button>
+<button class="px-3.5 py-2 rounded-full border-2 border-primary bg-[#d1fae5]/50 text-primary text-label-md font-label-md font-bold transition-all active:scale-[0.98] shadow-sm flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">star</span>
+<span>₹1,35,000 (With Calf at Foot)</span>
+</button>
+<button class="px-3.5 py-2 rounded-full border border-outline-variant bg-surface hover:bg-[#d1fae5] hover:border-primary text-on-surface hover:text-primary text-label-md font-label-md transition-all active:scale-[0.98] shadow-sm flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>₹1,45,000 (High Fat 7.8% Premium)</span>
+</button>
+<button class="px-3.5 py-2 rounded-full border border-dashed border-outline text-outline hover:text-primary hover:border-primary text-label-md font-label-md transition-all flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">edit</span>
+<span>Custom Amount ₹...</span>
+</button>
+</div>
+</div>
+<!-- Contextual Pill Reference Tags from Previous Steps -->
+<div class="pt-3 border-t border-outline-variant/60 flex items-center gap-2 flex-wrap text-label-sm font-label-sm text-outline">
+<span>Previous Attributes:</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant text-on-surface">Breed: Murrah</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant text-on-surface">Yield: 14.5 L/day</span>
+<span class="px-2 py-0.5 bg-surface-container rounded border border-outline-variant text-on-surface">Lactation: 2nd Cycle</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Speech Input Bar -->
+<div class="pt-4 border-t border-outline-variant">
+<div class="flex items-center gap-3">
+<!-- Large Glowing Emerald Mic Button -->
+<button class="relative group p-3.5 rounded-2xl bg-primary text-on-primary shadow-lg hover:bg-primary-container active:scale-[0.96] transition-all shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span class="absolute -top-1 -right-1 flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+</span>
+</button>
+<!-- Real-Time Speech Input Box -->
+<div class="relative flex-1">
+<input class="w-full bg-surface border-2 border-primary/40 focus:border-primary rounded-xl px-4 py-3 text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20 pr-20 shadow-inner" placeholder="Hold to Speak or Click Quick-Reply Chips..." type="text" value="₹1,35,000 including female calf and vaccinated records"/>
+<div class="absolute right-2.5 top-2.5 flex items-center gap-1.5">
+<button class="p-1.5 text-outline hover:text-primary rounded-lg transition-colors" title="Attach Ear Tag Photo or Vet Certificate">
+<span class="material-symbols-outlined text-xl">attach_file</span>
+</button>
+<button class="p-1.5 text-outline hover:text-primary rounded-lg transition-colors" title="Snap Animal Photo">
+<span class="material-symbols-outlined text-xl">photo_camera</span>
+</button>
+</div>
+</div>
+<!-- Send Action Button -->
+<button class="bg-primary text-on-primary px-5 py-3 rounded-xl font-bold text-label-md font-label-md flex items-center gap-1.5 hover:bg-primary-container active:scale-[0.98] transition-all shrink-0 shadow-sm">
+<span>Send</span>
+<span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+<div class="mt-2 flex items-center justify-between text-label-sm font-label-sm text-outline px-1">
+<span>Speech-to-text active • Indian Agrarian Dialect Engine (Marathi &amp; Hindi)</span>
+<span>Press Space to Talk</span>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN (5 Cols): Interactive Real-Time Listing Preview & Assurance Ledger -->
+<div class="lg:col-span-5 flex flex-col gap-5">
+<!-- Proposal Preview Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5 shadow-sm space-y-5">
+<!-- Card Header & Status -->
+<div class="flex items-center justify-between border-b border-outline-variant pb-4">
+<div>
+<h3 class="text-title-md font-title-md font-bold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-lg">fact_check</span>
+                    Pashu Livestock Registration Preview
+                  </h3>
+<p class="text-label-sm font-label-sm text-outline">AgriSense Custody &amp; Escrow Vault Sync</p>
+</div>
+<span class="bg-[#fef3c7] text-[#92400e] border border-[#fef3c7] px-2.5 py-1 rounded-full text-label-sm font-label-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#d97706] animate-pulse"></span>
+                  Draft • 90% Complete
+                </span>
+</div>
+<!-- Cattle Photo Card with Official Badges -->
+<div class="relative rounded-xl overflow-hidden border border-outline-variant bg-surface-container">
+<img class="w-full h-48 object-cover" data-alt="A magnificent black Murrah buffalo standing in a clean, sunlit Indian dairy farm barn with amber straw bedding and soft green agricultural surroundings. The buffalo has characteristic tightly curled horns, jet black skin, and a healthy coat. An official bright yellow ear tag with identification digits is visible on its ear. The lighting is crisp, warm daylight emphasizing authentic dairy livestock care with institutional agritech precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYEWwheE5XyE90t5DhmOKJbIzxSLUapnZJv2WknmzCwJ81O4bhu6q07IcSqkV-BNvvF9d_MpXIgVKwNsxUE0-zqgHVV0hNNXIIZCPIm2H7PDxxVEyCA8ZR586UbcseMxKmf774t_NKKuAU8wJtQ2Z1dxlkJXcS23GICRmOQ7qzW2LihI_iMwtfrahDr1xpyEIUhzDcq6IfV05Guw4rvGq0BXEH9rYhkejAF9KL9BZR4Zgsg9J4kmhknHR_9nruWNJK0nYlIY_X-bk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent"></div>
+<!-- Floating Verification Badges over image -->
+<div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+<span class="bg-black/60 backdrop-blur-md text-white text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1 border border-white/20">
+<span class="material-symbols-outlined text-xs text-yellow-400">qr_code_2</span> Tag #1002-8812-4019
+                  </span>
+<span class="bg-emerald-700/80 backdrop-blur-md text-white text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">verified</span> NABL Verified
+                  </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white">
+<div>
+<div class="font-bold text-sm">Murrah Grade-A Buffalo (मुरा)</div>
+<div class="text-xs text-surface-container-high opacity-90">With 15-Day Female Calf at Foot</div>
+</div>
+<button class="text-xs text-on-primary-container bg-primary-container/80 backdrop-blur-sm hover:bg-primary-container px-2 py-1 rounded transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">sync</span> Replace
+                  </button>
+</div>
+</div>
+<!-- Structured Specifications 2-Col Grid -->
+<div class="grid grid-cols-2 gap-3 text-body-sm">
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Breed &amp; Heritage</span>
+<span class="font-bold text-on-surface">Murrah Black Gold</span>
+<span class="text-xs text-primary block mt-0.5">ICAR-Registered Strain</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Category &amp; Purpose</span>
+<span class="font-bold text-on-surface">Commercial Dairy</span>
+<span class="text-xs text-on-surface-variant block mt-0.5">Lactating Milker</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Age &amp; Live Weight</span>
+<span class="font-bold text-on-surface">4.5 Yrs • 520 kg</span>
+<span class="text-xs text-emerald-700 block mt-0.5">Weighbridge Synced</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Lactation Stage</span>
+<span class="font-bold text-on-surface">2nd Lactation</span>
+<span class="text-xs text-on-surface-variant block mt-0.5">Peak Yield (45d ago)</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Tested Daily Yield</span>
+<span class="font-bold text-primary">14.5 Litres / Day</span>
+<span class="text-xs text-on-surface block mt-0.5">Fat 7.6% • SNF 9.1%</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/60">
+<span class="text-label-sm font-label-sm text-outline block">Health &amp; Vaccinations</span>
+<span class="font-bold text-emerald-800">100% Up-to-Date</span>
+<span class="text-xs text-on-surface-variant block mt-0.5">KVK Niphad Certified</span>
+</div>
+</div>
+<!-- INAPH Official Identifier Ribbon -->
+<div class="p-2.5 bg-surface-container rounded-xl border border-outline-variant flex items-center justify-between text-xs">
+<span class="text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">badge</span>
+                  INAPH Ear Tag UID:
+                </span>
+<span class="font-mono font-bold text-on-surface tracking-wider">IND-982104-MH-409</span>
+</div>
+<!-- Proposed Valuation & Escrow Settlement Box -->
+<div class="bg-primary/5 border border-primary/20 rounded-xl p-4 space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-label-md font-label-md text-on-surface">Proposed Listing Price</span>
+<span class="text-headline-sm font-headline-sm font-bold text-primary">₹1,35,000</span>
+</div>
+<div class="border-t border-primary/10 pt-2 space-y-1.5 text-body-sm">
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Mandatory Escrow Advance (20% lock)</span>
+<span class="font-bold text-on-surface">₹27,000</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Logistics Carrier (Free WDRA Reefer &lt; 150km)</span>
+<span class="text-emerald-700 font-semibold">Included</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-on-surface-variant">Listing Brokerage / Processing Fee</span>
+<span class="text-on-surface font-semibold">0.00% (Subsidized)</span>
+</div>
+</div>
+<div class="pt-2 border-t border-primary/15 flex items-center gap-2 text-label-sm font-label-sm text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">security</span>
+<span>ICICI Virtual Escrow Guarantee: 48-hr Post-Delivery Health Audit</span>
+</div>
+</div>
+<!-- Action Footer Buttons -->
+<div class="space-y-2 pt-1">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-bold py-3 px-4 rounded-xl text-label-lg font-label-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all shadow-md">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+<span>Confirm &amp; Register Pashu Listing</span>
+</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="w-full bg-surface-container hover:bg-surface-container-high text-primary font-bold py-2.5 px-3 rounded-xl text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-sm">mic</span>
+<span>Edit via Voice</span>
+</button>
+<button class="w-full bg-surface-container hover:bg-surface-container-high text-on-surface-variant font-semibold py-2.5 px-3 rounded-xl text-label-md font-label-md flex items-center justify-center gap-1.5 border border-outline-variant active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-sm">bookmark</span>
+<span>Save Draft</span>
+</button>
+</div>
+</div>
+<!-- Animal Husbandry Department Assurance Tag -->
+<div class="bg-surface-container-low p-2 rounded-lg border border-outline-variant/60 flex items-center gap-2 text-[11px] text-outline">
+<span class="material-symbols-outlined text-sm text-secondary">verified_user</span>
+<span>In compliance with Dept of Animal Husbandry &amp; Dairying (DAHD) livestock mobility laws.</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Institutional Footer Note -->
+<footer class="border-t border-outline-variant bg-surface-container-lowest px-6 py-3 text-center text-label-sm font-label-sm text-outline mt-auto">
+        AgriSense Premier Escrow &amp; Multimodal Agronomist • Powered by ICICI Bank Institutional AgTech Node #409 • ISO/IEC 27001 Certified Custody
+      </footer>
+</main>
+</div>
+</body></html>

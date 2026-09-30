@@ -27,6 +27,7 @@ export interface AssistResult {
     confidence: number;
     auto_open: boolean;
     reply: string;
+    options?: string[];
     matches: AssistMatch[];
     proposal: AssistProposal | null;
     animal_options: number[];

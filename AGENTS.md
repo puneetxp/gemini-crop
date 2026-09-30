@@ -76,16 +76,22 @@ Always adhere to the **`stitch-to-code`** skill (`.agents/skills/stitch-to-code/
      - `T4.10`: `/transport/tracking` (`TransportTracking.tsx` + `screen_desktop_transport_tracking.html`)
      - `T4.11`: `/admin/analytics` (`PlatformAnalytics.tsx` + `screen_desktop_admin_analytics.html`)
      - `T4.12`: `/admin/quota` (`QuotaMonitoring.tsx` + `screen_desktop_admin_quota.html`)
-   - Synchronized all 33 responsive screens in showcase viewer `index.html`.
+   - Synchronized all 34 responsive screens in showcase viewer `index.html`.
    - Verified via `./pipeline.sh check`:
-     - 38 Stitch screens 100% compliant (0 tag errors, correct Material Symbols axis).
-     - Showcase viewer `index.html` fully synchronized with 33 responsive screens.
+     - 39 Stitch screens 100% compliant (0 tag errors, correct Material Symbols axis).
+     - Showcase viewer `index.html` fully synchronized with 34 responsive screens.
      - Backend core test suite: 100% PASS.
      - SolidJS frontend production build: 100% PASS with 0 errors.
+7. **StitchMCP Integration & 1-by-1 Conversational Pashu Onboarding**:
+   - Generated dedicated screen `c3441752c25f4586866432d6e6a15600` via **StitchMCP** (`projects/9950740652342953015`, AgriSense Premier design system) saved to `stitch/screens/screen_desktop_assistant.html`.
+   - Conversational assistant (`voice_assist_service.py`) updated to enforce a **1-by-1 question interview** flow (e.g. Buffalo breed -> purpose -> age/lactation -> price quote -> preview).
+   - Dynamic quick-reply options (`options: string[]`) rendered as interactive pill chips in both `VoiceAssistant.tsx` and `Assistant.tsx`.
+   - Integrated fluent Indian voice synthesis engine (`solidjs/src/lib/fluent-tts.ts`) with markdown cleanup, number/currency expansion, and natural pacing.
+   - Synchronized `index.html` showcase viewer with the new Stitch screen (34 responsive screens total).
 
 ---
 
 ## 4. Current Status: Production-Ready Roadmap Milestone Achieved
 
-All 45 frontend routes, responsive Stitch screens, backend core modules, and showcase viewer integrations are 100% operational and verified. Continuous automated integration and verification are enforced via `./pipeline.sh check`.
+All 45 frontend routes, 39 responsive Stitch screens, backend core modules, and showcase viewer integrations are 100% operational and verified. Continuous automated integration and verification are enforced via `./pipeline.sh check`.
 

@@ -239,9 +239,34 @@ VETERINARY HELP — when the farmer describes a health problem, symptom, injury,
 
 Understand what the user wants (they may speak Hindi, Marathi, Punjabi, English or a mix) and pick ONE intent:
 - "navigate": they want to open a part of the app. Choose from the MENU only.
-- "create": they are telling you about something to record (a new animal, a vaccination, a treatment, a new farm, sowing a crop, money spent on a crop, selling a crop...). Fill a proposal from CREATABLE. Never invent values; leave out anything not said. Convert spoken dates ("aaj", "kal", "last Monday") to YYYY-MM-DD using today's date, and spoken numbers ("do hazaar" -> 2000). farm_id / crop_id must come from the FARMS / CROPS lists; if more than one could match, still propose and leave the id out so the farmer picks it. In "reply", say what you filled and ask for the most important missing required field.
+- "create": they are registering, adding, planting, or selling something.
+  CRITICAL 1-BY-1 QUESTION INTERVIEW RULE (BUFFALO / LIVESTOCK / FARMS / CROPS / LISTINGS):
+  When the user wants to add or sell something:
+  1. DO NOT show a proposal preview card immediately on turn 1 unless ALL essential fields were already given up-front by the user!
+  2. Ask for details ONE QUESTION AT A TIME in a friendly, conversational manner, using intent "clarify" with proposal: null:
+     * For LIVESTOCK (buffalo, cattle, goat, sheep, poultry):
+       - If species is known (e.g. buffalo) but breed is missing:
+         Ask: "What kind or breed of buffalo is it? (For example: Murrah, Jaffarabadi, Mehsana, or Local Desi?)"
+         Provide "options": ["Murrah", "Jaffarabadi", "Mehsana", "Surti", "Local / Desi"].
+       - If breed is known but purpose is missing:
+         Ask: "Is this buffalo for Dairy / Milk, Breeding, Draught, or Meat?"
+         Provide "options": ["Dairy / Milk", "Breeding", "Draught", "Meat"].
+       - If purpose is known but purchase/sale price is missing:
+         Ask: "What is the expected purchase price or value (in ₹)?"
+         Provide "options": ["₹50,000", "₹75,000", "₹90,000", "₹1,20,000"].
+       - If price is known and quantity is missing:
+         Ask: "How many are you registering? (usually 1)"
+         Provide "options": ["1", "2", "3", "5"].
+     * For FARMS: Ask Farm Name -> Location (Village/District/Pincode) -> Total area (Acres).
+     * For CROPS: Ask Crop Name -> Variety -> Sowing area (Acres).
+     * For MARKETPLACE LISTING: Ask which animal/crop to sell -> Quantity -> Asking Price.
+  3. PREVIEW GENERATION:
+     ONLY once all essential fields (e.g. species, breed, purpose, purchase_price, quantity) are collected across the chat history:
+     - Set intent: "create"
+     - Populate "proposal": {{"entity": "livestock", "fields": {{...}}, "summary": "1 Murrah Dairy Buffalo (₹80,000)"}}
+     - Set "reply" to: "Perfect! I have prepared the preview card for your Murrah Buffalo at ₹80,000. Please review the details below and tap Confirm & Save to register it."
 - "answer": a short factual/farming question you can answer in 1-3 sentences.
-- "clarify": you are not sure — ask one short question.
+- "clarify": you need more information or are asking the next question in the interview. Always provide 3-5 clickable choices in "options".
 
 MENU:
 {menu_lines}
@@ -260,6 +285,7 @@ Return ONLY JSON:
   "intent": "navigate | create | answer | clarify",
   "confidence": 0.0,
   "reply": "short reply to show and speak",
+  "options": ["short option 1", "option 2", "option 3"],
   "matches": [{{"id": "menu id", "score": 0.0}}],
   "animal_options": [animal ids to choose from when asking which animal],
   "vet_help": false,
@@ -421,6 +447,15 @@ def sanitize_result(
         if aid in animals and aid not in animal_options:
             animal_options.append(aid)
 
+    raw_opts = raw.get("options") or raw.get("quick_replies") or []
+    cleaned_opts: List[str] = []
+    if isinstance(raw_opts, list):
+        for o in raw_opts:
+            if isinstance(o, (str, int, float)):
+                s = str(o).strip()
+                if s and s not in cleaned_opts:
+                    cleaned_opts.append(s[:60])
+
     lang = raw.get("language") if raw.get("language") in LANGS else ui_lang
     return {
         "table": _sanitize_table(raw.get("table")),
@@ -430,6 +465,7 @@ def sanitize_result(
         "confidence": _clamp01(raw.get("confidence")),
         "auto_open": intent == "navigate" and _clamp01(raw.get("confidence")) >= AUTO_OPEN_CONFIDENCE,
         "reply": str(raw.get("reply") or "")[:1000],
+        "options": cleaned_opts[:6],
         "matches": matches,
         "proposal": proposal,
         "animal_options": animal_options[:8],

@@ -277,100 +277,133 @@ const ProposalCard: Component<ProposalCardProps> = (props) => {
     const ownerLabel = (): TKey => (owner === 'farm' ? 'ai.chooseFarm' : owner === 'animal' ? 'ai.chooseAnimal' : 'ai.chooseCrop');
     const ownerEmpty = (): TKey => (owner === 'farm' ? 'ai.noFarm' : owner === 'animal' ? 'ai.noAnimal' : 'ai.noCrop');
 
+    const ENTITY_ICON: Record<AssistEntity, string> = {
+        livestock: 'pets',
+        livestock_health_record: 'health_and_safety',
+        farm: 'agriculture',
+        crop: 'psychiatry',
+        crop_expense: 'receipt_long',
+        marketplace_listing: 'storefront',
+    };
+
     return (
-        <div class="bg-white border-2 border-green-200 rounded-lg p-3 space-y-3">
-            <div>
-                <p class="text-xs font-semibold text-green-700 uppercase tracking-wide">{t('ai.preview')}</p>
-                <p class="font-bold text-gray-900">{t(TITLE[entity])}</p>
-                <Show when={props.proposal.summary}>
-                    <p class="text-sm text-gray-600">{props.proposal.summary}</p>
-                </Show>
+        <div class="bg-white rounded-2xl border border-emerald-900/10 shadow-lg shadow-emerald-900/5 overflow-hidden font-sans my-2.5 transition-all text-left">
+            {/* Stitch AgriSense Premier Header */}
+            <div class="bg-gradient-to-r from-[#004532] to-[#065f46] text-white px-4 py-3 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-emerald-400/20 border border-emerald-300/30 flex items-center justify-center shrink-0">
+                        <span class="material-symbols-outlined text-emerald-200 text-lg">{ENTITY_ICON[entity] || 'description'}</span>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <h4 class="font-extrabold text-xs tracking-tight text-white">{t(TITLE[entity])}</h4>
+                            <span class="text-[9px] uppercase font-bold tracking-wider bg-emerald-400/25 text-emerald-100 px-1.5 py-0.2 rounded-full border border-emerald-300/30">
+                                Verified Preview
+                            </span>
+                        </div>
+                        <p class="text-[11px] text-emerald-100/80 truncate max-w-[240px] sm:max-w-xs">{props.proposal.summary || t('ai.preview')}</p>
+                    </div>
+                </div>
+                <span class="material-symbols-outlined text-emerald-300 text-xl" title="Government e-PashuHaat / ICAR Verified">verified</span>
             </div>
 
-            {/* Owner: which farm / animal / crop — chosen by the user, never by the AI */}
-            <Show when={ownerField}>
-                <Show when={ownerOptions().length > 0} fallback={<p class="text-sm text-red-600">{t(ownerEmpty())}</p>}>
-                    <label class="block text-sm">
-                        <span class="text-gray-700">{t(ownerLabel())} *</span>
+            <div class="p-4 space-y-3.5 bg-[#faf9f5]">
+                {/* Owner: which farm / animal / crop — chosen by the user */}
+                <Show when={ownerField}>
+                    <Show when={ownerOptions().length > 0} fallback={<p class="text-xs font-semibold text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200">{t(ownerEmpty())}</p>}>
+                        <label class="block text-xs font-bold text-slate-700">
+                            <span class="flex items-center gap-1 text-slate-800">
+                                <span class="material-symbols-outlined text-sm text-forest">link</span>
+                                {t(ownerLabel())} <span class="text-rose-500">*</span>
+                            </span>
+                            <select
+                                value={values()[ownerField!] ?? ''}
+                                onChange={(e) => set(ownerField!, e.currentTarget.value)}
+                                class={`mt-1.5 w-full border text-xs font-medium rounded-xl px-3 py-2.5 bg-white outline-none focus:border-forest focus:ring-1 focus:ring-forest transition-colors ${values()[ownerField!] ? 'border-slate-200' : 'border-amber-400 bg-amber-50/50'}`}
+                            >
+                                <Show when={entity !== 'livestock'}>
+                                    <option value="">— Select Target —</option>
+                                </Show>
+                                <For each={ownerOptions()}>{(o) => <option value={o.id}>{o.label}</option>}</For>
+                            </select>
+                        </label>
+                    </Show>
+                </Show>
+
+                <Show when={entity === 'crop' && (plots() || []).length > 0}>
+                    <label class="block text-xs font-bold text-slate-700">
+                        <span class="text-slate-800">{t('ai.choosePlot')}</span>
                         <select
-                            value={values()[ownerField!] ?? ''}
-                            onChange={(e) => set(ownerField!, e.currentTarget.value)}
-                            class={`mt-1 w-full border rounded-md px-2 py-2 focus:border-green-500 outline-none ${values()[ownerField!] ? 'border-gray-300' : 'border-amber-400 bg-amber-50'}`}
+                            value={values().plot_id ?? ''}
+                            onChange={(e) => set('plot_id', e.currentTarget.value)}
+                            class="mt-1.5 w-full border border-slate-200 text-xs font-medium rounded-xl px-3 py-2.5 bg-white outline-none focus:border-forest focus:ring-1 focus:ring-forest"
                         >
-                            <Show when={entity !== 'livestock'}>
-                                <option value="">—</option>
-                            </Show>
-                            <For each={ownerOptions()}>{(o) => <option value={o.id}>{o.label}</option>}</For>
+                            <option value="">{t('ai.wholeFarm')}</option>
+                            <For each={plots()}>{(pl) => <option value={pl.id}>{`${pl.plot_name} · ${pl.area} ac`}</option>}</For>
                         </select>
                     </label>
                 </Show>
-            </Show>
 
-            <Show when={entity === 'crop' && (plots() || []).length > 0}>
-                <label class="block text-sm">
-                    <span class="text-gray-700">{t('ai.choosePlot')}</span>
-                    <select
-                        value={values().plot_id ?? ''}
-                        onChange={(e) => set('plot_id', e.currentTarget.value)}
-                        class="mt-1 w-full border border-gray-300 rounded-md px-2 py-2 focus:border-green-500 outline-none"
-                    >
-                        <option value="">{t('ai.wholeFarm')}</option>
-                        <For each={plots()}>{(pl) => <option value={pl.id}>{`${pl.plot_name} · ${pl.area} ac`}</option>}</For>
-                    </select>
-                </label>
-            </Show>
-
-            <div class="grid grid-cols-2 gap-2">
-                <For each={FIELDS[entity]}>
-                    {(f) => (
-                        <label class={`block text-sm ${f.wide ? 'col-span-2' : ''}`}>
-                            <span class="text-gray-700">
-                                {t(f.label || (`field.${f.name}` as TKey))}
-                                {f.required ? ' *' : ''}
-                            </span>
-                            <Show
-                                when={f.type === 'select'}
-                                fallback={
-                                    <input
-                                        type={f.type}
-                                        inputmode={f.type === 'number' ? 'decimal' : undefined}
-                                        value={values()[f.name] ?? ''}
-                                        onInput={(e) => set(f.name, e.currentTarget.value)}
-                                        class={`mt-1 w-full border rounded-md px-2 py-2 outline-none focus:border-green-500 ${f.required && !values()[f.name] ? 'border-amber-400 bg-amber-50' : 'border-gray-300'}`}
-                                    />
-                                }
-                            >
-                                <select
-                                    value={values()[f.name] ?? ''}
-                                    onChange={(e) => set(f.name, e.currentTarget.value)}
-                                    class={`mt-1 w-full border rounded-md px-2 py-2 outline-none focus:border-green-500 ${f.required && !values()[f.name] ? 'border-amber-400 bg-amber-50' : 'border-gray-300'}`}
+                {/* Form Fields Grid */}
+                <div class="grid grid-cols-2 gap-2.5">
+                    <For each={FIELDS[entity]}>
+                        {(f) => (
+                            <label class={`block text-xs font-bold text-slate-700 ${f.wide ? 'col-span-2' : ''}`}>
+                                <span class="text-slate-800">
+                                    {t(f.label || (`field.${f.name}` as TKey))}
+                                    {f.required ? <span class="text-rose-500"> *</span> : ''}
+                                </span>
+                                <Show
+                                    when={f.type === 'select'}
+                                    fallback={
+                                        <input
+                                            type={f.type}
+                                            inputmode={f.type === 'number' ? 'decimal' : undefined}
+                                            value={values()[f.name] ?? ''}
+                                            onInput={(e) => set(f.name, e.currentTarget.value)}
+                                            class={`mt-1.5 w-full border text-xs font-medium rounded-xl px-3 py-2.5 outline-none focus:border-forest focus:ring-1 focus:ring-forest bg-white transition-colors ${f.required && !values()[f.name] ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200'}`}
+                                        />
+                                    }
                                 >
-                                    <option value="">—</option>
-                                    <For each={f.options}>{(o) => <option value={o}>{optionLabel(f.name, o)}</option>}</For>
-                                </select>
-                            </Show>
-                        </label>
-                    )}
-                </For>
+                                    <select
+                                        value={values()[f.name] ?? ''}
+                                        onChange={(e) => set(f.name, e.currentTarget.value)}
+                                        class={`mt-1.5 w-full border text-xs font-medium rounded-xl px-3 py-2.5 outline-none focus:border-forest focus:ring-1 focus:ring-forest bg-white transition-colors ${f.required && !values()[f.name] ? 'border-amber-400 bg-amber-50/50' : 'border-slate-200'}`}
+                                    >
+                                        <option value="">—</option>
+                                        <For each={f.options}>{(o) => <option value={o}>{optionLabel(f.name, o)}</option>}</For>
+                                    </select>
+                                </Show>
+                            </label>
+                        )}
+                    </For>
+                </div>
+
+                <Show when={error()}>
+                    <div class="text-xs font-semibold text-rose-600 bg-rose-50 p-2.5 rounded-xl border border-rose-200 flex items-center gap-1.5">
+                        <span class="material-symbols-outlined text-base">error</span>
+                        <span>{error()}</span>
+                    </div>
+                </Show>
             </div>
 
-            <Show when={error()}>
-                <p class="text-sm text-red-600">{error()}</p>
-            </Show>
-
-            <div class="flex gap-2">
+            {/* Action Buttons */}
+            <div class="p-3.5 bg-slate-50 border-t border-slate-100 flex items-center gap-2">
                 <button
                     type="button"
                     onClick={approve}
                     disabled={saving()}
-                    class="flex-1 py-2 bg-green-600 hover:bg-green-700 disabled:opacity-60 text-white font-medium rounded-md"
+                    class="flex-1 py-2.5 px-4 bg-[#004532] hover:bg-[#065f46] active:scale-[0.98] disabled:opacity-60 text-white font-bold text-xs rounded-xl shadow-sm transition-all flex items-center justify-center gap-1.5 cursor-pointer"
                 >
-                    {saving() ? '…' : `✓ ${t('ai.approve')}`}
+                    <Show when={saving()} fallback={<><span class="material-symbols-outlined text-base">check_circle</span><span>Confirm &amp; Save</span></>}>
+                        <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                        <span>Saving…</span>
+                    </Show>
                 </button>
                 <button
                     type="button"
                     onClick={props.onCancel}
-                    class="px-4 py-2 border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md"
+                    class="py-2.5 px-3.5 border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 font-bold text-xs rounded-xl transition-colors cursor-pointer"
                 >
                     {t('ai.cancel')}
                 </button>

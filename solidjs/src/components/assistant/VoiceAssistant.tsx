@@ -25,11 +25,10 @@ import { AssistantService, type AssistResult, type Option } from '../../services
 import { FarmService, LivestockService } from '../../shared/Service/Services';
 import { VeterinaryDoctorsService, type VeterinaryDoctor } from '../../services/veterinary-doctors.service';
 import { showToast } from '../ui/Toast';
+import { speakFluent, stopFluentSpeech } from '../../lib/fluent-tts';
 
 type Message = { role: 'user' | 'assistant'; text: string; result?: AssistResult; proposalDone?: boolean; audioUrl?: string; audioMs?: number };
 
-// Browser voice for read-aloud: Indian variant of the language code (en-IN, hi-IN, gu-IN, ...)
-const speechLang = (code: string) => `${code}-IN`;
 const AUTO_OPEN_DELAY_MS = 1500;
 
 // Flat menu index: id -> path/emoji, labelled in the current language + English
@@ -45,6 +44,7 @@ const VoiceAssistant: Component = () => {
     const [messages, setMessages] = createSignal<Message[]>([]);
     const [input, setInput] = createSignal('');
     const [busy, setBusy] = createSignal(false);
+    const [speaking, setSpeaking] = createSignal(false);
     const [focusAnimalId, setFocusAnimalId] = createSignal<number | null>(null);
     const [autoOpen, setAutoOpen] = createSignal<{ id: string; timer: number } | null>(null);
     const [vets, setVets] = createSignal<VeterinaryDoctor[]>([]);
@@ -97,18 +97,21 @@ const VoiceAssistant: Component = () => {
     const closePanel = () => {
         cancelAutoOpen();
         recorder.stop(true);
-        window.speechSynthesis?.cancel();
+        stopFluentSpeech();
+        setSpeaking(false);
         setOpen(false);
     };
 
     const scrollDown = () => queueMicrotask(() => scrollEl?.scrollTo({ top: scrollEl.scrollHeight, behavior: 'smooth' }));
 
     const speak = (text: string, language: string) => {
-        if (!('speechSynthesis' in window) || !text) return;
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = speechLang(language || lang());
-        window.speechSynthesis.speak(u);
+        if (!text) return;
+        speakFluent(
+            text,
+            language || lang(),
+            () => setSpeaking(false),
+            () => setSpeaking(true),
+        );
     };
 
     const go = (id: string) => {
@@ -216,27 +219,39 @@ const VoiceAssistant: Component = () => {
                 <button
                     type="button"
                     onClick={openPanel}
-                    class="fixed z-40 right-4 bottom-20 sm:right-6 sm:bottom-24 w-14 h-14 rounded-full bg-green-600 hover:bg-green-700 text-white text-2xl shadow-lg flex items-center justify-center"
+                    class="fixed z-40 right-4 bottom-20 sm:right-6 sm:bottom-24 w-14 h-14 rounded-full bg-[#004532] hover:bg-[#065f46] text-white shadow-xl shadow-emerald-950/20 flex items-center justify-center cursor-pointer transition-all active:scale-95 group"
                     aria-label={t('ai.open')}
                     title={t('ai.open')}
                 >
-                    🎤
+                    <span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">mic</span>
+                    <span class="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500"></span>
+                    </span>
                 </button>
             </Show>
 
             <Show when={open()}>
-                <div class="fixed inset-0 z-[70] flex items-end sm:items-end sm:justify-end sm:p-6">
-                    <div class="absolute inset-0 bg-black/30 sm:bg-transparent" onClick={closePanel} />
+                <div class="fixed inset-0 z-[70] flex items-end sm:items-end sm:justify-end sm:p-6 font-sans">
+                    <div class="absolute inset-0 bg-black/40 backdrop-blur-xs sm:bg-transparent" onClick={closePanel} />
                     <section
                         role="dialog"
                         aria-label={t('ai.title')}
-                        class="relative w-full sm:w-[420px] h-[88vh] sm:h-[640px] bg-gray-50 rounded-t-2xl sm:rounded-lg shadow-2xl flex flex-col overflow-hidden"
+                        class="relative w-full sm:w-[460px] h-[88vh] sm:h-[680px] bg-[#faf9f5] rounded-t-2xl sm:rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-emerald-900/10"
                     >
-                        {/* Header */}
-                        <header class="bg-white border-b border-gray-200 px-4 py-3 flex items-center justify-between gap-2">
-                            <div class="min-w-0">
-                                <h2 class="font-bold text-gray-900">{t('ai.title')}</h2>
-                                <p class="text-xs text-gray-500 truncate">{t('ai.hint')}</p>
+                        {/* Stitch Header */}
+                        <header class="bg-gradient-to-r from-[#004532] to-[#065f46] text-white px-4 py-3 flex items-center justify-between gap-2 shadow-sm">
+                            <div class="flex items-center gap-2.5 min-w-0">
+                                <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center shrink-0">
+                                    <span class="material-symbols-outlined text-lg text-emerald-200">auto_awesome</span>
+                                </div>
+                                <div class="min-w-0">
+                                    <h2 class="font-bold text-sm tracking-tight text-white flex items-center gap-1.5 truncate">
+                                        <span>CropSense AI</span>
+                                        <span class="text-[9px] bg-emerald-400/25 text-emerald-200 px-1.5 py-0.2 rounded font-bold uppercase tracking-wider">Pashu Voice</span>
+                                    </h2>
+                                    <p class="text-[11px] text-emerald-100/80 truncate">1-by-1 Conversational Wizard</p>
+                                </div>
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
                                 <LanguageSwitcher />
@@ -245,33 +260,58 @@ const VoiceAssistant: Component = () => {
                                         closePanel();
                                         navigate('/assistant');
                                     }}
-                                    class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded"
+                                    class="p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
                                     title={t('svc.assistant')}
                                     aria-label={t('svc.assistant')}
                                 >
-                                    ⤢
+                                    <span class="material-symbols-outlined text-sm">open_in_full</span>
                                 </button>
                                 <Show when={messages().length > 0}>
-                                    <button onClick={newChat} class="px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 rounded" title={t('ai.newChat')}>
-                                        ↺
+                                    <button onClick={newChat} class="p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors" title={t('ai.newChat')}>
+                                        <span class="material-symbols-outlined text-sm">refresh</span>
                                     </button>
                                 </Show>
-                                <button onClick={closePanel} class="px-2 py-1 text-xl text-gray-500 hover:bg-gray-100 rounded" aria-label={t('drawer.close')}>
-                                    ✕
+                                <button onClick={closePanel} class="p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors" aria-label={t('drawer.close')}>
+                                    <span class="material-symbols-outlined text-base">close</span>
                                 </button>
                             </div>
                         </header>
 
+                        {/* Animated Waveform Visualizer Banner (Stitch) */}
+                        <Show when={recording() || speaking()}>
+                            <div class="bg-white border-b border-emerald-900/10 px-4 py-2.5 flex items-center justify-between gap-3 shadow-xs">
+                                <div class="flex items-center gap-2.5">
+                                    <div class="w-8 h-8 rounded-full bg-[#004532] text-white flex items-center justify-center animate-pulse">
+                                        <span class="material-symbols-outlined text-base">{recording() ? 'mic' : 'volume_up'}</span>
+                                    </div>
+                                    <div>
+                                        <div class="flex items-center gap-1.5">
+                                            <span class="text-xs font-bold text-slate-800">{recording() ? 'Listening…' : 'Speaking…'}</span>
+                                            <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold">Clear Audio</span>
+                                        </div>
+                                        <span class="text-[11px] text-[#004532] font-semibold block">"बोलिए, हम सुन रहे हैं..."</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-1 h-7 px-2.5 bg-emerald-50 rounded-xl border border-emerald-200">
+                                    <div class="w-1 bg-[#004532] rounded-full animate-bounce h-2"></div>
+                                    <div class="w-1 bg-emerald-600 rounded-full animate-bounce h-5" style="animation-delay: 0.15s"></div>
+                                    <div class="w-1 bg-emerald-500 rounded-full animate-bounce h-6" style="animation-delay: 0.3s"></div>
+                                    <div class="w-1 bg-[#004532] rounded-full animate-bounce h-4" style="animation-delay: 0.2s"></div>
+                                    <div class="w-1 bg-emerald-400 rounded-full animate-bounce h-3" style="animation-delay: 0.4s"></div>
+                                </div>
+                            </div>
+                        </Show>
+
                         {/* My animals — tap one to talk about it */}
                         <Show when={animals().length > 0}>
-                            <div class="bg-white border-b border-gray-100 px-4 py-2">
-                                <p class="text-xs font-semibold text-gray-500 mb-1">{t('ai.myAnimals')}</p>
-                                <div class="flex gap-2 overflow-x-auto pb-1">
+                            <div class="bg-white/70 border-b border-emerald-900/5 px-4 py-2">
+                                <p class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">{t('ai.myAnimals')}</p>
+                                <div class="flex gap-1.5 overflow-x-auto pb-0.5 scrollbar-thin">
                                     <For each={animals()}>
                                         {(a) => (
                                             <button
                                                 onClick={() => setFocusAnimalId(focusAnimalId() === a.id ? null : a.id)}
-                                                class={`shrink-0 text-sm px-3 py-1 rounded-full border ${focusAnimalId() === a.id ? 'bg-green-600 border-green-600 text-white' : 'bg-white border-gray-300 text-gray-700 hover:border-green-400'}`}
+                                                class={`shrink-0 text-xs px-2.5 py-1 rounded-full border transition-all ${focusAnimalId() === a.id ? 'bg-[#004532] border-[#004532] text-white font-bold' : 'bg-white border-slate-200 text-slate-700 hover:border-emerald-500'}`}
                                             >
                                                 🐄 {a.label}
                                             </button>
@@ -286,19 +326,21 @@ const VoiceAssistant: Component = () => {
                             <Show
                                 when={messages().length > 0}
                                 fallback={
-                                    <div class="space-y-3">
-                                        <div class="bg-white rounded-lg p-3 text-gray-800 shadow-sm">{t('ai.greeting')}</div>
-                                        <p class="text-xs font-semibold text-gray-500">{t('ai.allMenu')}</p>
-                                        <Show when={menuMatches().length > 0} fallback={<p class="text-sm text-gray-500">{t('ai.noMatch')}</p>}>
+                                    <div class="space-y-3 py-2">
+                                        <div class="bg-white rounded-2xl p-4 text-slate-800 shadow-sm border border-emerald-900/10 leading-relaxed text-xs">
+                                            {t('ai.greeting')}
+                                        </div>
+                                        <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400">{t('ai.allMenu')}</p>
+                                        <Show when={menuMatches().length > 0} fallback={<p class="text-xs text-slate-400">{t('ai.noMatch')}</p>}>
                                             <div class="grid grid-cols-2 gap-2">
                                                 <For each={menuMatches()}>
                                                     {(m) => (
                                                         <button
                                                             onClick={() => go(m.id)}
-                                                            class="flex items-center gap-2 bg-white border border-gray-200 hover:border-green-400 rounded-lg px-3 py-2 text-left text-sm"
+                                                            class="flex items-center gap-2 bg-white border border-slate-200 hover:border-emerald-600 rounded-xl px-3 py-2 text-left text-xs font-semibold text-slate-800 transition-colors shadow-2xs"
                                                         >
-                                                            <span class="text-xl">{m.emoji}</span>
-                                                            <span class="font-medium text-gray-800">{menuLabel(m.id)}</span>
+                                                            <span class="text-lg">{m.emoji}</span>
+                                                            <span class="truncate">{menuLabel(m.id)}</span>
                                                         </button>
                                                     )}
                                                 </For>
@@ -313,8 +355,8 @@ const VoiceAssistant: Component = () => {
                                             when={msg.role === 'assistant'}
                                             fallback={
                                                 <div class="flex justify-end">
-                                                    <div class="max-w-[85%] bg-green-600 text-white rounded-lg rounded-br-none px-3 py-2">
-                                                        {msg.text}
+                                                    <div class="max-w-[85%] bg-[#004532] text-white rounded-2xl rounded-br-xs px-3.5 py-2.5 text-xs shadow-sm">
+                                                        <p class="leading-relaxed">{msg.text}</p>
                                                         <Show when={msg.audioUrl}>
                                                             <ClipPlayer url={msg.audioUrl!} durationMs={msg.audioMs} />
                                                         </Show>
@@ -324,25 +366,48 @@ const VoiceAssistant: Component = () => {
                                         >
                                             <div class="space-y-2">
                                                 <Show when={msg.text}>
-                                                    <div class="max-w-[90%] bg-white rounded-lg rounded-bl-none px-3 py-2 shadow-sm text-gray-800">
-                                                        <p>{msg.text}</p>
+                                                    <div class="max-w-[92%] bg-white rounded-2xl rounded-tl-xs px-3.5 py-2.5 shadow-sm border border-emerald-900/10 text-slate-800 text-xs leading-relaxed">
+                                                        <p class="whitespace-pre-line">{msg.text}</p>
                                                         <button
                                                             onClick={() => speak(msg.text, msg.result?.language || lang())}
-                                                            class="mt-1 text-xs text-green-700 hover:text-green-900 font-medium"
+                                                            class="mt-1.5 inline-flex items-center gap-1 text-[11px] text-[#004532] hover:text-emerald-700 font-bold"
                                                         >
-                                                            🔊 {t('ai.listen')}
+                                                            <span class="material-symbols-outlined text-xs">volume_up</span> {t('ai.listen')}
                                                         </button>
+                                                    </div>
+                                                </Show>
+
+                                                {/* Stitch Quick-Reply Pill Options (1-by-1 Questions) */}
+                                                <Show when={msg.result?.options && msg.result.options.length > 0}>
+                                                    <div class="pt-1">
+                                                        <p class="text-[11px] font-semibold text-slate-500 mb-1.5 flex items-center gap-1">
+                                                            <span class="material-symbols-outlined text-xs text-[#004532]">touch_app</span> Tap an option or speak:
+                                                        </p>
+                                                        <div class="flex flex-wrap gap-1.5">
+                                                            <For each={msg.result!.options}>
+                                                                {(opt) => (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => send({ text: opt })}
+                                                                        class="px-3 py-1.5 rounded-full border border-emerald-900/15 bg-white hover:bg-emerald-50 hover:border-[#004532] text-slate-800 hover:text-[#004532] text-xs font-semibold shadow-2xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                                                                    >
+                                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                                                        <span>{opt}</span>
+                                                                    </button>
+                                                                )}
+                                                            </For>
+                                                        </div>
                                                     </div>
                                                 </Show>
 
                                                 {/* Which animal? */}
                                                 <Show when={msg.result?.animal_options?.length}>
-                                                    <div class="flex flex-wrap gap-2">
+                                                    <div class="flex flex-wrap gap-1.5">
                                                         <For each={msg.result!.animal_options}>
                                                             {(id) => (
                                                                 <button
                                                                     onClick={() => pickAnimal(id)}
-                                                                    class="text-sm px-3 py-1.5 rounded-full bg-white border border-green-500 text-green-800 hover:bg-green-50"
+                                                                    class="text-xs px-3 py-1.5 rounded-full bg-white border border-emerald-600 text-emerald-900 hover:bg-emerald-50 font-semibold shadow-2xs cursor-pointer"
                                                                 >
                                                                     🐄 {animalLabel(id)}
                                                                 </button>
@@ -353,9 +418,9 @@ const VoiceAssistant: Component = () => {
 
                                                 {/* Auto-open countdown */}
                                                 <Show when={autoOpen() && i() === messages().length - 1}>
-                                                    <div class="flex items-center justify-between bg-green-50 border border-green-200 rounded-lg px-3 py-2 text-sm">
-                                                        <span class="text-green-800">{t('ai.opening', { name: menuLabel(autoOpen()!.id) })}</span>
-                                                        <button onClick={cancelAutoOpen} class="text-gray-600 hover:text-gray-900 font-medium">
+                                                    <div class="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-xl px-3 py-2 text-xs">
+                                                        <span class="text-emerald-900 font-semibold">{t('ai.opening', { name: menuLabel(autoOpen()!.id) })}</span>
+                                                        <button onClick={cancelAutoOpen} class="text-slate-600 hover:text-slate-900 font-bold">
                                                             {t('ai.cancel')}
                                                         </button>
                                                     </div>
@@ -363,12 +428,12 @@ const VoiceAssistant: Component = () => {
 
                                                 {/* Options when not sure */}
                                                 <Show when={!msg.result?.auto_open && msg.result?.matches?.length}>
-                                                    <div class="flex flex-wrap gap-2">
+                                                    <div class="flex flex-wrap gap-1.5">
                                                         <For each={msg.result!.matches}>
                                                             {(m) => (
                                                                 <button
                                                                     onClick={() => go(m.id)}
-                                                                    class="text-sm px-3 py-1.5 rounded-md bg-white border border-gray-300 hover:border-green-500 text-gray-800"
+                                                                    class="text-xs px-2.5 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-emerald-600 text-slate-800 font-semibold shadow-2xs"
                                                                 >
                                                                     {menuItem(m.id)?.emoji} {menuLabel(m.id)} →
                                                                 </button>
@@ -379,20 +444,20 @@ const VoiceAssistant: Component = () => {
 
                                                 {/* Vets to call */}
                                                 <Show when={msg.result?.vet_help && vets().length > 0}>
-                                                    <div class="bg-white rounded-lg border border-gray-200 divide-y divide-gray-100">
-                                                        <p class="px-3 py-2 text-xs font-semibold text-gray-500">{t('ai.nearbyVets')}</p>
+                                                    <div class="bg-white rounded-2xl border border-emerald-900/10 divide-y divide-slate-100 overflow-hidden shadow-xs">
+                                                        <p class="px-3 py-2 text-[10px] font-bold uppercase tracking-wider text-slate-400">{t('ai.nearbyVets')}</p>
                                                         <For each={vets()}>
                                                             {(doc) => (
                                                                 <div class="px-3 py-2 flex items-center justify-between gap-2">
                                                                     <div class="min-w-0">
-                                                                        <p class="text-sm font-semibold text-gray-900 truncate">{t('vet.dr', { name: doc.name })}</p>
-                                                                        <p class="text-xs text-gray-500 truncate">
+                                                                        <p class="text-xs font-bold text-slate-900 truncate">{t('vet.dr', { name: doc.name })}</p>
+                                                                        <p class="text-[11px] text-slate-500 truncate">
                                                                             {doc.location_district || doc.location_state || doc.clinic_name || ''}
                                                                         </p>
                                                                     </div>
                                                                     <a
                                                                         href={doc.call_link || `tel:${doc.phone}`}
-                                                                        class="shrink-0 px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm rounded-md"
+                                                                        class="shrink-0 px-3 py-1.5 bg-[#004532] hover:bg-[#065f46] text-white text-xs font-bold rounded-xl"
                                                                     >
                                                                         📞 {t('vet.call')}
                                                                     </a>
@@ -425,17 +490,20 @@ const VoiceAssistant: Component = () => {
                                     )}
                                 </For>
                                 <Show when={busy()}>
-                                    <div class="text-sm text-gray-500 animate-pulse">{t('ai.thinking')}</div>
+                                    <div class="flex items-center gap-2 text-xs text-slate-500 animate-pulse">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+                                        <span>{t('ai.thinking')}</span>
+                                    </div>
                                 </Show>
                             </Show>
                         </div>
 
-                        {/* Composer */}
-                        <footer class="bg-white border-t border-gray-200 p-3 space-y-2">
+                        {/* Composer (Stitch design) */}
+                        <footer class="bg-white border-t border-emerald-900/10 p-3 space-y-2">
                             <Show when={focusAnimalId()}>
-                                <div class="flex items-center justify-between text-xs bg-green-50 text-green-800 rounded px-2 py-1">
+                                <div class="flex items-center justify-between text-xs bg-emerald-50 text-emerald-900 rounded-xl px-2.5 py-1.5 font-medium">
                                     <span class="truncate">{t('ai.talkingAbout', { name: animalLabel(focusAnimalId()) })}</span>
-                                    <button onClick={() => setFocusAnimalId(null)} class="font-medium hover:underline shrink-0 ml-2">
+                                    <button onClick={() => setFocusAnimalId(null)} class="font-bold hover:underline shrink-0 ml-2">
                                         {t('ai.clearAnimal')}
                                     </button>
                                 </div>
@@ -451,11 +519,11 @@ const VoiceAssistant: Component = () => {
                                     type="button"
                                     onClick={recorder.toggle}
                                     disabled={busy()}
-                                    class={`shrink-0 w-12 h-12 rounded-full text-xl flex items-center justify-center text-white disabled:opacity-50 ${recording() ? 'bg-red-600 animate-pulse' : 'bg-green-600 hover:bg-green-700'}`}
+                                    class={`shrink-0 w-11 h-11 rounded-2xl flex items-center justify-center text-white disabled:opacity-50 transition-all cursor-pointer ${recording() ? 'bg-red-600 animate-pulse shadow-md shadow-red-500/30' : 'bg-[#004532] hover:bg-[#065f46] shadow-sm'}`}
                                     aria-label={recording() ? t('ai.stop') : t('ai.record')}
                                     title={recording() ? t('ai.stop') : t('ai.record')}
                                 >
-                                    {recording() ? '■' : '🎤'}
+                                    <span class="material-symbols-outlined text-xl">{recording() ? 'stop' : 'mic'}</span>
                                 </button>
                                 <input
                                     type="text"
@@ -463,14 +531,15 @@ const VoiceAssistant: Component = () => {
                                     onInput={(e) => setInput(e.currentTarget.value)}
                                     placeholder={recording() ? t('ai.listening') : t('ai.search')}
                                     disabled={recording()}
-                                    class="flex-1 min-w-0 border border-gray-300 rounded-md px-3 py-3 outline-none focus:border-green-500"
+                                    class="flex-1 min-w-0 border border-slate-200 rounded-xl px-3.5 py-2.5 text-xs outline-none focus:border-[#004532] focus:ring-1 focus:ring-[#004532] bg-[#faf9f5]"
                                 />
                                 <button
                                     type="submit"
                                     disabled={busy() || !input().trim()}
-                                    class="shrink-0 px-4 py-3 bg-green-600 hover:bg-green-700 disabled:opacity-50 text-white font-medium rounded-md"
+                                    class="shrink-0 px-4 py-2.5 bg-[#004532] hover:bg-[#065f46] disabled:opacity-50 text-white font-bold text-xs rounded-xl transition-all cursor-pointer flex items-center gap-1 shadow-sm"
                                 >
-                                    {t('ai.send')}
+                                    <span>{t('ai.send')}</span>
+                                    <span class="material-symbols-outlined text-sm">send</span>
                                 </button>
                             </form>
                         </footer>

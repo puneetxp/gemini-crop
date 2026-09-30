@@ -22,12 +22,12 @@ import { buildAssistantContext, clearAssistantContext } from '../services/assist
 import { FarmService, LivestockService } from '../shared/Service/Services';
 import { showToast } from '../components/ui/Toast';
 import { useDeviceInfo } from '../utils/useResponsive';
+import { speakFluent, stopFluentSpeech } from '../lib/fluent-tts';
 
 type Message = { role: 'user' | 'assistant'; text: string; result?: AssistResult; proposalDone?: boolean; audioUrl?: string; audioMs?: number };
 
 const STORAGE_KEY = 'assistant_chat';
 const MAX_SAVED = 60;
-const speechLang = (code: string) => `${code}-IN`;
 
 const MENU = SERVICE_GROUPS.flatMap((g) => g.items);
 const menuLabel = (id: string) => t(`svc.${id}` as TKey);
@@ -162,23 +162,22 @@ export const Assistant: Component = () => {
     });
 
     const stopSpeaking = () => {
-        window.speechSynthesis?.cancel();
+        stopFluentSpeech();
         setSpeaking(false);
     };
     onCleanup(stopSpeaking);
 
     const speak = (text: string, language: string, then?: () => void) => {
-        if (!('speechSynthesis' in window) || !text) return then?.();
-        window.speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = speechLang(language || lang());
-        u.onend = () => {
-            setSpeaking(false);
-            then?.();
-        };
-        u.onerror = () => setSpeaking(false);
-        setSpeaking(true);
-        window.speechSynthesis.speak(u);
+        if (!text) return then?.();
+        speakFluent(
+            text,
+            language || lang(),
+            () => {
+                setSpeaking(false);
+                then?.();
+            },
+            () => setSpeaking(true),
+        );
     };
 
     const go = (id: string) => {
@@ -272,23 +271,26 @@ export const Assistant: Component = () => {
 
     return (
         // Fixed to the viewport: bottom-16 leaves room for the mobile bottom nav
-        <div class="fixed inset-x-0 top-0 bottom-16 z-30 flex flex-col bg-gray-50 md:bottom-0">
-            {/* Header */}
-            <header class="border-b border-gray-200 bg-white">
+        <div class="fixed inset-x-0 top-0 bottom-16 z-30 flex flex-col bg-[#faf9f5] md:bottom-0 font-sans">
+            {/* Stitch Header */}
+            <header class="border-b border-emerald-900/10 bg-gradient-to-r from-[#004532] to-[#065f46] text-white shadow-sm">
                 <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
                     <div class="flex min-w-0 items-center gap-2 sm:gap-3">
-                        <A href="/dashboard" class="rounded-md px-2 py-1 text-gray-500 hover:bg-gray-100" aria-label={t('chat.back')}>
-                            ←
+                        <A href="/dashboard" class="rounded-xl p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 transition-colors" aria-label={t('chat.back')}>
+                            <span class="material-symbols-outlined text-xl">arrow_back</span>
                         </A>
                         <div class="min-w-0">
-                            <h1 class="flex items-center gap-2 font-bold text-gray-900">
-                                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-600 text-sm text-white">✦</span>
+                            <h1 class="flex items-center gap-2 font-bold text-white text-base">
+                                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-white/10 text-emerald-200">
+                                    <span class="material-symbols-outlined text-sm">auto_awesome</span>
+                                </span>
                                 <span class="truncate">{t('ai.title')}</span>
+                                <span class="text-[10px] bg-emerald-400/25 text-emerald-100 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider hidden sm:inline-block">Pashu &amp; Farm Voice</span>
                             </h1>
-                            <p class="hidden truncate text-xs text-gray-500 sm:block">{t('chat.subtitle')}</p>
+                            <p class="hidden truncate text-xs text-emerald-100/80 sm:block">{t('chat.subtitle')}</p>
                         </div>
                     </div>
-                    <div class="flex shrink-0 items-center gap-1">
+                    <div class="flex shrink-0 items-center gap-1.5">
                         <div class="hidden sm:block">
                             <LanguageSwitcher />
                         </div>
@@ -296,19 +298,47 @@ export const Assistant: Component = () => {
                             type="button"
                             onClick={toggleTalk}
                             aria-pressed={talkMode()}
-                            class={`rounded-full px-3 py-1.5 text-xs font-medium ${talkMode() ? 'bg-green-600 text-white' : 'border border-gray-300 text-gray-700 hover:bg-gray-50'}`}
+                            class={`rounded-xl px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${talkMode() ? 'bg-amber-400 text-amber-950 shadow-sm' : 'border border-emerald-300/30 text-white hover:bg-white/10'}`}
                             title={t('chat.talkHint')}
                         >
-                            🗣️<span class="hidden sm:inline"> {t('chat.talk')}</span>
+                            <span class="material-symbols-outlined text-base">record_voice_over</span>
+                            <span class="hidden sm:inline"> {t('chat.talk')}</span>
                         </button>
                         <Show when={messages().length > 0}>
-                            <button type="button" onClick={newChat} class="rounded-md px-2 py-1.5 text-xs text-gray-600 hover:bg-gray-100">
-                                ↺<span class="hidden sm:inline"> {t('ai.newChat')}</span>
+                            <button type="button" onClick={newChat} class="rounded-xl p-2 text-emerald-100 hover:text-white hover:bg-white/10 transition-colors" title={t('ai.newChat')}>
+                                <span class="material-symbols-outlined text-base">refresh</span>
                             </button>
                         </Show>
                     </div>
                 </div>
             </header>
+
+            {/* Audio Waveform Visualizer Banner (Stitch) */}
+            <Show when={recording() || speaking()}>
+                <div class="bg-white border-b border-emerald-900/10 px-4 py-2.5 shadow-xs">
+                    <div class="mx-auto max-w-6xl flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full bg-[#004532] text-white flex items-center justify-center animate-pulse">
+                                <span class="material-symbols-outlined text-base">{recording() ? 'mic' : 'volume_up'}</span>
+                            </div>
+                            <div>
+                                <div class="flex items-center gap-1.5">
+                                    <span class="text-xs font-bold text-slate-800">{recording() ? 'Listening to Farmer…' : 'Speaking…'}</span>
+                                    <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold">54 dB Stream</span>
+                                </div>
+                                <span class="text-[11px] text-[#004532] font-semibold block">"बोलिए, हम सुन रहे हैं..."</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-1 h-7 px-3 bg-emerald-50 rounded-xl border border-emerald-200">
+                            <div class="w-1.5 bg-[#004532] rounded-full animate-bounce h-2"></div>
+                            <div class="w-1.5 bg-emerald-600 rounded-full animate-bounce h-5" style="animation-delay: 0.15s"></div>
+                            <div class="w-1.5 bg-emerald-500 rounded-full animate-bounce h-6" style="animation-delay: 0.3s"></div>
+                            <div class="w-1.5 bg-[#004532] rounded-full animate-bounce h-4" style="animation-delay: 0.2s"></div>
+                            <div class="w-1.5 bg-emerald-400 rounded-full animate-bounce h-3" style="animation-delay: 0.4s"></div>
+                        </div>
+                    </div>
+                </div>
+            </Show>
 
             <div class="mx-auto flex w-full max-w-6xl flex-1 gap-4 overflow-hidden px-0 py-0 sm:px-4 sm:py-4">
                 {/* Side panel: what the assistant knows + suggestions */}
@@ -397,8 +427,8 @@ export const Assistant: Component = () => {
                                         when={msg.role === 'assistant'}
                                         fallback={
                                             <div class="flex justify-end">
-                                                <div class="max-w-[80%] rounded-2xl rounded-br-sm bg-green-600 px-4 py-2 text-sm text-white">
-                                                    {msg.text}
+                                                <div class="max-w-[80%] rounded-2xl rounded-br-xs bg-[#004532] px-4 py-2.5 text-xs text-white shadow-sm">
+                                                    <p class="leading-relaxed">{msg.text}</p>
                                                     <Show when={msg.audioUrl}>
                                                         <ClipPlayer url={msg.audioUrl!} durationMs={msg.audioMs} />
                                                     </Show>
@@ -406,19 +436,44 @@ export const Assistant: Component = () => {
                                             </div>
                                         }
                                     >
-                                        <div class="flex gap-2">
-                                            <span class="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-green-100 text-xs text-green-700">✦</span>
+                                        <div class="flex gap-2.5">
+                                            <span class="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-xs text-[#004532] font-bold shadow-2xs">
+                                                <span class="material-symbols-outlined text-sm">smart_toy</span>
+                                            </span>
                                             <div class="min-w-0 max-w-[88%] space-y-2">
                                                 <Show when={msg.text}>
-                                                    <div class="rounded-2xl rounded-tl-sm bg-gray-100 px-4 py-2 text-sm text-gray-800">
+                                                    <div class="rounded-2xl rounded-tl-xs bg-white border border-emerald-900/10 px-4 py-3 text-xs text-slate-800 shadow-sm leading-relaxed">
                                                         <p class="whitespace-pre-line">{msg.text}</p>
                                                         <button
                                                             type="button"
                                                             onClick={() => speak(msg.text, msg.result?.language || lang())}
-                                                            class="mt-1 text-xs font-medium text-green-700 hover:text-green-900"
+                                                            class="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-[#004532] hover:text-emerald-700 cursor-pointer"
                                                         >
-                                                            🔊 {t('ai.listen')}
+                                                            <span class="material-symbols-outlined text-xs">volume_up</span> {t('ai.listen')}
                                                         </button>
+                                                    </div>
+                                                </Show>
+
+                                                {/* Stitch Quick-Reply Pill Options (1-by-1 Questions) */}
+                                                <Show when={msg.result?.options && msg.result.options.length > 0}>
+                                                    <div class="pt-1">
+                                                        <p class="text-[11px] font-semibold text-slate-500 mb-1.5 flex items-center gap-1">
+                                                            <span class="material-symbols-outlined text-xs text-[#004532]">touch_app</span> Tap an option or speak:
+                                                        </p>
+                                                        <div class="flex flex-wrap gap-1.5">
+                                                            <For each={msg.result!.options}>
+                                                                {(opt) => (
+                                                                    <button
+                                                                        type="button"
+                                                                        onClick={() => send({ text: opt })}
+                                                                        class="px-3.5 py-1.5 rounded-full border border-emerald-900/15 bg-white hover:bg-emerald-50 hover:border-[#004532] text-slate-800 hover:text-[#004532] text-xs font-semibold shadow-2xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                                                                    >
+                                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                                                        <span>{opt}</span>
+                                                                    </button>
+                                                                )}
+                                                            </For>
+                                                        </div>
                                                     </div>
                                                 </Show>
 
@@ -429,7 +484,7 @@ export const Assistant: Component = () => {
 
                                                 {/* Which animal? */}
                                                 <Show when={msg.result?.animal_options?.length}>
-                                                    <div class="flex flex-wrap gap-2">
+                                                    <div class="flex flex-wrap gap-1.5">
                                                         <For each={msg.result!.animal_options}>
                                                             {(id) => (
                                                                 <button
@@ -438,7 +493,7 @@ export const Assistant: Component = () => {
                                                                         setFocusAnimalId(id);
                                                                         send({ text: animalLabel(id) });
                                                                     }}
-                                                                    class="rounded-full border border-green-500 bg-white px-3 py-1.5 text-sm text-green-800 hover:bg-green-50"
+                                                                    class="rounded-full border border-emerald-600 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50 shadow-2xs cursor-pointer"
                                                                 >
                                                                     🐄 {animalLabel(id)}
                                                                 </button>
@@ -449,13 +504,13 @@ export const Assistant: Component = () => {
 
                                                 {/* Pages to open */}
                                                 <Show when={msg.result?.matches?.length}>
-                                                    <div class="flex flex-wrap gap-2">
+                                                    <div class="flex flex-wrap gap-1.5">
                                                         <For each={msg.result!.matches}>
                                                             {(m) => (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => go(m.id)}
-                                                                    class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 hover:border-green-500"
+                                                                    class="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:border-emerald-600 shadow-2xs"
                                                                 >
                                                                     {menuItem(m.id)?.emoji} {menuLabel(m.id)} →
                                                                 </button>
@@ -491,26 +546,26 @@ export const Assistant: Component = () => {
                                 )}
                             </For>
                             <Show when={busy()}>
-                                <div class="flex items-center gap-2 text-sm text-gray-500">
-                                    <span class="flex h-7 w-7 items-center justify-center rounded-full bg-green-100 text-xs text-green-700">✦</span>
-                                    <span class="animate-pulse">{t('ai.thinking')}</span>
+                                <div class="flex items-center gap-2 text-xs text-slate-500 animate-pulse">
+                                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+                                    <span>{t('ai.thinking')}</span>
                                 </div>
                             </Show>
                         </Show>
                     </div>
 
                     {/* Composer */}
-                    <footer class="border-t border-gray-200 p-3">
+                    <footer class="border-t border-emerald-900/10 bg-white p-3 space-y-2">
                         <Show when={focusAnimalId()}>
-                            <div class="mb-2 flex items-center justify-between rounded bg-green-50 px-2 py-1 text-xs text-green-800">
+                            <div class="flex items-center justify-between rounded-xl bg-emerald-50 px-2.5 py-1.5 text-xs font-medium text-emerald-900">
                                 <span class="truncate">{t('ai.talkingAbout', { name: animalLabel(focusAnimalId()) })}</span>
-                                <button type="button" onClick={() => setFocusAnimalId(null)} class="ml-2 shrink-0 font-medium hover:underline">
+                                <button type="button" onClick={() => setFocusAnimalId(null)} class="ml-2 shrink-0 font-bold hover:underline">
                                     {t('ai.clearAnimal')}
                                 </button>
                             </div>
                         </Show>
                         <Show when={talkMode()}>
-                            <p class="mb-2 text-center text-xs text-green-700">
+                            <p class="text-center text-xs text-[#004532] font-semibold">
                                 {speaking() ? `🔊 ${t('chat.speaking')}` : recording() ? `🎤 ${t('chat.listeningTap')}` : busy() ? t('ai.thinking') : t('chat.talkHint')}
                             </p>
                         </Show>
@@ -528,11 +583,11 @@ export const Assistant: Component = () => {
                                     recorder.toggle();
                                 }}
                                 disabled={busy()}
-                                class={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full text-xl text-white disabled:opacity-50 ${recording() ? 'animate-pulse bg-red-600' : 'bg-green-600 hover:bg-green-700'}`}
+                                class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white transition-all cursor-pointer disabled:opacity-50 ${recording() ? 'animate-pulse bg-red-600 shadow-md shadow-red-500/30' : 'bg-[#004532] hover:bg-[#065f46] shadow-sm'}`}
                                 aria-label={recording() ? t('ai.stop') : t('ai.record')}
                                 title={recording() ? t('ai.stop') : t('ai.record')}
                             >
-                                {recording() ? '■' : '🎤'}
+                                <span class="material-symbols-outlined text-xl">{recording() ? 'stop' : 'mic'}</span>
                             </button>
                             <input
                                 type="text"
@@ -540,14 +595,15 @@ export const Assistant: Component = () => {
                                 onInput={(e) => setInput(e.currentTarget.value)}
                                 placeholder={recording() ? t('ai.listening') : t('chat.placeholder')}
                                 disabled={recording()}
-                                class="min-w-0 flex-1 rounded-full border border-gray-300 px-4 py-3 text-sm outline-none focus:border-green-500"
+                                class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-[#faf9f5] px-4 py-2.5 text-xs outline-none focus:border-[#004532] focus:ring-1 focus:ring-[#004532]"
                             />
                             <button
                                 type="submit"
                                 disabled={busy() || !input().trim()}
-                                class="shrink-0 rounded-full bg-green-600 px-5 py-3 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50"
+                                class="shrink-0 flex items-center gap-1 rounded-xl bg-[#004532] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#065f46] transition-all cursor-pointer shadow-sm disabled:opacity-50"
                             >
-                                {t('ai.send')}
+                                <span>{t('ai.send')}</span>
+                                <span class="material-symbols-outlined text-sm">send</span>
                             </button>
                         </form>
                     </footer>

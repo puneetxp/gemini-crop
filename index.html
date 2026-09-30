@@ -397,6 +397,13 @@
         <span>AI Quota Admin</span>
         <span class="text-[10px] text-slate-500 font-mono">/admin/quota</span>
       </button>
+
+      <!-- 34. CropSense Pashu Voice Wizard & Listing Assistant -->
+      <button id="nav-assistant" onclick="selectDomain('assistant')" class="nav-tab flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">
+        <span class="material-symbols-outlined text-sm">mic</span>
+        <span>Pashu Voice Wizard</span>
+        <span class="text-[10px] text-slate-500 font-mono">/assistant</span>
+      </button>
     </div>
   </nav>
 
@@ -636,6 +643,11 @@
                 <td class="p-2 font-medium text-white">AI Quota Allocations &amp; Rate Limit Governance</td>
                 <td class="p-2"><a href="stitch/screens/screen_desktop_admin_quota.html" target="_blank" class="text-emerald-400 hover:underline">screen_desktop_admin_quota.html</a></td>
                 <td class="p-2 text-slate-500">Fluid Responsive</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-medium text-white">CropSense AI Pashu Voice Wizard &amp; Step-by-Step Listing</td>
+                <td class="p-2"><a href="stitch/screens/screen_desktop_assistant.html" target="_blank" class="text-emerald-400 hover:underline">screen_desktop_assistant.html</a></td>
+                <td class="p-2 text-slate-500">Fluid Responsive (Stitch Generated)</td>
               </tr>
             </tbody>
           </table>
@@ -880,6 +892,12 @@
         desktop: 'stitch/screens/screen_desktop_admin_quota.html',
         mobile: 'stitch/screens/screen_desktop_admin_quota.html',
         legacy: 'stitch/screens/screen_desktop_admin_quota.html'
+      },
+      assistant: {
+        responsive: 'stitch/screens/screen_desktop_assistant.html',
+        desktop: 'stitch/screens/screen_desktop_assistant.html',
+        mobile: 'stitch/screens/screen_desktop_assistant.html',
+        legacy: 'stitch/screens/screen_desktop_assistant.html'
       }
     };
 
@@ -890,7 +908,7 @@
       }
 
       // Update nav tab styles
-      ['dashboard', 'diagnose', 'booking', 'livestock', 'soil', 'strategy', 'menu', 'security', 'quota', 'farm_register', 'farm_detail', 'farm_analytics', 'plot_create', 'plant_crop', 'my_crops', 'strategy_select', 'strategy_request', 'livestock_hub', 'diet_plan', 'veterinary_doctors', 'climate_hub', 'pest_disease', 'services_directory', 'marketplace_detail', 'my_listings', 'buyer_dashboard', 'marketplace_bookings', 'market_intelligence', 'supply_planning', 'livestock_marketplace', 'transport_tracking', 'admin_analytics', 'admin_quota'].forEach(d => {
+      ['dashboard', 'diagnose', 'booking', 'livestock', 'soil', 'strategy', 'menu', 'security', 'quota', 'farm_register', 'farm_detail', 'farm_analytics', 'plot_create', 'plant_crop', 'my_crops', 'strategy_select', 'strategy_request', 'livestock_hub', 'diet_plan', 'veterinary_doctors', 'climate_hub', 'pest_disease', 'services_directory', 'marketplace_detail', 'my_listings', 'buyer_dashboard', 'marketplace_bookings', 'market_intelligence', 'supply_planning', 'livestock_marketplace', 'transport_tracking', 'admin_analytics', 'admin_quota', 'assistant'].forEach(d => {
         const tab = document.getElementById('nav-' + d);
         if (tab) {
           if (d === domain) {
