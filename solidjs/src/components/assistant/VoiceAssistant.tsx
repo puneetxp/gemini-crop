@@ -22,6 +22,7 @@ import ProposalCard, { proposalTitle } from './ProposalCard';
 import { useRecorder, type VoiceClip } from './useRecorder';
 import ClipPlayer from './ClipPlayer';
 import { AssistantService, type AssistResult, type Option } from '../../services/assistant.service';
+import { AssistantArchiveService } from '../../services/assistant-archive.service';
 import { FarmService, LivestockService } from '../../shared/Service/Services';
 import { VeterinaryDoctorsService, type VeterinaryDoctor } from '../../services/veterinary-doctors.service';
 import { showToast } from '../ui/Toast';
@@ -201,6 +202,12 @@ const VoiceAssistant: Component = () => {
 
     const newChat = () => {
         cancelAutoOpen();
+        if (messages().length > 0) {
+            const archived = AssistantArchiveService.archiveSession(messages());
+            if (archived) {
+                showToast('success', `Conversation archived as "${archived.title}"`);
+            }
+        }
         setMessages([]);
         setFocusAnimalId(null);
         setVets([]);
