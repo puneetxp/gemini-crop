@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Annual 3-Season Strategy &amp; Crop Planner</title>
+<!-- Fonts & Material Symbols -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary-fixed": "#2f1500",
+            "secondary-container": "#fe932c",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary": "#00462e",
+            "primary": "#004532",
+            "on-surface-variant": "#3f4944",
+            "primary-fixed": "#a6f2d1",
+            "surface": "#faf9f5",
+            "on-tertiary-container": "#50e0a4",
+            "secondary-fixed": "#ffdcc3",
+            "surface-container": "#efeeea",
+            "on-primary-fixed": "#002116",
+            "on-error-container": "#93000a",
+            "on-background": "#1b1c1a",
+            "surface-container-lowest": "#ffffff",
+            "secondary": "#904d00",
+            "inverse-on-surface": "#f2f1ed",
+            "tertiary-fixed": "#6ffbbe",
+            "inverse-surface": "#2f312e",
+            "surface-variant": "#e3e2df",
+            "on-secondary-fixed-variant": "#6e3900",
+            "primary-container": "#065f46",
+            "on-primary-container": "#8bd6b7",
+            "inverse-primary": "#8bd6b6",
+            "surface-container-low": "#f4f4f0",
+            "on-tertiary": "#ffffff",
+            "surface-tint": "#1b6b51",
+            "on-primary": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "surface-container-high": "#e9e8e4",
+            "on-tertiary-fixed": "#002113",
+            "error": "#ba1a1a",
+            "background": "#faf9f5",
+            "surface-dim": "#dbdad6",
+            "on-secondary-container": "#663500",
+            "tertiary-container": "#006041",
+            "outline": "#6f7973",
+            "on-error": "#ffffff",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#ffb77d",
+            "surface-bright": "#faf9f5",
+            "primary-fixed-dim": "#8bd6b6",
+            "outline-variant": "#bec9c2",
+            "surface-container-highest": "#e3e2df",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#00513b"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.25rem",
+            "space-lg": "1.5rem",
+            "gutter-tablet": "1.5rem",
+            "gutter-desktop": "2rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin": "1rem",
+            "margin-tablet": "2rem",
+            "space-sm": "0.5rem",
+            "margin-desktop": "3rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 9999px;
+    }
+    .card-elevation {
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.04), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+      border: 1px solid rgba(6, 95, 70, 0.08);
+    }
+    .pill-elevation {
+      box-shadow: 0 4px 12px -2px rgba(6, 95, 70, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface min-h-screen font-body-md antialiased flex flex-col">
+<!-- Desktop & Tablet Root Frame -->
+<div class="flex-1 flex overflow-hidden">
+<!-- 1. LEFT SIDEBAR (Desktop / Persistent Nav) -->
+<aside class="hidden lg:flex w-72 flex-col justify-between bg-surface-container-lowest border-r border-outline-variant/30 select-none z-30">
+<!-- Top Brand Header -->
+<div>
+<div class="px-space-md py-space-md border-b border-outline-variant/20 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">CropSense AI</span>
+<span class="bg-primary-fixed text-on-primary-fixed text-[10px] font-bold px-1.5 py-0.5 rounded">PRO</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline tracking-wider uppercase font-semibold">Krishi Command Center</p>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="p-space-sm space-y-1">
+<div class="px-3 pt-2 pb-1 text-[11px] font-bold uppercase tracking-wider text-outline">Farm Intelligence</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="nature">nature</span>
+<span>My Farms &amp; Plots</span>
+</div>
+<span class="text-[11px] font-semibold bg-surface-container-high px-2 py-0.5 rounded-full text-on-surface-variant">18.5 Ac</span>
+</a>
+<!-- Active Menu Item: Annual Strategy -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-primary-container text-on-primary font-semibold shadow-sm font-label-lg text-label-lg" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-inverse-primary" data-icon="psychiatry" data-weight="fill" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+<span class="font-bold text-on-primary">Annual Strategy</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-pulse"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined" data-icon="document_scanner">document_scanner</span>
+<span>Crop Diagnostics (Vision AI)</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_booking.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span>Marketplace &amp; Escrow</span>
+</div>
+<span class="bg-secondary-container/20 text-secondary text-[10px] font-bold px-1.5 py-0.2 rounded">Mandi Live</span>
+</a>
+<div class="px-3 pt-4 pb-1 text-[11px] font-bold uppercase tracking-wider text-outline">Telemetry &amp; Assets</div>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_livestock.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span>Pashu Hub</span>
+</div>
+<span class="text-[11px] font-medium text-outline">8 Cattle</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors font-body-sm text-body-sm" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite</span>
+</a>
+</nav>
+</div>
+<!-- Bottom Profile & AI Quota Pill -->
+<div class="p-space-sm border-t border-outline-variant/20 space-y-3">
+<!-- AI Usage Progress -->
+<div class="p-3 rounded-xl bg-surface-container border border-outline-variant/30">
+<div class="flex justify-between items-center mb-1.5">
+<span class="font-label-sm text-label-sm font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="bolt">bolt</span> Gemini 2.0 Quota
+            </span>
+<span class="font-label-sm text-label-sm font-bold text-primary">82%</span>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 82%;"></div>
+</div>
+<p class="font-label-sm text-[11px] text-outline mt-1.5">123 of 150 strategy queries remaining</p>
+</div>
+<!-- Farmer Profile Snippet -->
+<div class="flex items-center gap-3 p-2 rounded-xl hover:bg-surface-container-low transition-colors cursor-pointer">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed font-bold border border-secondary/20">
+            RP
+          </div>
+<div class="overflow-hidden">
+<h4 class="font-headline-sm text-body-sm font-bold text-on-surface truncate">Ramesh Patil</h4>
+<p class="font-label-sm text-label-sm text-outline truncate">MH-2894 • Nashik District</p>
+</div>
+<span class="material-symbols-outlined text-outline ml-auto" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</aside>
+<!-- 2. MAIN APPLICATION WORKSPACE -->
+<main class="flex-1 flex flex-col overflow-y-auto custom-scroll bg-surface">
+<!-- Top Bar / App Header -->
+<header class="sticky top-0 z-20 bg-surface-container-lowest/90 backdrop-blur-md border-b border-outline-variant/30 px-margin-tablet py-3">
+<div class="flex flex-wrap items-center justify-between gap-4 max-w-7xl mx-auto w-full">
+<!-- Breadcrumb & Plot Target -->
+<div class="flex items-center gap-2 flex-wrap">
+<div class="flex items-center gap-1.5 text-outline font-label-md text-label-md">
+<span>Strategy Planner</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span>Annual 3-Season</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">#STRAT-2026-94</span>
+</div>
+<!-- Plot Picker Dropdown Pill -->
+<div class="flex items-center gap-2 bg-surface-container px-3 py-1 rounded-full border border-outline-variant/40 ml-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+<span class="font-label-md text-label-md font-bold text-on-surface">Krishna Valley Farm</span>
+<span class="font-label-sm text-label-sm text-outline">(Plot A • 4.5 Acres • Sown/Planning)</span>
+<span class="material-symbols-outlined text-base text-outline" data-icon="arrow_drop_down">arrow_drop_down</span>
+</div>
+</div>
+<!-- Right Status & Quick Utilities -->
+<div class="flex items-center gap-3">
+<!-- AI Optimized Pill -->
+<div class="hidden sm:flex items-center gap-2 bg-primary-fixed/60 border border-primary/20 text-on-primary-fixed px-3 py-1 rounded-full">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-md text-label-md font-bold">AI Optimized Draft • Ready to Adopt</span>
+</div>
+<!-- Voice AI Assistant Button -->
+<button class="flex items-center gap-1.5 bg-surface-container hover:bg-surface-container-high px-3 py-1.5 rounded-lg border border-outline-variant/40 text-primary font-label-md text-label-md transition-transform active:scale-95">
+<span class="material-symbols-outlined text-secondary" data-icon="mic" data-weight="fill" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span class="font-bold">Voice AI</span>
+<span class="text-[10px] text-outline font-semibold">मराठी / EN</span>
+</button>
+<!-- Language Button -->
+<button class="flex items-center gap-1 text-on-surface-variant font-label-md text-label-md hover:bg-surface-container px-2 py-1.5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="translate">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<!-- Notifications -->
+<button class="relative w-9 h-9 rounded-lg bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-xl" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Body Content Container -->
+<div class="p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full space-y-8">
+<!-- SECTION 1: HEADER TITLE & MULTI-SEASON CONTEXT -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="bg-primary/10 text-primary font-label-sm text-label-sm font-bold uppercase tracking-wider px-2.5 py-0.5 rounded">Crop Rotation Cycle 2026-27</span>
+<span class="text-outline text-label-sm font-label-sm">• Multi-Season Regenerative Index</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-primary font-extrabold tracking-tight">
+              3-Season Dynamic Precision Rotation Strategy
+            </h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-1">
+              Optimized for Vertisol (Black Cotton) soil in Nashik plateau, factoring pre-monsoon precipitation, sub-soil moisture retention, and APMC mandi demand cycles.
+            </p>
+</div>
+<!-- Quick Farm Actions -->
+<div class="flex items-center gap-3 shrink-0">
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low px-3.5 py-2 rounded-lg text-on-surface font-label-md text-label-md transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+<span>Modify Assumptions</span>
+</button>
+<button class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant hover:bg-surface-container-low px-3.5 py-2 rounded-lg text-on-surface font-label-md text-label-md transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="share">share</span>
+<span>Share with Agronomist</span>
+</button>
+</div>
+</div>
+<!-- SECTION 2: STRATEGY SUMMARY 4-STAT CARDS (Bento Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Card 1: Annual Net Profit -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl card-elevation relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold tracking-wider">Est. Net Profit (4.5 Ac)</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-2xl lg:text-3xl text-primary font-extrabold tracking-tight">₹2,65,000</span>
+</div>
+</div>
+<div class="w-9 h-9 rounded-xl bg-primary-fixed/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[12px]">
+<span class="inline-flex items-center gap-1 font-bold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">
+<span class="material-symbols-outlined text-xs" data-icon="arrow_upward">arrow_upward</span> +28% vs Mono-Crop
+              </span>
+<span class="font-semibold text-outline">ROI: 3.5x Multiplier</span>
+</div>
+</div>
+<!-- Card 2: Soil Health Index -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl card-elevation relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold tracking-wider">Soil Health Trajectory</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-2xl lg:text-3xl text-primary font-extrabold tracking-tight">N-Positive</span>
+</div>
+</div>
+<div class="w-9 h-9 rounded-xl bg-tertiary-fixed/50 flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-xl" data-icon="eco">eco</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[12px]">
+<span class="font-bold text-tertiary-container bg-tertiary-fixed/30 px-2 py-0.5 rounded-full">
+                +35 kg/ha Nitrogen
+              </span>
+<span class="font-semibold text-outline">Organic Carbon +0.18%</span>
+</div>
+</div>
+<!-- Card 3: Water Budget Efficiency -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl card-elevation relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold tracking-wider">Water Budget Target</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-2xl lg:text-3xl text-on-surface font-extrabold tracking-tight">4,200 m³</span>
+</div>
+</div>
+<div class="w-9 h-9 rounded-xl bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-xl" data-icon="water_drop">water_drop</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[12px]">
+<span class="font-bold text-primary bg-primary-fixed/40 px-2 py-0.5 rounded-full">
+                -32% Water Saved
+              </span>
+<span class="font-semibold text-outline">Drip &amp; Micro-Sprinkler</span>
+</div>
+</div>
+<!-- Card 4: Investment Budget Required -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl card-elevation relative overflow-hidden flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-sm text-label-sm text-outline uppercase font-bold tracking-wider">Working Capital (KCC)</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-2xl lg:text-3xl text-secondary font-extrabold tracking-tight">₹75,000<span class="text-base font-semibold text-outline">/Ac</span></span>
+</div>
+</div>
+<div class="w-9 h-9 rounded-xl bg-secondary-fixed/50 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-xl" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[12px]">
+<span class="font-bold text-secondary bg-secondary-fixed/40 px-2 py-0.5 rounded-full">
+                Eligible: 4% Subsidized
+              </span>
+<span class="font-semibold text-outline">Total: ₹3,37,500</span>
+</div>
+</div>
+</div>
+<!-- SECTION 3: 3-SEASON ROTATION TIMELINE (Interactive Stepper Cards) -->
+<div class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary font-bold">Rotational Continuity Plan (12-Month Horizon)</h2>
+<p class="font-body-sm text-body-sm text-outline">Each successive crop capitalizes on the nutrient residue and biome left by the previous harvest.</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[12px] font-semibold text-primary bg-primary-fixed/50 px-2.5 py-1 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="sync_alt">sync_alt</span>
+                Closed-Loop Biomass Recycling Active
+              </span>
+</div>
+</div>
+<!-- 3 Connected Season Cards -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 relative">
+<!-- SEASON 1: KHARIF -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 card-elevation flex flex-col justify-between border-t-4 border-t-primary relative">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="rainy">rainy</span>
+<span>Season 01: Kharif</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-bold">Jun – Oct (120 Days)</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">JS-335 Certified Soybean</h3>
+<p class="text-sm font-medium text-secondary mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="layers">layers</span>
+                    Companion: Pigeon Pea (Tur) 4:2 Intercrop
+                  </p>
+</div>
+<!-- Chips -->
+<div class="flex flex-wrap gap-1.5">
+<span class="bg-[#d1fae5] text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Monsoon Resilient
+                  </span>
+<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-full">
+                    Nitrogen-Fixing Legume
+                  </span>
+</div>
+<!-- Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 text-center">
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Target Yield</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">32 Qtl</p>
+</div>
+<div class="border-x border-outline-variant/30">
+<span class="text-[10px] uppercase font-bold text-outline">Est. Net</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">₹88,000</p>
+</div>
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Water (m³)</span>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">1,800</p>
+</div>
+</div>
+<!-- Agronomic Rationale -->
+<div class="bg-surface-container/60 p-3 rounded-xl border border-outline-variant/20">
+<span class="text-[11px] font-bold uppercase tracking-wider text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="science">science</span> Agronomic Rationale
+                  </span>
+<p class="text-[12px] text-on-surface-variant mt-1 leading-relaxed">
+                    Naturally restores soil nitrogen pool ahead of heavy wheat feeder stage. Dense canopy prevents monsoon topsoil erosion on 2° slopes while pigeon pea roots aerate hardpan.
+                  </p>
+</div>
+</div>
+<!-- Next Rotation Bridge -->
+<div class="mt-6 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[11px] font-semibold text-outline">
+<span>Leaves ~28 kg/ha N residue</span>
+<span class="flex items-center text-primary font-bold">
+                  Next: Rabi Wheat <span class="material-symbols-outlined text-sm ml-0.5" data-icon="east">east</span>
+</span>
+</div>
+</div>
+<!-- SEASON 2: RABI -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 card-elevation flex flex-col justify-between border-t-4 border-t-secondary relative">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-fixed/40 text-secondary font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="ac_unit">ac_unit</span>
+<span>Season 02: Rabi</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-bold">Nov – Mar (115 Days)</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Sharbati Durum Wheat</h3>
+<p class="text-sm font-medium text-outline mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="verified">verified</span>
+                    High Milling Grade A • NABL Certified Spec
+                  </p>
+</div>
+<!-- Chips -->
+<div class="flex flex-wrap gap-1.5">
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> High APMC Demand
+                  </span>
+<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-full">
+                    Premium Protein Grade
+                  </span>
+</div>
+<!-- Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 text-center">
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Target Yield</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">52 Qtl</p>
+</div>
+<div class="border-x border-outline-variant/30">
+<span class="text-[10px] uppercase font-bold text-outline">Est. Net</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">₹1,35,000</p>
+</div>
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Water (m³)</span>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">1,600</p>
+</div>
+</div>
+<!-- Agronomic Rationale -->
+<div class="bg-surface-container/60 p-3 rounded-xl border border-outline-variant/20">
+<span class="text-[11px] font-bold uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="science">science</span> Agronomic Rationale
+                  </span>
+<p class="text-[12px] text-on-surface-variant mt-1 leading-relaxed">
+                    Capitalizes on residual Kharif legume nitrogen. Cold winter night temperatures in Nashik valley trigger peak grain elongation and maximize gluten, securing a +₹375/Qtl market premium over MSP.
+                  </p>
+</div>
+</div>
+<!-- Next Rotation Bridge -->
+<div class="mt-6 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[11px] font-semibold text-outline">
+<span>Consumes residual moisture</span>
+<span class="flex items-center text-secondary font-bold">
+                  Next: Zaid Moong <span class="material-symbols-outlined text-sm ml-0.5" data-icon="east">east</span>
+</span>
+</div>
+</div>
+<!-- SEASON 3: ZAID -->
+<div class="bg-surface-container-lowest rounded-2xl p-6 card-elevation flex flex-col justify-between border-t-4 border-t-tertiary-container relative">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-tertiary-fixed/40 text-tertiary font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-sm" data-icon="wb_sunny">wb_sunny</span>
+<span>Season 03: Zaid</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline font-bold">Mar – May (65 Days)</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Pusa Vishal Moong</h3>
+<p class="text-sm font-medium text-tertiary mt-0.5 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="autorenew">autorenew</span>
+                    Green Gram • Soil Reconditioner
+                  </p>
+</div>
+<!-- Chips -->
+<div class="flex flex-wrap gap-1.5">
+<span class="bg-[#d1fae5] text-primary text-[11px] font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> 65-Day Short Cycle
+                  </span>
+<span class="bg-surface-container-high text-on-surface-variant text-[11px] font-bold px-2 py-0.5 rounded-full">
+                    Nematode Breaker
+                  </span>
+</div>
+<!-- Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 bg-surface-container-low p-3 rounded-xl border border-outline-variant/30 text-center">
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Target Yield</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">14 Qtl</p>
+</div>
+<div class="border-x border-outline-variant/30">
+<span class="text-[10px] uppercase font-bold text-outline">Est. Net</span>
+<p class="font-label-lg text-label-lg font-bold text-primary">₹42,000</p>
+</div>
+<div>
+<span class="text-[10px] uppercase font-bold text-outline">Water (m³)</span>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">800</p>
+</div>
+</div>
+<!-- Agronomic Rationale -->
+<div class="bg-surface-container/60 p-3 rounded-xl border border-outline-variant/20">
+<span class="text-[11px] font-bold uppercase tracking-wider text-tertiary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="science">science</span> Agronomic Rationale
+                  </span>
+<p class="text-[12px] text-on-surface-variant mt-1 leading-relaxed">
+                    Breaks fungal spore and nematode cycles between cereal crops. Fixes 40 kg/ha atmospheric N2, while leftover green biomass is incorporated as organic manuring prior to Kharif 2027.
+                  </p>
+</div>
+</div>
+<!-- Next Rotation Bridge -->
+<div class="mt-6 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-[11px] font-semibold text-outline">
+<span>Green manure incorporation</span>
+<span class="flex items-center text-primary font-bold">
+                  Recycles to Kharif <span class="material-symbols-outlined text-sm ml-0.5" data-icon="refresh">refresh</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 4: DEEP INSIGHTS, NUTRIENT TRAJECTORY & GEMINI AI -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+<!-- LEFT: Soil Nutrient Trajectory (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest p-6 rounded-2xl card-elevation space-y-6">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant/20 pb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-primary">Soil Nutrient Trajectory (NPK &amp; SOC Balance)</h3>
+<p class="font-body-sm text-body-sm text-outline">Pre-rotation baseline vs Projected post-rotation enrichment (12 Months)</p>
+</div>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed/40 px-2.5 py-1 rounded-md font-bold self-start">
+                ICAR Telemetry Calibrated
+              </span>
+</div>
+<!-- Telemetry Gauges / Comparative Bars -->
+<div class="space-y-4">
+<!-- Nitrogen (N) -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-sm font-semibold">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-primary"></span>
+                    Available Nitrogen (N)
+                  </span>
+<div class="text-right">
+<span class="text-outline line-through text-xs mr-2">210 kg/ha</span>
+<span class="text-primary font-bold text-sm">245 kg/ha (+16.6%)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container h-3.5 rounded-full overflow-hidden flex p-0.5 border border-outline-variant/30">
+<div class="bg-primary/40 h-full rounded-l-full" style="width: 55%;" title="Previous Baseline"></div>
+<div class="bg-primary h-full rounded-r-full" style="width: 20%;" title="Enrichment Gain"></div>
+</div>
+<div class="flex justify-between text-[11px] text-outline font-medium">
+<span>Deficient (&lt;200)</span>
+<span>Target Optimal: 250 kg/ha</span>
+<span>Enriched Status</span>
+</div>
+</div>
+<!-- Phosphorus (P2O5) -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-sm font-semibold">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary"></span>
+                    Phosphorus (P₂O₅)
+                  </span>
+<div class="text-right">
+<span class="text-outline line-through text-xs mr-2">18.2 kg/ha</span>
+<span class="text-secondary font-bold text-sm">22.8 kg/ha (Maintained via PSB)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container h-3.5 rounded-full overflow-hidden flex p-0.5 border border-outline-variant/30">
+<div class="bg-secondary/40 h-full rounded-l-full" style="width: 45%;"></div>
+<div class="bg-secondary h-full rounded-r-full" style="width: 18%;"></div>
+</div>
+<div class="flex justify-between text-[11px] text-outline font-medium">
+<span>Critical Range: 15-25 kg/ha</span>
+<span>Balanced via Bio-solubilization</span>
+</div>
+</div>
+<!-- Potassium (K2O) -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-sm font-semibold">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary"></span>
+                    Potassium (K₂O)
+                  </span>
+<div class="text-right">
+<span class="text-outline text-xs mr-2">320 kg/ha</span>
+<span class="text-primary font-bold text-sm">315 kg/ha (Stabilized High)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container h-3.5 rounded-full overflow-hidden flex p-0.5 border border-outline-variant/30">
+<div class="bg-tertiary-container h-full rounded-full" style="width: 82%;"></div>
+</div>
+<div class="flex justify-between text-[11px] text-outline font-medium">
+<span>Nashik Basalt Plateau: Naturally Abundant</span>
+<span>Zero Potash Depletion Risk</span>
+</div>
+</div>
+<!-- Soil Organic Carbon (SOC) -->
+<div class="space-y-1.5">
+<div class="flex justify-between items-center text-sm font-semibold">
+<span class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>
+                    Soil Organic Carbon (SOC)
+                  </span>
+<div class="text-right">
+<span class="text-outline line-through text-xs mr-2">0.52%</span>
+<span class="text-primary font-bold text-sm">0.70% (+34.6% Microfauna boost)</span>
+</div>
+</div>
+<div class="w-full bg-surface-container h-3.5 rounded-full overflow-hidden flex p-0.5 border border-outline-variant/30">
+<div class="bg-primary-container h-full rounded-l-full" style="width: 48%;"></div>
+<div class="bg-primary-fixed-dim h-full rounded-r-full" style="width: 22%;"></div>
+</div>
+<div class="flex justify-between text-[11px] text-outline font-medium">
+<span>Degraded (&lt;0.5%)</span>
+<span>Health Benchmark: &gt;0.75%</span>
+<span>Moong Mulch Buffer</span>
+</div>
+</div>
+</div>
+<!-- Agronomic Telemetry Banner -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-xl mt-0.5" data-icon="biotech">biotech</span>
+<div class="text-xs text-on-surface-variant">
+<strong class="text-on-surface font-bold">Rhizobial Inoculation Protocol:</strong>
+                Bio-fertilizer seed dressing with <span class="text-primary font-semibold">Bradyrhizobium japonicum</span> (Soybean) and <span class="text-primary font-semibold">Rhizobium leguminosarum</span> (Moong) will offset 45 bags of synthetic Urea over 12 months, saving approximately ₹12,800 in chemical input costs.
+              </div>
+</div>
+</div>
+<!-- RIGHT: AI Rationale & Climate Risk Matrix (5 Cols) -->
+<div class="lg:col-span-5 space-y-6">
+<!-- Gemini 2.0 AI Audio & Strategic Explanation -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl card-elevation border-l-4 border-l-primary space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Gemini 2.0 AI Strategy Rationale</h3>
+</div>
+<span class="text-[10px] font-bold bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded">
+                  Agronomy Model v2.4
+                </span>
+</div>
+<!-- Audio Readout Card -->
+<div class="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/30 space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-lg" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+<div>
+<p class="text-xs font-bold text-on-surface">रणनीति सारांश सुनें (Hindi Audio)</p>
+<p class="text-[10px] text-outline">1 min 45 sec • Spoken Agronomy Breakdown</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-lg" data-icon="volume_up">volume_up</span>
+</div>
+<!-- Fake progress track -->
+<div class="flex items-center gap-2 pt-1">
+<span class="text-[10px] font-bold text-primary">0:00</span>
+<div class="flex-1 bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-1/4"></div>
+</div>
+<span class="text-[10px] text-outline">1:45</span>
+</div>
+</div>
+<!-- AI Text Insights -->
+<div class="text-xs leading-relaxed text-on-surface-variant space-y-2">
+<p>
+                  "Based on IMD 2026 pre-monsoon radar and historical Nashik APMC price spikes, mono-cropping sugarcane or continuous wheat poses extreme water deficit risks during March heat domes. This tri-crop sequence guarantees consistent liquidity while hedging weather extremes."
+                </p>
+<div class="p-2.5 rounded-lg bg-surface-container text-[11px] font-medium text-on-surface border border-outline-variant/20 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-secondary" data-icon="lightbulb">lightbulb</span>
+<span><strong>AI Recommendation:</strong> Lock forward contract for Sharbati Durum with processor by January 15 for max spread.</span>
+</div>
+</div>
+</div>
+<!-- Dynamic Risk & Climate Mitigation Matrix -->
+<div class="bg-surface-container-lowest p-6 rounded-2xl card-elevation space-y-3">
+<div class="flex items-center justify-between mb-1">
+<h4 class="font-title-md text-title-md font-bold text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="shield">shield</span>
+                  Climate &amp; Pest Contingency Matrix
+                </h4>
+<span class="text-[11px] text-outline font-semibold">3 Active Rules</span>
+</div>
+<!-- Contingency Card 1 -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between text-xs">
+<span class="font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+                    Monsoon Delay (&gt;15 Days)
+                  </span>
+<span class="text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded font-bold">Rainfall Contingency</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">
+                  Switch from JS-335 (105-day) to <strong>JS-9560 ultra-short duration variety (82 days)</strong> to prevent winter wheat planting delay.
+                </p>
+</div>
+<!-- Contingency Card 2 -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between text-xs">
+<span class="font-bold text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="bug_report">bug_report</span>
+                    Spodoptera Litura Warning
+                  </span>
+<span class="text-[10px] bg-error-container text-on-error-container px-1.5 py-0.5 rounded font-bold">Biosecurity</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">
+                  Plant 2 border rows of <strong>African Marigold</strong> as trap crop; deploy 8 pheromone lures per acre at 25 DAS.
+                </p>
+</div>
+<!-- Contingency Card 3 -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-1">
+<div class="flex items-center justify-between text-xs">
+<span class="font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="thermostat">thermostat</span>
+                    March/April Heatwave Spike
+                  </span>
+<span class="text-[10px] bg-primary-fixed text-on-primary-fixed px-1.5 py-0.5 rounded font-bold">Micro-Climate</span>
+</div>
+<p class="text-[11px] text-on-surface-variant">
+                  Apply <strong>Kaolin Clay foliar spray (2%)</strong> on Zaid Moong leaves to reduce transpirational stress during pod initiation.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<!-- SECTION 5: ACTION EXECUTION STICKY TOOLBAR -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl card-elevation border border-outline-variant/40 flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl" data-icon="cloud_sync">cloud_sync</span>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Auto-saved to Cloud • Synced with ICAR Soil Telemetry</p>
+<p class="text-xs text-outline">Ready to dispatch schedule to IoT Drip Controller &amp; WhatsApp alerts.</p>
+</div>
+</div>
+<!-- Buttons Group -->
+<div class="flex flex-wrap items-center gap-3 w-full md:w-auto justify-end">
+<!-- Download Bank Report -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-outline-variant bg-surface-container hover:bg-surface-container-high text-on-surface text-label-md font-label-md transition-colors shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Download Bank-Ready Report (SBI/NABARD)</span>
+</button>
+<!-- Adjust parameters -->
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-primary text-primary hover:bg-primary/5 text-label-md font-label-md transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="tune">tune</span>
+<span>Adjust Soil / Budget</span>
+</button>
+<!-- Primary Lock Strategy -->
+<button class="flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary hover:bg-[#044734] text-on-primary text-label-lg font-label-lg font-bold shadow-md transition-transform active:scale-95">
+<span class="material-symbols-outlined text-lg" data-icon="lock_open">lock_open</span>
+<span>Adopt &amp; Lock Annual Strategy</span>
+</button>
+</div>
+</div>
+<!-- Tablet / Mobile Bottom Buffer -->
+<div class="h-16 md:hidden"></div>
+</div>
+</main>
+</div>
+<!-- 3. MOBILE BOTTOM NAVIGATION (Per Shared Components JSON spec, only visible md:hidden) -->
+<div class="md:hidden fixed bottom-0 left-0 right-0 max-w-lg mx-auto w-full z-50 bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 flex justify-around items-center px-space-xs py-space-xs shadow-lg">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-xl" data-icon="home">home</span>
+<span class="text-[11px] font-semibold mt-0.5">Home</span>
+</a>
+<!-- Doctor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+<span class="text-[11px] font-semibold mt-0.5">Doctor</span>
+</a>
+<!-- Voice (Strategic center action) -->
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-xl px-3 py-1.5 shadow-sm active:scale-95 transition-transform" href="#voice">
+<span class="material-symbols-outlined text-xl" data-icon="mic" data-weight="fill" style="font-variation-settings: 'FILL' 1;">mic</span>
+<span class="text-[11px] font-bold mt-0.5">Voice</span>
+</a>
+<!-- Mandi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-xl" data-icon="storefront">storefront</span>
+<span class="text-[11px] font-semibold mt-0.5">Mandi</span>
+</a>
+<!-- Soil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-xl" data-icon="satellite_alt">satellite_alt</span>
+<span class="text-[11px] font-semibold mt-0.5">Soil</span>
+</a>
+</div>
+</body></html>

@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marketplace Advance Booking &amp; Escrow Contract Details</title>
+<!-- Fonts & Google Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed": "#002116",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container-high": "#e9e8e4",
+            "secondary-fixed-dim": "#ffb77d",
+            "surface-container-low": "#f4f4f0",
+            "primary": "#004532",
+            "on-primary": "#ffffff",
+            "surface-container-highest": "#e3e2df",
+            "on-secondary": "#ffffff",
+            "inverse-on-surface": "#f2f1ed",
+            "on-surface-variant": "#3f4944",
+            "inverse-primary": "#8bd6b6",
+            "error-container": "#ffdad6",
+            "background": "#faf9f5",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-error": "#ffffff",
+            "on-secondary-fixed": "#2f1500",
+            "on-surface": "#1b1c1a",
+            "outline-variant": "#bec9c2",
+            "on-secondary-container": "#663500",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#a6f2d1",
+            "surface-tint": "#1b6b51",
+            "secondary-container": "#fe932c",
+            "on-tertiary-container": "#50e0a4",
+            "tertiary-container": "#006041",
+            "error": "#ba1a1a",
+            "primary-container": "#065f46",
+            "surface-dim": "#dbdad6",
+            "surface-container": "#efeeea",
+            "secondary-fixed": "#ffdcc3",
+            "outline": "#6f7973",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-primary-container": "#8bd6b7",
+            "surface-bright": "#faf9f5",
+            "surface": "#faf9f5",
+            "secondary": "#904d00",
+            "inverse-surface": "#2f312e",
+            "on-background": "#1b1c1a",
+            "tertiary-fixed-dim": "#4edea3",
+            "tertiary": "#00462e",
+            "on-tertiary": "#ffffff",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-tertiary-fixed": "#002113",
+            "surface-variant": "#e3e2df",
+            "on-primary-fixed-variant": "#00513b"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-sm": "0.5rem",
+            "gutter-tablet": "1.5rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin-tablet": "2rem",
+            "margin-desktop": "3rem",
+            "gutter-desktop": "2rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1;
+    }
+    body {
+      background-color: #faf9f5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Simulator Frame (Max-w-lg) -->
+<div class="w-full max-w-lg bg-surface min-h-screen flex flex-col relative pb-32 shadow-xl border-x border-outline-variant/20">
+<!-- Top App Bar Navigation Anchor -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md px-margin py-space-sm border-b border-outline-variant/30 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-sm">
+<a class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors active:scale-[0.98]" href="#back">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</a>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Contract #BK-8924</h1>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="shield">shield</span>
+            E-Agri Mandi Escrow
+          </p>
+</div>
+</div>
+<!-- Right Action: Language Badge / Status -->
+<div class="flex items-center gap-2">
+<button class="bg-surface-container text-primary font-label-md text-label-md px-2.5 py-1.5 rounded-lg border border-outline-variant/40 hover:bg-surface-container-high active:scale-95 transition-all">
+          हिंदी / EN
+        </button>
+</div>
+</header>
+<!-- Sub-header Status Pill Bar -->
+<div class="px-margin pt-3 pb-1">
+<div class="flex items-center justify-between bg-primary-fixed/40 border border-primary/20 rounded-full px-3 py-1.5">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary"></span>
+</span>
+<span class="font-label-md text-label-md text-primary font-bold">Quality Verified (Grade A+)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-primary-fixed-variant bg-surface/80 px-2 py-0.5 rounded-full border border-primary/10">NABL Tested</span>
+</div>
+</div>
+<!-- Main Content Container -->
+<main class="flex-1 px-margin space-y-space-md pt-2">
+<!-- SECTION 1: Contract Header & Counterparty Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04),0_1px_3px_0_rgba(41,37,36,0.03)]">
+<!-- Crop Title and Category -->
+<div class="flex items-start justify-between border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed/50 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-2xl fill-icon" data-icon="agriculture" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Mandi Spot Contract</span>
+<h2 class="font-headline-sm text-headline-sm text-on-surface font-bold leading-tight">Sharbati Wheat</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Premium Milling Grade (Sehore Certified)</p>
+</div>
+</div>
+<span class="bg-surface-container text-on-surface font-label-sm text-label-sm font-semibold px-2 py-1 rounded-md border border-outline-variant/30">
+            Kharif '24
+          </span>
+</div>
+<!-- Contracting Parties Flow -->
+<div class="py-3.5 my-1 bg-surface-container-low/70 rounded-xl px-3 border border-outline-variant/30 relative">
+<div class="grid grid-cols-2 gap-3 items-center">
+<!-- Buyer -->
+<div class="space-y-0.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] text-primary" data-icon="domain">domain</span> Buyer
+              </span>
+<p class="font-label-lg text-label-lg text-on-surface font-bold truncate">Green Agro Mills</p>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-primary fill-icon" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-sm text-[10px] text-primary font-bold">GSTIN Verified</span>
+</div>
+</div>
+<!-- Seller / Farmer -->
+<div class="space-y-0.5 text-right">
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center justify-end gap-1">
+                Farmer <span class="material-symbols-outlined text-[12px] text-primary" data-icon="person">person</span>
+</span>
+<p class="font-label-lg text-label-lg text-on-surface font-bold truncate">Ramesh Patil</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant truncate">Krishna Valley Farm, Wardha</p>
+</div>
+</div>
+<!-- Handshake Central Stamp Pin -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-surface-container-lowest border border-outline-variant shadow-sm flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base" data-icon="handshake">handshake</span>
+</div>
+</div>
+<!-- Financial Summary Grid -->
+<div class="grid grid-cols-3 gap-2 pt-2 text-center">
+<div class="p-2 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Total Volume</span>
+<span class="font-title-md text-title-md text-on-surface font-bold">100 Qtl</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Agreed Rate</span>
+<span class="font-title-md text-title-md text-on-surface font-bold">₹2,650<span class="text-[11px] font-normal text-on-surface-variant">/Q</span></span>
+</div>
+<div class="p-2 rounded-xl bg-primary-fixed/30 border border-primary/20">
+<span class="font-label-sm text-label-sm text-primary font-bold block">Escrow Total</span>
+<span class="font-title-md text-title-md text-primary font-extrabold">₹2,65,000</span>
+</div>
+</div>
+<!-- Escrow Security Guarantee -->
+<div class="mt-3 pt-2.5 border-t border-outline-variant/20 flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-base text-primary fill-icon" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span>Protected by <strong>ICICI / RBI Digital Escrow</strong> • Smart trigger active</span>
+</div>
+</section>
+<!-- SECTION 2: Milestone Progress Tracker (Vertical Stepper) -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)]">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary fill-icon" data-icon="timeline" style="font-variation-settings: 'FILL' 1;">timeline</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Escrow Milestone Tracker</h3>
+</div>
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded-full font-bold">Step 3 of 5</span>
+</div>
+<div class="relative pl-6 space-y-4 before:content-[''] before:absolute before:left-[11px] before:top-2 before:bottom-3 before:w-[2px] before:bg-outline-variant/40">
+<!-- Step 1: Buyer Match Accepted -->
+<div class="relative group">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="check">check</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Buyer Match Accepted</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sep 18, 02:40 PM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Advance deposit locked in Escrow (₹53,000).</p>
+</div>
+</div>
+<!-- Step 2: Farmer Confirmation -->
+<div class="relative group">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary flex items-center justify-center text-on-primary ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="check">check</span>
+</div>
+<div class="bg-surface-container-low/60 rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Farmer Confirmation</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Sep 20, 10:15 AM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Digitally OTP-signed &amp; advance released to seller.</p>
+</div>
+</div>
+<!-- Step 3: Quality & Moisture Inspection (ACTIVE/PASSED) -->
+<div class="relative group">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-on-primary ring-4 ring-primary-fixed/40">
+<span class="material-symbols-outlined text-sm font-bold" data-icon="verified">verified</span>
+</div>
+<div class="bg-primary-fixed/20 rounded-xl p-3 border-2 border-primary shadow-sm">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg font-bold text-primary">Quality &amp; Moisture Assay</span>
+<span class="bg-primary text-on-primary font-label-sm text-[10px] px-1.5 py-0.2 rounded font-bold uppercase">Passed</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Today, 11:20 AM</span>
+</div>
+<div class="mt-2 text-xs bg-surface-container-lowest/90 rounded-lg p-2 border border-primary/20 text-on-surface">
+<p class="font-medium text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="task_alt">task_alt</span> Passed Grade A+ Specification
+                </p>
+<p class="text-on-surface-variant font-label-sm text-label-sm mt-0.5">11.2% moisture (Ideal &lt;12%) • 0.4% foreign matter</p>
+</div>
+</div>
+</div>
+<!-- Step 4: Milestone 2 Payment Release -->
+<div class="relative group">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-sm" data-icon="pending">pending</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-2.5 border border-secondary-container/40">
+<div class="flex justify-between items-center">
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Milestone 2 Escrow Release</p>
+<span class="font-label-sm text-label-sm text-secondary font-bold">Action Needed</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">₹1,06,000 (40%) ready for disbursement post quality pass.</p>
+</div>
+</div>
+<!-- Step 5: Weighbridge & Settlement -->
+<div class="relative group opacity-75">
+<div class="absolute -left-6 top-0 w-6 h-6 rounded-full bg-surface-variant text-on-surface-variant flex items-center justify-center ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-sm" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="bg-surface-container-low/40 rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center">
+<p class="font-label-lg text-label-lg font-medium text-on-surface">Weighbridge &amp; Final Settlement</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Scheduled Oct 15</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">Remaining ₹1,06,000 on warehouse dock receipt.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Quality Inspection Report Card (NABL Accredited) -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)]">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-3">
+<div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="science">science</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Assay &amp; Quality Report</h3>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">National Quality Labs (NABL Accredited) • #NQL-9042</p>
+</div>
+<span class="bg-primary/10 text-primary border border-primary/20 rounded-md px-2 py-1 font-label-sm text-label-sm font-bold">
+            Grade A+
+          </span>
+</div>
+<!-- 4-Grid Telemetry Parameters -->
+<div class="grid grid-cols-2 gap-2.5 my-3.5">
+<!-- Moisture Metric -->
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Moisture</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="water_drop">water_drop</span>
+</div>
+<div class="mt-1 flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">11.2%</span>
+<span class="font-label-sm text-[10px] text-primary bg-primary-fixed/50 px-1.5 py-0.2 rounded font-semibold">Ideal (&lt;12%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 72%;"></div>
+</div>
+</div>
+<!-- Protein Metric -->
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Protein Content</span>
+<span class="material-symbols-outlined text-secondary text-base" data-icon="grain">grain</span>
+</div>
+<div class="mt-1 flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">13.8%</span>
+<span class="font-label-sm text-[10px] text-secondary bg-secondary-fixed/50 px-1.5 py-0.2 rounded font-semibold">&gt;12.5% Premium</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<!-- Foreign Matter -->
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Foreign Matter</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="filter_alt">filter_alt</span>
+</div>
+<div class="mt-1 flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">0.4%</span>
+<span class="font-label-sm text-[10px] text-primary bg-primary-fixed/50 px-1.5 py-0.2 rounded font-semibold">Clean (&lt;1.0%)</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 25%;"></div>
+</div>
+</div>
+<!-- Grain Uniformity -->
+<div class="bg-surface-container-low p-2.5 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Grain Uniformity</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="density_medium">density_medium</span>
+</div>
+<div class="mt-1 flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">98.0%</span>
+<span class="font-label-sm text-[10px] text-primary bg-primary-fixed/50 px-1.5 py-0.2 rounded font-semibold">Standard+</span>
+</div>
+<div class="w-full bg-surface-container-high h-1.5 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 98%;"></div>
+</div>
+</div>
+</div>
+<!-- Digital Seal & QR Code Block -->
+<div class="bg-surface-container rounded-xl p-3 flex items-center justify-between border border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-lowest flex items-center justify-center border border-outline-variant text-primary shadow-xs">
+<span class="material-symbols-outlined text-2xl" data-icon="qr_code_2">qr_code_2</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1">
+                Digitally Signed &amp; Validated
+                <span class="material-symbols-outlined text-primary text-xs fill-icon" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</p>
+<p class="font-label-sm text-[11px] text-on-surface-variant">Assayed by Dr. V. Kulkarni, Chief Assayer</p>
+</div>
+</div>
+<button class="font-label-sm text-label-sm text-primary font-bold hover:underline">
+            Verify QR
+          </button>
+</div>
+</section>
+<!-- SECTION 4: Payment & Escrow Breakdown Card -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)]">
+<div class="flex justify-between items-center mb-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Escrow Funds Status</h3>
+<span class="font-label-md text-label-md text-primary font-bold">Total: ₹2,65,000</span>
+</div>
+<!-- Visual Multi-segment Progress Bar -->
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden flex my-3">
+<div class="bg-primary h-full w-[20%]" title="Advance Paid: 20%"></div>
+<div class="bg-secondary-container h-full w-[40%]" title="Milestone 2: 40%"></div>
+<div class="bg-surface-variant h-full w-[40%]" title="Final Settlement: 40%"></div>
+</div>
+<div class="space-y-2.5 text-body-sm">
+<!-- Row 1: Advance Paid -->
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/15">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-primary inline-block"></span>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Advance Booking (20%)</p>
+<p class="font-label-sm text-[11px] text-on-surface-variant">Disbursed on Sep 20 • Bank UTR: #4921980</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">₹53,000</span>
+<span class="font-label-sm text-[10px] text-primary block font-semibold">Completed</span>
+</div>
+</div>
+<!-- Row 2: Quality Inspection Release -->
+<div class="flex items-center justify-between py-1 border-b border-outline-variant/15 bg-primary-fixed/15 -mx-2 px-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container inline-block"></span>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Quality Milestone (40%)</p>
+<p class="font-label-sm text-[11px] text-secondary font-semibold">Ready for Mutual Authorization</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-label-lg font-bold text-primary">₹1,06,000</span>
+<span class="font-label-sm text-[10px] text-secondary block font-bold">Awaiting Release</span>
+</div>
+</div>
+<!-- Row 3: Final Delivery -->
+<div class="flex items-center justify-between py-1">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-outline inline-block"></span>
+<div>
+<p class="font-label-md text-label-md font-bold text-on-surface">Final Delivery &amp; Gate Pass (40%)</p>
+<p class="font-label-sm text-[11px] text-on-surface-variant">Post Weighbridge Slip verification</p>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-lg text-label-lg font-bold text-on-surface-variant">₹1,06,000</span>
+<span class="font-label-sm text-[10px] text-outline block font-semibold">Escrow Locked</span>
+</div>
+</div>
+</div>
+<div class="mt-3 p-2 bg-surface-container-low rounded-lg flex items-center gap-2 text-on-surface-variant font-label-sm text-[11px]">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="account_balance">account_balance</span>
+          Escrow held under ICICI Virtual Trustee Account #ESC-99218274
+        </div>
+</section>
+<!-- SECTION 5: Legal Action Controls -->
+<section class="space-y-2.5 pt-1">
+<!-- Primary Action CTA Button -->
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary py-3.5 px-4 rounded-xl font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 shadow-md hover:shadow-lg active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg fill-icon" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+          Approve &amp; Release Milestone Payment (₹1,06,000)
+        </button>
+<!-- Secondary Dispute Button -->
+<button class="w-full bg-surface-container-lowest border-1.5 border-outline-variant/60 text-secondary hover:bg-surface-container py-3 px-4 rounded-xl font-label-md text-label-md font-bold flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg" data-icon="flag">flag</span>
+          Raise Quality Dispute / Re-test Sample
+        </button>
+<!-- Download Legal Contract Link -->
+<div class="text-center pt-2">
+<a class="inline-flex items-center gap-1.5 font-label-md text-label-md text-primary font-bold hover:underline" href="#download">
+<span class="material-symbols-outlined text-base" data-icon="download">download</span>
+            Download Legal Contract &amp; Assay Certificate (PDF • 1.4 MB)
+          </a>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar matching shared component standard -->
+<nav class="fixed bottom-0 left-0 right-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs max-w-lg mx-auto bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 shadow-lg">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-xl" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">Home</span>
+</a>
+<!-- Doctor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+<span class="font-label-sm text-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Voice (AI Assistant) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="#voice">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-md -mt-4">
+<span class="material-symbols-outlined text-xl" data-icon="mic">mic</span>
+</div>
+<span class="font-label-sm text-label-sm mt-0.5">Voice</span>
+</a>
+<!-- Mandi (ACTIVE TAB FOR ESCROW/BOOKING ROUTE) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary rounded-xl px-3 py-1.5 active:scale-95 duration-150" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-xl fill-icon" data-icon="storefront" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-bold">Mandi</span>
+</a>
+<!-- Soil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-xl" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-label-sm text-label-sm mt-0.5">Soil</span>
+</a>
+</nav>
+</div>
+</body></html>

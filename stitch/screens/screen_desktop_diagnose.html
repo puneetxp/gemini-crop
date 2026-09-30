@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CropSense AI - Responsive Desktop & Tablet AI Crop Doctor & Disease Diagnostics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              200: '#a7f3d0',
+              300: '#6ee7b7',
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+              950: '#022c22',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.85; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.015); }
+    }
+    .scanner-active {
+      animation: pulseGlow 2.8s ease-in-out infinite;
+    }
+    @keyframes scanBeam {
+      0% { top: 8%; opacity: 0.3; }
+      50% { top: 92%; opacity: 0.9; }
+      100% { top: 8%; opacity: 0.3; }
+    }
+    .laser-line {
+      position: absolute;
+      left: 6%;
+      right: 6%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #34d399, #10b981, #6ee7b7, transparent);
+      box-shadow: 0 0 14px #34d399, 0 0 28px #10b981;
+      animation: scanBeam 3.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+  </style>
+</head>
+<body class="bg-[#f8f9fa] text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-emerald-100 selection:text-emerald-900 pb-16 lg:pb-0">
+
+  <!-- Desktop & Tablet Outer Container -->
+  <div class="flex flex-1 min-h-screen w-full">
+
+    <!-- 1. Left Desktop Sidebar (w-72 hidden lg:flex flex-col bg-white border-r border-slate-200) -->
+    <aside class="w-72 hidden lg:flex flex-col bg-white border-r border-slate-200 justify-between shrink-0 sticky top-0 h-screen z-30">
+      <div class="flex flex-col">
+        <!-- Brand Header -->
+        <div class="p-5 border-b border-slate-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-brand-800 text-emerald-300 flex items-center justify-center shadow-md shadow-emerald-950/20">
+              <span class="material-symbols-outlined text-2xl fill">eco</span>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-extrabold text-slate-900 text-lg tracking-tight">CropSense<span class="text-brand-700">AI</span></span>
+                <span class="px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase bg-emerald-100 text-emerald-800 rounded">PRO</span>
+              </div>
+              <p class="text-xs text-slate-500 font-medium">Krishi Command Center</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <div class="p-3 space-y-1">
+          <div class="px-3 pt-3 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">Farm Intelligence</div>
+          
+          <a href="screen_desktop_dashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">grid_view</span>
+            <span>Dashboard</span>
+          </a>
+
+          <a href="screen_desktop_strategy.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">nature_people</span>
+              <span>My Farms &amp; Plots</span>
+            </div>
+            <span class="text-[11px] font-semibold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-full">18.5 Ac</span>
+          </a>
+
+          <a href="screen_desktop_diagnose.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-brand-800 text-white font-semibold text-sm shadow-sm shadow-brand-900/20">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-xl text-emerald-300 fill">psychiatry</span>
+              <span>Crop Diagnostics</span>
+            </div>
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-300"></span>
+            </span>
+          </a>
+
+          <a href="screen_desktop_booking.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">storefront</span>
+              <span>Marketplace &amp; Escrow</span>
+            </div>
+            <span class="text-[10px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded uppercase">Mandi</span>
+          </a>
+
+          <div class="px-3 pt-4 pb-1 text-[11px] font-bold uppercase tracking-wider text-slate-400">Telemetry &amp; Sensors</div>
+
+          <a href="screen_desktop_livestock.html" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <div class="flex items-center gap-3">
+              <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">cruelty_free</span>
+              <span>Pashu &amp; Cattle Hub</span>
+            </div>
+            <span class="text-[11px] font-medium text-slate-400">8 Tagged</span>
+          </a>
+
+          <a href="screen_desktop_soil_satellite.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">satellite_alt</span>
+            <span>Soil &amp; Satellite NDVI</span>
+          </a>
+
+          <a href="screen_desktop_strategy.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-50 font-medium text-sm transition-colors group">
+            <span class="material-symbols-outlined text-xl text-slate-400 group-hover:text-slate-600">calendar_month</span>
+            <span>Annual Strategy</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Bottom Profile & Quota Section -->
+      <div class="p-4 border-t border-slate-100 space-y-3 bg-slate-50/70">
+        <!-- AI Quota Card -->
+        <div class="p-3.5 rounded-xl bg-white border border-slate-200/80 shadow-xs">
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-1.5 text-xs font-bold text-slate-800">
+              <span class="material-symbols-outlined text-sm text-brand-600">bolt</span>
+              <span>Gemini 2.0 Quota</span>
+            </div>
+            <span class="text-xs font-mono font-bold text-brand-700">84%</span>
+          </div>
+          <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+            <div class="bg-brand-600 h-full rounded-full transition-all" style="width: 84%"></div>
+          </div>
+          <p class="text-[11px] text-slate-500 mt-1.5 leading-tight">126 of 150 vision queries remaining this cycle</p>
+        </div>
+
+        <!-- Farmer Profile Card -->
+        <div class="flex items-center justify-between p-2 rounded-xl bg-white border border-slate-200/80">
+          <div class="flex items-center gap-2.5 min-w-0">
+            <div class="w-9 h-9 rounded-full bg-emerald-100 border border-emerald-300 text-brand-900 font-bold text-xs flex items-center justify-center shrink-0">
+              RP
+            </div>
+            <div class="min-w-0">
+              <h4 class="text-xs font-bold text-slate-900 truncate">Ramesh Patil</h4>
+              <p class="text-[11px] text-slate-500 truncate">Krishna Valley • Nashik</p>
+            </div>
+          </div>
+          <button class="text-slate-400 hover:text-slate-600 p-1">
+            <span class="material-symbols-outlined text-lg">unfold_more</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+      
+      <!-- Top Header Bar -->
+      <header class="h-16 bg-white border-b border-slate-200 px-4 sm:px-6 flex items-center justify-between sticky top-0 z-20">
+        <!-- Breadcrumb & Mobile Drawer Trigger -->
+        <div class="flex items-center gap-3 min-w-0">
+          <button class="lg:hidden p-2 -ml-2 text-slate-600 hover:text-slate-900 focus:outline-none">
+            <span class="material-symbols-outlined text-2xl">menu</span>
+          </button>
+          
+          <nav class="hidden sm:flex items-center gap-2 text-xs text-slate-500 font-medium">
+            <span class="hover:text-slate-800 cursor-pointer">Home</span>
+            <span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+            <span class="hover:text-slate-800 cursor-pointer">Crop Health</span>
+            <span class="material-symbols-outlined text-sm text-slate-400">chevron_right</span>
+            <span class="text-brand-800 font-bold bg-brand-50 px-2 py-0.5 rounded-md border border-brand-100">AI Crop Doctor</span>
+          </nav>
+          
+          <!-- Tablet / Mobile Screen Title -->
+          <div class="sm:hidden font-bold text-slate-900 text-sm flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-brand-700 text-lg fill">psychiatry</span>
+            <span>Crop Diagnostics</span>
+          </div>
+        </div>
+
+        <!-- Right Header Actions -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Active Plot Switcher -->
+          <div class="relative">
+            <button class="flex items-center gap-2 px-3 py-1.5 text-xs font-semibold text-slate-800 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-lg transition-colors">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span class="font-medium text-slate-500 hidden md:inline">Active Plot:</span>
+              <span class="font-bold">Plot A • Sharbati Wheat (4.5 Ac)</span>
+              <span class="material-symbols-outlined text-sm text-slate-400">arrow_drop_down</span>
+            </button>
+          </div>
+
+          <!-- Language Pill -->
+          <button class="flex items-center gap-1 px-2.5 py-1.5 text-xs font-semibold text-slate-700 bg-white border border-slate-200 hover:bg-slate-50 rounded-lg transition-colors shadow-2xs">
+            <span class="material-symbols-outlined text-sm text-slate-500">translate</span>
+            <span class="font-medium">हिंदी / मराठी / EN</span>
+          </button>
+
+          <!-- Voice Assistant Trigger -->
+          <button class="flex items-center gap-1.5 px-3 py-1.5 bg-brand-800 hover:bg-brand-900 text-white rounded-lg text-xs font-bold transition-all shadow-xs shadow-brand-950/20 active:scale-95">
+            <span class="material-symbols-outlined text-sm fill">mic</span>
+            <span class="hidden sm:inline">Voice Assistant</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Subheader / Status Ribbon -->
+      <div class="bg-gradient-to-r from-emerald-50 via-slate-50 to-amber-50 border-b border-slate-200/70 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2 text-xs">
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white border border-emerald-200 text-emerald-800 font-semibold shadow-2xs">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Multimodal Vision AI 2.0 Engine Online
+          </span>
+          <span class="text-slate-400 hidden sm:inline">•</span>
+          <span class="text-slate-600 hidden sm:inline font-medium">Auto-calibrated with ICAR-IARI Plant Pathology Benchmarks</span>
+        </div>
+        
+        <div class="flex items-center gap-3 text-xs">
+          <div class="flex items-center gap-1 text-slate-600">
+            <span class="material-symbols-outlined text-sm text-slate-400">cloud_sync</span>
+            <span>Last Sync: Today 11:42 AM</span>
+          </div>
+          <span class="text-slate-300">|</span>
+          <div class="flex items-center gap-1 text-slate-600 font-medium">
+            <span class="material-symbols-outlined text-sm text-amber-500">thermostat</span>
+            <span>Nashik Valley: 28°C • 65% RH</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Main Workspace: 2-Column Responsive Diagnostic Workspace -->
+      <main class="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+        
+        <!-- Workspace Headline -->
+        <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">AI Crop Doctor & Disease Diagnostics</h1>
+              <span class="px-2.5 py-0.5 text-xs font-bold bg-brand-100 text-brand-800 rounded-full border border-brand-200">Session #DIAG-8942</span>
+            </div>
+            <p class="text-sm text-slate-600 mt-1">Instant telemetric foliar scan, spectral disease lesion segmentation, and agronomic treatment prescriptions.</p>
+          </div>
+          
+          <!-- Quick Export / Share Controls -->
+          <div class="flex items-center gap-2">
+            <button class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-slate-700 bg-white border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors shadow-2xs">
+              <span class="material-symbols-outlined text-sm">print</span>
+              <span>Export PDF Report</span>
+            </button>
+            <button class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-brand-800 bg-emerald-50 border border-emerald-200 rounded-lg hover:bg-emerald-100 transition-colors shadow-2xs">
+              <span class="material-symbols-outlined text-sm">share</span>
+              <span>Share with Agronomist</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Responsive Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          
+          <!-- LEFT COLUMN (lg:col-span-6 space-y-6): Viewfinder, Upload & History -->
+          <div class="lg:col-span-6 space-y-6">
+
+            <!-- High-Resolution Leaf Viewfinder & Upload Box -->
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+              <!-- Card Header -->
+              <div class="px-5 py-3.5 border-b border-slate-100 bg-slate-50/50 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-brand-700 text-lg">center_focus_strong</span>
+                  <h3 class="text-sm font-bold text-slate-900">High-Resolution Foliar Viewfinder</h3>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-2 py-0.5 bg-emerald-100/90 text-emerald-800 text-[11px] font-bold rounded-md flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                    Macro Spectral Active
+                  </span>
+                </div>
+              </div>
+
+              <!-- Viewport with Image & Scanning Overlays -->
+              <div class="p-4 sm:p-5">
+                <div class="relative w-full aspect-[4/3] rounded-xl overflow-hidden bg-slate-950 border border-slate-800 group shadow-inner">
+                  
+                  <!-- Leaf Image -->
+                  <img 
+                    src="https://lh3.googleusercontent.com/aida/AEtjO1V1CU2SNWXchvziH0-WrtgKXQ3976e8tLo9l8mqiWAIz5QqQhqNPevGlgvI0n2roolm_yW0bsxrIMOFuIJ4lZGOhNx_4tUPXVTQUxTwZP8gDs3uof3QiVHFUOoPp52ib4Mu_VYQxWsiKhUhteGeGEQL0MlVNqwo9xjAjiMS0_t5cSQSusZH2v-_m02LQmZsIRpXLeVoRWacgxb4H7GHUthVvyH1LDK9p_X7UjYB83nw-OkKvu4NAQXgO0c" 
+                    alt="Close-up macro photography of wheat leaf blade with fungal blight concentric lesions" 
+                    class="w-full h-full object-cover select-none"
+                  />
+
+                  <!-- Darkened Vignette & Telemetry Grids -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 pointer-events-none"></div>
+
+                  <!-- Laser Scan Beam Line -->
+                  <div class="laser-line"></div>
+
+                  <!-- Target Bounding Box / Lesion Annotation 1 -->
+                  <div class="absolute top-[28%] left-[36%] w-[34%] h-[38%] border-2 border-amber-400 bg-amber-400/10 rounded-lg pointer-events-none scanner-active">
+                    <div class="absolute -top-6 left-0 bg-amber-500 text-black text-[10px] font-black uppercase px-2 py-0.5 rounded shadow flex items-center gap-1">
+                      <span class="w-1.5 h-1.5 rounded-full bg-black"></span>
+                      Lesion #01 (Alternaria sp.)
+                    </div>
+                    <!-- Corner Reticles -->
+                    <div class="absolute -top-1 -left-1 w-2.5 h-2.5 border-t-2 border-l-2 border-white"></div>
+                    <div class="absolute -top-1 -right-1 w-2.5 h-2.5 border-t-2 border-r-2 border-white"></div>
+                    <div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 border-b-2 border-l-2 border-white"></div>
+                    <div class="absolute -bottom-1 -right-1 w-2.5 h-2.5 border-b-2 border-r-2 border-white"></div>
+                  </div>
+
+                  <!-- Top-left Camera Telemetry HUD -->
+                  <div class="absolute top-3 left-3 flex flex-col gap-1 pointer-events-none">
+                    <div class="bg-black/60 backdrop-blur-md text-emerald-400 text-[10px] font-mono px-2 py-0.5 rounded border border-emerald-500/30 flex items-center gap-1.5">
+                      <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping"></span>
+                      <span>FOV: 50mm Macro • ISO 160</span>
+                    </div>
+                    <div class="bg-black/60 backdrop-blur-md text-slate-300 text-[10px] font-mono px-2 py-0.5 rounded border border-white/10">
+                      GPS: 20.0112° N, 73.7902° E
+                    </div>
+                  </div>
+
+                  <!-- Bottom HUD Status Pill -->
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between pointer-events-none">
+                    <div class="bg-brand-950/85 backdrop-blur-md text-white text-xs font-semibold px-3 py-1.5 rounded-lg border border-brand-500/40 flex items-center gap-2 shadow-lg">
+                      <span class="material-symbols-outlined text-emerald-400 text-base">auto_awesome</span>
+                      <span>Gemini 2.0 Flash Vision • Multimodal Inference (0.8s)</span>
+                    </div>
+
+                    <div class="bg-black/70 backdrop-blur-md text-slate-200 text-[11px] font-mono px-2.5 py-1 rounded-lg border border-white/10 hidden sm:block">
+                      Confidence: 94.2%
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Action Controls Under Viewfinder -->
+                <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                  <button class="flex items-center justify-center gap-2 px-3 py-2.5 bg-brand-800 hover:bg-brand-900 text-white rounded-xl text-xs font-bold transition-all shadow-sm shadow-brand-950/20 active:scale-[0.98]">
+                    <span class="material-symbols-outlined text-base">upload_file</span>
+                    <span>Upload Leaf Photo</span>
+                  </button>
+
+                  <button class="flex items-center justify-center gap-2 px-3 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl text-xs font-bold transition-colors">
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Live Camera Snapshot</span>
+                  </button>
+
+                  <button class="flex items-center justify-center gap-1.5 px-3 py-2.5 border border-dashed border-slate-300 hover:border-slate-400 text-slate-600 rounded-xl text-xs font-medium bg-slate-50/70 hover:bg-slate-100/70 transition-colors">
+                    <span class="material-symbols-outlined text-base text-slate-400">drag_indicator</span>
+                    <span>Drag & Drop File</span>
+                  </button>
+                </div>
+
+                <!-- Image Metadata Bar -->
+                <div class="mt-3.5 p-3 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-wrap items-center justify-between text-xs text-slate-600 gap-2">
+                  <div class="flex items-center gap-3">
+                    <span class="flex items-center gap-1 font-mono text-[11px]">
+                      <span class="material-symbols-outlined text-sm text-slate-400">aspect_ratio</span>
+                      4032 × 3024 px
+                    </span>
+                    <span class="text-slate-300">•</span>
+                    <span class="flex items-center gap-1">
+                      <span class="material-symbols-outlined text-sm text-slate-400">calendar_today</span>
+                      Captured Sep 28, 10:14 AM
+                    </span>
+                  </div>
+                  <div class="flex items-center gap-1 text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200/60">
+                    <span class="material-symbols-outlined text-sm text-emerald-600">location_on</span>
+                    <span>Plot A (Nashik Vertisol)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Historical Crop Health Timeline -->
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm p-5 space-y-4">
+              <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-brand-700 text-lg">history</span>
+                  <h3 class="text-sm font-bold text-slate-900">Historical Crop Health Timeline (Plot A)</h3>
+                </div>
+                <span class="text-xs text-slate-500 font-medium">3 Scans in Rabi Cycle</span>
+              </div>
+
+              <!-- Timeline Items -->
+              <div class="space-y-3 relative before:absolute before:left-3.5 before:top-2 before:bottom-2 before:w-0.5 before:bg-slate-200">
+                
+                <!-- Current Active Item -->
+                <div class="flex items-start gap-3.5 relative">
+                  <div class="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center ring-4 ring-white z-10 shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-sm">warning</span>
+                  </div>
+                  <div class="flex-1 bg-amber-50/70 border border-amber-200/80 rounded-xl p-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-amber-900">Early Blight (Alternaria) — Active</span>
+                      <span class="text-[11px] font-semibold text-amber-700 bg-amber-100/90 px-2 py-0.2 rounded-full">Today</span>
+                    </div>
+                    <p class="text-xs text-amber-800 mt-1">Concentric necrotic lesions on mid-canopy leaves. Recommended organic foliar spray within 48h.</p>
+                  </div>
+                </div>
+
+                <!-- Past Item 1 -->
+                <div class="flex items-start gap-3.5 relative">
+                  <div class="w-7 h-7 rounded-full bg-emerald-600 text-white flex items-center justify-center ring-4 ring-white z-10 shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-sm">verified</span>
+                  </div>
+                  <div class="flex-1 bg-slate-50 border border-slate-200/70 rounded-xl p-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-800">Canopy Health Check: Rust Free</span>
+                      <span class="text-[11px] text-slate-500 font-medium">Sep 02 (Day 25)</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-1">No stripe rust (Puccinia striiformis) spores detected. Leaf vigor index 0.82 (High).</p>
+                  </div>
+                </div>
+
+                <!-- Past Item 2 -->
+                <div class="flex items-start gap-3.5 relative">
+                  <div class="w-7 h-7 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center ring-4 ring-white z-10 shrink-0 shadow-xs">
+                    <span class="material-symbols-outlined text-sm">check</span>
+                  </div>
+                  <div class="flex-1 bg-slate-50 border border-slate-200/70 rounded-xl p-3">
+                    <div class="flex items-center justify-between">
+                      <span class="text-xs font-bold text-slate-800">Powdery Mildew Alert — Successfully Resolved</span>
+                      <span class="text-[11px] text-slate-500 font-medium">Aug 12 (Day 10)</span>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-1">Early mycelial white patches treated with wettable sulfur 80% WP spray. Cleared in 6 days.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Button to view full log -->
+              <button class="w-full py-2 text-center text-xs font-bold text-brand-800 hover:text-brand-900 hover:bg-emerald-50/60 rounded-lg transition-colors border border-transparent hover:border-emerald-200">
+                View Full Field Diagnostic Archive (8 Past Seasons) →
+              </button>
+            </div>
+
+          </div>
+
+          <!-- RIGHT COLUMN (lg:col-span-6 space-y-6): Verdict, Prescription & Actions -->
+          <div class="lg:col-span-6 space-y-6">
+
+            <!-- Diagnostic Verdict Card (Elevated white card with vibrant status border) -->
+            <div class="bg-white rounded-2xl border-2 border-amber-300 shadow-md p-5 sm:p-6 relative overflow-hidden">
+              
+              <!-- Subtle decorative accent glow -->
+              <div class="absolute -right-12 -top-12 w-44 h-44 bg-amber-100 rounded-full blur-2xl pointer-events-none opacity-60"></div>
+              
+              <!-- Header Badges -->
+              <div class="flex flex-wrap items-center justify-between gap-2.5 pb-4 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300/80">
+                    <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                    Moderate Severity • Treat within 48h
+                  </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <span class="text-xs text-slate-500 font-medium">Verified by:</span>
+                  <span class="px-2 py-0.5 bg-emerald-50 text-emerald-800 border border-emerald-200 rounded text-xs font-bold">ICAR Protocol</span>
+                </div>
+              </div>
+
+              <!-- Disease Title & Score Summary -->
+              <div class="pt-4 flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                <div class="space-y-1">
+                  <span class="text-xs uppercase font-extrabold tracking-wider text-slate-400">Pathology Diagnosis</span>
+                  <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">Early Blight</h2>
+                  <p class="text-xs font-serif italic text-slate-500 font-medium">Alternaria solani / Alternaria triticina</p>
+                </div>
+
+                <!-- Radial / Circular Badge for AI Confidence -->
+                <div class="flex items-center gap-3 bg-brand-50/80 border border-brand-200/80 p-2.5 rounded-xl shrink-0">
+                  <div class="relative w-12 h-12 flex items-center justify-center">
+                    <svg class="w-12 h-12 transform -rotate-90" viewBox="0 0 36 36">
+                      <path class="text-emerald-100" stroke-width="3.5" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                      <path class="text-brand-600" stroke-width="3.5" stroke-dasharray="94, 100" stroke-linecap="round" stroke="currentColor" fill="none" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    </svg>
+                    <span class="absolute font-mono font-extrabold text-xs text-brand-900">94%</span>
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold text-brand-950">AI Confidence</div>
+                    <div class="text-[11px] text-brand-700 font-medium">Gemini Vision 2.0</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Agronomic Key Findings -->
+              <div class="mt-4 grid grid-cols-3 gap-2 text-center">
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+                  <div class="text-[11px] text-slate-500">Canopy Affected</div>
+                  <div class="text-sm font-bold text-slate-900">12% Area</div>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+                  <div class="text-[11px] text-slate-500">Spread Risk</div>
+                  <div class="text-sm font-bold text-amber-700">High (Humidity >65%)</div>
+                </div>
+                <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200/60">
+                  <div class="text-[11px] text-slate-500">Crop Stage</div>
+                  <div class="text-sm font-bold text-slate-900">Flowering (Day 45)</div>
+                </div>
+              </div>
+
+              <!-- Telemetry Description Paragraph -->
+              <p class="mt-3.5 text-xs text-slate-600 leading-relaxed bg-slate-50/80 p-3 rounded-xl border-l-4 border-amber-400">
+                The high-resolution foliar scan detects target-board concentric necrotic rings on mid-tier wheat blades with yellow chlorotic halos. Spores are actively proliferating due to morning dew and ambient humidity. Immediate containment prevents fungal migration into the developing earheads.
+              </p>
+
+              <!-- Audio Readout Banner: Listen in Hindi / English -->
+              <div class="mt-4 p-3 rounded-xl bg-gradient-to-r from-emerald-800 to-brand-900 text-white flex flex-col sm:flex-row items-center justify-between gap-3 shadow-sm">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-8 h-8 rounded-full bg-emerald-500/30 flex items-center justify-center shrink-0">
+                    <span class="material-symbols-outlined text-lg text-emerald-300">volume_up</span>
+                  </div>
+                  <div>
+                    <div class="text-xs font-bold">Listen to Diagnosis & Prescription in Hindi</div>
+                    <div class="text-[11px] text-emerald-200 font-medium">रोग निदान एवं उपचार ऑडियो में सुनें (1:18 min)</div>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                  <button class="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 rounded-lg text-xs font-bold transition-all shadow-xs active:scale-95">
+                    <span class="material-symbols-outlined text-sm fill">play_arrow</span>
+                    <span>Play Audio</span>
+                  </button>
+                  <button class="p-1.5 text-emerald-200 hover:text-white rounded-lg hover:bg-white/10 transition-colors">
+                    <span class="material-symbols-outlined text-base">forward_10</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Prescribed Treatment & Action Plan (Tabbed Interface) -->
+            <div class="bg-white rounded-2xl border border-slate-200/90 shadow-sm overflow-hidden">
+              <div class="px-5 pt-4 pb-2 border-b border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="material-symbols-outlined text-brand-700 text-lg">prescriptions</span>
+                  <h3 class="text-sm font-bold text-slate-900">Prescribed Treatment & Action Plan</h3>
+                </div>
+                <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">ICAR Approved</span>
+              </div>
+
+              <!-- Tabs Header -->
+              <div class="flex border-b border-slate-200 bg-slate-50/70 text-xs font-bold">
+                <button class="flex-1 py-3 px-4 text-center border-b-2 border-brand-800 text-brand-900 bg-white flex items-center justify-center gap-1.5 transition-colors">
+                  <span class="material-symbols-outlined text-base text-brand-700 fill">psychiatry</span>
+                  <span>Tab 1: Organic & Biological (Recommended)</span>
+                </button>
+                <button class="flex-1 py-3 px-4 text-center text-slate-500 hover:text-slate-800 hover:bg-slate-100/50 flex items-center justify-center gap-1.5 transition-colors">
+                  <span class="material-symbols-outlined text-base text-slate-400">science</span>
+                  <span>Tab 2: Chemical Control</span>
+                </button>
+              </div>
+
+              <!-- Tab 1 Content: Organic & Biological Control -->
+              <div class="p-5 space-y-4">
+                
+                <!-- Treatment Item 1 -->
+                <div class="p-4 rounded-xl border border-emerald-100 bg-emerald-50/40 hover:bg-emerald-50/70 transition-colors space-y-2">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-md bg-emerald-600 text-white text-xs font-bold flex items-center justify-center">1</span>
+                      <h4 class="text-sm font-bold text-slate-900">Neem Oil Spray (Azadirachtin 10,000 ppm)</h4>
+                    </div>
+                    <span class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded">Foliar Spray</span>
+                  </div>
+                  <p class="text-xs text-slate-600 pl-8">
+                    Apply <strong class="text-slate-800">3 ml per Liter</strong> of fresh water. Spray early in the morning (6:00 AM – 8:30 AM) to ensure stomatal absorption before peak solar radiation.
+                  </p>
+                  <div class="pl-8 flex flex-wrap items-center gap-4 text-[11px] text-slate-500">
+                    <span>• Water required: 180 Liters / Acre</span>
+                    <span>• Expected control: 88% reduction in 5 days</span>
+                  </div>
+                </div>
+
+                <!-- Treatment Item 2 -->
+                <div class="p-4 rounded-xl border border-slate-200 bg-slate-50/60 hover:bg-slate-50 transition-colors space-y-2">
+                  <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-md bg-brand-800 text-white text-xs font-bold flex items-center justify-center">2</span>
+                      <h4 class="text-sm font-bold text-slate-900">Trichoderma viride 1% WP (Bio-Fungicide)</h4>
+                    </div>
+                    <span class="text-xs font-bold text-slate-700 bg-slate-200 px-2 py-0.5 rounded">Soil & Root Drench</span>
+                  </div>
+                  <p class="text-xs text-slate-600 pl-8">
+                    Apply <strong class="text-slate-800">5 g per Liter</strong> of water through drip fertigation or root basin drench to eliminate fungal spores hibernating in moist soil crumb.
+                  </p>
+                  <div class="pl-8 flex flex-wrap items-center gap-4 text-[11px] text-slate-500">
+                    <span>• Carrier: Enriched FYM / Cow dung compost</span>
+                    <span>• Bio-stimulant benefit: Root mass +14%</span>
+                  </div>
+                </div>
+
+                <!-- Safety Warning Box -->
+                <div class="p-3.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-900 flex items-start gap-3">
+                  <span class="material-symbols-outlined text-amber-600 text-xl shrink-0 mt-0.5">warning</span>
+                  <div class="space-y-1">
+                    <div class="text-xs font-bold">Safety & Weather Advisory (Nashik Agro-Met Station)</div>
+                    <p class="text-xs text-amber-800 leading-normal">
+                      ⚠️ IMD rain expected in 48 hours. Add an organic sticker/spreader adjuvant (0.5 ml/L) so spray does not wash off. Wear N95 protective mask and rubber gloves during tank mixing.
+                    </p>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Card Footer: Direct Next Actions -->
+              <div class="p-5 border-t border-slate-100 bg-slate-50/60 space-y-3">
+                <div class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Direct Next Actions</div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <!-- Primary Action Button -->
+                  <button class="flex items-center justify-center gap-2 py-3 px-4 bg-brand-800 hover:bg-brand-900 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-brand-950/20 active:scale-[0.98]">
+                    <span class="material-symbols-outlined text-base">local_shipping</span>
+                    <span>Order Approved Fungicide (24h Delivery)</span>
+                  </button>
+
+                  <!-- Secondary Action Button -->
+                  <button class="flex items-center justify-center gap-2 py-3 px-4 bg-white hover:bg-slate-100 text-slate-800 border border-slate-300 rounded-xl text-xs font-bold transition-colors shadow-2xs">
+                    <span class="material-symbols-outlined text-base text-brand-700">call</span>
+                    <span>Call KVK Agronomist (Toll Free)</span>
+                  </button>
+                </div>
+
+                <!-- Sub-link -->
+                <div class="text-center pt-1">
+                  <a href="screen_desktop_booking.html" class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-brand-800 transition-colors">
+                    <span class="material-symbols-outlined text-sm">bookmark_add</span>
+                    <span>Log Diagnostic Findings into Permanent Farm Medical Record #MH-2894</span>
+                  </a>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- Global Footer -->
+      <footer class="mt-auto border-t border-slate-200 bg-white py-4 px-6 text-xs text-slate-500 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <span class="font-semibold text-slate-700">CropSense AI Diagnostic Suite</span>
+          <span>•</span>
+          <span>ICAR-IARI Protocol Compliant</span>
+          <span>•</span>
+          <span>Version 2.4.0 (Enterprise Ag)</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <a href="screen_desktop_booking.html" class="hover:text-slate-800">Help Center</a>
+          <a href="screen_desktop_booking.html" class="hover:text-slate-800">Mandi Price Index</a>
+          <a href="screen_desktop_booking.html" class="hover:text-slate-800">Telemetry Privacy</a>
+        </div>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- Mobile Bottom Dock Navigation (lg:hidden) ensuring mobile responsiveness -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2 flex items-center justify-around shadow-lg">
+    <a href="screen_desktop_dashboard.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-800">
+      <span class="material-symbols-outlined text-xl">home</span>
+      <span class="text-[10px] font-semibold">Home</span>
+    </a>
+    <a href="screen_desktop_diagnose.html" class="flex flex-col items-center gap-1 text-brand-800 font-bold">
+      <span class="material-symbols-outlined text-xl fill">psychiatry</span>
+      <span class="text-[10px] font-bold">Doctor</span>
+    </a>
+    <a href="#voice" class="flex flex-col items-center justify-center -mt-5 w-12 h-12 rounded-full bg-brand-800 text-white shadow-lg shadow-brand-950/30">
+      <span class="material-symbols-outlined text-2xl fill">mic</span>
+    </a>
+    <a href="screen_desktop_booking.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-800">
+      <span class="material-symbols-outlined text-xl">storefront</span>
+      <span class="text-[10px] font-semibold">Mandi</span>
+    </a>
+    <a href="screen_desktop_soil_satellite.html" class="flex flex-col items-center gap-1 text-slate-500 hover:text-slate-800">
+      <span class="material-symbols-outlined text-xl">satellite_alt</span>
+      <span class="text-[10px] font-semibold">Soil</span>
+    </a>
+  </nav>
+
+</body>
+</html>

@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Pashu &amp; Livestock Intelligence Hub</title>
+<!-- Fonts & Google Icons -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-surface": "#1b1c1a",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f4f4f0",
+            "surface-container-highest": "#e3e2df",
+            "surface-container": "#efeeea",
+            "secondary-fixed-dim": "#ffb77d",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-bright": "#faf9f5",
+            "on-tertiary-fixed": "#002113",
+            "on-tertiary": "#ffffff",
+            "outline": "#6f7973",
+            "primary-fixed-dim": "#8bd6b6",
+            "surface-variant": "#e3e2df",
+            "secondary-fixed": "#ffdcc3",
+            "tertiary": "#00462e",
+            "on-error": "#ffffff",
+            "on-surface-variant": "#3f4944",
+            "on-secondary-container": "#663500",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary-container": "#fe932c",
+            "inverse-primary": "#8bd6b6",
+            "background": "#faf9f5",
+            "surface-tint": "#1b6b51",
+            "on-background": "#1b1c1a",
+            "inverse-surface": "#2f312e",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#6e3900",
+            "primary": "#004532",
+            "on-error-container": "#93000a",
+            "primary-container": "#065f46",
+            "on-tertiary-container": "#50e0a4",
+            "on-primary": "#ffffff",
+            "surface": "#faf9f5",
+            "inverse-on-surface": "#f2f1ed",
+            "on-primary-fixed": "#002116",
+            "on-tertiary-fixed-variant": "#005236",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#8bd6b7",
+            "primary-fixed": "#a6f2d1",
+            "outline-variant": "#bec9c2",
+            "tertiary-container": "#006041",
+            "surface-dim": "#dbdad6",
+            "on-primary-fixed-variant": "#00513b",
+            "secondary": "#904d00",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e9e8e4",
+            "on-secondary-fixed": "#2f1500"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "margin-tablet": "2rem",
+            "gutter-desktop": "2rem",
+            "space-xl": "2.25rem",
+            "gutter": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "margin-desktop": "3rem",
+            "gutter-tablet": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .card-shadow {
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.04), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+    }
+    .pill-shadow {
+      box-shadow: 0 8px 24px -4px rgba(6, 95, 70, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+    .hide-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .hide-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Viewport Constrained Container -->
+<div class="w-full max-w-lg mx-auto bg-surface min-h-screen flex flex-col pb-36 relative">
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md px-margin py-space-sm shadow-sm transition-colors">
+<div class="flex items-center justify-between gap-2">
+<div class="flex items-center gap-3">
+<a href="screen1_dashboard.html" aria-label="Go back" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-low text-on-surface hover:bg-surface-container transition-transform active:scale-95">
+<span class="material-symbols-outlined text-primary text-[20px]">arrow_back</span>
+</a>
+<div>
+<div class="flex items-center gap-1.5">
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Pashu Hub</h1>
+<span class="font-label-sm text-label-sm text-outline font-normal">• पशु स्वास्थ्य</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant line-clamp-1">Krishna Dairy (5 Cattle • 3 Buffaloes) • #L-09</p>
+</div>
+</div>
+<!-- Trailing actions: Lang toggle + Bell notification -->
+<div class="flex items-center gap-1.5">
+<button class="bg-surface-container-lowest border border-outline-variant/60 rounded-full px-2.5 py-1 text-primary font-label-md text-label-md flex items-center gap-1 shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[15px] text-primary">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<button aria-label="Notifications" class="w-9 h-9 rounded-full flex items-center justify-center bg-surface-container-lowest border border-outline-variant/50 relative active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px] text-on-surface-variant">notifications</span>
+<span class="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-secondary-container ring-2 ring-surface"></span>
+</button>
+</div>
+</div>
+<!-- Telemetry Active Status Bar -->
+<div class="mt-2.5 bg-surface-container-low rounded-xl px-3 py-1.5 flex items-center justify-between border border-outline-variant/40">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+<span class="font-label-md text-label-md text-primary font-bold">IoT Collar Telemetry Active</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">8 Animals Synced (5m ago)</span>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT -->
+<main class="flex-1 px-margin space-y-4 pt-2">
+<!-- 1. HERO CARD: DAILY MILK YIELD & PRODUCTION TELEMETRY -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 card-shadow relative overflow-hidden">
+<!-- Botanical Ambient Glow -->
+<div class="absolute -top-12 -right-12 w-36 h-36 bg-primary-fixed/25 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-start justify-between">
+<div>
+<div class="flex items-center gap-1.5 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px] text-primary">water_drop</span>
+<span class="font-label-md text-label-md uppercase tracking-wider text-outline font-semibold">Today's Total Milk Yield</span>
+</div>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-display-lg text-display-lg font-extrabold text-primary tracking-tight">68.5</span>
+<span class="font-headline-md text-headline-md font-bold text-on-surface-variant">Litres</span>
+</div>
+</div>
+<div class="flex items-center gap-1 bg-[#d1fae5] text-primary-container px-2.5 py-1 rounded-full border border-primary-container/20">
+<span class="material-symbols-outlined text-[15px]" style="font-variation-settings: 'FILL' 1;">trending_up</span>
+<span class="font-label-sm text-label-sm font-bold">+4.2L vs 7d avg</span>
+</div>
+</div>
+<!-- Batch Breakdown (Morning vs Evening) -->
+<div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-outline-variant/30">
+<div class="bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">wb_twilight</span> Morning (05:30 AM)
+              </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">38.2 L</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 56%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-outline mt-1 block">55.8% of daily total</span>
+</div>
+<div class="bg-surface-container-low rounded-xl p-2.5 border border-outline-variant/20">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">routine</span> Evening (05:45 PM)
+              </span>
+<span class="font-label-md text-label-md font-bold text-on-surface">30.3 L</span>
+</div>
+<!-- Progress Bar -->
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 44.2%;"></div>
+</div>
+<span class="font-label-sm text-label-sm text-outline mt-1 block">44.2% of daily total</span>
+</div>
+</div>
+<!-- Quality Metrics Strip -->
+<div class="grid grid-cols-3 gap-2 mt-3 pt-3 border-t border-outline-variant/30 text-center">
+<div class="bg-surface-bright rounded-lg py-1.5 px-1 border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline block">Fat Test</span>
+<span class="font-title-md text-title-md font-bold text-primary">4.35%</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold block text-[10px]">Grade A+</span>
+</div>
+<div class="bg-surface-bright rounded-lg py-1.5 px-1 border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline block">SNF Level</span>
+<span class="font-title-md text-title-md font-bold text-on-surface">8.70%</span>
+<span class="font-label-sm text-label-sm text-outline block text-[10px]">Optimal Purity</span>
+</div>
+<div class="bg-surface-bright rounded-lg py-1.5 px-1 border border-outline-variant/30">
+<span class="font-label-sm text-label-sm text-outline block">Est. Revenue</span>
+<span class="font-title-md text-title-md font-bold text-secondary">₹2,740</span>
+<span class="font-label-sm text-label-sm text-outline block text-[10px]">@ ₹40/L Mandi</span>
+</div>
+</div>
+<!-- 7-Day Mini Bar Sparkline Chart -->
+<div class="mt-4 bg-surface-container-low/70 rounded-xl p-3 border border-outline-variant/20">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-on-surface">7-Day Lactation Sparkline</span>
+<span class="font-label-sm text-label-sm text-primary bg-primary-fixed/50 px-2 py-0.5 rounded-full font-semibold">
+              Peak: Cow #IND-409 (Gauri) +1.8L
+            </span>
+</div>
+<div class="flex items-end justify-between h-16 pt-2 px-2 gap-1.5">
+<!-- Mon -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/40 rounded-t h-9"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">M</span>
+</div>
+<!-- Tue -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/50 rounded-t h-10"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">T</span>
+</div>
+<!-- Wed -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/60 rounded-t h-11"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">W</span>
+</div>
+<!-- Thu -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/60 rounded-t h-10"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">T</span>
+</div>
+<!-- Fri -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/80 rounded-t h-12"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">F</span>
+</div>
+<!-- Sat -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary-container/70 rounded-t h-11"></div>
+<span class="font-label-sm text-label-sm text-outline text-[10px]">S</span>
+</div>
+<!-- Sun (Today) -->
+<div class="flex-1 flex flex-col items-center gap-1">
+<div class="w-full bg-primary rounded-t h-14 relative group">
+<span class="absolute -top-4 left-1/2 -translate-x-1/2 text-[9px] font-bold text-primary">68.5</span>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-primary text-[10px]">Sun</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. HIGH PRIORITY VACCINATION & VETERINARY ALERT CARD -->
+<section class="bg-[#fffbeb] border-2 border-[#fef3c7] rounded-2xl p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-start gap-3">
+<div class="w-10 h-10 rounded-xl bg-error-container text-error flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">vaccines</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center justify-between gap-1">
+<span class="inline-flex items-center gap-1 bg-[#fee2e2] text-error font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span> Urgent Reminder
+              </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-semibold">Oct 02 (4 Days left)</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface mt-1.5 leading-snug">
+              FMD (Foot &amp; Mouth Disease) Booster Due
+            </h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">
+              Mandatory cycle for all <strong>8 cattle &amp; buffaloes</strong> in Unit 09.
+            </p>
+<div class="flex flex-wrap items-center gap-2 mt-2">
+<span class="bg-[#d1fae5] text-primary-container font-label-sm text-label-sm px-2 py-0.5 rounded-md font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                KVK Free Drive Active
+              </span>
+<span class="font-label-sm text-label-sm text-outline">
+                ✓ Brucellosis Vaccinated (Aug 15 • Immunity Valid)
+              </span>
+</div>
+<!-- Action buttons inside card -->
+<div class="mt-3 pt-3 border-t border-[#fde68a] flex items-center justify-between gap-2">
+<div class="flex items-center gap-1.5">
+<div class="w-7 h-7 rounded-full bg-primary-container text-on-primary flex items-center justify-center text-xs font-bold">
+                  VC
+                </div>
+<div class="text-left">
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Dr. Vinod Chavan</p>
+<p class="font-label-sm text-label-sm text-outline text-[10px]">Block Vet Officer</p>
+</div>
+</div>
+<button class="bg-primary text-on-primary hover:bg-primary-container active:scale-[0.98] transition-all px-3 py-1.5 rounded-lg font-label-md text-label-md font-bold flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">calendar_add_on</span>
+<span>Book Vet Visit</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. ACTIVE HERD HEALTH & PRODUCTION ROSTER -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">Herd Health &amp; Roster</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Real-time IoT metrics &amp; breeding status</p>
+</div>
+<button class="text-primary font-label-md text-label-md font-bold flex items-center gap-0.5 hover:underline">
+<span>Manage</span>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Filter Pill Chips -->
+<div class="flex items-center gap-2 overflow-x-auto hide-scrollbar pb-1">
+<button class="bg-primary text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm font-bold shrink-0">
+            All (8)
+          </button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm font-semibold shrink-0 border border-outline-variant/30">
+            Lactating (4)
+          </button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm font-semibold shrink-0 border border-outline-variant/30">
+            Dry (2)
+          </button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm font-semibold shrink-0 border border-outline-variant/30">
+            Calves (2)
+          </button>
+</div>
+<!-- ANIMAL CARD 1: Gauri (Gir Cow) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 card-shadow">
+<div class="flex items-start gap-3">
+<div class="w-14 h-14 rounded-2xl bg-surface-container overflow-hidden shrink-0 border border-outline-variant/40 relative">
+<img class="w-full h-full object-cover" data-alt="Close up photographic portrait of a healthy pedigree indigenous Indian Gir cow with distinctive curved horns and warm reddish-brown coat standing peacefully in a clean sunlit dairy farm shed. Golden morning ambient lighting highlights the healthy animal telemetry ear tag." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1AACwYqczpjFadp5jzAu8EuGWLimlcn7q7U99bynZrp8RtrOu_toin6tj9zSVa85w8yC6oLhmO5TeoCADugDpIHY831rWSaIvGcV2jX8rQulMkvt8vAdjrU0SrS0o4ZO6QvcLX1cd1KNMMov9VfEgHw3ORF9EQb9Mj9Qc5I45rHqMpMuiiRIEP38oank5Z6a8Q-jEKdjg3sp7IEbt1csf40vVfOMkGW4E5DjfcOrVyO2spXcn0C-ewFs89mOM_11_wk-FTNmZaO4"/>
+<span class="absolute bottom-0 right-0 bg-primary text-on-primary text-[9px] font-bold px-1 rounded-tl">#409</span>
+</div>
+<div class="flex-1">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Gauri <span class="text-outline font-normal text-sm">(Gir Cow)</span></h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Tag ID: #982104 • Lactation Mo 4</span>
+</div>
+<span class="bg-[#d1fae5] text-primary-container font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span> Healthy
+                </span>
+</div>
+<!-- Metrics Matrix -->
+<div class="grid grid-cols-3 gap-2 mt-3 bg-surface-container-low/60 rounded-xl p-2 border border-outline-variant/20">
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Daily Yield</span>
+<span class="font-body-sm text-body-sm font-bold text-primary">16.5 L/day</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Body Temp</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">38.6°C</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Rumination</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">480 m/d</span>
+</div>
+</div>
+<!-- Quick action footer -->
+<div class="flex items-center justify-between mt-2.5 pt-1">
+<span class="font-label-sm text-label-sm text-primary font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">psychiatry</span> Top Producer (Peak Flow)
+                </span>
+<button class="font-label-sm text-label-sm text-outline hover:text-primary flex items-center">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ANIMAL CARD 2: Lakshmi (Murrah Buffalo) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 card-shadow">
+<div class="flex items-start gap-3">
+<div class="w-14 h-14 rounded-2xl bg-surface-container overflow-hidden shrink-0 border border-outline-variant/40 relative">
+<img class="w-full h-full object-cover" data-alt="Authentic profile shot of a champion deep black Murrah buffalo with characteristic curled horns in an Indian rural barn with warm earth tones, wearing a smart biometric neck collar for livestock monitoring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKEGTR84dEafkAzA99yfHXcfyIzVB222UuuLm-_h4b69rixpwF8ddeGIpbtEVoVjm3bqI9muCjvcVOfK_YR_iSJDVouheWs1PC2U2JwF7szGHQROfAIh0f5P7W-po3iTHs0YhDeOodgWcV4Qhp0D9kYKrENLiCkFuTnVtCK7j4QpmERx4dDHvwJ0BaSkojGsErjIA7Af_bnzwUUnK7pHag6Fu05FmgP_IMXapDvhk3XS5wkj69G_bQOXT9ou3EjFuBgW5KSvlo6Ic"/>
+<span class="absolute bottom-0 right-0 bg-secondary text-on-secondary text-[9px] font-bold px-1 rounded-tl">#112</span>
+</div>
+<div class="flex-1">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Lakshmi <span class="text-outline font-normal text-sm">(Murrah)</span></h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Tag ID: #451290 • Pregnant (Mo 7)</span>
+</div>
+<span class="bg-[#fef3c7] text-[#92400e] font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-[#92400e]"></span> Dry Period
+                </span>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-3 bg-surface-container-low/60 rounded-xl p-2 border border-outline-variant/20">
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Calving Due</span>
+<span class="font-body-sm text-body-sm font-bold text-secondary">Dec 14</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Body Temp</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">38.2°C</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Rest Ratio</span>
+<span class="font-body-sm text-body-sm font-bold text-primary">52% Normal</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1">
+<span class="font-label-sm text-label-sm text-secondary font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">pregnant_woman</span> Prenatal Care Active
+                </span>
+<button class="font-label-sm text-label-sm text-outline hover:text-primary flex items-center">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- ANIMAL CARD 3: Nandi (Sahiwal Calf) -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/10 card-shadow">
+<div class="flex items-start gap-3">
+<div class="w-14 h-14 rounded-2xl bg-surface-container overflow-hidden shrink-0 border border-outline-variant/40 relative">
+<img class="w-full h-full object-cover" data-alt="Young healthy Sahiwal calf with smooth fawn-colored coat standing playfully in a sun-dappled courtyard of an eco-friendly Indian dairy farm with soft green bokeh background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLS1hCLeii9uGg-XOhgxRCEfALiLlC6ilNPLspzr2ZhIC4RinYBVMD8DzUK-IAj3yV2WRCI5TFttVrEB6_fk-7K_7Mck6VKIGwYXAPjb6WjG1GsVe94jw43mzUsf4JcYN6BFgXCQvwxenRLad_82FWYRAe2Y0071umFBUln2VCMvkCsnrvCU3zN1WS-euxVsWFeM8fMsdyswtYvVIpy8caUPhO3FLTXXMfsE-8ouliiiGWab1OnQwxxVhUsu3wnyhVlwlVRsVz2BE"/>
+<span class="absolute bottom-0 right-0 bg-outline text-surface-container-lowest text-[9px] font-bold px-1 rounded-tl">#018</span>
+</div>
+<div class="flex-1">
+<div class="flex items-start justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Nandi <span class="text-outline font-normal text-sm">(Sahiwal Calf)</span></h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium">Tag ID: #883411 • Age: 6 Months</span>
+</div>
+<span class="bg-error-container text-error font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Deworming Due
+                </span>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-3 bg-surface-container-low/60 rounded-xl p-2 border border-outline-variant/20">
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Current Wt</span>
+<span class="font-body-sm text-body-sm font-bold text-on-surface">74 kg</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Monthly Gain</span>
+<span class="font-body-sm text-body-sm font-bold text-primary">+8.0 kg</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-outline text-[10px] block">Next Dose</span>
+<span class="font-body-sm text-body-sm font-bold text-error">In 2 Days</span>
+</div>
+</div>
+<div class="flex items-center justify-between mt-2.5 pt-1">
+<span class="font-label-sm text-label-sm text-outline font-medium">Starter Feed Protocol (Stage 2)</span>
+<button class="font-label-sm text-label-sm text-outline hover:text-primary flex items-center">
+<span>View Details</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Add Cattle CTA Button -->
+<button class="w-full bg-surface-container-lowest hover:bg-surface-container border border-dashed border-primary/40 rounded-xl py-3 text-primary font-label-lg text-label-lg font-bold flex items-center justify-center gap-2 active:scale-[0.99] transition-transform">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>View All 8 Animals &amp; Register New Cattle (+)</span>
+</button>
+</section>
+<!-- 4. AI DIET & RATION BALANCING TOOL (Interactive Prescriptive Card) -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md border border-primary/20 card-shadow relative">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed">
+<span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">AI Diet &amp; Ration Optimizer</h2>
+<span class="font-label-sm text-label-sm text-outline">ICAR Standards • Yield-Adjusted</span>
+</div>
+</div>
+<span class="bg-[#d1fae5] text-primary-container text-label-sm font-label-sm px-2.5 py-1 rounded-full font-bold">
+            Target: 16.5L Yield
+          </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2.5">
+          Custom feed formula calculated for <strong>Gauri &amp; Lactating Cohort</strong> to boost SNF and sustain 4.2%+ milk fat:
+        </p>
+<!-- Prescribed Daily Feed Breakdown -->
+<div class="space-y-2 mt-3">
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">eco</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Green Fodder (Hybrid Napier / Maize)</span>
+<span class="font-label-sm text-label-sm text-outline">60% moisture, succulent roughage</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm font-extrabold text-primary shrink-0">25.0 kg</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">grass</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Dry Roughage (Wheat Straw / Bhusa)</span>
+<span class="font-label-sm text-label-sm text-outline">Fiber for proper rumination</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm font-extrabold text-on-surface shrink-0">5.0 kg</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-[18px]">grain</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Balanced Concentrate Feed (20% CP)</span>
+<span class="font-label-sm text-label-sm text-outline">Protein cake, bran &amp; grains</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm font-extrabold text-primary-container shrink-0">4.5 kg</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary-container text-[18px]">science</span>
+<div>
+<span class="font-label-md text-label-md font-bold text-on-surface block">Mineral Mixture &amp; Salt</span>
+<span class="font-label-sm text-label-sm text-outline">Chelated zinc, copper &amp; bypass fat</span>
+</div>
+</div>
+<span class="font-body-sm text-body-sm font-extrabold text-on-secondary-container shrink-0">100g + 50g</span>
+</div>
+</div>
+<!-- Audio Advisory CTA -->
+<button class="mt-3 w-full bg-[#fef3c7] hover:bg-[#fde68a] text-[#92400e] border border-[#f59e0b]/40 rounded-xl py-2 px-3 flex items-center justify-center gap-2 font-label-md text-label-md font-bold transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+<span>राशन सलाह ऑडियो सुनें (Listen Diet Audio in Hindi)</span>
+</button>
+<!-- Margin calculation note -->
+<div class="mt-3 flex items-center justify-between px-2 text-on-surface-variant font-label-sm text-label-sm">
+<span>Est. Feed Cost: <strong>₹142 / cow / day</strong></span>
+<span class="text-primary font-bold">Net Margin: +₹518 / day</span>
+</div>
+</section>
+<!-- 5. QUICK ACTION HUB / SERVICE TILES -->
+<section class="space-y-3">
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary">Agrarian Services &amp; Hub</h2>
+<div class="grid grid-cols-1 gap-2.5">
+<!-- Action 1: Tele-Vet -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-primary/10 card-shadow flex items-center justify-between hover:bg-surface-bright transition-colors active:scale-[0.99] cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">video_camera_front</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Tele-Vet 24x7 Emergency</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Connect with certified dairy doctor in 5 mins</p>
+<span class="font-label-sm text-label-sm text-primary font-bold inline-block mt-0.5">Instant Video / Hindi Audio Support</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- Action 2: Pashu Mandi Marketplace -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-primary/10 card-shadow flex items-center justify-between hover:bg-surface-bright transition-colors active:scale-[0.99] cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">storefront</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Pashu Mandi Marketplace</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Verified lactation records &amp; health pedigree</p>
+<span class="font-label-sm text-label-sm text-secondary font-bold inline-block mt-0.5">24 Cattle Listed in 15 km Radius</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+<!-- Action 3: AI Symptom Checker -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-primary/10 card-shadow flex items-center justify-between hover:bg-surface-bright transition-colors active:scale-[0.99] cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">document_scanner</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">AI Scan &amp; Cough Diagnosis</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Scan skin lesions, mastitis risk or respiratory sound</p>
+<span class="font-label-sm text-label-sm text-primary font-bold inline-block mt-0.5">94.8% Detection Accuracy</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- FLOATING VOICE ASSISTANT CAPSULE (Pinned above bottom nav) -->
+<div class="fixed bottom-20 left-0 right-0 z-40 max-w-lg mx-auto px-4 pointer-events-none">
+<div class="pointer-events-auto bg-primary text-on-primary rounded-full px-4 py-3 pill-shadow flex items-center justify-between border border-primary-fixed/30 active:scale-[0.98] transition-transform cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">mic</span>
+</div>
+<div>
+<p class="font-label-md text-label-md font-bold text-primary-fixed">पशु मित्र (Pashu Voice AI)</p>
+<p class="font-label-sm text-label-sm text-on-primary/80">"गौरी का दूध कम क्यों हुआ?" बोलकर पूछें</p>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary px-3 py-1 rounded-full font-label-sm text-label-sm font-bold border border-primary-fixed-dim/30">
+          Ask Now
+        </button>
+</div>
+</div>
+<!-- BOTTOM NAVIGATION BAR (Strict adherence to Shared Components JSON) -->
+<nav class="fixed bottom-0 left-0 right-0 w-full max-w-lg mx-auto z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container-lowest border-t border-outline-variant/30 shadow-lg">
+<!-- 1. Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen1_dashboard.html">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="font-label-sm text-label-sm mt-0.5">Home</span>
+</a>
+<!-- 2. Doctor (Contextually Active: Livestock & Veterinary Health Hub) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1.5 active:scale-95 duration-150" href="screen2_diagnose.html">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+<span class="font-label-sm text-label-sm mt-0.5 font-bold">Doctor</span>
+</a>
+<!-- 3. Voice -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="#voice">
+<span class="material-symbols-outlined text-[22px]">mic</span>
+<span class="font-label-sm text-label-sm mt-0.5">Voice</span>
+</a>
+<!-- 4. Mandi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen3_booking.html">
+<span class="material-symbols-outlined text-[22px]">storefront</span>
+<span class="font-label-sm text-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- 5. Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="#">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+</a>
+</nav>
+</div>
+</body></html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI — Agri-Services &amp; Intelligence Hub</title>
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6",
+            "on-surface-variant": "#3f4944",
+            "surface-dim": "#dbdad6",
+            "on-secondary-fixed": "#2f1500",
+            "on-tertiary-fixed": "#002113",
+            "surface-variant": "#e3e2df",
+            "primary-fixed": "#a6f2d1",
+            "surface-container-lowest": "#ffffff",
+            "on-error": "#ffffff",
+            "surface-container-low": "#f4f4f0",
+            "on-secondary-fixed-variant": "#6e3900",
+            "surface-tint": "#1b6b51",
+            "secondary-fixed-dim": "#ffb77d",
+            "secondary-fixed": "#ffdcc3",
+            "surface": "#faf9f5",
+            "on-tertiary": "#ffffff",
+            "primary": "#004532",
+            "background": "#faf9f5",
+            "inverse-surface": "#2f312e",
+            "surface-container-highest": "#e3e2df",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-surface": "#1b1c1a",
+            "outline": "#6f7973",
+            "on-primary-fixed": "#002116",
+            "surface-container-high": "#e9e8e4",
+            "on-secondary": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-bright": "#faf9f5",
+            "on-primary-fixed-variant": "#00513b",
+            "on-tertiary-container": "#50e0a4",
+            "tertiary-container": "#006041",
+            "primary-container": "#065f46",
+            "primary-fixed-dim": "#8bd6b6",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-container": "#663500",
+            "inverse-on-surface": "#f2f1ed",
+            "secondary-container": "#fe932c",
+            "on-background": "#1b1c1a",
+            "tertiary": "#00462e",
+            "outline-variant": "#bec9c2",
+            "on-error-container": "#93000a",
+            "on-primary-container": "#8bd6b7",
+            "inverse-primary": "#8bd6b6",
+            "surface-container": "#efeeea",
+            "secondary": "#904d00",
+            "on-primary": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "gutter-tablet": "1.5rem",
+            "margin-desktop": "3rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.25rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "gutter-desktop": "2rem",
+            "margin-tablet": "2rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #faf9f5;
+      color: #1b1c1a;
+      -webkit-font-smoothing: antialiased;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .card-elevation {
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.04), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+    }
+    .card-elevation:hover {
+      box-shadow: 0 8px 24px -4px rgba(6, 95, 70, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+    .pill-elevation {
+      box-shadow: 0 1px 3px rgba(6, 95, 70, 0.08);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased selection:bg-primary selection:text-white">
+<!-- Mobile TopAppBar (from Shared Components JSON: docked, no border lines) -->
+<header class="md:hidden sticky top-0 z-40 bg-surface shadow-sm">
+<div class="flex justify-between items-center w-full px-margin py-space-sm max-w-lg mx-auto">
+<div class="flex items-center gap-space-sm">
+<div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary ring-2 ring-primary/20">
+<span class="material-symbols-outlined text-[20px]" data-icon="agriculture">agriculture</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="block text-label-sm font-label-sm text-outline">Krishna Valley • 18.5 Ac</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-md text-label-md border border-outline-variant/40 active:scale-[0.98] transition-transform">
+          हिंदी / EN
+        </button>
+<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Desktop Main Shell Layout -->
+<div class="flex-1 flex w-full">
+<!-- DESKTOP SIDEBAR -->
+<aside class="hidden md:flex flex-col w-72 lg:w-80 shrink-0 bg-surface-container-lowest border-r border-outline-variant/30 h-screen sticky top-0 overflow-y-auto">
+<!-- Brand & Farm Selector -->
+<div class="p-space-lg">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary text-on-primary flex items-center justify-center shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-2xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-extrabold uppercase bg-secondary-container/20 text-secondary tracking-wider">PRO</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline">Agri-Intelligence Console</p>
+</div>
+</div>
+<!-- Farm Selector Dropdown Pill -->
+<div class="mt-space-md p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-between hover:border-primary/40 transition-colors cursor-pointer group">
+<div class="flex items-center gap-2 overflow-hidden">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="pin_drop">pin_drop</span>
+<div class="truncate">
+<p class="font-label-md text-label-md text-on-surface font-semibold truncate">Krishna Valley Farm</p>
+<p class="font-label-sm text-label-sm text-outline truncate">Plot A-4 • 18.5 Acres (Grapes/Cotton)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-[18px]" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-space-md space-y-1">
+<div class="px-space-sm py-1">
+<span class="font-label-sm text-label-sm text-outline uppercase tracking-wider">Agronomic Operations</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="dashboard">dashboard</span>
+<span class="font-title-md text-body-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="map">map</span>
+<span class="font-title-md text-body-sm font-medium">My Farms &amp; Plots</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry">psychiatry</span>
+<span class="font-title-md text-body-sm font-medium">Crop Diagnostics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-title-md text-body-sm font-medium">Soil &amp; Satellite NDVI</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+<span class="font-title-md text-body-sm font-medium">Marketplace &amp; Escrow</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="pets">pets</span>
+<span class="font-title-md text-body-sm font-medium">Pashu Hub</span>
+</a>
+<!-- Active Menu Item: Catalog -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-primary text-on-primary shadow-sm shadow-primary/20" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]" data-icon="apps">apps</span>
+<span class="font-title-md text-body-sm font-semibold">All Services / Catalog</span>
+</div>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-primary-container text-on-primary-container">14 Tools</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+<span class="font-title-md text-body-sm font-medium">Weather Advisory</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="sync">sync</span>
+<span class="font-title-md text-body-sm font-medium">Settings &amp; Sync</span>
+</a>
+</nav>
+<!-- Sidebar Bottom: Telemetry Quota Widget & Farmer ID -->
+<div class="p-space-md border-t border-outline-variant/30 space-y-3">
+<!-- Gemini 2.0 Quota Widget -->
+<div class="p-3 rounded-xl bg-surface-container border border-outline-variant/40">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-label-sm font-semibold text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary-container" data-icon="bolt">bolt</span>
+              Gemini 2.0 Quota
+            </span>
+<span class="font-label-sm text-label-sm font-bold text-primary">84% Available</span>
+</div>
+<div class="w-full bg-outline-variant/30 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%;"></div>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-1.5 text-[11px]">42 of 50 diagnostic queries remaining today</p>
+</div>
+<!-- Farmer Profile Badge -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm">
+              RP
+            </div>
+<div>
+<p class="font-label-md text-label-md font-semibold text-on-surface">Ramesh Patil</p>
+<p class="font-label-sm text-label-sm text-outline">Nashik #MH-LIV-409</p>
+</div>
+</div>
+<button class="w-8 h-8 rounded-lg flex items-center justify-center text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT CANVAS -->
+<main class="flex-1 flex flex-col min-w-0 pb-24 md:pb-12 bg-surface">
+<!-- TOP HEADER BAR (Web & Tablet) -->
+<header class="hidden md:flex items-center justify-between px-gutter-desktop py-space-md bg-surface-container-lowest border-b border-outline-variant/30 sticky top-0 z-30">
+<!-- Breadcrumbs -->
+<div class="flex items-center gap-2 text-outline font-label-md text-label-md">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Agri Workspace</a>
+<span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">Services Catalog</span>
+</div>
+<!-- Search & Control Cluster -->
+<div class="flex items-center gap-3">
+<!-- Live Search Input -->
+<div class="relative w-80 lg:w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="search">search</span>
+<input class="w-full pl-10 pr-24 py-2 bg-surface-container-low border border-outline-variant/50 rounded-xl text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search tools, crop advisory, equipment, mandi..." type="text"/>
+<div class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center">
+<button class="flex items-center gap-1 px-2 py-1 bg-surface-container text-primary rounded-lg text-[11px] font-semibold hover:bg-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[14px]" data-icon="mic">mic</span>
+<span>बोला</span>
+</button>
+</div>
+</div>
+<!-- Language Switcher -->
+<button class="px-3 py-2 rounded-xl bg-surface-container-low border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:border-primary/40 transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="translate">translate</span>
+<span>हिंदी / मराठी / EN</span>
+</button>
+<!-- Notifications with badge -->
+<button class="relative w-10 h-10 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-center text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-secondary ring-2 ring-white"></span>
+</button>
+<!-- KVK Helpline Quick Dial Button -->
+<a class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-primary-container text-on-primary font-label-md text-label-md shadow-sm hover:bg-primary transition-colors" href="tel:18001801551">
+<span class="material-symbols-outlined text-[18px]" data-icon="support_agent">support_agent</span>
+<span>KVK 1800-180-1551</span>
+</a>
+</div>
+</header>
+<!-- Mobile Search Bar (under top bar) -->
+<div class="md:hidden px-margin pt-space-md">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]" data-icon="search">search</span>
+<input class="w-full pl-10 pr-20 py-2.5 bg-surface-container-lowest border border-outline-variant/50 rounded-xl text-body-sm font-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="Search tools, equipment, mandi..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1 px-2.5 py-1 bg-primary text-white rounded-lg text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]" data-icon="mic">mic</span>
+<span>बोला</span>
+</button>
+</div>
+</div>
+<div class="px-margin md:px-gutter-desktop space-y-6 pt-6">
+<!-- QUICK METRICS & TELEMETRY BANNER -->
+<section aria-label="Farm Telemetry Overview" class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+<!-- Metric 1: Plots Monitored -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest border border-primary/10 card-elevation flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline">Plots Monitored</span>
+<span class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="grid_view">grid_view</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">3 Active Plots</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">18.5 Acres Total • Krishna Valley</p>
+</div>
+</div>
+<!-- Metric 2: Sentinel-2 Overpass -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest border border-primary/10 card-elevation flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline">Satellite Overpass</span>
+<span class="w-8 h-8 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="satellite_alt">satellite_alt</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">in 18 hrs</span>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-primary-fixed text-on-primary-fixed">Sentinel-2B</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">Tomorrow, 10:42 AM IST (10m NDVI)</p>
+</div>
+</div>
+<!-- Metric 3: AI Diagnostics Quota -->
+<div class="p-4 rounded-2xl bg-surface-container-lowest border border-primary/10 card-elevation flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md text-outline">Vision &amp; Voice AI</span>
+<span class="w-8 h-8 rounded-xl bg-tertiary-container/15 text-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="psychiatry">psychiatry</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">42 / 50</span>
+<span class="font-label-sm text-label-sm text-outline">Scans Left</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">Gemini 2.0 Multimodal Daily Quota</p>
+</div>
+</div>
+<!-- Metric 4: KVK Advisory Warning -->
+<div class="p-4 rounded-2xl bg-secondary-fixed/30 border border-secondary-container/40 card-elevation flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-semibold text-secondary">Active KVK Advisory</span>
+<span class="w-8 h-8 rounded-xl bg-secondary-container/20 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="warning">warning</span>
+</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-on-secondary-container">Fall Armyworm Watch</span>
+</div>
+<p class="font-label-sm text-label-sm text-secondary mt-0.5">Alert within &lt;5 km radius • Nashik Dist.</p>
+</div>
+</div>
+</section>
+<!-- HUB HEADER & CATEGORY FILTER SECTION -->
+<section aria-label="Services Catalog Controls" class="space-y-4">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-label-sm mb-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span>ICAR-Recognized Agri-Stack Ecosystem</span>
+</div>
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary tracking-tight">
+                Agri-Services &amp; Intelligence Hub
+              </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-3xl mt-1">
+                Access ICAR-compliant telemetric tools, multimodal Gemini AI diagnostics, and precision farming utilities calibrated for Indian agronomy.
+              </p>
+</div>
+<!-- Quick Telemetry Action Buttons -->
+<div class="flex items-center gap-2 shrink-0">
+<button class="px-3.5 py-2 rounded-xl bg-surface-container-lowest border border-outline-variant/50 text-on-surface font-label-md text-label-md hover:border-primary/50 transition-colors flex items-center gap-1.5 card-elevation">
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="history">history</span>
+<span>Audit Logs</span>
+</button>
+<button class="px-3.5 py-2 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1.5 shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
+<span>Configure Hub</span>
+</button>
+</div>
+</div>
+<!-- Category Filter Pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none pt-1">
+<!-- All Services Active Pill -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-primary text-on-primary font-label-md text-label-md flex items-center gap-2 shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[16px]" data-icon="apps">apps</span>
+<span>All Services (14)</span>
+</button>
+<!-- Crop Health & AI -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="psychiatry">psychiatry</span>
+<span>Crop Health &amp; AI (3)</span>
+</button>
+<!-- Soil & Satellite -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite (2)</span>
+</button>
+<!-- Livestock & Pashu -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="pets">pets</span>
+<span>Livestock &amp; Pashu (1)</span>
+</button>
+<!-- Marketplace & Transport -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="storefront">storefront</span>
+<span>Marketplace &amp; Transport (3)</span>
+</button>
+<!-- Government & Finance -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="account_balance">account_balance</span>
+<span>Government &amp; Finance (2)</span>
+</button>
+<!-- Helpline & Community -->
+<button class="shrink-0 px-4 py-2 rounded-full bg-surface-container-lowest border border-outline-variant/50 text-on-surface-variant hover:text-primary hover:border-primary/40 font-label-md text-label-md flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-outline" data-icon="forum">forum</span>
+<span>Helpline &amp; Community (3)</span>
+</button>
+</div>
+</section>
+<!-- THE 14 AGRICULTURAL SERVICE CARDS (Bento/Card-based grid) -->
+<section aria-label="Catalog Services Grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+<!-- Card 1: Field & Crop Management -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="crop_landscape">crop_landscape</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Geo-Tagged</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Field &amp; Crop Management</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Cadastral plot boundaries, GPS soil tagging, sowing timeline tracker, and acreage analytics.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">3 plots registered</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Open Plots</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 2: AI Crop Diagnosis -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5 ring-1 ring-primary/20">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[26px]" data-icon="psychiatry">psychiatry</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-tertiary-fixed text-on-tertiary-fixed flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Multimodal AI</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">AI Crop Diagnosis</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Instant foliar disease scanning with Gemini Vision, lesion segmentation, and ICAR treatment plans.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-semibold">98.4% Accuracy</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Launch Scanner</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="camera">camera</span>
+</button>
+</div>
+</article>
+<!-- Card 3: Satellite NDVI Health -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="satellite_alt">satellite_alt</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>10m Spatial</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Satellite NDVI Health</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Sentinel-2 multispectral NDVI/NDMI vegetation indices, moisture gradients, and drone imagery sync.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">Updated 3h ago</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>View Satellite</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="layers">layers</span>
+</button>
+</div>
+</article>
+<!-- Card 4: Soil Moisture & Fertilizer Hub -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="water_drop">water_drop</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>LoRaWAN Live</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Soil Moisture &amp; Fertilizer</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Dual-depth capacitive probe data, certified NPK soil health card matrix, and drip fertigation scheduler.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">VWC: 32% (Ideal)</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Soil Telemetry</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="show_chart">show_chart</span>
+</button>
+</div>
+</article>
+<!-- Card 5: Pashu Care Livestock -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="pets">pets</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>RFID Tagged</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Pashu Care Livestock</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                IoT smart collar telemetry, lactation pacing, ICAR diet formulation, and FMD vaccination tracking.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">12 Bovine Head</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Open Pashu Hub</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</article>
+<!-- Card 6: Agri-Equipment & Drone Booking -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Subsidized</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Equipment &amp; Drone Booking</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Custom hiring center (CHC) booking for tractors, combine harvesters, and autonomous drone spraying.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">3 CHCs within 8km</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Book Machinery</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="calendar_month">calendar_month</span>
+</button>
+</div>
+</article>
+<!-- Card 7: Harvest Logistics & Transport -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="local_shipping">local_shipping</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Cold Chain</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Harvest Logistics &amp; Fleet</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                GPS-tracked farm-to-mandi transport, 10-ton reefer trucks, e-way bill generation, and slot booking.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">Verified Drivers</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Book Transport</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="schedule">schedule</span>
+</button>
+</div>
+</article>
+<!-- Card 8: Live Mandi Commodity Rates -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="storefront">storefront</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>APMC Realtime</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Live Mandi Commodity Rates</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Live spot rates across Nashik, Vashi, and Pune mandis with 7-day MSP price rally forecasts.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">Onion: ₹2,450/qtl ▲</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Track Rates</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+</button>
+</div>
+</article>
+<!-- Card 9: Hyperlocal Weather & Spray Advisory -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>IMD Radar</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Weather &amp; Spray Advisory</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Microclimate forecasting, 48-hour rainfall radar alerts, and pesticide spray window recommendations.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-semibold">Safe Window: 4 PM - 7 PM</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>View Weather</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="air">air</span>
+</button>
+</div>
+</article>
+<!-- Card 10: Voice Agro Assistant -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5 ring-1 ring-primary/20">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[26px]" data-icon="mic">mic</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-tertiary-fixed text-on-tertiary-fixed flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Multilingual</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Voice Agro Assistant</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Hands-free voice consultation in Hindi, Marathi, and English for low-literacy field queries.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-semibold">मराठी • हिंदी • EN</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Talk to Assistant</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="record_voice_over">record_voice_over</span>
+</button>
+</div>
+</article>
+<!-- Card 11: Kisan Community Forum -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="forum">forum</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>KVK Verified</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">Kisan Community Forum</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Direct Q&amp;A with agricultural scientists, Krishi Vigyan Kendra agronomists, and local peer farmers.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">1,240 Nashik Farmers</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Join Community</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="groups">groups</span>
+</button>
+</div>
+</article>
+<!-- Card 12: PM-KISAN & Govt Subsidies -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="account_balance">account_balance</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Direct DBT</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">PM-KISAN &amp; Govt Subsidies</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Kisan Credit Card (KCC) assistance, drip irrigation subsidies, and PMFBY crop insurance filing.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-outline">Next DBT: ₹2,000</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Apply Schemes</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="assignment">assignment</span>
+</button>
+</div>
+</article>
+<!-- Card 13: AI Token & Quota Tracker -->
+<article class="bg-surface-container-lowest border border-primary/10 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="bolt">bolt</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Active Plan</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">AI Token &amp; Quota Tracker</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Daily and seasonal multimodal vision and agronomic inference quota monitor with recharge options.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-primary font-semibold">84% Remaining</span>
+<button class="px-3.5 py-1.5 rounded-lg bg-surface-container-low text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1 active:scale-[0.98]">
+<span>Manage Quota</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="account_balance_wallet">account_balance_wallet</span>
+</button>
+</div>
+</article>
+<!-- Card 14: 24x7 Emergency Agro Helpline -->
+<article class="bg-surface-container-lowest border border-secondary-container/40 rounded-2xl p-5 card-elevation flex flex-col justify-between transition-all hover:-translate-y-0.5">
+<div>
+<div class="flex items-start justify-between gap-2 mb-3">
+<div class="w-12 h-12 rounded-xl bg-secondary-fixed/40 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[26px]" data-icon="phone_in_talk">phone_in_talk</span>
+</div>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Toll-Free</span>
+</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold">24x7 Emergency Helpline</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-2 line-clamp-3">
+                Direct one-touch phone bridge to KVK veterinary surgeons, crop doctors, and government helplines.
+              </p>
+</div>
+<div class="mt-5 pt-4 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-secondary font-semibold">1800-180-1551</span>
+<a class="px-3.5 py-1.5 rounded-lg bg-secondary text-on-secondary font-label-md text-label-md hover:bg-secondary/90 transition-colors flex items-center gap-1 active:scale-[0.98]" href="tel:18001801551">
+<span>Call Helpline</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="call">call</span>
+</a>
+</div>
+</article>
+</section>
+<!-- KISAN KNOWLEDGE & TELEMETRY FOOTER CALLOUT -->
+<section class="mt-8 rounded-2xl bg-surface-container border border-outline-variant/40 p-6 flex flex-col md:flex-row items-center justify-between gap-6 card-elevation">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[26px]" data-icon="verified">verified</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary font-bold">ICAR &amp; Krishi Vigyan Kendra Integration</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1 max-w-2xl">
+                CropSense AI models are trained on regional soil datasets from ICAR-IARI, calibrated for kharif and rabi crop phenology with agro-meteorological guidance from IMD Pune.
+              </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0 w-full md:w-auto">
+<button class="w-full md:w-auto px-4 py-2.5 rounded-xl bg-surface-container-lowest text-primary border border-outline-variant/50 font-label-md text-label-md hover:border-primary transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="menu_book">menu_book</span>
+<span>ICAR Package of Practices</span>
+</button>
+<button class="w-full md:w-auto px-4 py-2.5 rounded-xl bg-primary text-on-primary font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-2 shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]" data-icon="share">share</span>
+<span>Sync Farm Data</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- FLOATING VOICE AI ACTION BUTTON (Mobile & Desktop) -->
+<button class="fixed bottom-20 md:bottom-8 right-5 md:right-8 z-40 px-4 py-3.5 rounded-full bg-primary text-on-primary shadow-xl shadow-primary/30 flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-transform" title="Talk with CropSense Voice AI">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary-fixed opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-tertiary-fixed"></span>
+</span>
+<span class="material-symbols-outlined text-[22px]" data-icon="mic">mic</span>
+<span class="font-label-md text-label-md font-bold">CropSense बोला</span>
+</button>
+<!-- MOBILE BOTTOM NAVIGATION (from Shared Components JSON: docked full-width, 5 destinations) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs max-w-lg mx-auto bg-surface-container-lowest shadow-md">
+<!-- Destination 1: Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Home</span>
+</a>
+<!-- Destination 2: Doctor (Crop Diagnostics) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Destination 3: Voice (Direct AI Mic) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<div class="w-10 h-10 -mt-5 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg shadow-primary/30 ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[22px]" data-icon="mic">mic</span>
+</div>
+<span class="text-label-sm font-label-sm mt-1">Voice</span>
+</a>
+<!-- Destination 4: Mandi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Destination 5: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Profile</span>
+</a>
+</nav>
+</body></html>

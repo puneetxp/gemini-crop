@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Advance Booking &amp; Digital Escrow #BK-8924</title>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration verbatim as required -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-variant": "#e3e2df",
+            "surface-container": "#efeeea",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-error-container": "#93000a",
+            "surface": "#faf9f5",
+            "surface-dim": "#dbdad6",
+            "secondary-container": "#fe932c",
+            "on-primary-container": "#8bd6b7",
+            "inverse-on-surface": "#f2f1ed",
+            "inverse-surface": "#2f312e",
+            "inverse-primary": "#8bd6b6",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-secondary-fixed": "#2f1500",
+            "tertiary-fixed": "#6ffbbe",
+            "primary": "#004532",
+            "on-primary-fixed-variant": "#00513b",
+            "tertiary": "#00462e",
+            "outline": "#6f7973",
+            "background": "#faf9f5",
+            "on-secondary": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "on-primary": "#ffffff",
+            "on-tertiary-container": "#50e0a4",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-container": "#663500",
+            "on-primary-fixed": "#002116",
+            "surface-bright": "#faf9f5",
+            "surface-container-low": "#f4f4f0",
+            "on-background": "#1b1c1a",
+            "surface-container-highest": "#e3e2df",
+            "outline-variant": "#bec9c2",
+            "secondary-fixed": "#ffdcc3",
+            "primary-container": "#065f46",
+            "surface-tint": "#1b6b51",
+            "secondary-fixed-dim": "#ffb77d",
+            "primary-fixed": "#a6f2d1",
+            "error": "#ba1a1a",
+            "tertiary-container": "#006041",
+            "on-tertiary": "#ffffff",
+            "surface-container-high": "#e9e8e4",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-error": "#ffffff",
+            "on-surface-variant": "#3f4944",
+            "secondary": "#904d00"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "margin-tablet": "2rem",
+            "gutter-desktop": "2rem",
+            "space-xl": "2.25rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "gutter-tablet": "1.5rem",
+            "margin-desktop": "3rem",
+            "space-lg": "1.5rem",
+            "gutter": "1rem"
+          },
+          "fontFamily": {
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-fill {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Custom subtle field scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #faf9f5;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #6f7973;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex flex-col md:flex-row overflow-x-hidden selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- ========================================================================= -->
+<!-- 1. LEFT NAVIGATION SIDEBAR (Desktop w-64 / Tablet Adaptive) -->
+<!-- ========================================================================= -->
+<aside class="hidden md:flex flex-col justify-between w-64 shrink-0 bg-surface-container-lowest border-r border-outline-variant/30 min-h-screen p-5 z-30">
+<div class="space-y-6">
+<!-- Brand Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined material-symbols-fill text-2xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">CropSense</span>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-1.5 py-0.5 rounded">PRO</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">Krishi Command Center</p>
+</div>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-outline" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="nature">nature</span>
+<span>My Farms &amp; Plots</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline-variant font-bold">18.5 Ac</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-outline" data-icon="document_scanner">document_scanner</span>
+<span>Crop Diagnostics</span>
+</a>
+<!-- Active Marketplace Navigation item -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-primary-container text-on-primary font-semibold shadow-sm transition-transform active:scale-[0.98]" href="screen_desktop_booking.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined material-symbols-fill text-on-primary-container" data-icon="storefront">storefront</span>
+<span class="font-title-md text-title-md">Marketplace &amp; Contracts</span>
+</div>
+<span class="bg-primary-fixed text-on-primary-fixed font-label-sm text-label-sm px-2 py-0.5 rounded-full font-bold">1 Active</span>
+</a>
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_livestock.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="pets">pets</span>
+<span>Pashu Hub</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline-variant font-bold">8 Cattle</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-outline" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-title-md text-title-md" href="screen_desktop_strategy.html">
+<span class="material-symbols-outlined text-outline" data-icon="calendar_month">calendar_month</span>
+<span>Annual Strategy</span>
+</a>
+</nav>
+<!-- Escrow Security Card -->
+<div class="p-3.5 rounded-2xl bg-surface-container-low border border-primary/10 relative overflow-hidden">
+<div class="flex items-start gap-2.5">
+<div class="p-1.5 rounded-lg bg-primary-container text-on-primary-container shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-lg" data-icon="shield">shield</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm font-bold text-primary">RBI-Regulated Escrow</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1 leading-relaxed">
+              ICICI Trustee Account <br/>
+<span class="font-mono text-primary font-bold text-label-sm">#ESC-99218274</span>
+</p>
+</div>
+</div>
+</div>
+</div>
+<!-- User Profile Card -->
+<div class="pt-4 border-t border-outline-variant/30">
+<div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container transition-colors cursor-pointer">
+<div class="flex items-center gap-3 min-w-0">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary flex items-center justify-center font-bold text-title-md shrink-0">
+            GA
+          </div>
+<div class="min-w-0">
+<p class="font-title-md text-title-md font-bold text-on-surface truncate">Green Agro Mills</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Buyer • GSTIN Verified</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</aside>
+<!-- ========================================================================= -->
+<!-- MAIN CONTENT CANVAS -->
+<!-- ========================================================================= -->
+<div class="flex-1 flex flex-col min-w-0 pb-20 md:pb-10">
+<!-- 2. TOP APP BAR (Shared Component compliant) -->
+<header class="bg-surface border-b border-outline-variant/30 sticky top-0 z-20 shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
+<!-- Breadcrumbs & Status -->
+<div class="flex items-center gap-3">
+<div class="md:hidden flex items-center">
+<button class="p-2 rounded-lg text-primary hover:bg-surface-container">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+</div>
+<nav class="flex items-center gap-1.5 font-label-lg text-label-lg text-on-surface-variant">
+<span class="hover:text-primary cursor-pointer hidden sm:inline">Marketplace</span>
+<span class="material-symbols-outlined text-sm hidden sm:inline" data-icon="chevron_right">chevron_right</span>
+<span class="hover:text-primary cursor-pointer">Advance Contracts</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+<span class="font-bold text-primary">#BK-8924 (Sharbati Premium Wheat)</span>
+</nav>
+</div>
+<!-- Trailing Actions & Language Selector -->
+<div class="flex items-center gap-3">
+<!-- Live Telemetry Pill -->
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-outline-variant/30 text-on-surface-variant font-label-md text-label-md">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+<span>Live Sync • Smart Contract v2.4</span>
+</div>
+<!-- Voice Agronomist Button -->
+<button class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container-high hover:bg-surface-variant text-primary font-label-lg text-label-lg transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="mic">mic</span>
+<span class="font-semibold">Voice AI</span>
+</button>
+<!-- Notification Bell -->
+<button class="relative p-2 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-secondary-container"></span>
+</button>
+<!-- Language Selector -->
+<div class="border-l border-outline-variant/40 pl-3">
+<button class="px-2.5 py-1 rounded-md bg-surface-container text-primary font-label-md text-label-md font-bold tracking-wide hover:bg-surface-container-high transition-colors">
+              हिंदी / मराठी / EN
+            </button>
+</div>
+</div>
+</div>
+</header>
+<!-- CONTENT BODY -->
+<main class="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-6 space-y-6">
+<!-- ========================================================================= -->
+<!-- 3. CONTRACT MASTER HEADER BANNER -->
+<!-- ========================================================================= -->
+<section class="bg-surface-container-lowest rounded-2xl border border-primary/10 shadow-sm p-6 relative overflow-hidden">
+<div class="absolute -right-16 -top-16 w-56 h-56 bg-primary-fixed/20 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
+<!-- Left Header Info -->
+<div class="space-y-3">
+<div class="flex flex-wrap items-center gap-2.5">
+<span class="font-label-sm text-label-sm uppercase tracking-wider font-bold text-on-surface-variant">Active Spot Settlement</span>
+<span class="px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold bg-emerald-100 text-primary-container border border-emerald-300 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                NABL Quality Verified (Grade A+)
+              </span>
+<span class="px-2.5 py-0.5 rounded-full font-label-sm text-label-sm font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span>
+                Milestone 2 Escrow Release Pending
+              </span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tight">
+              Pre-Harvest Advance Supply Agreement #BK-8924
+            </h1>
+<!-- Counterparties -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+<div class="flex items-center gap-3 p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="w-9 h-9 rounded-lg bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Seller / Producer</span>
+<p class="font-title-md text-title-md font-bold text-on-surface">Ramesh Patil <span class="font-body-sm text-body-sm font-normal text-outline">(#MH-2894)</span></p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Krishna Valley Farm, Nashik Dist.</p>
+</div>
+</div>
+<div class="flex items-center gap-3 p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/30">
+<div class="w-9 h-9 rounded-lg bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined" data-icon="apartment">apartment</span>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Corporate Buyer</span>
+<p class="font-title-md text-title-md font-bold text-on-surface">Green Agro Mills Pvt Ltd</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Vashi, Navi Mumbai (APMC #VSH-772)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Commercial Metric Cluster -->
+<div class="lg:w-80 shrink-0 bg-surface-container p-4 rounded-xl border border-outline-variant/40 space-y-3">
+<div class="flex justify-between items-baseline">
+<span class="font-label-md text-label-md text-on-surface-variant">Total Escrow Value</span>
+<span class="font-display-lg text-display-lg font-bold text-primary">₹2,65,000</span>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant/30 text-center">
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-outline">Agreed Rate</span>
+<p class="font-title-md text-title-md font-bold text-on-surface">₹2,650 <span class="text-xs font-normal">/Qtl</span></p>
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">+₹375 over MSP</p>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-lg">
+<span class="font-label-sm text-label-sm text-outline">Total Volume</span>
+<p class="font-title-md text-title-md font-bold text-on-surface">100 Quintals</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">10 Metric Tonnes</p>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant pt-1 px-1">
+<span class="flex items-center gap-1 font-label-md text-label-md">
+<span class="material-symbols-outlined text-sm text-outline" data-icon="calendar_month">calendar_month</span>
+                Target Delivery:
+              </span>
+<span class="font-bold text-on-surface font-label-md text-label-md">Oct 12 – Oct 15, 2024</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 4. HORIZONTAL ESCROW MILESTONE STEPPER (5 Interactive Steps) -->
+<!-- ========================================================================= -->
+<section class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-5 shadow-sm overflow-x-auto">
+<div class="min-w-[860px]">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+<h2 class="font-title-md text-title-md font-bold text-on-surface">Digital Escrow Settlement Pathway</h2>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Guaranteed by ICICI Escrow Trustee • Protocol v2.4</span>
+</div>
+<div class="relative flex items-start justify-between">
+<!-- Connecting line background -->
+<div class="absolute top-4 left-6 right-6 h-1 bg-surface-container-highest -z-0"></div>
+<!-- Progress Line completed (up to Step 3/4) -->
+<div class="absolute top-4 left-6 w-[68%] h-1 bg-primary -z-0"></div>
+<!-- Step 1: Completed -->
+<div class="flex flex-col items-center text-center w-40 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="check">check</span>
+</div>
+<p class="mt-2 font-label-md text-label-md font-bold text-on-surface">1. Buyer Matched</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sep 18, 02:40 PM</p>
+<span class="mt-1 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-label-sm text-label-sm font-semibold border border-emerald-200">
+                ₹53,000 (20%) Locked
+              </span>
+</div>
+<!-- Step 2: Completed -->
+<div class="flex flex-col items-center text-center w-40 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-lg" data-icon="check">check</span>
+</div>
+<p class="mt-2 font-label-md text-label-md font-bold text-on-surface">2. Farmer OTP Confirm</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Sep 20, 10:15 AM</p>
+<span class="mt-1 px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 font-label-sm text-label-sm font-semibold border border-emerald-200">
+                ₹53,000 Disbursed
+              </span>
+</div>
+<!-- Step 3: Completed -->
+<div class="flex flex-col items-center text-center w-40 relative z-10">
+<div class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-sm ring-4 ring-primary-fixed/40">
+<span class="material-symbols-outlined text-lg" data-icon="verified">verified</span>
+</div>
+<p class="mt-2 font-label-md text-label-md font-bold text-on-surface">3. NABL Lab Assay</p>
+<p class="font-label-sm text-label-sm text-emerald-700 font-bold">Passed (Grade A+)</p>
+<span class="mt-1 px-2 py-0.5 rounded bg-emerald-100 text-primary-container font-label-sm text-label-sm font-bold">
+                Today, 11:20 AM
+              </span>
+</div>
+<!-- Step 4: Active Action Pending -->
+<div class="flex flex-col items-center text-center w-44 relative z-10">
+<div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center shadow-md animate-bounce ring-4 ring-amber-200">
+<span class="material-symbols-outlined text-lg" data-icon="lock_open">lock_open</span>
+</div>
+<p class="mt-2 font-label-md text-label-md font-bold text-amber-900">4. Milestone 2 Release</p>
+<p class="font-label-sm text-label-sm text-amber-700 font-bold">Action Required</p>
+<span class="mt-1 px-2 py-0.5 rounded bg-amber-100 text-amber-900 font-label-sm text-label-sm font-bold border border-amber-300">
+                ₹1,06,000 (40%) Awaiting
+              </span>
+</div>
+<!-- Step 5: Upcoming -->
+<div class="flex flex-col items-center text-center w-40 relative z-10 opacity-75">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest text-outline flex items-center justify-center border-2 border-outline-variant">
+<span class="material-symbols-outlined text-lg" data-icon="scale">scale</span>
+</div>
+<p class="mt-2 font-label-md text-label-md font-medium text-on-surface-variant">5. Weighbridge &amp; Pass</p>
+<p class="font-label-sm text-label-sm text-outline">Oct 15, Vashi Gate</p>
+<span class="mt-1 px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-label-sm text-label-sm">
+                ₹1,06,000 (40%) Final
+              </span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- 5. MAIN RESPONSIVE GRID (lg:grid-cols-3) -->
+<!-- ========================================================================= -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- ======================================================= -->
+<!-- LEFT COLUMN (2 COLUMNS WIDE: CARDS 1, 2, 3) -->
+<!-- ======================================================= -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Card 1: Official NABL Lab Quality Assay & Spectrometer Certificate -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6 shadow-sm relative">
+<div class="flex flex-wrap items-start justify-between gap-4 pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-fixed/40 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-2xl" data-icon="biotech">biotech</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">NABL Certified Spectrometry Assay</h3>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-primary-container font-label-sm text-label-sm font-bold">Grade A+ (Premium)</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                    National Quality Labs • Accr #NQL-9042 • Nashik Krishi Vigyan Kendra Hub
+                  </p>
+</div>
+</div>
+<!-- QR Code & Digital Signature badge -->
+<div class="flex items-center gap-3 bg-surface-container-low px-3 py-2 rounded-xl border border-outline-variant/30">
+<div class="w-9 h-9 bg-surface-container-lowest border border-outline-variant/40 rounded flex items-center justify-center p-1">
+<span class="material-symbols-outlined text-2xl text-primary" data-icon="qr_code_2">qr_code_2</span>
+</div>
+<div class="text-left">
+<p class="font-label-sm text-label-sm font-bold text-on-surface">Digitally Signed &amp; Hash-Pinned</p>
+<p class="font-label-sm text-label-sm text-outline">Assayer: Dr. V. Kulkarni (Today 11:20 AM)</p>
+</div>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 pt-5">
+<!-- Metric 1: Moisture -->
+<div class="p-3 rounded-xl bg-surface border border-emerald-100 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Moisture</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" data-icon="water_drop">water_drop</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">11.2%</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">✓ Permissible &lt; 12.0%</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Optimal storage crispness</p>
+</div>
+</div>
+<!-- Metric 2: Protein -->
+<div class="p-3 rounded-xl bg-surface border border-emerald-100 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Protein</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" data-icon="grain">grain</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">13.8%</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">✓ Target &gt; 12.5%</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Premium flour grade</p>
+</div>
+</div>
+<!-- Metric 3: Foreign Matter -->
+<div class="p-3 rounded-xl bg-surface border border-emerald-100 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Foreign Matter</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" data-icon="filter_alt">filter_alt</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">0.3%</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">✓ Max 0.75%</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Ultra-clean sorting</p>
+</div>
+</div>
+<!-- Metric 4: Test Weight -->
+<div class="p-3 rounded-xl bg-surface border border-emerald-100 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Uniformity</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" data-icon="balance">balance</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">79.5 <span class="text-xs font-normal">kg/hL</span></div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">98.0% Grade A+</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Plump Sharbati grains</p>
+</div>
+</div>
+<!-- Metric 5: Wet Gluten -->
+<div class="p-3 rounded-xl bg-surface border border-emerald-100 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-sm text-label-sm text-outline uppercase font-semibold">Gluten Index</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" data-icon="bakery_dining">bakery_dining</span>
+</div>
+<div class="font-headline-md text-headline-md font-bold text-primary">28.4%</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/20">
+<p class="font-label-sm text-label-sm text-emerald-700 font-semibold">✓ Certified</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Industrial bakery spec</p>
+</div>
+</div>
+</div>
+<!-- Sample Physical Inspection Visual Attachment -->
+<div class="mt-4 pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-4 bg-surface-container-low p-3 rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-14 h-14 rounded-lg bg-surface-container-high overflow-hidden shrink-0 border border-outline-variant/40">
+<img class="w-full h-full object-cover" data-alt="Close-up macro photography of golden plump Sharbati wheat grains laid out on a sterile white lab testing grid under clean, high-key agricultural laboratory lighting. The grains show high uniformity and clean amber gloss in a minimalist Agritech lab atmosphere with soft emerald green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYFpTCVGqdn07c7VjUiyTFX5HzRhp-llPGGa_zW4SQx_Why2sFhrE1khSjiaJgY7v1h-QjyJtcfxG2e9cRMqiyKX1vkitIgotj0Y2nuDNvLIZS6iEDjN7KrQZjgkRJMW9oHKHf9IGiTuWkaRe6Hbw8btE6R8JNI4-KyTUaji6yTi2Z5jc5q4CY8QWSq5VoCXQB0Y1_BFTNH4SbjdfmdEN65FvORfB4HDZD1xOVNOPkdbssd3QQrZidGIPzU4xYDTf91P6dsAqYTuw"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface">Physical Lot Sample #LOT-WHT-9821</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Spectrometer sample sealed in presence of APMC Assayer &amp; farmer representative.</p>
+</div>
+</div>
+<button class="px-3 py-1.5 rounded-lg border border-primary text-primary hover:bg-primary/5 font-label-md text-label-md font-bold flex items-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span>Full NABL PDF (2.1 MB)</span>
+</button>
+</div>
+</div>
+<!-- Card 2: Escrow Ledger & Milestone Breakdown Table -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-6 shadow-sm space-y-5">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Escrow Ledger &amp; Capital Allocation</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Escrow Account: ICICI Trustee #ESC-99218274 • Disbursal to Ramesh Patil HDFC A/C (**4029)</p>
+</div>
+<div class="text-right">
+<span class="font-label-sm text-label-sm text-outline">Total Balance in Escrow</span>
+<p class="font-title-md text-title-md font-bold text-primary">₹2,12,000 Remaining</p>
+</div>
+</div>
+<!-- Tri-Color Linear Telemetry Meter -->
+<div class="space-y-1.5">
+<div class="h-3 w-full bg-surface-container rounded-full overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 20%;" title="20% Disbursed"></div>
+<div class="bg-secondary-container h-full animate-pulse" style="width: 40%;" title="40% Ready for Release"></div>
+<div class="bg-outline-variant h-full" style="width: 40%;" title="40% Delivery Locked"></div>
+</div>
+<div class="flex justify-between font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-primary font-bold">
+<span class="w-2 h-2 rounded-full bg-primary inline-block"></span> 20% Disbursed (₹53,000)
+                </span>
+<span class="flex items-center gap-1 text-secondary font-bold">
+<span class="w-2 h-2 rounded-full bg-secondary-container inline-block"></span> 40% Awaiting Approval (₹1,06,000)
+                </span>
+<span class="flex items-center gap-1 text-outline font-semibold">
+<span class="w-2 h-2 rounded-full bg-outline-variant inline-block"></span> 40% Delivery Gate (₹1,06,000)
+                </span>
+</div>
+</div>
+<!-- Ledger Table -->
+<div class="overflow-x-auto border border-outline-variant/30 rounded-xl">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low font-label-md text-label-md text-on-surface-variant border-b border-outline-variant/30">
+<th class="py-3 px-4">Milestone Tranche</th>
+<th class="py-3 px-4">Trigger Condition</th>
+<th class="py-3 px-4">Amount</th>
+<th class="py-3 px-4">Status &amp; UTR Reference</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface/50">
+<td class="py-3 px-4">
+<span class="font-bold text-on-surface">Tranche 1 (20%)</span>
+<p class="font-label-sm text-label-sm text-outline">Advance Booking Lock</p>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">Buyer Acceptance &amp; Farmer Digital Contract OTP</td>
+<td class="py-3 px-4 font-bold text-primary">₹53,000</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-primary-container font-label-sm text-label-sm font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="done_all">done_all</span> Disbursed
+                      </span>
+<p class="font-label-sm text-label-sm text-outline font-mono mt-0.5">UTR: 492198032 (Sep 20)</p>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-amber-50/50 hover:bg-amber-50">
+<td class="py-3 px-4">
+<span class="font-bold text-amber-950">Tranche 2 (40%)</span>
+<p class="font-label-sm text-label-sm text-amber-800">Pre-Harvest Quality Assay</p>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">NABL Lab Certification (&gt;12.5% Protein, &lt;12% Moisture)</td>
+<td class="py-3 px-4 font-bold text-amber-900">₹1,06,000</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-label-sm text-label-sm font-bold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="lock_open">lock_open</span> Ready for Release
+                      </span>
+<p class="font-label-sm text-label-sm text-amber-800 mt-0.5 font-medium">Assay Verified • Awaiting Click</p>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface/50">
+<td class="py-3 px-4">
+<span class="font-bold text-on-surface">Tranche 3 (40%)</span>
+<p class="font-label-sm text-label-sm text-outline">Final Delivery &amp; Settlement</p>
+</td>
+<td class="py-3 px-4 text-on-surface-variant">Weighbridge Slips + APMC Gate Pass at Vashi Processing Plant</td>
+<td class="py-3 px-4 font-bold text-on-surface">₹1,06,000</td>
+<td class="py-3 px-4">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-sm text-label-sm font-semibold inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="lock">lock</span> Locked in Escrow
+                      </span>
+<p class="font-label-sm text-label-sm text-outline mt-0.5">Scheduled Oct 15, 2024</p>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Card 3: Action Execution Bar -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/20 p-5 shadow-sm space-y-4">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+<div class="space-y-1 text-center sm:text-left">
+<div class="flex items-center justify-center sm:justify-start gap-2">
+<span class="material-symbols-outlined text-secondary font-semibold" data-icon="verified_user">verified_user</span>
+<h4 class="font-headline-sm text-headline-sm font-bold text-primary">Buyer Authorization Portal</h4>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                  Authorizing will immediately transmit <span class="font-bold text-on-surface">₹1,06,000</span> to farmer Ramesh Patil's bank via RBI RTGS Escrow gateway.
+                </p>
+</div>
+<!-- Interactive Buttons -->
+<div class="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+<button class="flex-1 sm:flex-initial px-5 py-3 rounded-lg bg-primary-container text-on-primary hover:bg-tertiary transition-all active:scale-[0.98] font-title-md text-title-md font-bold flex items-center justify-center gap-2 shadow-sm">
+<span class="material-symbols-outlined" data-icon="lock_open">lock_open</span>
+<span>Approve &amp; Release Milestone 2 (₹1,06,000)</span>
+</button>
+<button class="px-4 py-3 rounded-lg bg-surface-container text-error hover:bg-error-container hover:text-on-error-container transition-all font-title-md text-title-md font-semibold flex items-center gap-1.5 border border-error/20">
+<span class="material-symbols-outlined text-sm" data-icon="report">report</span>
+<span>Raise Dispute</span>
+</button>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-between pt-3 border-t border-outline-variant/30 text-xs text-on-surface-variant">
+<div class="flex items-center gap-4">
+<a class="text-primary hover:underline font-bold flex items-center gap-1" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                  Download Certified Legal Agreement (PDF 1.4 MB)
+                </a>
+<a class="text-outline hover:text-primary transition-colors flex items-center gap-1" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+                  View Real-time Audit Trail (SHA-256)
+                </a>
+</div>
+<span class="text-outline font-label-sm text-label-sm">Digital Token ID: #9842-NABL-0982</span>
+</div>
+</div>
+</div>
+<!-- ======================================================= -->
+<!-- RIGHT COLUMN (1 COLUMN WIDE: CARDS 1, 2, 3) -->
+<!-- ======================================================= -->
+<div class="lg:col-span-1 space-y-6">
+<!-- Card 1: Logistics & Delivery Dispatch Telemetry -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Transit &amp; Logistics Telemetry</h3>
+</div>
+<span class="font-label-sm text-label-sm px-2 py-0.5 rounded bg-emerald-100 text-primary-container font-bold">Scheduled</span>
+</div>
+<!-- Live Route Summary Map Preview -->
+<div class="relative rounded-xl overflow-hidden border border-outline-variant/40 bg-surface-container-low h-36">
+<img class="w-full h-full object-cover" data-alt="A high-contrast stylized topographic satellite route map visualization from Nashik to Navi Mumbai with clean minimalist road vector lines, geo-tag pins, and Agritech logistics route indicators under bright morning light. Warm earth tones and deep forest green accents create a professional command-center navigation map style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJ_mwaXHhMslWyPnA_dhxXkWrBkMP3-Ce6k92NlVS_WSUpU_aAz-tHIH5taPeJRg3nCkeoSIAFxaDsFsOJ2E4KJf6etSbWXsZ0xV3j6LpQFc2n6_lhHrGhZj3JNyRXO9nuQ3yik_wL4mwYfXkxzRmJ5XuSbx9ggGC3JbjiLMdEhErgLmqtd9iD5w_tGRGGVTFnF5ySF6U_z8SzMZc_Phs44xQnJS5RYYSMjm2FGiSVel06SiurtqwK5-s6kVKHf67P1HTqlg5Wtsk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-3">
+<div class="text-white text-xs space-y-0.5">
+<div class="flex items-center gap-1 font-bold text-white">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>168 km • Est Transit 4.5 Hours</span>
+</div>
+<p class="text-white/80 font-label-sm text-label-sm">Nashik Farm Gate → Vashi Agro Plant</p>
+</div>
+</div>
+</div>
+<!-- Fleet & Transporter Details -->
+<div class="space-y-2.5 text-xs">
+<div class="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/20 space-y-1">
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-label-sm text-outline">Designated Carrier</span>
+<span class="font-bold text-on-surface">Kissan Logistics Network</span>
+</div>
+<p class="font-body-sm text-body-sm font-semibold text-primary">BharatBenz 10-Ton Rigid (MH-15-EG-8421)</p>
+<div class="flex justify-between items-center pt-1 border-t border-outline-variant/20 text-on-surface-variant">
+<span>Driver: Jagdish Shinde</span>
+<span class="font-mono font-medium">+91 98231 44521</span>
+</div>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="text-outline">E-Way Bill Status:</span>
+<span class="font-mono font-bold text-on-surface">#984210984 (Generated)</span>
+</div>
+<div class="flex justify-between items-center px-1">
+<span class="text-outline">Pickup Window:</span>
+<span class="font-semibold text-on-surface">Oct 12, 2024 • 06:00 AM</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Direct Counterparty Chat & Audit Trail -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-5 shadow-sm space-y-4 flex flex-col justify-between h-96">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/30">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="forum">forum</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Contract Audit &amp; Chat</h3>
+</div>
+<span class="font-label-sm text-label-sm text-emerald-700 flex items-center gap-1 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Online
+                </span>
+</div>
+<!-- Message Stream -->
+<div class="space-y-3 pt-3 overflow-y-auto max-h-56 pr-1">
+<!-- Farmer Message -->
+<div class="flex gap-2 items-start">
+<div class="w-7 h-7 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center text-xs font-bold shrink-0">
+                    RP
+                  </div>
+<div class="bg-surface-container-low p-2.5 rounded-xl rounded-tl-none border border-outline-variant/20 max-w-[85%]">
+<p class="font-label-sm text-label-sm font-bold text-primary">Ramesh Patil (Farmer)</p>
+<p class="font-body-sm text-body-sm text-on-surface mt-0.5">
+                      Sir, lab technician took samples yesterday morning. Protein is coming very high at 13.8%.
+                    </p>
+<span class="font-label-sm text-label-sm text-outline mt-1 block">Yesterday 04:12 PM</span>
+</div>
+</div>
+<!-- Buyer Agent Message -->
+<div class="flex gap-2 items-start justify-end">
+<div class="bg-primary-container text-on-primary p-2.5 rounded-xl rounded-tr-none max-w-[85%] text-right">
+<p class="font-label-sm text-label-sm font-bold text-on-primary-container">Green Agro Procurement</p>
+<p class="font-body-sm text-body-sm text-on-primary mt-0.5 text-left">
+                      Lab report received and verified Grade A+. Releasing milestone 2 payment today so your labor can harvest on schedule.
+                    </p>
+<span class="font-label-sm text-label-sm text-on-primary-container/80 mt-1 block">Today 11:45 AM</span>
+</div>
+<div class="w-7 h-7 rounded-full bg-secondary-container text-on-secondary flex items-center justify-center text-xs font-bold shrink-0">
+                    GA
+                  </div>
+</div>
+</div>
+</div>
+<!-- Quick Reply Input -->
+<div class="pt-2 border-t border-outline-variant/30 flex items-center gap-2">
+<input class="flex-1 bg-surface-container border border-outline-variant/40 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-primary font-body-sm" placeholder="Type message to Farmer..." type="text"/>
+<button class="p-2 rounded-lg bg-surface-container hover:bg-surface-variant text-primary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="mic">mic</span>
+</button>
+<button class="p-2 rounded-lg bg-primary-container text-on-primary hover:bg-tertiary transition-colors">
+<span class="material-symbols-outlined text-lg" data-icon="send">send</span>
+</button>
+</div>
+</div>
+<!-- Card 3: APMC & Mandi Spot Price Benchmark Widget -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 p-5 shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="trending_up">trending_up</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Spot Price Benchmark</h3>
+</div>
+<span class="font-label-sm text-label-sm font-bold text-outline">Nashik APMC</span>
+</div>
+<div class="grid grid-cols-2 gap-3 text-center">
+<div class="bg-surface-container-low p-3 rounded-xl border border-outline-variant/20">
+<span class="font-label-sm text-label-sm text-outline">Nashik Spot Rate</span>
+<p class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">₹2,450</p>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ Quintal</span>
+</div>
+<div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+<span class="font-label-sm text-label-sm text-emerald-800 font-bold">Contract Locked</span>
+<p class="font-headline-sm text-headline-sm font-bold text-primary mt-0.5">₹2,650</p>
+<span class="font-label-sm text-label-sm text-emerald-700 font-bold">+₹200 Premium</span>
+</div>
+</div>
+<!-- Guarantee Notice -->
+<div class="flex items-start gap-2.5 p-3 rounded-xl bg-surface-container text-xs text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-base shrink-0 mt-0.5" data-icon="gavel">gavel</span>
+<p class="leading-relaxed">
+<span class="font-bold text-on-surface">48-Hour Dispute Guarantee:</span> Legally backed under e-NAM Model Agreement with binding APMC arbitration in Nashik district.
+              </p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- ========================================================================= -->
+<!-- MOBILE BOTTOM NAV BAR (Shared Component compliant - Destination filter) -->
+<!-- Prohibited on Web (md:hidden), strictly docked at bottom -->
+<!-- ========================================================================= -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 max-w-lg mx-auto w-full z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 shadow-lg">
+<!-- 1. Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- 2. Doctor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined" data-icon="psychiatry">psychiatry</span>
+<span class="font-label-sm text-label-sm">Doctor</span>
+</a>
+<!-- 3. Mandi (Active Destination based on Marketplace Booking context) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary rounded-xl px-3 py-1.5 active:scale-95 transition-transform duration-150" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined material-symbols-fill" data-icon="storefront">storefront</span>
+<span class="font-label-sm text-label-sm font-bold text-on-primary">Mandi</span>
+</a>
+<!-- 4. Livestock -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_livestock.html">
+<span class="material-symbols-outlined" data-icon="pets">pets</span>
+<span class="font-label-sm text-label-sm">Pashu</span>
+</a>
+<!-- 5. Soil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-label-sm text-label-sm">Soil</span>
+</a>
+</nav>
+</body></html>

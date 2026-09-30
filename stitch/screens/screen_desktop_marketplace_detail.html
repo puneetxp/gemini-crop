@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Produce Lot #MH-PUN-8402 Inspection &amp; Booking</title>
+<!-- Material Symbols Outlined Font -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary-fixed-dim": "#8bd6b6",
+            "secondary-container": "#fe932c",
+            "surface-container-highest": "#e3e2df",
+            "on-tertiary": "#ffffff",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#002113",
+            "outline-variant": "#bec9c2",
+            "on-secondary": "#ffffff",
+            "on-primary-fixed-variant": "#00513b",
+            "tertiary-fixed": "#6ffbbe",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary": "#904d00",
+            "on-error-container": "#93000a",
+            "surface-bright": "#faf9f5",
+            "error-container": "#ffdad6",
+            "surface": "#faf9f5",
+            "outline": "#6f7973",
+            "primary": "#004532",
+            "on-surface-variant": "#3f4944",
+            "secondary-fixed": "#ffdcc3",
+            "surface-dim": "#dbdad6",
+            "primary-container": "#065f46",
+            "background": "#faf9f5",
+            "surface-tint": "#1b6b51",
+            "surface-container": "#efeeea",
+            "primary-fixed": "#a6f2d1",
+            "on-secondary-container": "#663500",
+            "tertiary-container": "#006041",
+            "surface-variant": "#e3e2df",
+            "surface-container-high": "#e9e8e4",
+            "on-surface": "#1b1c1a",
+            "secondary-fixed-dim": "#ffb77d",
+            "error": "#ba1a1a",
+            "surface-container-low": "#f4f4f0",
+            "on-secondary-fixed-variant": "#6e3900",
+            "tertiary": "#00462e",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-container": "#8bd6b7",
+            "on-primary-fixed": "#002116",
+            "inverse-on-surface": "#f2f1ed",
+            "on-background": "#1b1c1a",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#2f312e",
+            "on-tertiary-container": "#50e0a4",
+            "on-secondary-fixed": "#2f1500",
+            "on-tertiary-fixed-variant": "#005236",
+            "inverse-primary": "#8bd6b6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "margin-desktop": "3rem",
+            "margin": "1rem",
+            "margin-tablet": "2rem",
+            "gutter-tablet": "1.5rem",
+            "space-xl": "2.25rem",
+            "gutter-desktop": "2rem",
+            "gutter": "1rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-xs": "0.25rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 20px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    .card-tier-1 {
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.04), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+      border: 1px solid rgba(6, 95, 70, 0.08);
+    }
+    
+    .card-elevated-2 {
+      box-shadow: 0 8px 24px -4px rgba(6, 95, 70, 0.12), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TOP APP BAR (Shared Component Anchor) -->
+<header class="bg-surface shadow-sm sticky top-0 z-40">
+<div class="max-w-7xl mx-auto px-margin-desktop py-space-sm flex justify-between items-center">
+<!-- Left: Brand and Live Ticker -->
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-primary-fixed text-2xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="block text-label-sm font-label-sm text-outline font-semibold tracking-wider uppercase">Premier Agri-Terminal</span>
+</div>
+</div>
+<div class="hidden xl:flex items-center gap-3 px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/40">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">APMC LIVE</span>
+<span class="text-label-md font-label-md text-primary font-bold">Wheat Sharbati: ₹2,450/qtl (+1.8%)</span>
+<span class="text-outline-variant">|</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Gram: ₹5,820/qtl</span>
+<span class="text-outline-variant">|</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Soybean: ₹4,650/qtl</span>
+</div>
+</div>
+<!-- Right: Action clusters, KVK, Language Toggle & Avatar -->
+<div class="flex items-center gap-4">
+<!-- KVK Helpline -->
+<a class="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-primary hover:bg-surface-container-high transition-colors" href="tel:18001801551">
+<span class="material-symbols-outlined text-primary" data-icon="support_agent">support_agent</span>
+<span class="text-label-md font-label-md">KVK Helpline: 1800-180-1551</span>
+</a>
+<!-- Language Action (Shared Component Literal Token) -->
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant text-primary font-semibold text-label-md font-label-md hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+          हिंदी / EN
+        </button>
+<!-- Profile Avatar & Details -->
+<div class="flex items-center gap-3 pl-2 border-l border-outline-variant/40">
+<div class="text-right hidden sm:block">
+<p class="text-label-md font-label-md text-on-surface font-bold leading-tight">Manoj Shinde</p>
+<p class="text-label-sm font-label-sm text-outline font-medium">Sahyadri FPO Member</p>
+</div>
+<div class="w-9 h-9 rounded-full bg-primary-fixed-dim text-on-primary-fixed-variant flex items-center justify-center font-bold text-label-lg font-label-lg ring-2 ring-primary-container/20">
+            MS
+          </div>
+</div>
+</div>
+</div>
+</header>
+<!-- SECONDARY ACTION BAR & BREADCRUMBS -->
+<div class="bg-surface-container-low shadow-sm">
+<div class="max-w-7xl mx-auto px-margin-desktop py-space-sm flex flex-wrap justify-between items-center gap-4">
+<div class="flex items-center gap-2 text-label-md font-label-md text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#marketplace">Home</a>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#marketplace">Marketplace</a>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#marketplace">Produce Lots</a>
+<span class="material-symbols-outlined text-outline" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">#MH-PUN-8402</span>
+</div>
+<a class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-primary text-label-md font-label-md hover:bg-surface-container transition-all active:scale-[0.98]" href="#marketplace">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+<span>Back to Marketplace</span>
+</a>
+</div>
+</div>
+<!-- MAIN CANVAS -->
+<main class="flex-grow max-w-7xl mx-auto w-full px-margin-desktop py-space-lg">
+<!-- LOT HEADER SUMMARY CARD -->
+<div class="bg-surface-container-lowest rounded-xl p-6 card-tier-1 mb-space-lg">
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
+<div>
+<!-- Badges Cluster -->
+<div class="flex flex-wrap items-center gap-2.5 mb-3">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-100 text-primary-container text-label-md font-label-md font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+              Grade A+ Premium Milling
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-on-surface-variant text-label-md font-label-md font-semibold border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="verified">verified</span>
+              NABL Lab Certified
+            </span>
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container text-primary text-label-md font-label-md font-semibold border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="check_circle">check_circle</span>
+              Verified Sahyadri FPO Seller
+            </span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-primary tracking-tight">
+            Produce Lot #MH-PUN-8402: Sharbati Golden Wheat
+          </h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]" data-icon="pin_drop">pin_drop</span>
+            Origin: Junnar Tehsil, Pune District, Maharashtra • NABL Sample Assay #NQL-9042
+          </p>
+</div>
+<!-- Action / Escrow Fast Status -->
+<div class="flex items-center gap-3">
+<div class="text-right">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline font-bold block">Current Spot Price</span>
+<div class="flex items-baseline gap-1">
+<span class="text-display-lg font-display-lg text-primary leading-none">₹2,450</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant font-medium">/ Quintal</span>
+</div>
+<span class="text-label-sm font-label-sm text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+              +4.2% Premium vs MSP ₹2,275
+            </span>
+</div>
+</div>
+</div>
+<!-- Metrics Ribbon (Key agricultural specs) -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-6 pt-6 border-t border-outline-variant/20">
+<div class="bg-surface-container-low rounded-lg p-3.5">
+<span class="text-label-sm font-label-sm text-outline uppercase font-bold block">Available Volume</span>
+<p class="text-title-md font-title-md text-on-surface font-bold mt-1">85 Quintals <span class="text-body-sm font-body-sm text-outline font-normal">(8.5 MT)</span></p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3.5">
+<span class="text-label-sm font-label-sm text-outline uppercase font-bold block">Harvest Window</span>
+<p class="text-title-md font-title-md text-on-surface font-bold mt-1">Oct 2024 <span class="text-body-sm font-body-sm text-primary font-semibold">(Fresh Rabi Stock)</span></p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3.5">
+<span class="text-label-sm font-label-sm text-outline uppercase font-bold block">Minimum Order</span>
+<p class="text-title-md font-title-md text-on-surface font-bold mt-1">10 Quintals <span class="text-body-sm font-body-sm text-outline font-normal">(1.0 MT)</span></p>
+</div>
+<div class="bg-surface-container-low rounded-lg p-3.5">
+<span class="text-label-sm font-label-sm text-outline uppercase font-bold block">Physical Condition</span>
+<p class="text-title-md font-title-md text-emerald-800 font-bold mt-1 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+            A-1 Machine Cleaned
+          </p>
+</div>
+</div>
+</div>
+<!-- MAIN TWO-COLUMN WORKFLOW -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT COLUMN: QUALITY INSPECTION & COLD STORAGE TELEMETRY (7 Cols) -->
+<div class="lg:col-span-7 space-y-space-lg">
+<!-- 1. NABL ASSAY & QUALITY INSPECTION CARD -->
+<div class="bg-surface-container-lowest rounded-xl p-6 card-tier-1">
+<div class="flex items-start justify-between pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-2xl" data-icon="science">science</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-primary font-bold">Quality Assay &amp; Lab Inspection</h2>
+<p class="text-body-sm font-body-sm text-outline">Tested at NABL Accredited Center, Pune (ISO/IEC 17025 Compliant)</p>
+</div>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant text-primary text-label-md font-label-md font-semibold hover:bg-surface-container transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+<span>Assay PDF</span>
+</button>
+</div>
+<!-- Quality Metric Tiles Bento Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+<!-- Moisture Gauge -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">Moisture Content</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-emerald-100 text-emerald-800">Optimal Grade</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-primary font-extrabold">11.8%</span>
+<span class="text-label-md font-label-md text-outline">Target &lt; 12.0%</span>
+</div>
+<!-- Linear Meter -->
+<div class="w-full bg-outline-variant/30 h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 78%;"></div>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Safe for extended warehouse storage (12 months+)</p>
+</div>
+<!-- Grain Luster / Vitreous Index -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">Grain Luster &amp; Vitreous</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-emerald-100 text-emerald-800">Superior</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-primary font-extrabold">94<span class="text-title-md font-title-md text-outline font-normal">/100</span></span>
+<span class="text-label-md font-label-md text-emerald-800 font-bold">High Amber Glaze</span>
+</div>
+<!-- Linear Meter -->
+<div class="w-full bg-outline-variant/30 h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 94%;"></div>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Golden hue, high commercial milling appeal</p>
+</div>
+<!-- Foreign Matter / Admixture -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">Foreign Matter / Admixture</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-emerald-100 text-emerald-800">NABL Cleared</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-primary font-extrabold">0.4%</span>
+<span class="text-label-md font-label-md text-outline">Max Permissible 1.0%</span>
+</div>
+<!-- Linear Meter -->
+<div class="w-full bg-outline-variant/30 h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-emerald-600 h-full rounded-full" style="width: 25%;"></div>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Air-aspirated and double gravity sorted</p>
+</div>
+<!-- Protein & Gluten Content -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/30 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-label-md font-label-md text-on-surface-variant font-bold">Crude Protein Content</span>
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm font-bold bg-amber-100 text-amber-900">High Gluten</span>
+</div>
+<div class="my-3">
+<div class="flex items-baseline gap-2">
+<span class="text-headline-lg font-headline-lg text-primary font-extrabold">13.6%</span>
+<span class="text-label-md font-label-md text-outline">Standard 11.5%</span>
+</div>
+<!-- Linear Meter -->
+<div class="w-full bg-outline-variant/30 h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-secondary-container h-full rounded-full" style="width: 88%;"></div>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Excellent elasticity for premium bakery flour</p>
+</div>
+</div>
+<!-- Chemical & Pesticide Residue Certification Ribbon -->
+<div class="mt-4 p-3.5 bg-emerald-50 rounded-xl border border-emerald-200/60 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-emerald-200 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]" data-icon="eco">eco</span>
+</div>
+<div>
+<p class="text-label-lg font-label-lg text-emerald-950 font-bold">Zero Pesticide Residue Screen (Pass)</p>
+<p class="text-label-sm font-label-sm text-emerald-800">140 compound GC-MS/LC-MS panel: Below Detectable Limits (BDL)</p>
+</div>
+</div>
+<span class="px-3 py-1 bg-emerald-700 text-white rounded-lg text-label-sm font-label-sm font-bold">NABL PASS</span>
+</div>
+<!-- Assayer Digital Endorsement -->
+<div class="mt-6 pt-4 border-t border-outline-variant/20 flex flex-wrap items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-on-surface font-bold">Dr. V. Kulkarni, Ph.D.</p>
+<p class="text-label-sm font-label-sm text-outline">Chief Agricultural Assayer • Accreditation #NQL-9042</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-sm font-label-sm text-outline font-semibold">Digitally Signed &amp; Secured</span>
+<p class="font-mono text-label-sm font-label-sm text-primary font-bold">SHA-256: 8f9b...31e2</p>
+</div>
+</div>
+</div>
+<!-- 2. COLD STORAGE & WAREHOUSE TELEMETRY -->
+<div class="bg-surface-container-lowest rounded-xl p-6 card-tier-1">
+<div class="flex items-start justify-between pb-4 border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container/10 flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-2xl" data-icon="warehouse">warehouse</span>
+</div>
+<div>
+<h2 class="text-headline-sm font-headline-sm text-primary font-bold">Cold Storage &amp; IoT Telemetry</h2>
+<p class="text-body-sm font-body-sm text-outline">Baramati Agro Cold Chain Hub • Bay 4, Slot #W-14</p>
+</div>
+</div>
+<div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-label-sm font-label-sm font-bold">
+<span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span>
+              LoRaWAN Active Sync
+            </div>
+</div>
+<!-- Warehouse Spec & Map Preview -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 mt-6">
+<!-- Interactive Telemetry Coordinates -->
+<div class="md:col-span-7 space-y-4">
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-md font-label-md text-outline font-semibold">Warehouse Receipt (WDRA)</span>
+<span class="text-label-md font-label-md font-mono text-primary font-bold">#NERL-2024-88412</span>
+</div>
+<div class="flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Custodian: Baramati Warehousing Ltd</span>
+<span>Stack Height: 4 Tiers</span>
+</div>
+</div>
+<!-- Sensor Feeds Grid -->
+<div class="grid grid-cols-2 gap-3">
+<div class="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/20">
+<span class="text-label-sm font-label-sm text-outline font-bold uppercase">Bay Temperature</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-headline-md font-headline-md text-primary font-bold">18.2°C</span>
+<span class="text-label-sm font-label-sm text-emerald-700 font-semibold">Optimal</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1 block">Set Range: 16.0°C - 20.0°C</span>
+</div>
+<div class="bg-surface-container-low p-3.5 rounded-xl border border-outline-variant/20">
+<span class="text-label-sm font-label-sm text-outline font-bold uppercase">Relative Humidity</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="text-headline-md font-headline-md text-primary font-bold">62% RH</span>
+<span class="text-label-sm font-label-sm text-emerald-700 font-semibold">Controlled</span>
+</div>
+<span class="text-label-sm font-label-sm text-outline mt-1 block">Anti-spoilage limit: &lt;65%</span>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low rounded-lg text-label-sm font-label-sm text-on-surface-variant flex items-center justify-between">
+<span class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="sensors">sensors</span>
+                  IoT Node: #IOT-COLD-994
+                </span>
+<span class="text-outline">Sync: 2 mins ago • Battery 98%</span>
+</div>
+</div>
+<!-- Mini Map and Visual Preview -->
+<div class="md:col-span-5 flex flex-col">
+<div class="relative w-full h-full min-h-[160px] rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-container-high group">
+<div class="bg-cover bg-center w-full h-full" data-alt="High precision agricultural aerial satellite mapping showing organized modern agro-processing cold storage facility bays and green farm parcels under clear sunlight with botanical tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAzc-iI6NJdQHih8oFVUGd9y4vgSIlg89gQBcrIxO-UxYbJa4RO602955ufDjRGbNakKmJ7xoscfzv7jfMzd1Mx6ag0OPY58s5gwEefPB1IHNSm5Ymfk-W3_xC1OR2anCZmzfYlLQD2Rh0GYsvABtAvfdOsHmWOLduI1Dn6BCGxEOYYClzuzY8JpspqTghKNeNQRVsYc8Ft322Zgn50UL1LR4sp5jidyNk217FWw6seYCMliRUxaztkenUvhr78vYak-Phthi_iIOo')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent"></div>
+<!-- Coordinate Pin Overlay -->
+<div class="absolute bottom-3 left-3 right-3 text-white">
+<div class="flex items-center gap-1 text-label-xs font-label-sm text-emerald-200">
+<span class="material-symbols-outlined text-[14px]" data-icon="satellite_alt">satellite_alt</span>
+<span>18.1517° N, 74.5772° E</span>
+</div>
+<p class="text-label-md font-label-md font-bold leading-tight">Baramati Agri Cluster Bay #4</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- FPO SELLER REPUTATION & LOGISTICS CARD -->
+<div class="bg-surface-container-lowest rounded-xl p-6 card-tier-1">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-emerald-100 text-primary-container flex items-center justify-center font-bold text-headline-sm">
+                SF
+              </div>
+<div>
+<div class="flex items-center gap-2">
+<h3 class="text-title-md font-title-md text-primary font-bold">Sahyadri Farmers Producer Co. Ltd.</h3>
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="verified">verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-outline">1,240 Grower Members • 99.4% Delivery Fulfillment Rate • 4.9★ (380+ Trades)</p>
+</div>
+</div>
+<button class="px-4 py-2 rounded-lg border border-outline-variant text-primary text-label-md font-label-md font-bold hover:bg-surface-container transition-all active:scale-[0.98] flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+<span>Chat with FPO Desk</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: ADVANCE ESCROW BOOKING CALCULATOR (5 Cols) -->
+<div class="lg:col-span-5 sticky top-24">
+<div class="bg-surface-container-lowest rounded-xl p-6 card-tier-1 card-elevated-2 border-2 border-primary-container/20">
+<!-- Escrow Shield Header -->
+<div class="flex items-center justify-between pb-4 border-b border-outline-variant/20">
+<div>
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded">
+                Guaranteed Allocation
+              </span>
+<h2 class="text-headline-md font-headline-md text-primary font-bold mt-1">Escrow Booking Desk</h2>
+</div>
+<div class="w-10 h-10 rounded-xl bg-primary-container text-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="lock">lock</span>
+</div>
+</div>
+<!-- INTERACTIVE CALCULATOR ENGINE -->
+<div class="mt-6 space-y-6">
+<!-- 1. QUANTITY SELECTION -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-label-lg font-label-lg text-on-surface font-bold" for="quantityInput">
+                  Purchase Quantity (Quintals)
+                </label>
+<span class="text-label-sm font-label-sm text-outline">Available: 85 Qtl</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative flex-1">
+<input class="w-full bg-surface-container-lowest border-2 border-outline-variant rounded-lg px-4 py-3 text-headline-sm font-headline-sm font-bold text-on-surface focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none" id="quantityInput" max="85" min="10" step="5" type="number" value="40"/>
+<span class="absolute right-4 top-3.5 text-body-sm font-body-sm text-outline font-bold">Qtl (Quintal)</span>
+</div>
+</div>
+<!-- Quick Presets -->
+<div class="flex items-center gap-2 mt-2.5">
+<button class="px-3 py-1 rounded-md text-label-sm font-label-sm font-bold border border-outline-variant bg-surface-container-low hover:bg-surface-container transition-colors" onclick="setQuantity(20)" type="button">20 Qtl</button>
+<button class="px-3 py-1 rounded-md text-label-sm font-label-sm font-bold border border-primary bg-primary text-white" onclick="setQuantity(40)" type="button">40 Qtl (Standard)</button>
+<button class="px-3 py-1 rounded-md text-label-sm font-label-sm font-bold border border-outline-variant bg-surface-container-low hover:bg-surface-container transition-colors" onclick="setQuantity(85)" type="button">85 Qtl (Full Lot)</button>
+</div>
+</div>
+<!-- 2. DEPOSIT PERCENTAGE SELECTOR -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-lg font-label-lg text-on-surface font-bold">Advance Lock Percentage</span>
+<span class="text-label-md font-label-md text-primary font-bold" id="depositPercentLabel">20% Deposit</span>
+</div>
+<div class="grid grid-cols-4 gap-2">
+<button class="deposit-btn py-2 px-3 text-label-md font-label-md font-bold rounded-lg border-2 border-primary bg-primary-container text-white text-center transition-all" onclick="setDeposit(0.20, this)" type="button">20%</button>
+<button class="deposit-btn py-2 px-3 text-label-md font-label-md font-bold rounded-lg border border-outline-variant bg-surface-container-low text-on-surface text-center hover:bg-surface-container transition-all" onclick="setDeposit(0.30, this)" type="button">30%</button>
+<button class="deposit-btn py-2 px-3 text-label-md font-label-md font-bold rounded-lg border border-outline-variant bg-surface-container-low text-on-surface text-center hover:bg-surface-container transition-all" onclick="setDeposit(0.40, this)" type="button">40%</button>
+<button class="deposit-btn py-2 px-3 text-label-md font-label-md font-bold rounded-lg border border-outline-variant bg-surface-container-low text-on-surface text-center hover:bg-surface-container transition-all" onclick="setDeposit(0.50, this)" type="button">50%</button>
+</div>
+<p class="text-label-sm font-label-sm text-outline mt-1.5">Minimum 20% required under ICAR/e-NAM rules to lock the mandi lot.</p>
+</div>
+<!-- 3. FINANCIAL BREAKDOWN SHEET -->
+<div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/30 space-y-3">
+<div class="flex justify-between items-center text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Produce Valuation (<span id="calcQtl">40</span> Qtl × ₹2,450)</span>
+<span class="font-bold text-on-surface" id="baseValueDisplay">₹98,000</span>
+</div>
+<div class="flex justify-between items-center text-body-sm font-body-sm">
+<span class="text-on-surface-variant">Platform Escrow Fee (Govt Subsidized)</span>
+<span class="font-bold text-emerald-700">₹0 <span class="line-through text-outline font-normal">₹1,470</span></span>
+</div>
+<div class="border-t border-outline-variant/30 pt-3 flex justify-between items-center">
+<div>
+<span class="text-title-md font-title-md text-primary font-bold block">Advance Due Today</span>
+<span class="text-label-sm font-label-sm text-outline">Held in Trust Account</span>
+</div>
+<span class="text-headline-md font-headline-md text-primary font-extrabold" id="advanceDueDisplay">₹19,600</span>
+</div>
+<div class="border-t border-dashed border-outline-variant/40 pt-2 flex justify-between items-center text-label-sm font-label-sm text-on-surface-variant">
+<span>Remaining Balance on Weighbridge &amp; Delivery Pass:</span>
+<span class="font-bold text-on-surface" id="balanceDueDisplay">₹78,400</span>
+</div>
+</div>
+<!-- 4. ESCROW REASSURANCE & MILESTONES -->
+<div class="p-3.5 bg-emerald-50/70 rounded-xl border border-emerald-200/50">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="account_balance">account_balance</span>
+<span class="text-label-md font-label-md font-bold text-emerald-950">ICICI Bank Smart Contract Escrow</span>
+</div>
+<p class="text-label-sm font-label-sm text-emerald-900 leading-relaxed">
+                Funds are credited to RBI Regulated Escrow #ESC-99218274. Payout to Sahyadri FPO is executed strictly after your weighbridge inspection pass.
+              </p>
+<!-- 3-Step Milestone Indicator -->
+<div class="grid grid-cols-3 gap-1 mt-3 text-center">
+<div class="bg-emerald-200/60 p-1.5 rounded">
+<span class="text-label-sm font-label-sm text-emerald-900 font-bold block">1. Advance Lock</span>
+<span class="text-[10px] text-emerald-800">Instant</span>
+</div>
+<div class="bg-emerald-100 p-1.5 rounded">
+<span class="text-label-sm font-label-sm text-emerald-900 font-bold block">2. Gate Inspection</span>
+<span class="text-[10px] text-emerald-800">At Hub</span>
+</div>
+<div class="bg-emerald-100 p-1.5 rounded">
+<span class="text-label-sm font-label-sm text-emerald-900 font-bold block">3. Final Settlement</span>
+<span class="text-[10px] text-emerald-800">Weighbridge</span>
+</div>
+</div>
+</div>
+<!-- 5. PRIMARY AND SECONDARY ACTIONS -->
+<div class="space-y-3 pt-2">
+<button class="w-full py-4 px-6 rounded-lg bg-primary-container text-white text-title-md font-title-md font-bold hover:bg-tertiary transition-all shadow-md flex items-center justify-center gap-2 active:scale-[0.98]" id="bookButton" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="lock_open">lock_open</span>
+<span id="buttonText">Lock Price &amp; Book Escrow (₹19,600)</span>
+</button>
+<div class="grid grid-cols-2 gap-3">
+<button class="py-2.5 px-3 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container text-label-md font-label-md font-bold transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="local_shipping">local_shipping</span>
+<span>Physical Sample (₹250)</span>
+</button>
+<button class="py-2.5 px-3 rounded-lg border border-outline-variant text-on-surface hover:bg-surface-container text-label-md font-label-md font-bold transition-all flex items-center justify-center gap-1.5 active:scale-[0.98]" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="share">share</span>
+<span>Share Lot Spec</span>
+</button>
+</div>
+</div>
+<!-- Guarantee Fine-print -->
+<div class="flex items-center gap-2 text-center justify-center text-label-sm font-label-sm text-outline pt-2">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="verified">verified</span>
+<span>48-hr full refund if produce differs from NABL Assay #NQL-9042</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- TRUST CERTIFICATION FOOTER -->
+<footer class="bg-surface-container border-t border-outline-variant/30 mt-space-xl py-space-md">
+<div class="max-w-7xl mx-auto px-margin-desktop flex flex-col md:flex-row items-center justify-between gap-4 text-on-surface-variant">
+<div class="flex flex-wrap items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="shield">shield</span>
+<span class="text-label-md font-label-md font-bold">WDRA Certified Warehouse</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="gavel">gavel</span>
+<span class="text-label-md font-label-md font-bold">e-NAM Protocol Compliant</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="account_balance">account_balance</span>
+<span class="text-label-md font-label-md font-bold">ICICI Escrow Trustee Service</span>
+</div>
+</div>
+<div class="text-label-sm font-label-sm text-outline">
+        © 2024 CropSense AI • Ministry of Agriculture &amp; Farmers Welfare Integrated
+      </div>
+</div>
+</footer>
+<!-- SCRIPT FOR CALCULATOR LOGIC & SELECTION -->
+<script>
+    const pricePerQtl = 2450;
+    let currentQty = 40;
+    let currentDepositRatio = 0.20;
+
+    const qtyInput = document.getElementById('quantityInput');
+    const calcQtl = document.getElementById('calcQtl');
+    const baseValueDisplay = document.getElementById('baseValueDisplay');
+    const advanceDueDisplay = document.getElementById('advanceDueDisplay');
+    const balanceDueDisplay = document.getElementById('balanceDueDisplay');
+    const buttonText = document.getElementById('buttonText');
+    const depositPercentLabel = document.getElementById('depositPercentLabel');
+
+    function updateCalculations() {
+      const baseValue = currentQty * pricePerQtl;
+      const advanceDue = Math.round(baseValue * currentDepositRatio);
+      const balanceDue = baseValue - advanceDue;
+
+      calcQtl.textContent = currentQty;
+      baseValueDisplay.textContent = '₹' + baseValue.toLocaleString('en-IN');
+      advanceDueDisplay.textContent = '₹' + advanceDue.toLocaleString('en-IN');
+      balanceDueDisplay.textContent = '₹' + balanceDue.toLocaleString('en-IN');
+      buttonText.textContent = `Lock Price & Book Escrow (₹${advanceDue.toLocaleString('en-IN')})`;
+      depositPercentLabel.textContent = `${Math.round(currentDepositRatio * 100)}% Deposit`;
+    }
+
+    function setQuantity(q) {
+      currentQty = Math.max(10, Math.min(85, q));
+      qtyInput.value = currentQty;
+      updateCalculations();
+    }
+
+    function setDeposit(ratio, el) {
+      currentDepositRatio = ratio;
+      document.querySelectorAll('.deposit-btn').forEach(btn => {
+        btn.classList.remove('border-2', 'border-primary', 'bg-primary-container', 'text-white');
+        btn.classList.add('border', 'border-outline-variant', 'bg-surface-container-low', 'text-on-surface');
+      });
+      el.classList.remove('border', 'border-outline-variant', 'bg-surface-container-low', 'text-on-surface');
+      el.classList.add('border-2', 'border-primary', 'bg-primary-container', 'text-white');
+      updateCalculations();
+    }
+
+    qtyInput.addEventListener('input', (e) => {
+      let val = parseInt(e.target.value) || 10;
+      if (val > 85) val = 85;
+      if (val < 1) val = 1;
+      currentQty = val;
+      updateCalculations();
+    });
+
+    // Initial render
+    updateCalculations();
+  </script>
+</body></html>

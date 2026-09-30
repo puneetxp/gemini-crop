@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Krishi Command Center</title>
+<!-- Material Symbols Outlined -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration with Design Tokens -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#fe932c",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-primary-fixed-variant": "#00513b",
+            "on-tertiary-fixed": "#002113",
+            "on-secondary": "#ffffff",
+            "surface-container-high": "#e9e8e4",
+            "on-error-container": "#93000a",
+            "primary-fixed-dim": "#8bd6b6",
+            "surface-variant": "#e3e2df",
+            "outline-variant": "#bec9c2",
+            "on-tertiary-fixed-variant": "#005236",
+            "secondary": "#904d00",
+            "outline": "#6f7973",
+            "on-surface-variant": "#3f4944",
+            "inverse-surface": "#2f312e",
+            "surface-dim": "#dbdad6",
+            "on-primary-container": "#8bd6b7",
+            "on-background": "#1b1c1a",
+            "inverse-primary": "#8bd6b6",
+            "surface-bright": "#faf9f5",
+            "primary-fixed": "#a6f2d1",
+            "on-tertiary-container": "#50e0a4",
+            "error": "#ba1a1a",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e3e2df",
+            "tertiary-container": "#006041",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-secondary-container": "#663500",
+            "primary": "#004532",
+            "on-primary": "#ffffff",
+            "primary-container": "#065f46",
+            "surface-container-low": "#f4f4f0",
+            "on-primary-fixed": "#002116",
+            "tertiary-fixed": "#6ffbbe",
+            "surface": "#faf9f5",
+            "on-secondary-fixed": "#2f1500",
+            "background": "#faf9f5",
+            "surface-tint": "#1b6b51",
+            "secondary-fixed": "#ffdcc3",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#f2f1ed",
+            "on-surface": "#1b1c1a"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "2rem",
+            "margin-desktop": "3rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin": "1rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "2rem",
+            "space-xl": "2.25rem",
+            "gutter-tablet": "1.5rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "headline-sm": ["1.125rem", { lineHeight: "1.625rem", fontWeight: "600" }],
+            "headline-lg-mobile": ["1.625rem", { lineHeight: "2.125rem", letterSpacing: "-0.015em", fontWeight: "700" }],
+            "label-md": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "headline-lg": ["2rem", { lineHeight: "2.5rem", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "display-lg": ["2.5rem", { lineHeight: "3rem", letterSpacing: "-0.03em", fontWeight: "800" }],
+            "body-sm": ["0.875rem", { lineHeight: "1.25rem", fontWeight: "500" }],
+            "body-md": ["1rem", { lineHeight: "1.5rem", fontWeight: "400" }],
+            "label-sm": ["0.6875rem", { lineHeight: "0.875rem", letterSpacing: "0.05em", fontWeight: "700" }],
+            "label-lg": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.02em", fontWeight: "600" }],
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", fontWeight: "400" }],
+            "title-md": ["1rem", { lineHeight: "1.5rem", fontWeight: "600" }],
+            "headline-md": ["1.375rem", { lineHeight: "1.875rem", letterSpacing: "-0.01em", fontWeight: "600" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined' !important;
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen selection:bg-primary selection:text-white">
+<!-- Application Layout Root -->
+<div class="flex min-h-screen">
+<!-- DESKTOP LEFT SIDEBAR -->
+<aside class="hidden lg:flex flex-col w-72 bg-surface-container-lowest border-r border-outline-variant/30 min-h-screen shrink-0 justify-between p-5 sticky top-0 h-screen z-30">
+<!-- Top Brand & Nav Cluster -->
+<div class="space-y-6">
+<!-- Brand Header -->
+<div class="flex items-center gap-3 px-2 py-1">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-sm shadow-primary/20">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="px-1.5 py-0.5 rounded-full text-[10px] font-bold bg-primary-container text-on-primary tracking-wider">PRO</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline font-medium tracking-wide">Krishi Command Center</p>
+</div>
+</div>
+<!-- Navigation Menu -->
+<nav class="space-y-1.5">
+<!-- Active Nav Item: Dashboard -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-primary text-white shadow-sm shadow-primary/20 transition-all font-label-lg text-label-lg" href="screen_desktop_dashboard.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">home</span>
+<span>Dashboard</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span>
+</a>
+<!-- Plots & Land -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">grid_view</span>
+<span>My Farms &amp; Plots</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">18.5 Ac</span>
+</a>
+<!-- Crop Diagnostics -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_diagnose.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">psychiatry</span>
+<span>Crop Diagnostics</span>
+</div>
+<span class="px-2 py-0.5 rounded-md bg-tertiary/10 text-primary font-label-sm text-label-sm font-bold">Vision AI</span>
+</a>
+<!-- Mandi & Escrow -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_booking.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">storefront</span>
+<span>Marketplace &amp; Escrow</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-secondary/10 text-secondary font-label-sm text-label-sm font-bold">1 Active</span>
+</a>
+<!-- Pashu / Livestock -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_livestock.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">pets</span>
+<span>Pashu Hub</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-sm text-label-sm">8 Cattle</span>
+</a>
+<!-- Satellite Analytics -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_soil_satellite.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">satellite_alt</span>
+<span>Soil &amp; Satellite</span>
+</div>
+<span class="px-2 py-0.5 rounded-md bg-primary-fixed/40 text-primary font-label-sm text-label-sm font-semibold">Sentinel-2</span>
+</a>
+<!-- Weather & Advisory -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">calendar_month</span>
+<span>Annual Strategy</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<!-- Platform Settings -->
+<a class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-colors font-label-lg text-label-lg group" href="#settings">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl text-outline group-hover:text-primary transition-colors">tune</span>
+<span>Settings &amp; Sync</span>
+</div>
+</a>
+</nav>
+</div>
+<!-- Bottom Sidebar Footers & Widgets -->
+<div class="space-y-4 pt-4 border-t border-outline-variant/30">
+<!-- AI Quota Card -->
+<div class="bg-surface-container-low p-3.5 rounded-2xl border border-outline-variant/30 space-y-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base text-primary">bolt</span> AI Quota
+            </span>
+<span class="font-label-sm text-label-sm font-bold text-primary">85% Used</span>
+</div>
+<!-- Linear Meter -->
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full transition-all duration-500" style="width: 85%"></div>
+</div>
+<p class="font-label-sm text-label-sm text-outline">128 of 150 vision queries remaining this month.</p>
+</div>
+<!-- Farmer Profile Snippet -->
+<div class="flex items-center justify-between p-2 rounded-2xl bg-white border border-outline-variant/20 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-10 h-10 rounded-xl object-cover border border-outline-variant/40" data-alt="Warm documentary portrait of a proud 45-year-old Indian progressive farmer smiling outdoors near agricultural fields during golden hour daylight, wearing a crisp cotton kurta, authentic and dignified agrarian setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3B1fF9bdsEilZDyJ2b7hefPj8CBtfZh9dTSSh-Q-CUlsMK9bhk_v6sY3yGq0AtuHzws7rW4iaVmDFcz1AX4AWoUbLLOgWMziGzqwLGcTSVLIX3Q77EzFAb8IvRZPGHscDAIf9Ob8d40VSFI_adRu4MymeiZI0BsmNho6vhlH9ip0jungY4sK_2bD6fRR4SgnFuuIsrq-4YOzOl72lzoc4C2Dp6j5x5hUffiiZB0FVh9LdM4ND3MRvhoZK46GRidhZlC8pqStMbxA"/>
+<span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-white"></span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg font-bold text-on-surface leading-tight">Ramesh Patil</p>
+<p class="font-label-sm text-label-sm text-outline">ID #MH-2894 • Nashik</p>
+</div>
+</div>
+<button class="p-1.5 rounded-lg text-outline hover:text-primary hover:bg-surface-container-low transition-colors" title="Farmer profile menu">
+<span class="material-symbols-outlined text-lg">more_vert</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN BODY AREA (Header + Content) -->
+<div class="flex-1 flex flex-col min-w-0 pb-24 lg:pb-10">
+<!-- STICKY TOP APP BAR (Shared Anchor aligned) -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md shadow-sm">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+<!-- Left: Mobile Menu + Farm Selector -->
+<div class="flex items-center gap-3">
+<button class="lg:hidden p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Toggle mobile navigation">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<!-- Farm Parcel Selector Pill -->
+<div class="relative group">
+<button class="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 shadow-sm hover:border-primary transition-all">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">spa</span>
+<div class="text-left hidden sm:block">
+<p class="font-label-md text-label-md font-bold text-on-surface leading-none">Krishna Valley Farm</p>
+<p class="font-label-sm text-label-sm text-outline leading-tight mt-0.5">18.5 Ac • Nashik, MH</p>
+</div>
+<div class="text-left sm:hidden">
+<p class="font-label-md text-label-md font-bold text-on-surface leading-none">Krishna Valley</p>
+</div>
+<span class="material-symbols-outlined text-outline text-lg group-hover:rotate-180 transition-transform">expand_more</span>
+</button>
+</div>
+<!-- Satellite Telemetry Status Pill -->
+<div class="hidden xl:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/60 text-emerald-800 font-label-sm text-label-sm font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Sentinel-2B • 2h sync
+            </div>
+</div>
+<!-- Middle: Universal Krishi Search Input -->
+<div class="hidden md:flex flex-1 max-w-md mx-2">
+<div class="relative w-full">
+<span class="absolute inset-y-0 left-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-xl">search</span>
+</span>
+<input class="w-full pl-10 pr-12 py-2 text-body-sm font-body-sm bg-surface-container-lowest border border-outline-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-primary/20 placeholder:text-outline transition-all outline-none" placeholder="Search plots, crop diseases, mandi prices, mandi lots..." type="text"/>
+<span class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+<kbd class="px-1.5 py-0.5 rounded bg-surface-container text-outline font-label-sm text-[10px] font-bold border border-outline-variant/40">⌘K</kbd>
+</span>
+</div>
+</div>
+<!-- Right: Telemetry, Language, Notifications, Voice Trigger -->
+<div class="flex items-center gap-2 sm:gap-3">
+<!-- Weather Micro-telemetry Pill -->
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-surface-container-low border border-outline-variant/30 text-on-surface font-label-md text-label-md">
+<span class="material-symbols-outlined text-amber-500 text-lg" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span class="font-bold">28°C</span>
+<span class="text-outline text-xs hidden lg:inline">• 65% RH • 12 km/h</span>
+</div>
+<!-- Language Pill Switcher -->
+<button class="px-2.5 py-1.5 rounded-xl bg-surface-container-lowest border border-outline-variant/40 text-primary font-label-md text-label-md font-bold hover:bg-surface-container-high transition-colors">
+              हिंदी / मराठी / EN
+            </button>
+<!-- Notifications Bell -->
+<button class="relative p-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors" title="Agronomic alerts">
+<span class="material-symbols-outlined text-2xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 flex h-4 w-4 items-center justify-center rounded-full bg-secondary-container text-white text-[10px] font-bold ring-2 ring-white">2</span>
+</button>
+<!-- Multimodal Voice AI Trigger Pill -->
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-primary text-white shadow-md shadow-primary/25 hover:bg-primary-container active:scale-95 transition-all font-label-md text-label-md font-bold">
+<span class="material-symbols-outlined text-lg animate-pulse">mic</span>
+<span class="hidden sm:inline">Voice AI</span>
+</button>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT DASHBOARD CANVAS -->
+<main class="max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 space-y-6">
+<!-- ROW 1: PRIMARY AGRICULTURAL TELEMETRY METRICS CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Metric 1: Sentinel-2 NDVI Index -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-outline uppercase tracking-wider">NDVI Health Index</span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span> Top 5%
+              </span>
+</div>
+<div class="flex items-baseline gap-3 my-1">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tight">0.81</span>
+<span class="font-label-md text-label-md font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded flex items-center">
+<span class="material-symbols-outlined text-base">trending_up</span> +0.04 wk
+              </span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-medium">Lush Vigour • Sharbati Wheat canopy</p>
+<!-- Progress / Gauge Line -->
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span>Sentinel-2 Multispectral</span>
+<span class="text-primary font-bold">Optimal Range</span>
+</div>
+</div>
+<!-- Metric 2: Soil Moisture & Sensor Depth -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-outline uppercase tracking-wider">Rootzone Moisture</span>
+<span class="px-2 py-0.5 rounded-full bg-blue-100 text-blue-800 font-label-sm text-label-sm font-bold">15-30cm Depth</span>
+</div>
+<div class="flex items-baseline gap-3 my-1">
+<span class="font-display-lg text-display-lg font-bold text-on-surface tracking-tight">42.4%</span>
+<span class="font-label-md text-label-md font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">Moist</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-medium">NPK: Low N (210) • Med P • High K</p>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-sm text-blue-600">water_drop</span> Drip line idle</span>
+<span class="text-on-surface font-semibold">Next cycle: 40m</span>
+</div>
+</div>
+<!-- Metric 3: Active Crop Phenology Stage -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-outline uppercase tracking-wider">Crop Stage</span>
+<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-label-sm text-label-sm font-bold">Flowering</span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">Day 45</span>
+<span class="text-outline font-body-md text-body-md">/ 110 Days</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-medium">Sharbati Wheat • Plot A (4.5 Ha)</p>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span>Est. Yield: 48 Qtl</span>
+<span class="text-emerald-700 font-bold">+8% vs LY</span>
+</div>
+</div>
+<!-- Metric 4: Mandi Escrow & Liquidity -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-sm relative overflow-hidden flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-md text-label-md font-bold text-outline uppercase tracking-wider">Contract Escrow</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container/20 text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">lock</span> Protected
+              </span>
+</div>
+<div class="flex items-baseline gap-2 my-1">
+<span class="font-display-lg text-display-lg font-bold text-primary tracking-tight">₹2,65,000</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant font-medium">Mandi Contract #BK-8924 • Vashi</p>
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-outline font-label-sm text-label-sm">
+<span>Demand Index: 92/100</span>
+<span class="text-primary font-bold">Net Margin: +18%</span>
+</div>
+</div>
+</section>
+<!-- ROW 2: CORE BENTO GRID - PRIMARY TELEMETRY (2 Cols) + INTELLIGENCE (1 Col) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- ==================== LEFT 2 COLUMNS: PRIMARY AGRI TELEMETRY ==================== -->
+<div class="lg:col-span-2 space-y-6">
+<!-- CARD 1: SATELLITE FIELD TELEMETRY & INTERACTIVE NDVI HEATMAP VIEWER -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm overflow-hidden">
+<!-- Card Header -->
+<div class="p-5 border-b border-outline-variant/20 flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Satellite Multispectral Telemetry</h2>
+<span class="px-2 py-0.5 rounded-md bg-surface-container text-outline font-label-sm text-label-sm">10m Resolution</span>
+</div>
+<p class="font-body-sm text-body-sm text-outline mt-0.5">Plot A - Sharbati Wheat • 4.5 Ha • Sentinel-2B Real-time Pass</p>
+</div>
+<!-- Layer Pills -->
+<div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-xl border border-outline-variant/30 text-xs font-semibold">
+<button class="px-2.5 py-1 rounded-lg bg-primary text-white shadow-xs">NDVI Vegetative</button>
+<button class="px-2.5 py-1 rounded-lg text-outline hover:text-on-surface transition-colors">NDMI Moisture</button>
+<button class="px-2.5 py-1 rounded-lg text-outline hover:text-on-surface transition-colors">Chlorophyll</button>
+<button class="px-2.5 py-1 rounded-lg text-outline hover:text-on-surface transition-colors hidden sm:block">RGB True</button>
+</div>
+</div>
+<!-- Satellite Image Canvas Container -->
+<div class="relative w-full h-80 sm:h-96 bg-surface-container-high overflow-hidden group">
+<!-- Using DATA IMAGE placeholder as designated -->
+<img alt="Satellite imagery of crop parcels with NDVI overlay" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UdFwQ4X8gFM6Ejsw5_oC-6Y1I724EbIsWtRTQVqNFNmFxoMl_tegkfidsOatnOB5_26TkOugX26CyH3DGYWAOEGakS56cx6MbV6i0ZRmJB5jBTav6z5KvSFA8rTfqTqY0Z2Ok7smOnAp3aVWJTkim4xdJRPKVO1-rO3vnDoUUlAqvlclI8Jvf4TDM1cPGc2wD19CaqgdFVFtG4EFN5ao6HGZeB7S1B2O82nwTgMBscVqVT5QuWaxhGMn8"/>
+<!-- Telemetry Top HUD Overlay -->
+<div class="absolute top-3 left-3 bg-inverse-surface/85 backdrop-blur-md text-inverse-on-surface px-3 py-2 rounded-xl text-xs space-y-1 shadow-md border border-white/10">
+<div class="flex items-center gap-2 font-bold tracking-wide">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>COORDINATES: 20.0112° N, 73.7902° E</span>
+</div>
+<div class="text-white/70 font-mono text-[11px]">BAND: B08 NIR (842nm) / B04 Red (665nm)</div>
+</div>
+<!-- Live Map Tool Control Overlay (Top Right) -->
+<div class="absolute top-3 right-3 flex flex-col gap-1.5 bg-inverse-surface/85 backdrop-blur-md p-1 rounded-xl border border-white/10 text-inverse-on-surface">
+<button class="p-1.5 hover:bg-white/20 rounded-lg transition-colors" title="Zoom in">
+<span class="material-symbols-outlined text-lg">add</span>
+</button>
+<button class="p-1.5 hover:bg-white/20 rounded-lg transition-colors" title="Zoom out">
+<span class="material-symbols-outlined text-lg">remove</span>
+</button>
+<button class="p-1.5 hover:bg-white/20 rounded-lg transition-colors" title="Layers">
+<span class="material-symbols-outlined text-lg">layers</span>
+</button>
+<button class="p-1.5 hover:bg-white/20 rounded-lg transition-colors" title="Full screen">
+<span class="material-symbols-outlined text-lg">fullscreen</span>
+</button>
+</div>
+<!-- Field Pin Overlay with Telemetry Tooltip -->
+<div class="absolute bottom-14 left-1/3 transform -translate-x-1/2 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-xl shadow-lg border border-outline-variant/40 flex items-center gap-3">
+<div class="w-3 h-3 rounded-full bg-emerald-600 ring-4 ring-emerald-200"></div>
+<div>
+<div class="font-label-md text-label-md font-bold text-on-surface">Zone B-North (Dense Biomass)</div>
+<div class="font-label-sm text-label-sm text-emerald-800 font-semibold">NDVI: 0.84 • Moisture: 44.1%</div>
+</div>
+</div>
+<!-- NDVI Scale Bar (Bottom Overlay) -->
+<div class="absolute bottom-3 inset-x-3 sm:inset-x-6 bg-inverse-surface/90 backdrop-blur-md px-4 py-2.5 rounded-xl border border-white/10 text-white flex flex-col sm:flex-row items-center justify-between gap-2">
+<div class="flex items-center gap-2 font-label-sm text-label-sm font-bold">
+<span>NDVI Index Scale:</span>
+<span class="text-white/70">Current Average 0.81</span>
+</div>
+<div class="flex items-center gap-2 w-full sm:w-64">
+<span class="text-[10px] text-white/70 font-mono">-0.2 (Bare)</span>
+<div class="h-2.5 flex-1 rounded-full bg-gradient-to-r from-red-600 via-amber-400 to-emerald-500 relative">
+<!-- Indicator Marker at 0.81 (~85%) -->
+<span class="absolute -top-1 left-[85%] w-1.5 h-4.5 bg-white border border-black rounded shadow"></span>
+</div>
+<span class="text-[10px] text-white/70 font-mono">+1.0 (Vigour)</span>
+</div>
+</div>
+</div>
+<!-- Action Bar Footer -->
+<div class="p-4 bg-surface-container-low flex flex-wrap items-center justify-between gap-3 text-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-700 text-lg">check_circle</span>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Cloud Coverage: 0.0% • Next Satellite Overpass: Friday 11:42 AM</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3 py-1.5 rounded-xl bg-white border border-outline-variant/40 hover:border-primary text-on-surface font-label-md text-label-md font-bold transition-all shadow-xs flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">history</span> Historical Compare
+                  </button>
+<button class="px-3.5 py-1.5 rounded-xl bg-primary text-white hover:bg-primary-container font-label-md text-label-md font-bold transition-all shadow-xs flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base">flight</span> Drone High-Res Scan
+                  </button>
+</div>
+</div>
+</div>
+<!-- CARD 2: ACTIVE ADVANCE BOOKING & CONTRACT MILESTONE ESCROW TRACKER -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-6 space-y-5">
+<!-- Header -->
+<div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-outline-variant/20">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container/20 text-on-secondary-container font-label-sm text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">verified</span> Escrow Contract #BK-8924
+                    </span>
+<span class="text-xs text-outline font-medium">APMC Certified Digital Lot</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Sharbati Premium Wheat (100 Quintals)</h3>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">₹2,65,000 Total Value</span>
+<p class="font-label-sm text-label-sm text-outline">Buyer: Green Agro Mills Ltd. (Verified GSTIN)</p>
+</div>
+</div>
+<!-- Interactive Milestone Stepper -->
+<div class="space-y-3">
+<div class="flex items-center justify-between text-xs font-bold text-outline">
+<span>DISBURSEMENT PROGRESS (60% COMPLETED)</span>
+<span class="text-primary font-bold">Milestone 3 of 4 Active</span>
+</div>
+<!-- Stepper Nodes Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-4 gap-3 relative">
+<!-- Step 1: Completed -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-emerald-300/60 space-y-1 relative">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-sm">check</span>
+</span>
+<span class="font-label-sm text-label-sm text-emerald-800 font-bold">₹53,000 Disbursed</span>
+</div>
+<p class="font-label-md text-label-md font-bold text-on-surface mt-2">1. Advance Match</p>
+<p class="font-label-sm text-label-sm text-outline">Signed Oct 02</p>
+</div>
+<!-- Step 2: Completed -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-emerald-300/60 space-y-1 relative">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-sm">check</span>
+</span>
+<span class="font-label-sm text-label-sm text-emerald-800 font-bold">₹53,000 Disbursed</span>
+</div>
+<p class="font-label-md text-label-md font-bold text-on-surface mt-2">2. Farm Inspection</p>
+<p class="font-label-sm text-label-sm text-outline">Passed Oct 08</p>
+</div>
+<!-- Step 3: CURRENT ACTION NEEDED -->
+<div class="p-3 rounded-xl bg-emerald-50 border-2 border-primary space-y-1 relative ring-2 ring-primary/20">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs animate-bounce">
+                        3
+                      </span>
+<span class="font-label-sm text-label-sm bg-primary text-white px-1.5 py-0.5 rounded font-bold">Action Needed</span>
+</div>
+<p class="font-label-md text-label-md font-bold text-primary mt-2">3. Quality &amp; Assay</p>
+<p class="font-label-sm text-label-sm text-primary/80 font-medium">₹1,06,000 in Escrow</p>
+</div>
+<!-- Step 4: Scheduled -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/30 space-y-1 opacity-70">
+<div class="flex items-center justify-between">
+<span class="w-6 h-6 rounded-full bg-surface-variant text-outline flex items-center justify-center font-bold text-xs">
+                        4
+                      </span>
+<span class="font-label-sm text-label-sm text-outline">₹53,000 Final</span>
+</div>
+<p class="font-label-md text-label-md font-bold text-on-surface mt-2">4. Weighbridge Gate</p>
+<p class="font-label-sm text-label-sm text-outline">Scheduled Oct 15</p>
+</div>
+</div>
+</div>
+<!-- Assay Technical Summary Chips -->
+<div class="bg-surface-container-low p-4 rounded-xl space-y-3">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md font-bold text-on-surface flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-base">biotech</span>
+                    NABL Lab Quality Assay Report (#Q-9824)
+                  </span>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">Grade A+ Approved</span>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+<div class="bg-white p-2 rounded-lg border border-outline-variant/30">
+<span class="text-outline">Moisture:</span>
+<p class="font-bold text-on-surface">11.2% <span class="text-emerald-700 text-[10px]">(Max 12%)</span></p>
+</div>
+<div class="bg-white p-2 rounded-lg border border-outline-variant/30">
+<span class="text-outline">Protein:</span>
+<p class="font-bold text-on-surface">13.8% <span class="text-emerald-700 text-[10px]">(High)</span></p>
+</div>
+<div class="bg-white p-2 rounded-lg border border-outline-variant/30">
+<span class="text-outline">Foreign Matter:</span>
+<p class="font-bold text-on-surface">0.4% <span class="text-emerald-700 text-[10px]">(Clean)</span></p>
+</div>
+<div class="bg-white p-2 rounded-lg border border-outline-variant/30">
+<span class="text-outline">Gluten Content:</span>
+<p class="font-bold text-on-surface">28.4% <span class="text-emerald-700 text-[10px]">(Bakery Spec)</span></p>
+</div>
+</div>
+</div>
+<!-- Action Confirmation Buttons -->
+<div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+<button class="px-4 py-2.5 rounded-xl bg-white border border-outline-variant/40 hover:border-primary text-on-surface font-label-md text-label-md font-bold transition-all shadow-xs flex items-center gap-2">
+<span class="material-symbols-outlined text-base">description</span> View Digital Legal Contract (E-Sign)
+                </button>
+<button class="px-5 py-2.5 rounded-xl bg-primary text-white hover:bg-primary-container font-label-md text-label-md font-bold transition-all shadow-md shadow-primary/25 flex items-center gap-2">
+<span class="material-symbols-outlined text-base">lock_open</span> Approve Milestone Release (₹1,06,000)
+                </button>
+</div>
+</div>
+<!-- CARD 3: LIVE APMC MANDI RATES & 7-DAY PRICE FORECAST -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-6 space-y-4">
+<div class="flex flex-wrap items-center justify-between gap-2">
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Live APMC Mandi Benchmark</h3>
+<p class="font-body-sm text-body-sm text-outline">Nashik &amp; Vashi Agricultural Produce Market Committee</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 font-label-sm text-label-sm font-bold border border-emerald-200">
+                    Govt MSP: ₹2,275 / Qtl
+                  </span>
+<span class="px-2.5 py-1 rounded-full bg-primary text-white font-label-sm text-label-sm font-bold">
+                    Market: ₹2,650 / Qtl (+₹375 Premium)
+                  </span>
+</div>
+</div>
+<!-- Visual 7-Day Trend Chart Simulation -->
+<div class="bg-surface-container-low p-4 rounded-xl space-y-3">
+<div class="flex items-center justify-between text-xs font-bold text-outline">
+<span>7-DAY PRICE MOMENTUM (₹ / QUINTAL)</span>
+<span class="text-emerald-700 flex items-center"><span class="material-symbols-outlined text-sm">trending_up</span> +3.8% Weekly Rally</span>
+</div>
+<!-- Bar Chart Trend -->
+<div class="grid grid-cols-7 gap-2 items-end h-28 pt-4 pb-1">
+<!-- Mon -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,510</span>
+<div class="w-full bg-emerald-200 rounded-t h-[65%]"></div>
+<span class="text-[10px] text-outline">Mon</span>
+</div>
+<!-- Tue -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,530</span>
+<div class="w-full bg-emerald-200 rounded-t h-[70%]"></div>
+<span class="text-[10px] text-outline">Tue</span>
+</div>
+<!-- Wed -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,560</span>
+<div class="w-full bg-emerald-300 rounded-t h-[75%]"></div>
+<span class="text-[10px] text-outline">Wed</span>
+</div>
+<!-- Thu -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,590</span>
+<div class="w-full bg-emerald-400 rounded-t h-[80%]"></div>
+<span class="text-[10px] text-outline">Thu</span>
+</div>
+<!-- Fri -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,610</span>
+<div class="w-full bg-emerald-400 rounded-t h-[85%]"></div>
+<span class="text-[10px] text-outline">Fri</span>
+</div>
+<!-- Sat -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-outline font-bold">2,630</span>
+<div class="w-full bg-primary-container rounded-t h-[92%]"></div>
+<span class="text-[10px] text-outline">Sat</span>
+</div>
+<!-- Today -->
+<div class="flex flex-col items-center gap-1.5 h-full justify-end">
+<span class="text-[10px] text-primary font-bold">2,650</span>
+<div class="w-full bg-primary rounded-t h-[98%] shadow-xs"></div>
+<span class="text-[10px] text-primary font-bold">Today</span>
+</div>
+</div>
+</div>
+<!-- Buyer Bids Table Snippet -->
+<div class="space-y-2">
+<span class="font-label-sm text-label-sm font-bold text-outline uppercase tracking-wider">Active Verified Miller Bids (3 Live)</span>
+<div class="space-y-1.5">
+<div class="p-2.5 rounded-xl bg-white border border-outline-variant/30 flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-bold text-on-surface">Maharashtra Agro Processors</span>
+<span class="text-outline">• Vashi Mandi (Pickup Farmgate)</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-bold text-primary text-sm">₹2,655 / Qtl</span>
+<button class="px-2.5 py-1 bg-surface-container hover:bg-primary hover:text-white rounded-lg font-bold transition-all">Sell 50 Qtl</button>
+</div>
+</div>
+<div class="p-2.5 rounded-xl bg-white border border-outline-variant/30 flex items-center justify-between text-xs">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-bold text-on-surface">Godavari Roller Flour Mills</span>
+<span class="text-outline">• Nashik Hub</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="font-bold text-on-surface text-sm">₹2,640 / Qtl</span>
+<button class="px-2.5 py-1 bg-surface-container hover:bg-primary hover:text-white rounded-lg font-bold transition-all">Sell 25 Qtl</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ==================== RIGHT 1 COLUMN: INTELLIGENCE & ADVISORY ==================== -->
+<div class="lg:col-span-1 space-y-6">
+<!-- CARD 1: WEATHER ADVISORY & SEVERE HARVEST ALERTS -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-2xl">thunderstorm</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">IMD Weather Telemetry</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-900 font-label-sm text-label-sm font-bold">Advisory Active</span>
+</div>
+<!-- Severe Outbreak Alert Box -->
+<div class="p-3.5 rounded-xl bg-amber-50/80 border border-amber-300 text-amber-950 space-y-2">
+<div class="flex items-center gap-2 font-bold text-xs uppercase tracking-wide text-amber-900">
+<span class="material-symbols-outlined text-base text-amber-600">warning</span>
+<span>Fall Armyworm Outbreak Alert</span>
+</div>
+<p class="font-body-sm text-body-sm leading-relaxed">
+                  Larval clusters detected within a <strong>5km radius (Niphad cluster)</strong>. Inspect whorls and lower wheat/corn leaf axils before nightfall.
+                </p>
+<div class="flex items-center gap-2 pt-1 font-label-sm text-label-sm">
+<span class="text-amber-800 font-bold">Recommended:</span>
+<span>Spray Neem Oil (1500 ppm) or Chlorantraniliprole</span>
+</div>
+</div>
+<!-- 3-Day Forecast Strip -->
+<div class="space-y-2">
+<span class="font-label-sm text-label-sm font-bold text-outline uppercase tracking-wider">3-Day Microclimate</span>
+<div class="grid grid-cols-3 gap-2 text-center text-xs">
+<div class="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="text-outline font-medium">Tomorrow</span>
+<p class="font-bold text-on-surface text-sm mt-1">29°C / 19°C</p>
+<span class="text-emerald-700 font-bold mt-1 block">0mm Rain</span>
+</div>
+<div class="p-2.5 rounded-xl bg-amber-50/60 border border-amber-200">
+<span class="text-amber-900 font-bold">Wednesday</span>
+<p class="font-bold text-amber-950 text-sm mt-1">26°C / 17°C</p>
+<span class="text-amber-800 font-bold mt-1 block">18mm Rain</span>
+</div>
+<div class="p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="text-outline font-medium">Thursday</span>
+<p class="font-bold text-on-surface text-sm mt-1">27°C / 18°C</p>
+<span class="text-emerald-700 font-bold mt-1 block">2mm Light</span>
+</div>
+</div>
+</div>
+<!-- Advisory Action Pill -->
+<div class="p-3 rounded-xl bg-surface-container-low border border-outline-variant/20 text-xs text-on-surface-variant flex items-center justify-between">
+<span>Postpone urea top-dressing ahead of Wednesday rains.</span>
+<span class="material-symbols-outlined text-outline">info</span>
+</div>
+</div>
+<!-- CARD 2: GEMINI 2.0 MULTIMODAL CROP DOCTOR -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-primary to-emerald-400 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-xl">psychiatry</span>
+</div>
+<div>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Gemini Crop Doctor</h3>
+<p class="font-label-sm text-label-sm text-outline">Vision &amp; Agronomist AI</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-label-sm text-label-sm font-bold">2.0 Flash</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+                Upload leaf photographs or ask soil fertilizer queries in <span class="font-bold text-on-surface">Hindi, Marathi, or English</span>.
+              </p>
+<!-- Quick Prompt Pills -->
+<div class="space-y-1.5">
+<button class="w-full text-left p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-xs text-on-surface font-medium border border-outline-variant/20 transition-colors flex items-center justify-between group">
+<span>🌾 How to treat leaf yellowing in Sharbati wheat?</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary transition-colors">arrow_forward</span>
+</button>
+<button class="w-full text-left p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-xs text-on-surface font-medium border border-outline-variant/20 transition-colors flex items-center justify-between group">
+<span>💧 Check optimal drip irrigation schedule for Plot A</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary transition-colors">arrow_forward</span>
+</button>
+<button class="w-full text-left p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-xs text-on-surface font-medium border border-outline-variant/20 transition-colors flex items-center justify-between group">
+<span>🧪 Calculate DAP &amp; Potash ratio for next top dress</span>
+<span class="material-symbols-outlined text-sm text-outline group-hover:text-primary transition-colors">arrow_forward</span>
+</button>
+</div>
+<!-- Multimodal Input Field -->
+<div class="relative pt-2">
+<div class="flex items-center gap-2 p-1.5 rounded-xl border border-outline-variant/50 bg-surface-container-low focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<button class="p-2 rounded-lg bg-white border border-outline-variant/30 text-outline hover:text-primary transition-colors" title="Upload leaf photo for disease diagnosis">
+<span class="material-symbols-outlined text-xl">photo_camera</span>
+</button>
+<input class="flex-1 bg-transparent border-none text-body-sm font-body-sm focus:ring-0 placeholder:text-outline text-on-surface outline-none" placeholder="बोलकर पूछें / Ask crop doctor..." type="text"/>
+<button class="p-2 rounded-lg bg-primary text-white hover:bg-primary-container transition-transform active:scale-95 shadow-sm" title="Start voice consultation">
+<span class="material-symbols-outlined text-xl">mic</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 3: PASHU & DAIRY HERD INTELLIGENCE SNAPSHOT -->
+<div class="bg-surface-container-lowest rounded-2xl border border-outline-variant/30 shadow-sm p-5 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-2xl">pets</span>
+<h3 class="font-headline-sm text-headline-sm font-bold text-on-surface">Pashu &amp; Dairy Telemetry</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-outline font-label-sm text-label-sm font-bold">8 Cattle Tagged</span>
+</div>
+<!-- Milk Production Today -->
+<div class="bg-surface-container-low p-3.5 rounded-xl space-y-2 border border-outline-variant/20">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm font-bold text-outline">TODAY'S MORNING YIELD</span>
+<span class="font-label-sm text-label-sm text-emerald-700 font-bold">+4.2L vs 7d avg</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-headline-lg font-bold text-on-surface">68.5 Litres</span>
+<span class="text-xs text-outline font-semibold">(Est. ₹2,740)</span>
+</div>
+<div class="flex items-center justify-between text-xs pt-1 border-t border-outline-variant/20">
+<span class="text-outline">Fat: <strong class="text-on-surface">4.35%</strong></span>
+<span class="text-outline">SNF: <strong class="text-on-surface">8.70%</strong></span>
+<span class="text-emerald-700 font-bold">Grade A Cooperative</span>
+</div>
+</div>
+<!-- Urgent Veterinary Vaccine Alert -->
+<div class="p-3 rounded-xl bg-red-50/80 border border-red-200 text-red-950 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-red-600 text-lg shrink-0 mt-0.5">medical_services</span>
+<div class="text-xs space-y-0.5">
+<strong class="font-bold">FMD Booster Due in 4 Days</strong>
+<p class="text-red-900/80">KVK Free Vaccination Camp at Niphad Sub-center on Thursday 10:00 AM.</p>
+</div>
+</div>
+<button class="w-full py-2 rounded-xl bg-white border border-outline-variant/40 hover:border-primary text-primary font-label-md text-label-md font-bold transition-all shadow-xs flex items-center justify-center gap-1.5">
+<span>Manage Cattle RFID &amp; Feed Records</span>
+<span class="material-symbols-outlined text-base">arrow_forward</span>
+</button>
+</div>
+<!-- CARD 4: QUICK ACTION TILES (3 Col Grid) -->
+<div class="grid grid-cols-3 gap-2">
+<button class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-sm transition-all flex flex-col items-center justify-center text-center group">
+<span class="material-symbols-outlined text-primary text-2xl group-hover:scale-110 transition-transform">filter_center_focus</span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface mt-1.5">Scan Leaf</span>
+</button>
+<button class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-sm transition-all flex flex-col items-center justify-center text-center group">
+<span class="material-symbols-outlined text-secondary text-2xl group-hover:scale-110 transition-transform">science</span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface mt-1.5">Soil Card</span>
+</button>
+<button class="p-3 rounded-xl bg-surface-container-lowest border border-outline-variant/30 hover:border-primary hover:shadow-sm transition-all flex flex-col items-center justify-center text-center group">
+<span class="material-symbols-outlined text-emerald-700 text-2xl group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-label-sm text-label-sm font-bold text-on-surface mt-1.5">New Mandi Lot</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- MOBILE BOTTOM NAVIGATION BAR (Shared Component Exact Anchor) -->
+<!-- Rendered on mobile (lg:hidden) as mandated by Shared Components JSON & Semantic Shell logic -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 w-full max-w-lg mx-auto z-50 bg-surface-container-lowest shadow-md border-t border-outline-variant/30">
+<div class="flex justify-around items-center px-space-xs py-space-xs">
+<!-- Tab 1: Home (Active State) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1.5 active:scale-95 transition-transform duration-150" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Home</span>
+</a>
+<!-- Tab 2: Doctor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 transition-transform duration-150" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-xl">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Tab 3: Voice -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 transition-transform duration-150" href="#voice">
+<span class="material-symbols-outlined text-xl">mic</span>
+<span class="text-label-sm font-label-sm mt-0.5">Voice</span>
+</a>
+<!-- Tab 4: Mandi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 transition-transform duration-150" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-xl">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Tab 5: Soil -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 transition-transform duration-150" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-xl">satellite_alt</span>
+<span class="text-label-sm font-label-sm mt-0.5">Soil</span>
+</a>
+</div>
+</nav>
+<!-- Interactive Voice & Micro-interactions Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Gentle keyboard shortcut support for Krishi Universal Search
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+          e.preventDefault();
+          const searchInput = document.querySelector('input[type="text"]');
+          if (searchInput) {
+            searchInput.focus();
+          }
+        }
+      });
+    });
+  </script>
+</body></html>

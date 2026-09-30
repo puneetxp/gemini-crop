@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI — Sub-Parcel Creation &amp; Cadastral Plot Demarcation</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f2f1ed",
+            "tertiary-container": "#006041",
+            "surface-tint": "#1b6b51",
+            "outline": "#6f7973",
+            "error-container": "#ffdad6",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-background": "#1b1c1a",
+            "on-secondary": "#ffffff",
+            "on-tertiary": "#ffffff",
+            "tertiary-fixed-dim": "#4edea3",
+            "secondary-fixed-dim": "#ffb77d",
+            "on-primary-fixed": "#002116",
+            "error": "#ba1a1a",
+            "surface-variant": "#e3e2df",
+            "surface-dim": "#dbdad6",
+            "surface": "#faf9f5",
+            "on-secondary-container": "#663500",
+            "on-surface-variant": "#3f4944",
+            "on-primary-fixed-variant": "#00513b",
+            "background": "#faf9f5",
+            "outline-variant": "#bec9c2",
+            "on-surface": "#1b1c1a",
+            "surface-container": "#efeeea",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-tertiary-fixed": "#002113",
+            "surface-container-low": "#f4f4f0",
+            "inverse-primary": "#8bd6b6",
+            "surface-bright": "#faf9f5",
+            "surface-container-highest": "#e3e2df",
+            "on-secondary-fixed": "#2f1500",
+            "on-error": "#ffffff",
+            "secondary": "#904d00",
+            "secondary-container": "#fe932c",
+            "surface-container-high": "#e9e8e4",
+            "on-primary": "#ffffff",
+            "primary": "#004532",
+            "surface-container-lowest": "#ffffff",
+            "tertiary-fixed": "#6ffbbe",
+            "primary-container": "#065f46",
+            "secondary-fixed": "#ffdcc3",
+            "on-primary-container": "#8bd6b7",
+            "on-tertiary-container": "#50e0a4",
+            "primary-fixed": "#a6f2d1",
+            "tertiary": "#00462e",
+            "inverse-surface": "#2f312e",
+            "on-secondary-fixed-variant": "#6e3900"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.25rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "3rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "gutter-tablet": "1.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "gutter-desktop": "2rem",
+            "margin-tablet": "2rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #faf9f5;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #6f7973;
+    }
+    /* Subtle pulse radar effect */
+    @keyframes radar-pulse {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      50% { transform: scale(1.08); opacity: 0.4; }
+      100% { transform: scale(0.95); opacity: 0.9; }
+    }
+    .animate-radar {
+      animation: radar-pulse 3s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed">
+<div class="flex flex-1 w-full min-h-screen overflow-hidden">
+<!-- ========================================== -->
+<!-- 1. LEFT NAVIGATION SIDEBAR (Agronomic Hub) -->
+<!-- ========================================== -->
+<aside class="w-64 bg-surface-container-lowest border-r border-outline-variant/30 flex-shrink-0 flex flex-col justify-between hidden lg:flex z-20">
+<div class="flex flex-col h-full overflow-y-auto custom-scrollbar">
+<!-- App Branding -->
+<div class="px-5 py-4 flex items-center justify-between border-b border-outline-variant/20">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="px-1.5 py-0.5 text-[9px] font-extrabold uppercase tracking-wider bg-tertiary-fixed text-on-tertiary-fixed rounded">PRO</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant font-medium">Agronomic OS • Nashik Hub</p>
+</div>
+</div>
+</div>
+<!-- Farm Switcher Dropdown Card -->
+<div class="p-3.5 mx-3 mt-3 rounded-xl bg-surface border border-outline-variant/40 shadow-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="storefront">storefront</span>
+<div>
+<p class="font-title-md text-[0.8125rem] text-primary font-bold leading-tight flex items-center gap-1">
+                  Krishna Valley Farm
+                  <span class="material-symbols-outlined text-primary text-[14px]" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</p>
+<p class="font-label-sm text-[11px] text-on-surface-variant">18.5 Ac • Gut #142 • Nashik, MH</p>
+</div>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1" title="Switch Farm">
+<span class="material-symbols-outlined text-[16px]" data-icon="unfold_more">unfold_more</span>
+</button>
+</div>
+</div>
+<!-- Agronomic Operations Navigation Items -->
+<nav class="mt-4 px-3 space-y-1">
+<div class="px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-outline">Agronomic Ops</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="grid_view">grid_view</span>
+<span>Dashboard</span>
+</a>
+<!-- Active Destination: My Farms & Plots -->
+<a class="flex items-center justify-between px-3 py-2 bg-primary-container text-on-primary font-body-sm text-body-sm font-semibold rounded-lg shadow-sm" href="screen_desktop_farm_detail.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[20px]" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span>My Farms &amp; Plots</span>
+</div>
+<span class="w-1.5 h-4 bg-tertiary-fixed rounded-full"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry">psychiatry</span>
+<span>Crop Diagnostics (Vision AI)</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite NDVI</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+<span>Marketplace &amp; Mandi</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_livestock.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="cruelty_free">cruelty_free</span>
+<span>Pashu &amp; Livestock Hub</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_weather.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="cloud">cloud</span>
+<span>Weather &amp; Spray Advisory</span>
+</a>
+<div class="pt-3 px-3 pb-1 text-[10px] font-bold uppercase tracking-wider text-outline">System &amp; Devices</div>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_menu.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="sensors">sensors</span>
+<span>IoT Sensors &amp; Valves</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant font-body-sm text-body-sm rounded-lg hover:bg-surface-container-high transition-colors" href="screen_desktop_security.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="settings">settings</span>
+<span>Settings &amp; Sync</span>
+</a>
+</nav>
+<!-- Spacer -->
+<div class="flex-1 min-h-[20px]"></div>
+<!-- Telemetry Quota Widget & Farmer Identity -->
+<div class="p-3 mx-3 mb-3 bg-surface-container rounded-xl border border-outline-variant/30 space-y-3">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant mb-1">
+<span class="flex items-center gap-1 font-semibold text-primary">
+<span class="material-symbols-outlined text-[14px]" data-icon="satellite_alt">satellite_alt</span>
+                Sentinel-2 Quota
+              </span>
+<span class="font-bold text-primary">84%</span>
+</div>
+<div class="w-full bg-outline-variant/30 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 84%;"></div>
+</div>
+<p class="text-[10px] text-outline mt-1">Next multispectral pass in 38h</p>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-xs">
+              RP
+            </div>
+<div class="overflow-hidden">
+<p class="font-label-lg text-[13px] font-bold text-on-surface truncate">Ramesh Patil</p>
+<p class="font-label-sm text-[10px] text-on-surface-variant truncate">#MH-LIV-409 • Nashik District</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- ========================================== -->
+<!-- 2. MAIN VIEWPORT & WORKSPACE -->
+<!-- ========================================== -->
+<main class="flex-1 flex flex-col h-screen overflow-hidden bg-surface">
+<!-- TOP APP BAR / CONTEXT HEADER -->
+<header class="bg-surface border-b border-outline-variant/30 px-4 md:px-6 py-2.5 flex-shrink-0 z-10">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<!-- Breadcrumb & Title -->
+<div>
+<div class="flex items-center gap-1.5 text-[11px] font-label-sm text-on-surface-variant">
+<span>Home</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span>My Farms</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span>Krishna Valley Farm</span>
+<span class="material-symbols-outlined text-[12px]" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-bold">Sub-Parcel Cadastral Wizard</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tight mt-0.5">
+              Demarcate New Sub-Parcel &amp; Bund Splitting
+            </h1>
+</div>
+<!-- Micro-Telemetry & Controls -->
+<div class="flex items-center gap-2.5 flex-wrap">
+<!-- Real-time Atmospheric Pill -->
+<div class="hidden sm:flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-label-md font-label-md text-on-surface-variant border border-outline-variant/30">
+<span class="flex items-center gap-1 text-primary font-semibold">
+<span class="material-symbols-outlined text-[16px]" data-icon="wb_sunny">wb_sunny</span> 28°C
+              </span>
+<span class="text-outline-variant">•</span>
+<span>62% RH</span>
+<span class="text-outline-variant">•</span>
+<span class="flex items-center gap-1 text-tertiary font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> AQI 42 (Clean)
+              </span>
+</div>
+<!-- Auto-save Pill -->
+<div class="flex items-center gap-1.5 px-2.5 py-1 bg-surface-container rounded-lg text-label-sm font-label-sm text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+<span>Synced 30s ago</span>
+</div>
+<!-- Language Switcher from Shared Components -->
+<button class="px-2.5 py-1 rounded-lg border border-outline-variant/40 bg-surface-container-lowest font-label-md text-label-md text-primary font-semibold hover:bg-surface-container transition-colors">
+              हिंदी / मराठी / EN
+            </button>
+<!-- Drone GeoJSON / KML Import -->
+<button class="flex items-center gap-1 px-3 py-1.5 bg-surface-container-lowest border border-primary text-primary font-label-md text-label-md rounded-lg hover:bg-surface-container transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="upload_file">upload_file</span>
+<span class="hidden md:inline">Import KML / GeoJSON</span>
+</button>
+</div>
+</div>
+<!-- 3-STEP WIZARD PROGRESS STEPPER -->
+<div class="mt-3 pt-2.5 border-t border-outline-variant/20 grid grid-cols-1 md:grid-cols-3 gap-2">
+<!-- Step 1: Completed -->
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-surface-container-lowest border border-primary/20">
+<div class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center font-bold text-xs flex-shrink-0">
+<span class="material-symbols-outlined text-[14px]" data-icon="check">check</span>
+</div>
+<div class="overflow-hidden">
+<p class="font-label-sm text-[10px] uppercase font-bold text-primary tracking-wider">Step 1 • Completed</p>
+<p class="font-title-md text-[12px] font-bold text-on-surface truncate">Parent Gut &amp; 7/12 Khata #142/2</p>
+</div>
+</div>
+<!-- Step 2: In-Progress Active -->
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-primary-container text-on-primary shadow-sm border border-primary-container">
+<div class="w-6 h-6 rounded-full bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-bold text-xs flex-shrink-0">
+              2
+            </div>
+<div class="overflow-hidden">
+<p class="font-label-sm text-[10px] uppercase font-bold text-primary-fixed tracking-wider">Step 2 • Active Workspace</p>
+<p class="font-title-md text-[12px] font-bold text-on-primary truncate">Demarcation &amp; Bund Splitting</p>
+</div>
+</div>
+<!-- Step 3: Upcoming -->
+<div class="flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-surface-container opacity-70 border border-outline-variant/20">
+<div class="w-6 h-6 rounded-full bg-outline-variant/40 text-on-surface-variant flex items-center justify-center font-bold text-xs flex-shrink-0">
+              3
+            </div>
+<div class="overflow-hidden">
+<p class="font-label-sm text-[10px] uppercase font-bold text-outline tracking-wider">Step 3 • Pending</p>
+<p class="font-title-md text-[12px] font-bold text-on-surface-variant truncate">Soil &amp; Irrigation Mapping</p>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN WORKSPACE: 12-COLUMN SPLIT VIEW -->
+<div class="flex-1 grid grid-cols-1 lg:grid-cols-12 overflow-hidden">
+<!-- ========================================================= -->
+<!-- 3A. LEFT 7-COLS: INTERACTIVE GIS CADASTRE & SATELLITE MAP -->
+<!-- ========================================================= -->
+<section class="lg:col-span-7 relative h-full flex flex-col bg-surface-dim overflow-hidden border-r border-outline-variant/30">
+<!-- MAP TOOLBAR (Top Floating Overlay) -->
+<div class="absolute top-3 left-3 right-3 z-20 flex flex-wrap items-center justify-between gap-2 pointer-events-none">
+<!-- Drawing Action Group -->
+<div class="pointer-events-auto bg-surface-container-lowest/95 backdrop-blur-md px-2 py-1.5 rounded-xl shadow-md border border-outline-variant/30 flex items-center gap-1">
+<button class="px-2.5 py-1 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-xs" title="Carve Sub-Polygon">
+<span class="material-symbols-outlined text-[16px]" data-icon="polyline" style="font-variation-settings: 'FILL' 1;">polyline</span>
+<span>Sub-Polygon</span>
+</button>
+<button class="px-2 py-1 rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex items-center gap-1" title="Split Parent Gut">
+<span class="material-symbols-outlined text-[16px]" data-icon="content_cut">content_cut</span>
+<span>Split Bund</span>
+</button>
+<button class="px-2 py-1 rounded-lg hover:bg-surface-container text-on-surface-variant font-label-md text-label-md flex items-center gap-1" title="Sync with Rover GPS">
+<span class="material-symbols-outlined text-[16px]" data-icon="directions_walk">directions_walk</span>
+<span>GPS Walk</span>
+</button>
+<div class="h-4 w-[1px] bg-outline-variant/40 mx-1"></div>
+<!-- Snap to Bunds Toggle -->
+<label class="flex items-center gap-1.5 px-2 py-1 rounded-lg cursor-pointer hover:bg-surface-container">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary border-outline-variant" type="checkbox"/>
+<span class="font-label-md text-label-md text-primary font-bold">Snap to Bunds</span>
+</label>
+<button class="p-1 rounded-lg text-error hover:bg-error-container/30 transition-colors" title="Reset Vertices">
+<span class="material-symbols-outlined text-[18px]" data-icon="restart_alt">restart_alt</span>
+</button>
+</div>
+<!-- RTK GNSS Accuracy Badge -->
+<div class="pointer-events-auto bg-surface-container-lowest/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-md border border-outline-variant/30 flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary animate-radar"></span>
+<div>
+<p class="text-[10px] font-label-sm font-bold uppercase tracking-wider text-primary">RTK GNSS Fixed</p>
+<p class="text-[11px] font-bold text-on-surface">±0.4 m Precision</p>
+</div>
+</div>
+</div>
+<!-- MAP VIEWPORT CONTAINER -->
+<div class="relative w-full h-full overflow-hidden select-none bg-inverse-surface">
+<!-- High-Resolution Multispectral Satellite Raster Base -->
+<img alt="Multispectral Satellite Imagery Base" class="absolute inset-0 w-full h-full object-cover opacity-90 filter contrast-105" data-alt="An ultra-detailed high-resolution multispectral agricultural satellite photograph of lush agricultural farmland parcels partitioned into geometric cadastral grids. Crisp vibrant emerald green crops contrasting with golden harvest parcels and dark alluvial soil tracts, showing irrigation canals, boundary bunds, and vivid vegetation vigor in high daylight clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMmhUBZ4CCQRwvN70jI8DaNLRz3_31B26DD2sAkxibrOFpJdEXKzPNzh8JV8Gc-gdzSZV7Cc7ySPxLRPlH03gboU_Irrj14nUEfEMtJ3CvQGSuznd-N4JDzV-3U8VUrQOS6L2BrAdqoRwEIuLFyVRvXWX4FshZEZIlKzxTeBEvPVvyUmy6Q0hmEa6yBKn_diF_58bGCLLSg6pSnciTXlH7xQjUE2ADKvpAN3hlAluFQ1_tdpWUofLUqEGVlRB_6ADd9eGx3-BgFtE"/>
+<!-- SVG Vector Cadastral Overlay Layer -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 1000 800">
+<defs>
+<pattern height="16" id="cadastralHatch" patterntransform="rotate(45 0 0)" patternunits="userSpaceOnUse" width="16">
+<line stroke="rgba(16, 185, 129, 0.25)" stroke-width="2.5" x1="0" x2="0" y1="0" y2="16"></line>
+</pattern>
+<filter height="140%" id="glow" width="140%" x="-20%" y="-20%">
+<fedropshadow dx="0" dy="2" flood-color="#004532" flood-opacity="0.6" stddeviation="4"></fedropshadow>
+</filter>
+</defs>
+<!-- Parent Gut #142/2 Boundary (Dashed Gold Cadastral Boundary) -->
+<polygon fill="none" points="180,120 780,140 820,700 140,660" stroke="#fe932c" stroke-dasharray="6,4" stroke-width="2.5"></polygon>
+<!-- Already demarcated Sub-Parcel A (Western Block) -->
+<polygon fill="rgba(6, 95, 70, 0.22)" points="180,120 460,128 440,670 140,660" stroke="#065f46" stroke-width="2"></polygon>
+<!-- NEWLY CARVED SUB-PARCEL E (EAST TERRACE) - Glowing In-Progress Polygon -->
+<polygon fill="url(#cadastralHatch)" filter="url(#glow)" points="460,128 780,140 760,540 450,510" stroke="#10b981" stroke-width="3.5"></polygon>
+<!-- Dimension Bearing Labels along the Segments -->
+<rect fill="#004532" height="20" opacity="0.9" rx="4" width="80" x="585" y="118"></rect>
+<text fill="#ffffff" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" text-anchor="middle" x="625" y="132">148.4 m (N)</text>
+<rect fill="#004532" height="20" opacity="0.9" rx="4" width="76" x="740" y="320"></rect>
+<text fill="#ffffff" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" text-anchor="middle" x="778" y="334">112.6 m (E)</text>
+<rect fill="#004532" height="20" opacity="0.9" rx="4" width="80" x="560" y="508"></rect>
+<text fill="#ffffff" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" text-anchor="middle" x="600" y="522">136.2 m (S)</text>
+<rect fill="#004532" height="20" opacity="0.9" rx="4" width="76" x="420" y="300"></rect>
+<text fill="#ffffff" font-family="Plus Jakarta Sans" font-size="11" font-weight="700" text-anchor="middle" x="458" y="314">84.8 m (W)</text>
+<!-- Polygon Vertices (P1, P2, P3, P4) Interactive Pins -->
+<!-- P1 -->
+<circle cx="460" cy="128" fill="#059669" r="9" stroke="#ffffff" stroke-width="2.5"></circle>
+<text fill="#ffffff" font-size="11" font-weight="800" paint-order="stroke fill" stroke="#004532" stroke-width="3" text-anchor="middle" x="460" y="112">P1</text>
+<!-- P2 -->
+<circle cx="780" cy="140" fill="#059669" r="9" stroke="#ffffff" stroke-width="2.5"></circle>
+<text fill="#ffffff" font-size="11" font-weight="800" paint-order="stroke fill" stroke="#004532" stroke-width="3" text-anchor="middle" x="780" y="124">P2</text>
+<!-- P3 -->
+<circle cx="760" cy="540" fill="#059669" r="9" stroke="#ffffff" stroke-width="2.5"></circle>
+<text fill="#ffffff" font-size="11" font-weight="800" paint-order="stroke fill" stroke="#004532" stroke-width="3" text-anchor="middle" x="775" y="560">P3</text>
+<!-- P4 -->
+<circle cx="450" cy="510" fill="#059669" r="9" stroke="#ffffff" stroke-width="2.5"></circle>
+<text fill="#ffffff" font-size="11" font-weight="800" paint-order="stroke fill" stroke="#004532" stroke-width="3" text-anchor="middle" x="440" y="535">P4</text>
+</svg>
+<!-- FLOATING HUD TELEMETRY CARD OVER MAP -->
+<div class="absolute bottom-5 left-4 z-20 w-80 bg-surface-container-lowest/95 backdrop-blur-md rounded-2xl p-4 shadow-lg border border-outline-variant/30">
+<div class="flex items-center justify-between pb-2 mb-2 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-primary-container"></span>
+<h4 class="font-title-md text-[13px] font-bold text-primary">Sub-Plot E (Carved Extent)</h4>
+</div>
+<span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-[#d1fae5] text-primary">
+                  Valid Geometry
+                </span>
+</div>
+<div class="grid grid-cols-2 gap-2.5">
+<div class="bg-surface rounded-xl p-2.5 border border-outline-variant/20">
+<p class="font-label-sm text-[10px] text-on-surface-variant uppercase font-semibold">Demarcated Area</p>
+<p class="font-display-lg text-[1.25rem] font-bold text-primary tracking-tight mt-0.5">3.20 <span class="text-xs font-normal text-on-surface">Acres</span></p>
+<p class="text-[10px] text-outline">1.30 Hectares</p>
+</div>
+<div class="bg-surface rounded-xl p-2.5 border border-outline-variant/20">
+<p class="font-label-sm text-[10px] text-on-surface-variant uppercase font-semibold">Unallocated Gut</p>
+<p class="font-display-lg text-[1.25rem] font-bold text-secondary tracking-tight mt-0.5">1.80 <span class="text-xs font-normal text-on-surface">Acres</span></p>
+<p class="text-[10px] text-outline">Remaining in 142/2A</p>
+</div>
+</div>
+<div class="mt-2.5 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-label-md font-label-md">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]" data-icon="straighten">straighten</span> Perimeter: <strong>482 m</strong>
+</span>
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-tertiary" data-icon="eco">eco</span> Mean NDVI: <strong>0.81</strong>
+</span>
+</div>
+<!-- Cadastral guidance callout -->
+<div class="mt-2.5 bg-surface-container rounded-lg p-2 text-[11px] leading-tight text-on-surface-variant flex items-start gap-1.5">
+<span class="material-symbols-outlined text-[15px] text-primary flex-shrink-0 mt-0.5" data-icon="info">info</span>
+<span>Drag anchor pins P1–P4 to adjust bund partition. State cadastral server (BhuNaksha) validates in real-time.</span>
+</div>
+</div>
+<!-- RIGHT-SIDE MAP NAVIGATION & LAYER TOGGLES -->
+<div class="absolute top-16 right-4 z-20 flex flex-col gap-2">
+<!-- Zoom cluster -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md rounded-xl shadow-md border border-outline-variant/30 flex flex-col overflow-hidden">
+<button class="p-2 hover:bg-surface-container text-on-surface transition-colors" title="Zoom In">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+</button>
+<div class="h-[1px] bg-outline-variant/30"></div>
+<button class="p-2 hover:bg-surface-container text-on-surface transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined text-[18px]" data-icon="remove">remove</span>
+</button>
+</div>
+<!-- Compass / Orientation -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md rounded-xl p-2 shadow-md border border-outline-variant/30 flex items-center justify-center cursor-pointer" title="Reset North">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="explore">explore</span>
+</div>
+<!-- GIS Layer Selector -->
+<div class="bg-surface-container-lowest/95 backdrop-blur-md rounded-xl p-1.5 shadow-md border border-outline-variant/30 flex flex-col gap-1 text-[11px]">
+<button class="px-2 py-1 rounded-lg bg-primary-container text-on-primary font-semibold flex items-center gap-1.5 text-left">
+<span class="material-symbols-outlined text-[14px]" data-icon="layers">layers</span>
+<span>NDVI False Color</span>
+</button>
+<button class="px-2 py-1 rounded-lg text-on-surface-variant hover:bg-surface-container flex items-center gap-1.5 text-left">
+<span class="material-symbols-outlined text-[14px]" data-icon="image">image</span>
+<span>True Color RGB</span>
+</button>
+<button class="px-2 py-1 rounded-lg text-on-surface-variant hover:bg-surface-container flex items-center gap-1.5 text-left">
+<span class="material-symbols-outlined text-[14px]" data-icon="account_tree">account_tree</span>
+<span>BhuNaksha Cadastre</span>
+</button>
+</div>
+</div>
+<!-- NDVI Spectral Legend (Bottom Right) -->
+<div class="absolute bottom-5 right-4 z-20 bg-surface-container-lowest/95 backdrop-blur-md px-3 py-2 rounded-xl shadow-md border border-outline-variant/30 text-[10px]">
+<div class="flex items-center justify-between font-bold text-on-surface mb-1">
+<span>NDVI Scale</span>
+<span class="text-primary">Vigor Index</span>
+</div>
+<div class="w-32 h-2.5 rounded-full bg-gradient-to-r from-red-600 via-amber-400 to-emerald-600"></div>
+<div class="flex justify-between text-outline text-[9px] mt-0.5 font-mono">
+<span>-0.2 Low</span>
+<span>0.4 Fair</span>
+<span>1.0 High</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================= -->
+<!-- 3B. RIGHT 5-COLS: CONFIGURATION & AGRONOMIC METADATA PANEL -->
+<!-- ========================================================= -->
+<section class="lg:col-span-5 h-full overflow-y-auto custom-scrollbar p-4 md:p-6 space-y-4 bg-background">
+<!-- PANEL HEADING & NOTICE -->
+<div class="flex items-center justify-between pb-1">
+<div>
+<span class="text-[11px] font-label-sm font-bold uppercase tracking-wider text-primary">Sub-Parcel Registry</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight">Plot E Specifications</h2>
+</div>
+<span class="px-2.5 py-1 bg-[#d1fae5] text-primary rounded-full text-label-md font-label-md font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span> Ready to Bind
+            </span>
+</div>
+<!-- CARD 1: SUB-PLOT IDENTITY & CADASTRAL ALLOCATION -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-xs space-y-4">
+<div class="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="badge">badge</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Sub-Plot Identity &amp; Land Record</h3>
+</div>
+<!-- Field 1: Nickname -->
+<div>
+<label class="block font-label-lg text-label-lg font-bold text-on-surface mb-1.5">
+                Sub-Plot Nickname <span class="text-error">*</span>
+</label>
+<input class="w-full px-3.5 py-2.5 rounded-xl border-[1.5px] border-outline-variant bg-surface-container-lowest text-on-surface font-body-md text-body-md focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" type="text" value="Plot E • East Terrace"/>
+<p class="text-[11px] text-outline mt-1">Designate a recognizable name for field-hands and tractor telemetry.</p>
+</div>
+<!-- Field 2: Auto-assigned Subdivision Gut -->
+<div class="bg-surface rounded-xl p-3 border border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="font-label-sm text-[11px] text-on-surface-variant font-semibold">Assigned Cadastral Sub-Division</p>
+<p class="font-title-md text-[14px] font-bold text-primary">Gut #142/2C (Sub-Parcel)</p>
+<p class="text-[10px] text-outline">Deriving from Parent Gut #142/2 (Nashik Cadastral Registry)</p>
+</div>
+<span class="material-symbols-outlined text-primary text-[22px]" data-icon="assured_workload">assured_workload</span>
+</div>
+<!-- Field 3: Agronomic Intended Use (Pills) -->
+<div>
+<label class="block font-label-lg text-label-lg font-bold text-on-surface mb-2">
+                Planned Cropping Practice (Rabi / Summer 2024)
+              </label>
+<div class="grid grid-cols-2 gap-2">
+<!-- Option 1: Selected Table Grapes -->
+<label class="relative flex items-center gap-2.5 p-3 rounded-xl border-2 border-primary bg-primary-container/10 cursor-pointer">
+<input checked="" class="w-4 h-4 text-primary focus:ring-primary" name="crop_plan" type="radio"/>
+<div>
+<p class="font-title-md text-[12px] font-bold text-primary">Table Grapes</p>
+<p class="text-[10px] text-on-surface-variant">Thompson Seedless</p>
+</div>
+</label>
+<!-- Option 2: Sharbati Wheat -->
+<label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer">
+<input class="w-4 h-4 text-primary focus:ring-primary" name="crop_plan" type="radio"/>
+<div>
+<p class="font-title-md text-[12px] font-bold text-on-surface">Sharbati Wheat</p>
+<p class="text-[10px] text-outline">Certified Cereal</p>
+</div>
+</label>
+<!-- Option 3: Cash Vegetables -->
+<label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer">
+<input class="w-4 h-4 text-primary focus:ring-primary" name="crop_plan" type="radio"/>
+<div>
+<p class="font-title-md text-[12px] font-bold text-on-surface">Pomegranate / Cash</p>
+<p class="text-[10px] text-outline">Bhagwa Variety</p>
+</div>
+</label>
+<!-- Option 4: Cover Crop / Fallow -->
+<label class="relative flex items-center gap-2.5 p-3 rounded-xl border border-outline-variant/40 bg-surface hover:bg-surface-container-low cursor-pointer">
+<input class="w-4 h-4 text-primary focus:ring-primary" name="crop_plan" type="radio"/>
+<div>
+<p class="font-title-md text-[12px] font-bold text-on-surface">Green Manure</p>
+<p class="text-[10px] text-outline">Dhaincha / Sunnhemp</p>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- CARD 2: SOIL HORIZON & TOPOGRAPHIC MATRIX -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-xs space-y-4">
+<div class="flex items-center gap-2 pb-2 border-b border-outline-variant/20">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="landscape">landscape</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Soil Horizon &amp; Topography</h3>
+</div>
+<!-- Soil Taxonomy -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div>
+<label class="block font-label-lg text-label-lg font-bold text-on-surface mb-1.5">
+                  Soil Taxonomy
+                </label>
+<select class="w-full px-3 py-2 rounded-xl border-[1.5px] border-outline-variant bg-surface-container-lowest text-on-surface font-body-sm text-body-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none">
+<option selected="">Deep Black Regur (Vertisol)</option>
+<option>Red Sandy Loam (Alfisol)</option>
+<option>Clayey Alluvial Horizon</option>
+<option>Lateritic Terrace Soil</option>
+</select>
+</div>
+<div>
+<label class="block font-label-lg text-label-lg font-bold text-on-surface mb-1.5">
+                  Effective Root Depth
+                </label>
+<div class="flex items-center px-3 py-2 rounded-xl border-[1.5px] border-outline-variant bg-surface-container-lowest">
+<span class="font-body-sm text-body-sm text-on-surface font-semibold flex-1">90 - 110 cm</span>
+<span class="text-label-sm text-outline">Optimum</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Metrics Grid -->
+<div class="grid grid-cols-3 gap-2.5 pt-1">
+<div class="p-2.5 rounded-xl bg-surface border border-outline-variant/20 text-center">
+<p class="font-label-sm text-[10px] text-outline uppercase">Topography</p>
+<p class="font-title-md text-[13px] font-bold text-primary mt-0.5">2.4° East</p>
+<p class="text-[9px] text-on-surface-variant">Gentle drainage</p>
+</div>
+<div class="p-2.5 rounded-xl bg-surface border border-outline-variant/20 text-center">
+<p class="font-label-sm text-[10px] text-outline uppercase">Soil Organic C</p>
+<p class="font-title-md text-[13px] font-bold text-primary mt-0.5">0.64 %</p>
+<p class="text-[9px] text-tertiary">ICAR Calibrated</p>
+</div>
+<div class="p-2.5 rounded-xl bg-surface border border-outline-variant/20 text-center">
+<p class="font-label-sm text-[10px] text-outline uppercase">Mean pH Range</p>
+<p class="font-title-md text-[13px] font-bold text-primary mt-0.5">7.2 pH</p>
+<p class="text-[9px] text-on-surface-variant">Neutral / Ideal</p>
+</div>
+</div>
+</div>
+<!-- CARD 3: IRRIGATION & SENSOR TELEMETRY PAIRING -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-outline-variant/30 shadow-xs space-y-4">
+<div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="water_drop">water_drop</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Irrigation Valve &amp; IoT Node</h3>
+</div>
+<span class="font-label-sm text-[10px] font-bold px-2 py-0.5 rounded bg-primary-container text-on-primary">LoRaWAN Ready</span>
+</div>
+<!-- Solenoid Valve Link -->
+<div>
+<label class="block font-label-lg text-label-lg font-bold text-on-surface mb-1.5">
+                Sub-Main Automated Solenoid Valve Link
+              </label>
+<div class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-lg bg-surface-container text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]" data-icon="valve">valve</span>
+</div>
+<div>
+<p class="font-title-md text-[13px] font-bold text-on-surface">Valve #E4 (South-East Header)</p>
+<p class="font-label-sm text-[11px] text-outline">Drip Spacing 1.2m inline • 4 LPH drippers</p>
+</div>
+</div>
+<button class="font-label-md text-label-md font-bold text-primary hover:underline">Configure</button>
+</div>
+</div>
+<!-- Wireless Soil Probe Pairing -->
+<div class="p-3.5 rounded-xl border border-tertiary-fixed-dim/40 bg-surface-container-low flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]" data-icon="sensors">sensors</span>
+<div>
+<span class="font-label-sm text-[10px] uppercase font-bold text-tertiary">Detected Nearby Node</span>
+<p class="font-title-md text-[13px] font-bold text-on-surface">#KRISHI-PROBE-882 (LoRaWAN)</p>
+</div>
+</div>
+<span class="text-[11px] font-bold text-tertiary bg-surface-container-lowest px-2 py-0.5 rounded-full border border-outline-variant/30">
+                  RSSI -64 dBm
+                </span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<span class="text-[11px] text-on-surface-variant">Multi-depth probe: 15cm, 45cm, 75cm telemetry</span>
+<button class="px-3 py-1 bg-primary text-on-primary font-label-md text-label-md font-bold rounded-lg hover:bg-primary-container transition-all shadow-xs">
+                  Bind Node
+                </button>
+</div>
+</div>
+<!-- Seasonal Water Quota Calculation -->
+<div class="flex items-center justify-between pt-1 text-label-md font-label-md text-on-surface-variant">
+<span>Estimated Seasonal Water Allocation:</span>
+<span class="font-bold text-primary font-body-sm text-body-sm">1,450 m³ / season</span>
+</div>
+</div>
+<!-- Bottom spacing buffer for sticky footer -->
+<div class="h-16"></div>
+</section>
+</div>
+<!-- ========================================================= -->
+<!-- 4. STICKY BOTTOM ACTION FOOTER -->
+<!-- ========================================================= -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant/30 px-4 md:px-8 py-3.5 flex-shrink-0 z-30 shadow-lg">
+<div class="flex flex-col sm:flex-row items-center justify-between gap-3 max-w-full">
+<!-- Progress Summary on the Left -->
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-sm shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="crop_square">crop_square</span>
+</div>
+<div>
+<p class="font-title-md text-[13px] font-bold text-on-surface">
+                Sub-Plot E (3.20 Ac) demarcated with 4 verified anchors.
+              </p>
+<p class="font-label-sm text-[11px] text-on-surface-variant">
+                1.80 Ac unallocated remaining in Parent Gut #142/2A • Cadastre verified
+              </p>
+</div>
+</div>
+<!-- Right Action Buttons -->
+<div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+<button class="px-4 py-2 rounded-lg text-outline hover:text-on-surface font-label-md text-label-md font-semibold transition-colors">
+              Cancel &amp; Revert
+            </button>
+<!-- Secondary: Save Draft -->
+<button class="px-4 py-2 rounded-lg border-[1.5px] border-primary text-primary bg-surface font-label-md text-label-md font-bold hover:bg-surface-container transition-all active:scale-[0.98]">
+              Save Draft
+            </button>
+<!-- Primary Harvest/Success CTA -->
+<button class="px-5 py-2.5 rounded-lg bg-primary-container text-on-primary font-label-md text-label-md font-bold hover:bg-primary transition-all active:scale-[0.98] shadow-sm flex items-center gap-2">
+<span>Confirm Plot &amp; Proceed to Sowing</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Mobile Bottom Navigation Bar (Centered dock) -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 max-w-lg mx-auto w-full z-50 flex justify-around items-center px-space-xs py-space-xs bg-surface-container-lowest border-t border-outline-variant/30 shadow-md">
+<!-- Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="home">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Home</span>
+</a>
+<!-- Doctor / Agronomist -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychiatry">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Active Plots Tab -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary rounded-xl px-3 py-1.5 shadow-sm active:scale-95 transition-transform" href="screen_desktop_plot_create.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="text-label-sm font-label-sm mt-0.5">Plots</span>
+</a>
+<!-- Mandi / Market -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="storefront">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="screen_desktop_security.html">
+<span class="material-symbols-outlined text-[20px]" data-icon="person">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Profile</span>
+</a>
+</nav>
+<!-- Lightweight Inline JS for Interactive Simulation -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Toggle check states or subtle interactive feedback
+      const inputs = document.querySelectorAll('input[type="radio"]');
+      inputs.forEach(radio => {
+        radio.addEventListener('change', () => {
+          document.querySelectorAll('label:has(input[name="crop_plan"])').forEach(lbl => {
+            lbl.classList.remove('border-primary', 'bg-primary-container/10', 'border-2');
+            lbl.classList.add('border-outline-variant/40', 'bg-surface');
+          });
+          const parentLabel = radio.closest('label');
+          if (parentLabel) {
+            parentLabel.classList.remove('border-outline-variant/40', 'bg-surface');
+            parentLabel.classList.add('border-primary', 'bg-primary-container/10', 'border-2');
+          }
+        });
+      });
+    });
+  </script>
+</body></html>

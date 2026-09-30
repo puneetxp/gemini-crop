@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriSense Premier - Platform Health &amp; Multi-FPO Settlement Radar</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              DEFAULT: "#065f46",
+              light: "#047857",
+              dark: "#064e3b"
+            }
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+</script>
+<style>
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>
+</head>
+<body class="bg-[#faf9f5] text-[#1b1c1a] min-h-screen antialiased">
+  <!-- Top Navigation Header -->
+  <header class="bg-[#064e3b] text-white border-b border-emerald-800/60 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center border border-emerald-400/30">
+            <span class="material-symbols-outlined text-emerald-300 text-2xl">admin_panel_settings</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-base tracking-tight">CropSense AI</span>
+              <span class="text-[10px] uppercase font-bold tracking-widest bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30">Admin Radar</span>
+            </div>
+            <p class="text-[11px] text-emerald-200/80">Multi-FPO Escrow Liquidity &amp; Platform Health</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="screen_desktop_dashboard.html" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-xs font-bold transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="screen_desktop_quota.html" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">memory</span>
+            <span>AI Quota &amp; Limits</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <!-- Breadcrumb & Header Title -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+      <div>
+        <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+          <a href="screen_desktop_dashboard.html" class="hover:text-forest transition-colors">Home</a>
+          <span>/</span>
+          <span class="font-medium text-slate-700">Platform Analytics</span>
+        </div>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">
+          Executive Platform Analytics &amp; Escrow Settlement
+        </h1>
+        <p class="text-xs text-slate-500 mt-0.5">
+          Real-time Gross Merchandise Value (GMV), FPO banking liquidity clearing, and Cloud Run infrastructure uptime
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="screen_desktop_quota.html" class="px-4 py-2.5 bg-forest hover:bg-forest-light text-white text-xs font-bold rounded-xl shadow transition-all flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-base">download</span>
+          <span>Download Audit Ledger</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 Summary KPI Metrics -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Gross Trade Value (GMV)</span>
+          <span class="material-symbols-outlined text-forest text-lg">currency_rupee</span>
+        </div>
+        <div class="text-2xl font-black text-slate-900">₹4.82 Cr</div>
+        <div class="text-[11px] text-emerald-700 font-semibold">+18.4% Month-on-Month</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">T+1 Settlement Velocity</span>
+          <span class="material-symbols-outlined text-blue-600 text-lg">flash_on</span>
+        </div>
+        <div class="text-2xl font-black text-blue-800">99.8%</div>
+        <div class="text-[11px] text-slate-500">Avg Clearing: 4.2 Hours</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Active FPO Federations</span>
+          <span class="material-symbols-outlined text-purple-600 text-lg">groups</span>
+        </div>
+        <div class="text-2xl font-black text-purple-800">42 FPOs</div>
+        <div class="text-[11px] text-purple-700 font-semibold">68,400 Certified Farmers</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Dispute &amp; Default Rate</span>
+          <span class="material-symbols-outlined text-emerald-600 text-lg">verified</span>
+        </div>
+        <div class="text-2xl font-black text-emerald-800">0.08%</div>
+        <div class="text-[11px] text-emerald-700 font-semibold">100% Resolved in Arbitration</div>
+      </div>
+    </div>
+
+    <!-- Multi-Column Grid: FPO Liquidity Table & Cloud Run Infrastructure Radar -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Left: FPO Trading Volume & Bank Settlement (8 cols) -->
+      <div class="lg:col-span-8 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="font-black text-base text-slate-900">Registered FPO Trading &amp; Clearing Matrix</h3>
+              <p class="text-xs text-slate-500">Escrow funds disbursal performance across district federations</p>
+            </div>
+            <span class="text-xs font-bold text-forest bg-emerald-50 px-2.5 py-1 rounded-lg border border-emerald-200">
+              NABARD Audited
+            </span>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-slate-50 text-slate-600 font-bold border-b border-slate-200">
+                <tr>
+                  <th class="p-3">FPO Organization</th>
+                  <th class="p-3">Commodity Focus</th>
+                  <th class="p-3">30-Day GMV</th>
+                  <th class="p-3">Settlement SLA</th>
+                  <th class="p-3">Rating</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-100 text-slate-700">
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-bold text-slate-900">
+                    <div>Junnar Agro Producer Co.</div>
+                    <div class="text-[10px] text-slate-400">1,420 Active Farmers • Pune</div>
+                  </td>
+                  <td class="p-3">Wheat, Onions &amp; Veg</td>
+                  <td class="p-3 font-mono font-bold text-slate-900">₹1,18,40,000</td>
+                  <td class="p-3 text-forest font-semibold">99.9% (3.2 hrs)</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Tier A+</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-bold text-slate-900">
+                    <div>Niphad Grape &amp; Agro Society</div>
+                    <div class="text-[10px] text-slate-400">980 Export Members • Nashik</div>
+                  </td>
+                  <td class="p-3">Table Grapes, Basmati</td>
+                  <td class="p-3 font-mono font-bold text-slate-900">₹1,42,15,000</td>
+                  <td class="p-3 text-forest font-semibold">100% (2.8 hrs)</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">Tier A+</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-bold text-slate-900">
+                    <div>Baramati Kisan Cooperative</div>
+                    <div class="text-[10px] text-slate-400">1,840 Members • Western MH</div>
+                  </td>
+                  <td class="p-3">Dairy, Soybean &amp; Chana</td>
+                  <td class="p-3 font-mono font-bold text-slate-900">₹88,40,000</td>
+                  <td class="p-3 text-forest font-semibold">99.5% (4.1 hrs)</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Tier A</span></td>
+                </tr>
+                <tr class="hover:bg-slate-50">
+                  <td class="p-3 font-bold text-slate-900">
+                    <div>Wardha Organic Producers FPO</div>
+                    <div class="text-[10px] text-slate-400">650 Members • Vidarbha</div>
+                  </td>
+                  <td class="p-3">Cotton, Tur &amp; Soybean</td>
+                  <td class="p-3 font-mono font-bold text-slate-900">₹64,20,000</td>
+                  <td class="p-3 text-forest font-semibold">99.1% (5.5 hrs)</td>
+                  <td class="p-3"><span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800">Tier A</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Cloud Run & Infrastructure Health (4 cols) -->
+      <div class="lg:col-span-4 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="font-black text-base text-slate-900">System Telemetry</h3>
+              <p class="text-xs text-slate-500">Google Cloud Run Region: asia-south1</p>
+            </div>
+            <span class="flex h-2.5 w-2.5 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+              <div>
+                <span class="text-slate-400 text-[10px] block">Service Uptime SLA:</span>
+                <span class="font-bold text-slate-900">99.98% (Past 90 Days)</span>
+              </div>
+              <span class="text-xs font-bold text-forest">Healthy</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+              <div>
+                <span class="text-slate-400 text-[10px] block">API Latency (p95):</span>
+                <span class="font-bold text-slate-900">42 ms (Direct VPC)</span>
+              </div>
+              <span class="text-xs font-bold text-forest">&lt; 50ms Target</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+              <div>
+                <span class="text-slate-400 text-[10px] block">PostgreSQL Connection Pool:</span>
+                <span class="font-bold text-slate-900">12 / 80 Active</span>
+              </div>
+              <span class="text-xs font-bold text-blue-700">Optimal</span>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
+              <div>
+                <span class="text-slate-400 text-[10px] block">Active Redis Cache Hit:</span>
+                <span class="font-bold text-slate-900">94.6% Hit Rate</span>
+              </div>
+              <span class="text-xs font-bold text-forest">Warm</span>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a href="screen_desktop_quota.html" class="w-full py-3 bg-forest hover:bg-forest-light text-white text-xs font-bold rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">tune</span>
+              <span>Manage AI Quota Allocations</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

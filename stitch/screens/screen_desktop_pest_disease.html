@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Pest &amp; Disease Outbreak Radar &amp; IPM Hub</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Plus Jakarta Sans Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#00462e",
+            "surface": "#faf9f5",
+            "on-tertiary-container": "#50e0a4",
+            "on-surface-variant": "#3f4944",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed-variant": "#6e3900",
+            "surface-dim": "#dbdad6",
+            "on-primary": "#ffffff",
+            "secondary-container": "#fe932c",
+            "surface-container": "#efeeea",
+            "secondary-fixed": "#ffdcc3",
+            "surface-container-highest": "#e3e2df",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e3e2df",
+            "on-error": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "outline": "#6f7973",
+            "on-secondary-fixed": "#2f1500",
+            "secondary-fixed-dim": "#ffb77d",
+            "primary-container": "#065f46",
+            "error": "#ba1a1a",
+            "on-primary-fixed": "#002116",
+            "primary": "#004532",
+            "inverse-surface": "#2f312e",
+            "inverse-on-surface": "#f2f1ed",
+            "primary-fixed-dim": "#8bd6b6",
+            "surface-container-high": "#e9e8e4",
+            "secondary": "#904d00",
+            "tertiary-container": "#006041",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-tint": "#1b6b51",
+            "on-primary-container": "#8bd6b7",
+            "tertiary-fixed": "#6ffbbe",
+            "inverse-primary": "#8bd6b6",
+            "on-secondary-container": "#663500",
+            "on-primary-fixed-variant": "#00513b",
+            "on-error-container": "#93000a",
+            "background": "#faf9f5",
+            "outline-variant": "#bec9c2",
+            "on-tertiary": "#ffffff",
+            "primary-fixed": "#a6f2d1",
+            "surface-bright": "#faf9f5",
+            "on-tertiary-fixed": "#002113",
+            "error-container": "#ffdad6",
+            "surface-container-low": "#f4f4f0",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-background": "#1b1c1a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-md": "1rem",
+            "gutter-desktop": "2rem",
+            "gutter-tablet": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-desktop": "3rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "margin-tablet": "2rem"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 9999px;
+    }
+    @keyframes pulse-ring {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      50% { transform: scale(1.35); opacity: 0.2; }
+      100% { transform: scale(1.6); opacity: 0; }
+    }
+    .radar-pulse {
+      animation: pulse-ring 2.4s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed pb-24 lg:pb-8">
+<!-- Desktop & Tablet Layout Wrapper -->
+<div class="flex flex-1 w-full max-w-[1536px] mx-auto">
+<!-- LEFT SIDEBAR: Desktop Persistent Navigation -->
+<aside class="hidden lg:flex flex-col w-64 shrink-0 bg-surface-container-lowest border-r border-outline-variant/30 sticky top-0 h-screen overflow-y-auto">
+<!-- App Brand Anchor -->
+<div class="p-space-lg flex items-center gap-space-sm border-b border-outline-variant/20">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">psychiatry</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm font-bold text-primary block leading-tight">CropSense AI</span>
+<span class="text-label-sm font-label-sm text-outline">ICAR Telemetry Node</span>
+</div>
+</div>
+<!-- Navigation Tree -->
+<nav class="p-space-md flex-1 flex flex-col gap-1.5">
+<div class="px-space-xs py-1">
+<span class="text-label-sm font-label-sm text-outline">FIELD MANAGEMENT</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-outline">grid_view</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-outline">nature_people</span>
+<span>My Farms &amp; Plots</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="/diagnose">
+<span class="material-symbols-outlined text-outline">document_scanner</span>
+<span>AI Crop Doctor</span>
+<span class="ml-auto text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed px-1.5 py-0.5 rounded-md">Vision</span>
+</a>
+<!-- ACTIVE ITEM -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-sm" href="/pest-disease/hub">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span>Pest &amp; Disease Radar</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-secondary-container"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-outline">satellite_alt</span>
+<span>Soil &amp; Satellite NDVI</span>
+</a>
+<div class="px-space-xs pt-4 pb-1">
+<span class="text-label-sm font-label-sm text-outline">COMMERCE &amp; ALLIED</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-outline">storefront</span>
+<span>Marketplace &amp; Escrow</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-outline">pets</span>
+<span>Pashu &amp; Livestock Hub</span>
+</a>
+</nav>
+<!-- Bottom Scout Advisory Node -->
+<div class="p-space-md border-t border-outline-variant/20 bg-surface-container-low/60">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-secondary text-on-secondary flex items-center justify-center font-bold text-title-md">
+            RP
+          </div>
+<div class="overflow-hidden">
+<span class="text-label-lg font-label-lg text-on-surface block truncate">Ramesh Patil</span>
+<span class="text-label-sm font-label-sm text-outline block truncate">Nashik Plot #4 • 18.4 Ac</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN APP CANVAS -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP APP BAR (Shared Components Tokenized Integration) -->
+<header class="bg-surface sticky top-0 z-40 shadow-sm border-b border-outline-variant/30">
+<div class="flex justify-between items-center w-full px-4 lg:px-8 py-3 max-w-7xl mx-auto">
+<!-- Mobile Brand Title & Desktop Breadcrumbs -->
+<div class="flex items-center gap-3">
+<button aria-label="Open Navigation Drawer" class="lg:hidden text-on-surface-variant p-1 rounded-lg hover:bg-surface-container-high">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex flex-col">
+<div class="hidden sm:flex items-center gap-1.5 text-label-sm font-label-sm text-outline">
+<span>Home</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span>Crop Protection</span>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary font-semibold">Pest &amp; Disease Outbreak Radar</span>
+</div>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary">Pest &amp; Disease Outbreak Radar</h1>
+</div>
+</div>
+<!-- Utility Pills & Farmer Context -->
+<div class="flex items-center gap-2 lg:gap-3">
+<!-- Weather Live Pill -->
+<div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-surface-container-lowest rounded-full border border-outline-variant/40 shadow-sm text-label-md font-label-md text-on-surface">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">wb_sunny</span>
+<span>Nashik 28°C</span>
+<span class="text-outline">|</span>
+<span class="text-outline">62% RH</span>
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="text-outline">AQI 42</span>
+</div>
+<!-- KVK Helpline Fast CTA -->
+<a class="hidden xl:flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface-container border border-outline-variant/40 text-on-surface text-label-md font-label-md hover:bg-surface-container-high transition-colors" href="tel:18001801551">
+<span class="material-symbols-outlined text-secondary text-sm">support_agent</span>
+<span>KVK Helpline 1800-180-1551</span>
+</a>
+<!-- Language Switcher from Shared Components -->
+<button class="px-3 py-1.5 rounded-lg border border-outline-variant/40 text-label-md font-label-md text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<!-- Farmer Profile Avatar -->
+<div class="relative w-9 h-9 rounded-full overflow-hidden border border-primary/20 shrink-0">
+<img class="w-full h-full object-cover" data-alt="Close up photographic portrait of an experienced Indian farmer wearing a light cream kurta outdoors with lush green farm fields in the soft morning sunlight. The subject has a warm confident expression representing modern agricultural empowerment and field leadership." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDNMjDMmMasz9dL3HMmNX7jC4PTpIDkEl6hRfMMGd2VUoua6NslLrQnY8IHRCcMbx1S6bsUqERRLdDsHqhJpQpuMQmWHdGVXrVLEE8Lik1GEo8aPghuEQUxM0r2yfffpMj0JGlU5ayDV5dUYqRZt-mVZfRzcxh1k82vk-3YGAhEPbNXLHDz5hsIdwChD9Mw8W2bukJVP-bFjArkiyY60Jo4x7zjnZ42SVY3NSM6wLW9yqcCm7twMedp6_KnTgwURPpx1E6nNunO5o"/>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN SCROLLABLE CONTENT BODY -->
+<main class="flex-1 px-4 lg:px-8 py-6 max-w-7xl mx-auto w-full space-y-6">
+<!-- 1. CRITICAL QUARANTINE OUTBREAK BANNER -->
+<div class="bg-red-50 border-l-4 border-error rounded-xl p-4 lg:p-5 shadow-sm">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-start gap-3.5">
+<div class="w-10 h-10 rounded-xl bg-error/10 text-error flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">crisis_alert</span>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-error text-on-error">QUARANTINE ALERT</span>
+<span class="text-label-sm font-label-sm text-error font-semibold">Severity: Critical • 48 plots affected within 12km</span>
+</div>
+<h2 class="text-headline-sm font-headline-sm text-error font-bold leading-tight">
+                  Fall Armyworm (Spodoptera frugiperda) &amp; Pink Bollworm Alert in Nashik &amp; Jalgaon Belts
+                </h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant max-w-3xl">
+                  Pheromone delta trap counts surpassed economic threshold (14 moths/trap/night) in Sweetcorn &amp; Kharif cotton. Immediate bio-spray intervention recommended before L3 instar burrowing.
+                </p>
+</div>
+</div>
+<div class="flex flex-wrap sm:flex-nowrap items-center gap-2.5 shrink-0">
+<button class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-emerald-700 text-white font-label-lg text-label-lg shadow-sm hover:bg-emerald-800 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg">share</span>
+<span>Broadcast to Farm Hands</span>
+</button>
+<button class="flex items-center gap-1.5 px-4 py-2.5 rounded-lg bg-surface-container-lowest border border-error/30 text-error font-label-lg text-label-lg hover:bg-error/5 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">pest_control</span>
+<span>Activate Trap Defense</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 2. AI DIAGNOSTIC SCANNER LAUNCH CARD (Gemini 2.0 Flash Vision) -->
+<div class="bg-surface-container-lowest border border-primary/15 rounded-2xl p-5 lg:p-6 shadow-sm overflow-hidden relative">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+<div class="lg:col-span-8 space-y-3">
+<div class="flex flex-wrap items-center gap-2">
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                  Gemini 2.0 Flash Vision
+                </span>
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-emerald-50 text-primary border border-primary/20 flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  98.4% Diagnostic Accuracy
+                </span>
+<span class="text-label-sm font-label-sm text-outline">0.8s Neural Latency</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-primary font-bold">
+                Scan Plant Leaf / Stem with Real-Time Spectral Vision
+              </h2>
+<p class="text-body-md font-body-md text-on-surface-variant max-w-2xl">
+                Notice unusual foliar lesions, chlorosis or stem boreholes? Take a high-contrast macro snapshot. Our multimodal neural pipeline cross-references 1,200+ tropical crop pathologies with instant IPM advisories.
+              </p>
+<div class="pt-2 flex flex-wrap items-center gap-3">
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary text-on-primary font-label-lg text-label-lg hover:bg-tertiary active:scale-[0.98] transition-all shadow-md" href="/diagnose">
+<span class="material-symbols-outlined text-xl">camera_enhance</span>
+<span>Launch Live Leaf Scanner</span>
+</a>
+<button class="inline-flex items-center gap-2 px-4 py-3 rounded-lg bg-surface-container text-on-surface font-label-lg text-label-lg border border-outline-variant/40 hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-xl">upload_file</span>
+<span>Upload High-Res Sample</span>
+</button>
+</div>
+</div>
+<!-- Interactive Diagnostic Sample Preview -->
+<div class="lg:col-span-4 relative">
+<div class="rounded-xl overflow-hidden border border-outline-variant/40 relative shadow-inner aspect-[4/3] bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Macro close-up view of a diseased cereal crop leaf displaying distinct concentric oval lesions with yellow chlorotic halos and fungal necrotic spots. Clean botanical lighting highlights subtle texture of leaf veins and pathogen damage in crisp agricultural diagnostic detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnW85v_P4sdrutzSjY1m1OPyOikjn7brzXKmzqJLQqMMeUwdhDTK0rjtdAX69qmJUqtvp6_4GPgqWvJO2WglHbDXADebz8Nhgo8movdMlr22ZPBgP7BXqvvfVo6aTkgBteOrLM5-oiNBcnzviUuxx3tDSFLgdBntxvITCs3MXpnSYzUPgXWM2X3RTrpdLczqJdgeARk9F1-gy92jAOlQXFMmks7vyeadpxc2OP9XvSSVDctkYQlgShlJ8dTLlGkVS2tAxfcvcA3Kw"/>
+<!-- Bounding Box Overlay for AI Vision Simulation -->
+<div class="absolute inset-4 border-2 border-dashed border-emerald-400/80 rounded-lg pointer-events-none flex flex-col justify-between p-2">
+<div class="bg-primary/90 backdrop-blur-sm text-on-primary text-[10px] font-mono px-2 py-0.5 rounded self-start flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-300 animate-pulse"></span>
+<span>Pathogen Match: Puccinia graminis / Helminthosporium (97.6%)</span>
+</div>
+<div class="bg-surface/90 text-on-surface text-[10px] font-semibold px-2 py-0.5 rounded self-end">
+                    Instar L2 Foliar Lesion Detected
+                  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- 3. REGIONAL PEST OUTBREAK HEATMAP & RADAR -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-sm p-5 lg:p-6 space-y-4">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-bold">radar</span>
+<h3 class="text-headline-sm font-headline-sm text-primary font-bold">Spatial Outbreak Heatmap &amp; LoRa Telemetry</h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Live telemetry from 24 automated Spore Traps &amp; IoT Pheromone nodes reporting every 15 minutes.</p>
+</div>
+<!-- Radius Filter Controls -->
+<div class="flex items-center bg-surface-container p-1 rounded-xl border border-outline-variant/30">
+<button class="px-3 py-1.5 text-label-sm font-label-sm rounded-lg text-on-surface-variant hover:text-on-surface transition-colors">5 km Ward</button>
+<button class="px-3 py-1.5 text-label-sm font-label-sm rounded-lg bg-surface-container-lowest text-primary shadow-xs font-bold border border-outline-variant/20">15 km Taluka Belt</button>
+<button class="px-3 py-1.5 text-label-sm font-label-sm rounded-lg text-on-surface-variant hover:text-on-surface transition-colors">50 km District</button>
+</div>
+</div>
+<!-- Radar Map Backdrop Container -->
+<div class="relative w-full h-96 rounded-xl overflow-hidden border border-outline-variant/30 bg-surface-dim">
+<img class="w-full h-full object-cover" data-alt="High resolution aerial satellite multispectral NDVI map of organized agricultural farmland grids and plot boundaries displaying vibrant green vegetation vigor alongside patches of yellow and orange stress zones. The top-down view includes telemetry overlays and geographic terrain indicators." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_mSWKotRF0aR6bUC5-uMeT1UM4MkV2HU7BD1OvN6mh2Abnl5bNDhRGxF18PISfG8XI57YFXwcAAxM1s0jbvDg-s67YtE8QE3-bu2S0B5Q-ij3OwdyyjJeK1je2mJ1cXS9jRxqXOUrNA_jt-4QkOOrPkXYOWlX5YJjukLW6qwihKadP6DRh9lUOBPBBAD5PlUsnrCWPWeXlZkODxJMENo9VfB8-DFNB-2mIP4wr2rwOHEcODinmYj2ejc5S1Q8MGpVZiVaXGOiQcY"/>
+<!-- Map Overlay Gradient & HUD -->
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none"></div>
+<!-- Telemetry Pill Top Right -->
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-md border border-outline-variant/40 rounded-xl px-3.5 py-2 shadow-md flex items-center gap-3">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-label-sm font-label-sm text-on-surface font-bold">24 IoT Traps Active</span>
+</div>
+<span class="text-outline text-xs">|</span>
+<span class="text-label-sm font-label-sm text-outline">LoRaWAN 865 MHz</span>
+</div>
+<!-- Outbreak Hotspot 1: Fall Armyworm (Primary Cluster) -->
+<div class="absolute top-1/3 left-1/4 transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-12 h-12 bg-red-500/40 rounded-full radar-pulse"></div>
+<div class="w-5 h-5 bg-error text-white rounded-full flex items-center justify-center border-2 border-white shadow-lg z-10">
+<span class="material-symbols-outlined text-[12px]" style="font-variation-settings: 'FILL' 1;">pest_control</span>
+</div>
+</div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg shadow-lg border border-red-200 text-left min-w-[170px] pointer-events-none z-20">
+<div class="flex items-center justify-between gap-1">
+<span class="text-[11px] font-bold text-error">Fall Armyworm</span>
+<span class="text-[9px] bg-red-100 text-error px-1 rounded">High Threat</span>
+</div>
+<span class="text-[10px] text-on-surface-variant block">Maize • 3.2 km Northwest</span>
+<span class="text-[10px] font-semibold text-primary block mt-0.5">Trap Count: 28/night</span>
+</div>
+</div>
+<!-- Outbreak Hotspot 2: Downy Mildew (Grapes) -->
+<div class="absolute top-2/3 right-1/3 transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-10 h-10 bg-amber-500/30 rounded-full radar-pulse"></div>
+<div class="w-4 h-4 bg-secondary-container text-white rounded-full flex items-center justify-center border-2 border-white shadow-md z-10">
+<span class="material-symbols-outlined text-[10px]" style="font-variation-settings: 'FILL' 1;">coronavirus</span>
+</div>
+</div>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 bg-surface-container-lowest/95 backdrop-blur-md px-2.5 py-1.5 rounded-lg shadow-lg border border-amber-200 text-left min-w-[160px] pointer-events-none z-20">
+<div class="flex items-center justify-between gap-1">
+<span class="text-[11px] font-bold text-secondary">Downy Mildew</span>
+<span class="text-[9px] bg-amber-100 text-secondary px-1 rounded">Moderate</span>
+</div>
+<span class="text-[10px] text-on-surface-variant block">Grapes • Pimpalgaon (7.8 km)</span>
+<span class="text-[10px] font-semibold text-outline block">RH 84% microclimate</span>
+</div>
+</div>
+<!-- Outbreak Hotspot 3: Purple Blotch (Onion) -->
+<div class="absolute bottom-1/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 group cursor-pointer">
+<div class="w-4 h-4 bg-primary text-white rounded-full flex items-center justify-center border-2 border-white shadow-md">
+<span class="material-symbols-outlined text-[10px]">grass</span>
+</div>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 bg-surface-container-lowest/95 backdrop-blur-md px-2 py-1 rounded shadow-md border border-outline-variant/30 text-left whitespace-nowrap z-20">
+<span class="text-[10px] font-bold text-primary">Purple Blotch Watch • Nashik Red Onion</span>
+</div>
+</div>
+<!-- Bottom Left Telemetry Summary Bar -->
+<div class="absolute bottom-3 left-3 right-3 sm:right-auto bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/40 rounded-xl p-3 shadow-md">
+<div class="flex flex-wrap items-center gap-4 text-label-md font-label-md">
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-error"></span>
+<span>Critical Risk: <strong>2 Plots</strong></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container"></span>
+<span>Under Watch: <strong>9 Plots</strong></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span>Suppression Active: <strong>37 Plots</strong></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Grid of Outbreak Telemetry Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
+<div class="p-3.5 rounded-xl border border-red-200 bg-red-50/40">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm font-bold text-error">Fall Armyworm</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-red-100 text-error font-bold">Maize / Cotton</span>
+</div>
+<div class="mt-2 flex items-baseline justify-between">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">3.2 km away</span>
+<span class="text-label-sm font-label-sm text-error">Surging (+18%)</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-2">
+<div class="bg-error h-1.5 rounded-full" style="width: 82%"></div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl border border-amber-200 bg-amber-50/40">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm font-bold text-secondary">Downy Mildew</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-secondary font-bold">Grapevine</span>
+</div>
+<div class="mt-2 flex items-baseline justify-between">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">7.8 km away</span>
+<span class="text-label-sm font-label-sm text-secondary">Stable</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-2">
+<div class="bg-secondary-container h-1.5 rounded-full" style="width: 48%"></div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm font-bold text-primary">Purple Blotch</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-bold">Red Onion</span>
+</div>
+<div class="mt-2 flex items-baseline justify-between">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">11.4 km away</span>
+<span class="text-label-sm font-label-sm text-outline">Low Activity</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-2">
+<div class="bg-primary h-1.5 rounded-full" style="width: 24%"></div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl border border-outline-variant/30 bg-surface-container-lowest">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm font-bold text-primary">Yellow Stem Borer</span>
+<span class="text-[10px] px-1.5 py-0.5 rounded bg-surface-container text-on-surface-variant font-bold">Paddy</span>
+</div>
+<div class="mt-2 flex items-baseline justify-between">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">16.0 km away</span>
+<span class="text-label-sm font-label-sm text-emerald-600">Suppressed</span>
+</div>
+<div class="w-full bg-surface-container-high rounded-full h-1.5 mt-2">
+<div class="bg-emerald-600 h-1.5 rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- 4. ACTIVE PEST LIFE-CYCLE & DEGREE-DAY (GDD) FORECASTING TRACKER -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-sm p-5 lg:p-6 space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary font-bold">timelapse</span>
+<h3 class="text-headline-sm font-headline-sm text-primary font-bold">
+                  Spodoptera frugiperda Life-Cycle &amp; Growing Degree Day (GDD) Model
+                </h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Cumulative thermal units: <strong>342.6 GDD</strong> (Base threshold: 10.9°C). Predictive biological vulnerability timeline.
+              </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-amber-100 text-secondary font-bold">
+                Critical Spray Window Closes in 48 Hours
+              </span>
+</div>
+</div>
+<!-- 5-Stage Stepper Component -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-3 relative">
+<!-- Stage 1 -->
+<div class="p-3.5 rounded-xl border border-outline-variant/40 bg-surface-container-low/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-sm font-label-sm text-outline">STAGE 1</span>
+<span class="material-symbols-outlined text-emerald-600 text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface">Egg Masses</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">100-200 eggs/layer under leaf surface.</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 text-label-sm font-label-sm text-outline">
+                Passed 4 days ago
+              </div>
+</div>
+<!-- Stage 2: ACTIVE & CRITICAL -->
+<div class="p-3.5 rounded-xl border-2 border-primary bg-primary-fixed/20 flex flex-col justify-between shadow-sm relative ring-2 ring-primary/20">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                Current Active Phase
+              </div>
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-sm font-label-sm text-primary font-bold">STAGE 2</span>
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></span>
+</div>
+<h4 class="text-title-md font-title-md text-primary font-bold">Instar L1–L2</h4>
+<p class="text-body-sm font-body-sm text-on-surface mt-1">
+                  Early pinhole foliar feeding. <strong>Optimal vulnerability to Bt &amp; Neem.</strong>
+</p>
+</div>
+<div class="mt-3 pt-2 border-t border-primary/20 text-label-sm font-label-sm text-primary font-bold">
+                Spray Window: TODAY - 2 DAYS
+              </div>
+</div>
+<!-- Stage 3 -->
+<div class="p-3.5 rounded-xl border border-outline-variant/40 bg-surface-container-low/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-sm font-label-sm text-outline">STAGE 3</span>
+<span class="material-symbols-outlined text-secondary text-sm">schedule</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface">Voracious L3–L6</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Deep whorl boring, high resistance to contact sprays.</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 text-label-sm font-label-sm text-secondary font-semibold">
+                Expected in 3 days
+              </div>
+</div>
+<!-- Stage 4 -->
+<div class="p-3.5 rounded-xl border border-outline-variant/40 bg-surface-container-low/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-sm font-label-sm text-outline">STAGE 4</span>
+<span class="material-symbols-outlined text-outline text-sm">schedule</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface">Soil Pupation</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">2-8 cm subterranean depth. Deep plowing target.</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 text-label-sm font-label-sm text-outline">
+                Estimated in 9 days
+              </div>
+</div>
+<!-- Stage 5 -->
+<div class="p-3.5 rounded-xl border border-outline-variant/40 bg-surface-container-low/60 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-1.5">
+<span class="text-label-sm font-label-sm text-outline">STAGE 5</span>
+<span class="material-symbols-outlined text-outline text-sm">flight</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface">Adult Flight Peak</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Nocturnal migration up to 100km per generation.</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 text-label-sm font-label-sm text-outline">
+                Estimated in 16 days
+              </div>
+</div>
+</div>
+<!-- Trap Density Guidance Card -->
+<div class="p-4 rounded-xl bg-surface-container-low border border-outline-variant/30 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">solar_power</span>
+</div>
+<div>
+<span class="text-title-md font-title-md text-on-surface block">Pheromone &amp; Light Trap Deployment Protocol</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Recommended density: <strong>8 traps/acre</strong> (Spodolure / Helilure septa). Operate solar light traps <strong>07:00 PM – 10:00 PM</strong>.</span>
+</div>
+</div>
+<button class="px-3.5 py-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors shrink-0">
+              Download Trap Calibration Guide (PDF)
+            </button>
+</div>
+</div>
+<!-- 5. INTEGRATED PEST MANAGEMENT (IPM) & BIO-CONTROL PROTOCOLS -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-sm p-5 lg:p-6 space-y-6">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-bold">eco</span>
+<h3 class="text-headline-sm font-headline-sm text-primary font-bold">
+                  Recommended Integrated Pest Management (IPM) Protocols
+                </h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Strict adherence to Central Insecticide Board &amp; Registration Committee (CIBRC) and ICAR spray guidelines.
+              </p>
+</div>
+<!-- Weather Synced Spray Banner -->
+<div class="px-3.5 py-2 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center gap-2.5">
+<span class="material-symbols-outlined text-emerald-700">air</span>
+<div>
+<span class="text-label-sm font-label-sm text-emerald-800 font-bold block">Foliar Spray Window Today: 04:30 PM – 07:15 PM</span>
+<span class="text-[11px] text-emerald-700">Surface wind &lt; 7 km/h • Dew point favorable • 0% rain chance</span>
+</div>
+</div>
+</div>
+<!-- Structured Three-Pillar Protocol Bento -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+<!-- Pillar 1: Biological & Microbial -->
+<div class="p-5 rounded-xl border border-primary/20 bg-surface-bright flex flex-col justify-between space-y-4">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-primary text-on-primary">FIRST LINE DEFENSE</span>
+<span class="text-label-sm font-label-sm text-primary font-bold">Zero Chemical Residue</span>
+</div>
+<h4 class="text-title-md font-title-md text-primary font-bold">Bio-Pesticides &amp; Microbials</h4>
+<ul class="space-y-2.5 text-body-sm font-body-sm text-on-surface-variant">
+<li class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<strong class="text-on-surface block">Bacillus thuringiensis (Bt kurstaki)</strong>
+<span>Dose: 2.0 g/L water. Spray during evening twilight to avoid UV degradation.</span>
+</li>
+<li class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<strong class="text-on-surface block">Beauveria bassiana (1×10⁸ CFU)</strong>
+<span>Dose: 5.0 ml/L water. Entomopathogenic fungal mycelium targeting soft larvae.</span>
+</li>
+<li class="p-2.5 rounded-lg bg-surface-container-low border border-outline-variant/20">
+<strong class="text-on-surface block">Neem Azadirachtin (10,000 ppm)</strong>
+<span>Dose: 3.0 ml/L water. Powerful oviposition deterrent &amp; anti-feedant.</span>
+</li>
+</ul>
+</div>
+<div class="pt-2 text-label-sm font-label-sm text-primary font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">verified</span>
+<span>Safe for Honeybees &amp; Earthworms</span>
+</div>
+</div>
+<!-- Pillar 2: Parasitoid Inundation -->
+<div class="p-5 rounded-xl border border-outline-variant/30 bg-surface-bright flex flex-col justify-between space-y-4">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-700 text-white">ECO-PARASITOIDS</span>
+<span class="text-label-sm font-label-sm text-outline">Biological Shield</span>
+</div>
+<h4 class="text-title-md font-title-md text-primary font-bold">Egg Parasitoid Release</h4>
+<div class="p-3 rounded-lg bg-surface-container-low border border-outline-variant/20 space-y-2">
+<strong class="text-on-surface block">Trichogramma pretiosum Egg Cards</strong>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                    Release rate: <strong>50,000 eggs/acre</strong> (2 to 3 releases at weekly intervals).
+                  </p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                    Staple cards to underside of middle canopy leaves in 20 spots per acre early morning.
+                  </p>
+</div>
+<div class="p-3 rounded-lg bg-amber-50/60 border border-amber-200">
+<span class="text-label-sm font-label-sm font-bold text-secondary block">Precautionary Window</span>
+<span class="text-body-sm font-body-sm text-on-surface-variant">Do not apply synthetic pyrethroids or broad-spectrum organophosphates 7 days before/after release.</span>
+</div>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-lowest border border-primary/30 text-primary font-label-md text-label-md hover:bg-surface-container transition-colors text-center">
+                View Step-by-Step Card Attachment Video
+              </button>
+</div>
+<!-- Pillar 3: Chemical Rescue (Last Resort) -->
+<div class="p-5 rounded-xl border border-red-200 bg-red-50/20 flex flex-col justify-between space-y-4">
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-700 text-white">EMERGENCY RESCUE</span>
+<span class="text-label-sm font-label-sm text-error font-bold">ETA: &gt;20% Leaf Injury</span>
+</div>
+<h4 class="text-title-md font-title-md text-error font-bold">Chemical Threshold Protocol</h4>
+<ul class="space-y-2.5 text-body-sm font-body-sm text-on-surface-variant">
+<li class="p-2.5 rounded-lg bg-surface-container-lowest border border-red-100">
+<strong class="text-on-surface block">Chlorantraniliprole 18.5% SC (Coragen)</strong>
+<span>Dose: 0.4 ml/L (60 ml/acre in 150-200 L water). Direct nozzle onto whorl leaves.</span>
+<span class="block text-[11px] font-bold text-error mt-1">Pre-Harvest Interval (PHI): Strict 14 Days</span>
+</li>
+<li class="p-2.5 rounded-lg bg-surface-container-lowest border border-red-100">
+<strong class="text-on-surface block">Emamectin Benzoate 5% SG</strong>
+<span>Dose: 0.4 g/L water (80 g/acre). Target early instars before deep entry.</span>
+<span class="block text-[11px] font-bold text-error mt-1">PHI: 7 Days Minimum</span>
+</li>
+</ul>
+</div>
+<div class="pt-2 text-label-sm font-label-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">gavel</span>
+<span>Mandatory Protective PPE &amp; Mask Protocol</span>
+</div>
+</div>
+</div>
+</div>
+<!-- 6. VERIFIED INPUT SHOP & FPO INVENTORY WIDGET -->
+<div class="bg-surface-container-lowest border border-outline-variant/30 rounded-2xl shadow-sm p-5 lg:p-6 space-y-5">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary font-bold">local_convenience_store</span>
+<h3 class="text-headline-sm font-headline-sm text-primary font-bold">
+                  Verified Input Supplies &amp; FPO Reserve Inventory
+                </h3>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                Direct procurement from Pimpalgaon KVK Hub &amp; Sahyadri Farmer Producer Company (CIBRC Verified Batches).
+              </p>
+</div>
+<span class="text-label-md font-label-md text-emerald-800 bg-emerald-100/60 px-3 py-1.5 rounded-lg border border-emerald-300">
+              Subsidized FPO Pricing Active
+            </span>
+</div>
+<!-- Product Inventory List -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Item 1: Neem Azadirachtin -->
+<div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-bright hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-200">Bio-Insecticide</span>
+<span class="text-label-sm font-label-sm text-emerald-700 font-bold">12 In Stock</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface mt-2 font-bold">Godrej Achook Neem (10,000 ppm)</h4>
+<p class="text-body-sm font-body-sm text-outline">500 ml Bottle • CIBRC Reg: CIR-11482</p>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm font-bold text-primary">₹420</span>
+<span class="text-body-sm font-body-sm text-outline line-through">₹495</span>
+<span class="text-label-sm font-label-sm text-secondary font-bold">15% off</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-1">Available at Pimpalgaon Hub (3.5 km away)</p>
+</div>
+<button class="mt-4 w-full py-2.5 px-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-tertiary active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+<span>One-Click Reserve at FPO</span>
+</button>
+</div>
+<!-- Item 2: Beauveria bassiana -->
+<div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-bright hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-200">Microbial Fungi</span>
+<span class="text-label-sm font-label-sm text-emerald-700 font-bold">8 In Stock</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface mt-2 font-bold">Biomax Beauveria bassiana WP</h4>
+<p class="text-body-sm font-body-sm text-outline">1 kg Pack • 1×10⁸ CFU/g Certified</p>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm font-bold text-primary">₹280</span>
+<span class="text-body-sm font-body-sm text-outline line-through">₹330</span>
+<span class="text-label-sm font-label-sm text-secondary font-bold">15% off</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-1">Cold Storage Batch #BB-2024-88</p>
+</div>
+<button class="mt-4 w-full py-2.5 px-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-tertiary active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-sm">shopping_cart</span>
+<span>One-Click Reserve at FPO</span>
+</button>
+</div>
+<!-- Item 3: Trichogramma Cards -->
+<div class="p-4 rounded-xl border border-outline-variant/30 bg-surface-bright hover:shadow-md transition-shadow flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between gap-2">
+<span class="text-[10px] bg-emerald-50 text-emerald-800 px-2 py-0.5 rounded font-bold border border-emerald-200">Live Bio-Agent</span>
+<span class="text-label-sm font-label-sm text-secondary font-bold">24h Express Dispatch</span>
+</div>
+<h4 class="text-title-md font-title-md text-on-surface mt-2 font-bold">Trichogramma pretiosum Egg Cards</h4>
+<p class="text-body-sm font-body-sm text-outline">1 Card Sheet (approx. 20,000 parasitized eggs)</p>
+<div class="mt-3 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm font-bold text-primary">₹150</span>
+<span class="text-body-sm font-body-sm text-outline">/ sheet</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-1">Dispatched via temperature-monitored courier</p>
+</div>
+<button class="mt-4 w-full py-2.5 px-3 rounded-lg bg-primary text-on-primary font-label-md text-label-md hover:bg-tertiary active:scale-[0.98] transition-all flex items-center justify-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-sm">schedule_send</span>
+<span>Order Cold-Chain Delivery</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+<!-- MOBILE BOTTOM NAVIGATION BAR (Shared Components Tokenized Integration) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest shadow-md border-t border-outline-variant/30">
+<div class="flex justify-around items-center px-1 py-1.5 max-w-lg mx-auto">
+<!-- Home Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Home</span>
+</a>
+<!-- Doctor (Diagnose) Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="/diagnose">
+<span class="material-symbols-outlined">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Voice Quick Assist Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="#">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center shadow-xs">
+<span class="material-symbols-outlined text-primary">mic</span>
+</div>
+<span class="text-label-sm font-label-sm mt-0.5">Voice</span>
+</a>
+<!-- Mandi Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Profile Tab -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

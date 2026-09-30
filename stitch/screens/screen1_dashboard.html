@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Farmer Smart Dashboard</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary": "#904d00",
+            "on-tertiary-container": "#50e0a4",
+            "tertiary": "#00462e",
+            "on-error": "#ffffff",
+            "surface-container-high": "#e9e8e4",
+            "on-secondary-container": "#663500",
+            "surface-container-highest": "#e3e2df",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-primary-container": "#8bd6b7",
+            "inverse-surface": "#2f312e",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e3e2df",
+            "on-primary-fixed": "#002116",
+            "surface-tint": "#1b6b51",
+            "primary": "#004532",
+            "on-secondary-fixed-variant": "#6e3900",
+            "error": "#ba1a1a",
+            "outline-variant": "#bec9c2",
+            "primary-container": "#065f46",
+            "on-primary-fixed-variant": "#00513b",
+            "outline": "#6f7973",
+            "primary-fixed": "#a6f2d1",
+            "surface-bright": "#faf9f5",
+            "surface": "#faf9f5",
+            "surface-container-low": "#f4f4f0",
+            "surface-container-lowest": "#ffffff",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed": "#002113",
+            "surface-dim": "#dbdad6",
+            "tertiary-container": "#006041",
+            "error-container": "#ffdad6",
+            "on-surface": "#1b1c1a",
+            "on-background": "#1b1c1a",
+            "inverse-primary": "#8bd6b6",
+            "secondary-fixed": "#ffdcc3",
+            "on-error-container": "#93000a",
+            "inverse-on-surface": "#f2f1ed",
+            "on-tertiary": "#ffffff",
+            "on-tertiary-fixed-variant": "#005236",
+            "background": "#faf9f5",
+            "surface-container": "#efeeea",
+            "secondary-container": "#fe932c",
+            "on-surface-variant": "#3f4944",
+            "on-secondary-fixed": "#2f1500",
+            "secondary-fixed-dim": "#ffb77d",
+            "tertiary-fixed": "#6ffbbe"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "margin-tablet": "2rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "margin-desktop": "3rem",
+            "gutter-desktop": "2rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "gutter-tablet": "1.5rem"
+          },
+          "fontFamily": {
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill-icon {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Ambient diffuse elevation from Design Tokens */
+    .card-elevation {
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.05), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+    }
+    .pill-elevation {
+      box-shadow: 0 4px 14px -2px rgba(6, 95, 70, 0.12), 0 2px 5px -1px rgba(0, 0, 0, 0.04);
+    }
+    .fab-elevation {
+      box-shadow: 0 10px 25px -4px rgba(6, 95, 70, 0.35), 0 4px 10px -2px rgba(0, 0, 0, 0.08);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased font-body-md min-h-screen flex justify-center selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Mobile Device Shell Simulation (max-w-md, high daylight contrast) -->
+<div class="w-full max-w-[420px] bg-background min-h-screen flex flex-col pb-28 relative shadow-2xl">
+<!-- 1. TopAppBar (Shared Component Source of Truth Compliant) -->
+<header class="sticky top-0 z-40 bg-surface/95 backdrop-blur-md border-b border-outline-variant/30 shadow-sm transition-all">
+<div class="flex justify-between items-center w-full px-margin py-space-sm">
+<!-- Brand & Farm Badge -->
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary-fixed flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined fill-icon text-primary-fixed text-[22px]">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm font-bold text-primary tracking-tight">CropSense AI</span>
+<span class="bg-primary-fixed/60 text-on-primary-fixed text-[10px] font-bold px-1.5 py-0.5 rounded-full uppercase tracking-wider">Pro</span>
+</div>
+<!-- Location Sub-line -->
+<button class="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors text-left" title="Change farm location">
+<span class="material-symbols-outlined text-[14px] text-primary">location_on</span>
+<span class="text-label-md font-label-md font-semibold text-on-surface-variant">Nashik, Maharashtra</span>
+<span class="material-symbols-outlined text-[13px] text-outline">expand_more</span>
+</button>
+</div>
+</div>
+<!-- Trailing Actions Cluster -->
+<div class="flex items-center gap-2">
+<!-- Multilingual Language Toggle from JSON -->
+<button class="px-2.5 py-1 rounded-full border border-outline-variant/60 bg-surface-container-lowest text-primary text-label-md font-label-md hover:bg-surface-container-high transition-colors active:scale-95 shadow-sm">
+            हिंदी / EN
+          </button>
+<!-- Notification Bell with Alert Badge -->
+<button aria-label="Notifications" class="relative w-9 h-9 rounded-full bg-surface-container-low flex items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 w-4 h-4 bg-error text-on-error text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-surface">2</span>
+</button>
+</div>
+</div>
+<!-- Quick AI Token Sub-bar (Sunlight visible) -->
+<div class="px-margin pb-2 pt-0.5 flex items-center justify-between border-t border-outline-variant/15 text-label-sm font-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim animate-pulse"></span>
+<span class="text-outline font-medium">Daily Cloud Telemetry</span>
+</div>
+<div class="flex items-center gap-1.5 bg-surface-container-low px-2 py-0.5 rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-tertiary text-[13px] fill-icon">bolt</span>
+<span class="text-primary font-bold">85% AI Credits Available</span>
+</div>
+</div>
+</header>
+<!-- Main Scrollable Dashboard Canvas -->
+<main class="flex-1 px-margin py-3 space-y-4">
+<!-- 2. Weather & Early Warning Alert Card -->
+<section class="rounded-2xl p-4 text-on-primary relative overflow-hidden bg-gradient-to-br from-primary-container via-primary to-[#002b1f] shadow-md border border-outline-variant/20">
+<!-- Weather Summary Upper Row -->
+<div class="flex items-start justify-between relative z-10">
+<div>
+<div class="flex items-baseline gap-2">
+<span class="text-[34px] font-extrabold leading-none tracking-tight font-display-lg">28°C</span>
+<span class="text-label-lg font-label-lg text-primary-fixed font-semibold">Nashik Valley</span>
+</div>
+<p class="text-label-md font-label-md text-on-primary-container mt-1 flex items-center gap-1.5">
+<span>Sunny • Humidity 65%</span>
+<span class="text-primary-fixed/40">•</span>
+<span>Wind 12 km/h</span>
+</p>
+</div>
+<!-- Weather Condition Icon Badge -->
+<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center text-amber-300">
+<span class="material-symbols-outlined text-[32px] fill-icon">wb_sunny</span>
+</div>
+</div>
+<!-- IMD Agrometeorological Advisory Strip -->
+<div class="mt-3.5 bg-black/20 rounded-xl p-2.5 backdrop-blur-sm border border-white/10 flex items-start gap-2.5 relative z-10">
+<span class="material-symbols-outlined text-[18px] text-secondary-fixed shrink-0 mt-0.5">rainy</span>
+<div class="text-[12px] leading-[1.35] text-surface-bright">
+<strong class="font-semibold text-secondary-fixed">IMD 3-Day Forecast:</strong> Moderate showers expected Wednesday. <span class="text-white/90">Postpone urea top-dressing to prevent nutrient leaching.</span>
+</div>
+</div>
+<!-- High Priority Pest Warning Alert (Clickable Capsule) -->
+<div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between relative z-10">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary-container"></span>
+</span>
+<span class="text-label-md font-label-md font-semibold text-white tracking-wide">
+              Fall Armyworm outbreak (&lt;5km)
+            </span>
+</div>
+<button class="bg-secondary-container text-on-secondary-container hover:bg-secondary-fixed text-label-sm font-label-sm font-bold px-2.5 py-1 rounded-lg flex items-center gap-1 transition-transform active:scale-95 shadow-sm">
+<span>Defense Plan</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+<!-- Organic Background Texture Glow -->
+<div class="absolute -right-8 -bottom-10 w-40 h-40 bg-secondary-container/15 rounded-full blur-2xl pointer-events-none"></div>
+</section>
+<!-- 3. Farm & Satellite Telemetry Card (Krishna Valley Farm) -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 card-elevation">
+<!-- Farm Selector & Satellite Sync Tag -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">agriculture</span>
+</div>
+<div>
+<div class="flex items-center gap-1 cursor-pointer">
+<h2 class="text-title-md font-title-md font-bold text-on-surface">Krishna Valley • Plot A</h2>
+<span class="material-symbols-outlined text-[16px] text-outline">expand_more</span>
+</div>
+<p class="text-label-sm font-label-sm text-outline">Sharbati Wheat • Sensor Node #04</p>
+</div>
+</div>
+<!-- Satellite Tag -->
+<div class="flex items-center gap-1 px-2 py-1 rounded-full bg-primary-fixed/25 border border-primary-fixed text-primary text-[11px] font-bold">
+<span class="material-symbols-outlined text-[13px] animate-spin text-tertiary" style="animation-duration: 9s;">satellite_alt</span>
+<span>Sentinel-2B • 2h ago</span>
+</div>
+</div>
+<!-- NDVI Vegetative Health Gauge & Telemetry Bento -->
+<div class="mt-3.5 grid grid-cols-12 gap-3">
+<!-- NDVI Semi-Arc Gauge Block -->
+<div class="col-span-6 bg-surface-container-low/70 rounded-xl p-3 flex flex-col justify-between items-center text-center border border-outline-variant/15 relative overflow-hidden">
+<div class="w-full flex justify-between items-center text-label-sm font-label-sm text-outline">
+<span>NDVI Health</span>
+<span class="material-symbols-outlined text-[15px] text-primary" title="Normalized Difference Vegetation Index">info</span>
+</div>
+<!-- Custom Arc Gauge Graphic -->
+<div class="relative w-28 h-16 mt-2 flex items-end justify-center">
+<svg class="w-28 h-16" viewbox="0 0 100 55">
+<path d="M 10 50 A 40 40 0 0 1 90 50" fill="none" stroke="#e3e2df" stroke-linecap="round" stroke-width="9"></path>
+<path d="M 10 50 A 40 40 0 0 1 76 18" fill="none" stroke="url(#ndviGradient)" stroke-linecap="round" stroke-width="9"></path>
+<defs>
+<lineargradient id="ndviGradient" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="#fe932c"></stop>
+<stop offset="60%" stop-color="#10b981"></stop>
+<stop offset="100%" stop-color="#004532"></stop>
+</lineargradient>
+</defs>
+</svg>
+<div class="absolute bottom-0 text-center">
+<span class="text-title-md font-display-lg font-extrabold text-primary">0.78</span>
+</div>
+</div>
+<!-- Health Status Chip -->
+<div class="mt-2 inline-flex items-center gap-1 bg-[#d1fae5] text-primary px-2 py-0.5 rounded-full text-[11px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+<span>Vigorous Growth</span>
+</div>
+</div>
+<!-- Dual Telemetry Sensors Grid -->
+<div class="col-span-6 flex flex-col gap-2.5">
+<!-- Soil Moisture Telemetry -->
+<div class="bg-surface-container-low/70 rounded-xl p-2.5 border border-outline-variant/15 flex-1 flex flex-col justify-center">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">water_drop</span>
+<span>Soil Moisture</span>
+</span>
+<span class="font-bold text-primary text-[11px]">Optimal</span>
+</div>
+<div class="mt-1 flex items-baseline justify-between">
+<span class="text-title-md font-bold text-on-surface">42.4%</span>
+<span class="text-label-sm text-outline">Zone Root (20cm)</span>
+</div>
+<!-- Track Meter -->
+<div class="w-full h-1.5 bg-outline-variant/30 rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 72%;"></div>
+</div>
+</div>
+<!-- Canopy Temperature Telemetry -->
+<div class="bg-surface-container-low/70 rounded-xl p-2.5 border border-outline-variant/15 flex-1 flex flex-col justify-center">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-outline">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">thermostat</span>
+<span>Canopy Temp</span>
+</span>
+<span class="text-label-sm text-on-surface font-semibold">Normal</span>
+</div>
+<div class="mt-1 flex items-baseline justify-between">
+<span class="text-title-md font-bold text-on-surface">24.2°C</span>
+<span class="text-label-sm text-outline">IR Sensor</span>
+</div>
+<!-- Track Meter -->
+<div class="w-full h-1.5 bg-outline-variant/30 rounded-full mt-1.5 overflow-hidden">
+<div class="h-full bg-secondary-container rounded-full" style="width: 48%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Irrigation Advisory Strip -->
+<div class="mt-3 p-2.5 bg-primary-fixed/20 border border-primary-fixed/40 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-7 h-7 rounded-lg bg-primary text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">water_ph</span>
+</span>
+<div class="text-[12px] leading-tight">
+<p class="font-bold text-primary">Next Drip Cycle: Thursday 06:00 AM</p>
+<p class="text-outline">Duration: 45 Mins • Pressure: 1.4 Bar</p>
+</div>
+</div>
+<button class="bg-surface-container-lowest border border-primary/30 text-primary hover:bg-primary hover:text-white px-2.5 py-1 rounded-lg text-label-sm font-label-sm font-bold transition-all shadow-sm">
+            Reschedule
+          </button>
+</div>
+</section>
+<!-- 4. Active Crop Lifecycle & Profit Target -->
+<section class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 card-elevation">
+<!-- Section Title & Land Size -->
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-title-md font-title-md font-bold text-on-surface">Sharbati Wheat • 4.5 Acres</h3>
+<p class="text-label-sm font-label-sm text-outline">Rabi Season • Sown Nov 12</p>
+</div>
+<span class="bg-primary/10 text-primary text-label-md font-bold px-2.5 py-1 rounded-full">
+            Day 45 of 110
+          </span>
+</div>
+<!-- Segmented Stage Progress Bar -->
+<div class="mt-3.5 space-y-1.5">
+<div class="flex justify-between text-[11px] font-semibold">
+<span class="text-primary font-bold">Flowering Stage (Active)</span>
+<span class="text-outline">Next: Grain Filling (in 12 days)</span>
+</div>
+<!-- 5 Segments representing growth stages -->
+<div class="grid grid-cols-5 gap-1.5">
+<div class="h-2 rounded-full bg-primary" title="Sowing (Completed)"></div>
+<div class="h-2 rounded-full bg-primary" title="Tillering (Completed)"></div>
+<div class="h-2 rounded-full bg-secondary-container animate-pulse" title="Flowering (Active Stage)"></div>
+<div class="h-2 rounded-full bg-surface-container-high" title="Grain Filling"></div>
+<div class="h-2 rounded-full bg-surface-container-high" title="Harvest Maturity"></div>
+</div>
+<div class="flex justify-between text-[10px] text-outline px-0.5">
+<span>Sowing ✓</span>
+<span>Tillering ✓</span>
+<span class="text-secondary font-bold">Flowering</span>
+<span>Grain Fill</span>
+<span>Harvest</span>
+</div>
+</div>
+<!-- Financial & Yield Projection Metrics -->
+<div class="mt-3.5 pt-3 border-t border-outline-variant/20 grid grid-cols-3 gap-2 text-center">
+<div class="bg-surface-container-low/50 p-2 rounded-xl">
+<p class="text-label-sm font-label-sm text-outline">Expected Yield</p>
+<p class="text-title-md font-title-md font-bold text-primary mt-0.5">48 Qtl</p>
+<span class="text-[10px] text-primary font-medium">+8% vs last year</span>
+</div>
+<div class="bg-surface-container-low/50 p-2 rounded-xl">
+<p class="text-label-sm font-label-sm text-outline">Est. Net Profit</p>
+<p class="text-title-md font-title-md font-bold text-on-surface mt-0.5">₹1,85,000</p>
+<span class="text-[10px] text-outline font-medium">@ ₹2,450/Qtl</span>
+</div>
+<div class="bg-surface-container-low/50 p-2 rounded-xl">
+<p class="text-label-sm font-label-sm text-outline">APMC Demand</p>
+<p class="text-title-md font-title-md font-bold text-secondary mt-0.5">92/100</p>
+<span class="text-[10px] text-secondary font-semibold">High in Vashi</span>
+</div>
+</div>
+</section>
+<!-- 5. Quick Action Grid (2x2 Rounded Cards with high feedback) -->
+<section class="space-y-2.5">
+<div class="flex items-center justify-between">
+<h3 class="text-title-md font-title-md font-bold text-on-surface">Agri Operations Hub</h3>
+<span class="text-label-sm text-outline font-semibold">Instant Diagnostics</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Action 1: AI Crop Doctor -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 card-elevation flex flex-col justify-between hover:border-primary transition-all active:scale-[0.98] cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">photo_camera</span>
+</div>
+<span class="bg-primary text-on-primary text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Try Scan
+              </span>
+</div>
+<div class="mt-3">
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">AI Crop Doctor</h4>
+<p class="text-label-md font-label-md text-outline mt-1 leading-snug">Scan leaf for instant pest &amp; disease diagnosis</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-primary text-label-sm font-bold">
+<span>Open Scanner</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Action 2: Soil & Fertilizer Hub -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 card-elevation flex flex-col justify-between hover:border-primary transition-all active:scale-[0.98] cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">science</span>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Updated
+              </span>
+</div>
+<div class="mt-3">
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">Soil &amp; Nutrients</h4>
+<p class="text-label-md font-label-md text-outline mt-1 leading-snug">Soil Health Card &amp; customized NPK schedule</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-secondary text-label-sm font-bold">
+<span>NPK Calculator</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Action 3: Pashu Hub (Livestock) -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 card-elevation flex flex-col justify-between hover:border-primary transition-all active:scale-[0.98] cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-primary-container flex items-center justify-center group-hover:bg-primary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">cruelty_free</span>
+</div>
+<span class="bg-[#d1fae5] text-primary text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Gir: 3
+              </span>
+</div>
+<div class="mt-3">
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">Pashu Hub</h4>
+<p class="text-label-md font-label-md text-outline mt-1 leading-snug">Milk yield tracking &amp; vaccination reminders</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-primary text-label-sm font-bold">
+<span>Livestock Log</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+<!-- Action 4: Mandi Prices & Pre-Book -->
+<div class="bg-surface-container-lowest rounded-2xl p-3.5 border border-outline-variant/30 card-elevation flex flex-col justify-between hover:border-primary transition-all active:scale-[0.98] cursor-pointer group">
+<div class="flex items-start justify-between">
+<div class="w-10 h-10 rounded-xl bg-orange-50 text-secondary-container flex items-center justify-center group-hover:bg-secondary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+</div>
+<span class="bg-secondary-container/20 text-secondary text-[10px] font-bold px-2 py-0.5 rounded-full">
+                +₹40 Today
+              </span>
+</div>
+<div class="mt-3">
+<h4 class="text-headline-sm font-headline-sm font-bold text-on-surface leading-tight">Mandi Rates</h4>
+<p class="text-label-md font-label-md text-outline mt-1 leading-snug">Live APMC rate: ₹2,450/Qtl with buyer bids</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-secondary text-label-sm font-bold">
+<span>View Mandi</span>
+<span class="material-symbols-outlined text-[16px] group-hover:translate-x-0.5 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 6. Recent AI Advisory Feed (Gemini Powered Callout) -->
+<section class="bg-gradient-to-r from-surface-container-lowest via-surface-container-lowest to-[#e7f3ee] rounded-2xl p-4 border border-primary/20 card-elevation relative">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px] fill-icon">auto_awesome</span>
+<span class="text-title-md font-title-md font-bold text-primary">Smart Crop Advisory</span>
+</div>
+<span class="text-label-sm font-label-sm bg-primary/10 text-primary px-2 py-0.5 rounded-md font-semibold">Plot A Tailored</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface mt-2 leading-relaxed">
+          Leaf nitrogen levels are optimal from satellite reflection. Schedule scheduled drip irrigation within 48 hours ahead of rising temperatures to prevent head heat stress.
+        </p>
+<!-- Audio narration bar for Indian vernacular accessibility -->
+<div class="mt-3 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="flex items-center gap-2 bg-primary text-on-primary hover:bg-primary-container px-3 py-1.5 rounded-xl text-label-md font-label-md font-bold shadow-sm transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+<span>Listen in Hindi / सुनें</span>
+</button>
+<div class="flex items-center gap-2">
+<button class="w-8 h-8 rounded-full border border-outline-variant/40 flex items-center justify-center text-outline hover:text-primary hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+</button>
+<button class="w-8 h-8 rounded-full border border-outline-variant/40 flex items-center justify-center text-outline hover:text-primary hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">share</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- 7. Floating Multilingual AI Voice Assistant Button (FAB) -->
+<div class="fixed bottom-20 left-0 right-0 z-40 flex justify-center pointer-events-none">
+<div class="pointer-events-auto flex items-center gap-2.5 bg-primary-container text-white px-4 py-2.5 rounded-full fab-elevation border border-primary-fixed/40 active:scale-95 transition-transform duration-150 cursor-pointer group">
+<div class="relative w-8 h-8 rounded-full bg-gradient-to-tr from-primary-fixed to-on-tertiary-container flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[20px] fill-icon">mic</span>
+<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-secondary-container ring-2 ring-primary-container animate-ping"></span>
+</div>
+<div class="flex flex-col text-left">
+<span class="text-label-md font-label-md font-bold tracking-tight text-white leading-none">Voice Assistant</span>
+<span class="text-[10px] text-primary-fixed-dim font-medium mt-0.5">Tap to speak हिंदी, मराठी, EN</span>
+</div>
+</div>
+</div>
+<!-- 8. BottomNavBar (Source of Truth Implementation) -->
+<nav class="fixed bottom-0 left-0 right-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs max-w-lg mx-auto bg-surface-container-lowest/95 backdrop-blur-md border-t border-outline-variant/30 shadow-lg">
+<!-- Tab 1: Home (Active State strictly mapped according to Shared Component JSON) -->
+<a href="screen_desktop_dashboard.html" aria-label="Home" class="flex flex-col items-center justify-center bg-primary-container text-on-primary rounded-xl px-3 py-1.5 active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined fill-icon text-[20px]">home</span>
+<span class="text-label-sm font-label-sm font-bold mt-0.5">Home</span>
+</a>
+<!-- Tab 2: Doctor (Inactive State) -->
+<a href="screen_desktop_diagnose.html" aria-label="Doctor" class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[20px]">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Tab 3: Voice (Inactive State) -->
+<a href="#voice" aria-label="Voice" class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150">
+<div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center shadow-md -mt-4">
+<span class="material-symbols-outlined text-[20px]">mic</span>
+</div>
+<span class="text-label-sm font-label-sm mt-0.5">Voice</span>
+</a>
+<!-- Tab 4: Mandi (Inactive State) -->
+<a href="screen_desktop_booking.html" aria-label="Mandi" class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Tab 5: Soil (Inactive State) -->
+<a href="screen_desktop_soil_satellite.html" aria-label="Soil" class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+<span class="text-label-sm font-label-sm mt-0.5">Soil</span>
+</a>
+</nav>
+</div>
+<script>
+    // Micro-interactions for tactile feedback
+    document.querySelectorAll('button, .cursor-pointer').forEach(elem => {
+      elem.addEventListener('click', function() {
+        if ('vibrate' in navigator) {
+          navigator.vibrate(20);
+        }
+      });
+    });
+  </script>
+</body></html>

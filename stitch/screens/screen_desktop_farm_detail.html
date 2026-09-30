@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI — Krishna Valley Farm Operations Hub</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-variant": "#e3e2df",
+            "secondary-container": "#fe932c",
+            "on-primary-fixed": "#002116",
+            "on-primary-fixed-variant": "#00513b",
+            "primary": "#004532",
+            "on-primary-container": "#8bd6b7",
+            "on-tertiary-container": "#50e0a4",
+            "surface-container": "#efeeea",
+            "tertiary-fixed-dim": "#4edea3",
+            "inverse-on-surface": "#f2f1ed",
+            "error": "#ba1a1a",
+            "surface-tint": "#1b6b51",
+            "secondary-fixed-dim": "#ffb77d",
+            "outline": "#6f7973",
+            "tertiary-fixed": "#6ffbbe",
+            "tertiary-container": "#006041",
+            "inverse-primary": "#8bd6b6",
+            "on-surface-variant": "#3f4944",
+            "background": "#faf9f5",
+            "secondary-fixed": "#ffdcc3",
+            "on-secondary": "#ffffff",
+            "tertiary": "#00462e",
+            "surface-container-low": "#f4f4f0",
+            "on-secondary-fixed-variant": "#6e3900",
+            "primary-fixed": "#a6f2d1",
+            "primary-container": "#065f46",
+            "on-secondary-fixed": "#2f1500",
+            "secondary": "#904d00",
+            "on-error": "#ffffff",
+            "on-background": "#1b1c1a",
+            "primary-fixed-dim": "#8bd6b6",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-lowest": "#ffffff",
+            "surface": "#faf9f5",
+            "on-tertiary-fixed": "#002113",
+            "on-primary": "#ffffff",
+            "surface-bright": "#faf9f5",
+            "on-surface": "#1b1c1a",
+            "inverse-surface": "#2f312e",
+            "on-error-container": "#93000a",
+            "on-tertiary": "#ffffff",
+            "on-secondary-container": "#663500",
+            "surface-dim": "#dbdad6",
+            "surface-container-high": "#e9e8e4",
+            "outline-variant": "#bec9c2",
+            "surface-container-highest": "#e3e2df",
+            "error-container": "#ffdad6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-tablet": "2rem",
+            "gutter-tablet": "1.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "margin-desktop": "3rem",
+            "gutter": "1rem",
+            "space-xl": "2.25rem",
+            "space-lg": "1.5rem",
+            "gutter-desktop": "2rem",
+            "margin": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "title-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .tactile-card {
+      background: #ffffff;
+      border: 1px solid rgba(6, 95, 70, 0.08);
+      box-shadow: 0 2px 8px -1px rgba(6, 95, 70, 0.04), 0 1px 3px 0 rgba(41, 37, 36, 0.03);
+    }
+    .tactile-card-lift {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tactile-card-lift:hover {
+      box-shadow: 0 8px 24px -4px rgba(6, 95, 70, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      border-color: rgba(6, 95, 70, 0.18);
+      transform: translateY(-1px);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Desktop App Shell Container -->
+<div class="flex h-screen overflow-hidden">
+<!-- LEFT SIDEBAR: DESKTOP NAVIGATION -->
+<aside class="hidden lg:flex w-72 bg-surface-container-lowest flex-shrink-0 flex-col justify-between border-r border-outline-variant/30 select-none z-20">
+<div class="flex flex-col h-full overflow-y-auto custom-scrollbar">
+<!-- Brand Header -->
+<div class="p-space-md border-b border-outline-variant/20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container shadow-sm">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary tracking-tight block">CropSense AI</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-1">
+                  Krishi Command Center
+                </span>
+</div>
+</div>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-secondary-container/20 text-secondary border border-secondary/20">PRO</span>
+</div>
+<!-- Farm Switcher Dropdown Button -->
+<div class="mt-4 p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors cursor-pointer border border-outline-variant/40 group">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-lg bg-surface-tint/15 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-base" data-icon="nature">nature</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<p class="font-label-lg text-label-lg text-on-surface font-semibold truncate max-w-[130px]">Krishna Valley</p>
+<span class="material-symbols-outlined text-sm text-primary" data-icon="verified" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">18.5 Ac • Nashik, MH</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-base" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Main Nav Clusters -->
+<div class="px-3 py-3 flex-1">
+<div class="px-3 pb-1 pt-2">
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Agronomic Operations</p>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-xl" data-icon="grid_view">grid_view</span>
+<span>Dashboard</span>
+</a>
+<!-- Active Nav Item -->
+<a class="flex items-center justify-between px-3 py-2 rounded-xl bg-primary-container text-on-primary-container font-label-lg text-label-lg shadow-sm" href="screen_desktop_farm_detail.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" data-icon="potted_plant" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+<span class="font-semibold text-white">My Farms &amp; Plots</span>
+</div>
+<span class="w-1.5 h-4 bg-tertiary-fixed rounded-full"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_diagnose.html">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+<span>Crop Diagnostics (Vision AI)</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_soil_satellite.html">
+<span class="material-symbols-outlined text-xl" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite NDVI</span>
+<span class="ml-auto px-1.5 py-0.5 rounded text-[10px] bg-primary/10 text-primary font-bold">10m</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_booking.html">
+<span class="material-symbols-outlined text-xl" data-icon="storefront">storefront</span>
+<span>Marketplace &amp; Escrow</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_livestock.html">
+<span class="material-symbols-outlined text-xl" data-icon="cruelty_free">cruelty_free</span>
+<span>Pashu &amp; Livestock Hub</span>
+</a>
+</nav>
+<div class="px-3 pb-1 pt-5">
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-outline font-bold">Telemetry &amp; Sensors</p>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center justify-between px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_strategy.html">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" data-icon="air">air</span>
+<span>Weather &amp; Spray Advisory</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_quota.html">
+<span class="material-symbols-outlined text-xl" data-icon="sensors">sensors</span>
+<span>IoT Node Mesh</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="screen_desktop_security.html">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span>Settings &amp; Sync</span>
+</a>
+</nav>
+</div>
+<!-- Quota Widget & User Profile Footer -->
+<div class="p-3 border-t border-outline-variant/20 bg-surface-container-low/60 space-y-3">
+<!-- Satellite Quota Bar -->
+<div class="p-2.5 rounded-xl bg-surface-container-lowest border border-outline-variant/30">
+<div class="flex items-center justify-between mb-1.5">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="orbit">orbit</span>
+                Sentinel-2 Sync Quota
+              </span>
+<span class="font-label-sm text-label-sm text-primary font-bold">84% Left</span>
+</div>
+<div class="w-full h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 84%"></div>
+</div>
+<p class="text-[10px] text-outline mt-1.5">Next pass: Sentinel-2B in 18 hrs</p>
+</div>
+<!-- Profile Pill -->
+<div class="flex items-center justify-between p-2 rounded-xl bg-surface-container-lowest border border-outline-variant/30">
+<div class="flex items-center gap-2.5">
+<img class="w-8 h-8 rounded-full object-cover border border-primary/20" data-alt="A portrait of an experienced Indian farmer wearing a neat modern cotton kurta standing under bright, sunlit farm conditions in Maharashtra with an authentic approachable smile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDogykPPQX717j8c0F-zu7yjz2musYmVDFg7O3MibsUgvQJ521_eRJTWLEPO4JmhWAqTguVsz-PbUMoruw1tyKiW4VhQ7SxJ4yDos-p05GC12GBMbHloqdB9dxPSYoOEdVTQejrqA_Ftj-YM-4KVtFDQOmmFgsucfZyzyR2zL1xxfresuTGF2xKRbp8F6lPoVvUbTGwMo7I3Qmp2plCoMIGY0qRQDhedfxttSsNj6afckgITPcCuY1LM1qB0bOUuEnLJqHwl_kMLgU"/>
+<div class="truncate">
+<p class="font-label-md text-label-md text-on-surface font-bold leading-tight">Ramesh Patil</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant text-[11px]">Nashik • MH-LIV-409</p>
+</div>
+</div>
+<button class="p-1 rounded-lg text-outline hover:text-primary hover:bg-surface-variant transition-colors" title="Logout or Switch">
+<span class="material-symbols-outlined text-lg" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+<!-- RIGHT MAIN CONTENT WORKSPACE -->
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-background">
+<!-- TOP CONTROL & APP BAR (Desktop Context) -->
+<header class="bg-surface-container-lowest px-6 py-3.5 border-b border-outline-variant/30 flex-shrink-0 z-10 shadow-sm">
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+<!-- Title & Badges & Breadcrumb -->
+<div>
+<div class="flex items-center gap-2 text-xs text-outline mb-0.5">
+<span>Home</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span>My Farms &amp; Plots</span>
+<span class="material-symbols-outlined text-xs" data-icon="chevron_right">chevron_right</span>
+<span class="text-primary font-semibold">Krishna Valley Farm</span>
+<span class="px-1.5 py-0.2 rounded text-[10px] bg-surface-container-high text-on-surface-variant font-mono">#MH-NSK-2024-8841</span>
+</div>
+<div class="flex items-center gap-3">
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tight">Krishna Valley Farm Operations Hub</h1>
+<div class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                ICAR &amp; Cadastral Verified
+              </div>
+</div>
+</div>
+<!-- Microclimate Telemetry Pill + Language Switcher + Actions -->
+<div class="flex items-center flex-wrap gap-2.5">
+<!-- Microclimate Pill -->
+<div class="hidden xl:flex items-center gap-3 bg-surface-container-low px-3 py-1.5 rounded-xl border border-outline-variant/30 text-xs text-on-surface-variant">
+<div class="flex items-center gap-1 text-on-surface font-semibold">
+<span class="material-symbols-outlined text-amber-600 text-base" data-icon="wb_sunny">wb_sunny</span>
+<span>28°C</span>
+</div>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-base" data-icon="humidity_mid">humidity_mid</span>
+<span>62% RH</span>
+</div>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-outline text-base" data-icon="air">air</span>
+<span>11 km/h W</span>
+</div>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-emerald-700 font-medium">Clean Air (AQI 42)</span>
+</div>
+<!-- Language Selector -->
+<button class="px-2.5 py-1.5 rounded-lg border border-outline-variant/40 bg-surface text-on-surface-variant hover:text-primary font-label-md text-label-md transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="translate">translate</span>
+<span>हिंदी / मराठी / EN</span>
+</button>
+<!-- Secondary Actions -->
+<button class="px-3 py-1.5 rounded-lg border border-primary/30 text-primary hover:bg-primary/5 transition-colors font-label-md text-label-md font-semibold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="hidden sm:inline">Audit PDF</span>
+</button>
+<!-- Primary CTAs -->
+<button class="px-4 py-1.5 rounded-lg bg-primary-container text-white hover:bg-primary active:scale-[0.98] transition-all font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="add">add</span>
+<span>Add Plot</span>
+</button>
+</div>
+</div>
+</header>
+<!-- SCROLLABLE DASHBOARD CANVAS -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+<!-- ROW 1: 5 TELEMETRY KPI METRICS CARDS -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
+<!-- Card 1: Total Holding -->
+<div class="tactile-card rounded-2xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs mb-2">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Total Holding</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="crop_free">crop_free</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-2xl font-extrabold text-on-surface font-title-md tracking-tight">18.5</span>
+<span class="text-xs text-on-surface-variant font-medium">Acres</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">4 Cadastral Boundaries</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px]">
+<span class="text-emerald-700 font-semibold">13.5 Ac Cultivated</span>
+<span class="text-outline">5.0 Ac Fallow</span>
+</div>
+</div>
+<!-- Card 2: Mean NDVI -->
+<div class="tactile-card rounded-2xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs mb-2">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Sentinel-2 NDVI</span>
+<span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 rounded font-bold text-[10px]">10m Res</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-extrabold text-primary font-title-md tracking-tight">0.76</span>
+<span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full flex items-center">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span> +0.04
+                </span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Optimal Vegetative Vigor</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center gap-1.5">
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden flex">
+<div class="bg-amber-500 h-full" style="width: 15%"></div>
+<div class="bg-emerald-400 h-full" style="width: 25%"></div>
+<div class="bg-emerald-600 h-full" style="width: 60%"></div>
+</div>
+</div>
+</div>
+<!-- Card 3: Soil Moisture -->
+<div class="tactile-card rounded-2xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs mb-2">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Rootzone Moisture</span>
+<span class="flex items-center gap-1 text-[10px] text-emerald-700 font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping"></span> LoRa Live
+              </span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-2xl font-extrabold text-on-surface font-title-md tracking-tight">38.4%</span>
+<span class="text-xs text-on-surface-variant font-medium">VWC</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Safe Buffer (35% – 45%)</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px]">
+<span class="text-primary font-semibold">Sensor Depth: 30cm</span>
+<span class="text-outline">Ideal Drip Status</span>
+</div>
+</div>
+<!-- Card 4: IoT Probes -->
+<div class="tactile-card rounded-2xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs mb-2">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Active IoT Nodes</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="sensors">sensors</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-2xl font-extrabold text-on-surface font-title-md tracking-tight">6 / 6</span>
+<span class="text-xs text-emerald-700 font-semibold">100% Online</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Capacitance + Leaf + AWS</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px]">
+<span class="text-outline">Mesh SNR: 18.2 dB</span>
+<span class="text-emerald-700 font-semibold">Batteries &gt; 91%</span>
+</div>
+</div>
+<!-- Card 5: Season P&L -->
+<div class="tactile-card rounded-2xl p-4 flex flex-col justify-between">
+<div class="flex items-center justify-between text-outline text-xs mb-2">
+<span class="font-label-md text-label-md uppercase tracking-wider font-semibold">Rabi Projected P&amp;L</span>
+<span class="material-symbols-outlined text-secondary text-base" data-icon="payments">payments</span>
+</div>
+<div>
+<div class="flex items-baseline gap-1.5">
+<span class="text-2xl font-extrabold text-on-surface font-title-md tracking-tight">₹4.12 L</span>
+<span class="text-xs text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded-full">+68% ROI</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1">Expended: ₹1,24,000</p>
+</div>
+<div class="mt-3 pt-2 border-t border-outline-variant/20 flex items-center justify-between text-[11px]">
+<span class="text-outline">APMC Pre-Booked</span>
+<span class="text-primary font-bold">₹2.88L Net</span>
+</div>
+</div>
+</section>
+<!-- ROW 2: GIS SATELLITE TILE & WEATHER ADVISORY SPLIT -->
+<section class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+<!-- GIS Multispectral Sentinel-2 View (7 Cols) -->
+<div class="xl:col-span-7 tactile-card rounded-2xl overflow-hidden flex flex-col">
+<!-- Header bar for Map -->
+<div class="p-4 border-b border-outline-variant/20 flex flex-wrap items-center justify-between gap-2 bg-surface-container-lowest">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+<div>
+<h3 class="font-title-md text-title-md text-primary font-bold">Multispectral Cadastral Map (Sentinel-2 L2A)</h3>
+<p class="text-xs text-outline">Coordinates: 20.0112° N, 73.7902° E • Spatial Layer: NDVI False Color</p>
+</div>
+</div>
+<!-- Map Layer Switcher -->
+<div class="flex items-center gap-1.5 bg-surface-container-low p-1 rounded-xl border border-outline-variant/30 text-xs">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-lowest shadow-xs text-primary font-bold">NDVI</button>
+<button class="px-2.5 py-1 rounded-lg text-outline hover:text-on-surface font-medium">NDWI (Moisture)</button>
+<button class="px-2.5 py-1 rounded-lg text-outline hover:text-on-surface font-medium">True RGB</button>
+</div>
+</div>
+<!-- Satellite Image Display Container with Overlay HUD -->
+<div class="relative w-full h-[360px] bg-inverse-surface overflow-hidden group">
+<img class="w-full h-full object-cover" data-alt="A vivid high-resolution satellite remote sensing multispectral false color agricultural map showing geometric farmland parcel polygons divided by field borders with deep green, lime mint, and warm amber NDVI vegetative vigor color gradations under crisp daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQKXXUzfWNWQ-DV1wH54IQQNOKh7S4wPAU3T186L4i7qDT42lLFEyX3TV7fCbT934K2AhY56m3x6z2xkk329_IyBcdIVCjZ9zvrFV-GJacOaxPxwpd3pYA8Fp0fyUOR89oGBMsWTvDjGj-I6Xto6hGDkpVIEhw2xT9n_7Ux9gfH6P3zix4k4VoDQM9-EJGNR5oi_GmlmZv_6uZVra9ECWWzWxauHC82jbskY-rSpjFaDX4SElEulJa0mNCn-o4PR_2U6qQnIPPgZg"/>
+<!-- Floating GIS Controls (Level 2 Elevation) -->
+<div class="absolute top-4 left-4 bg-inverse-surface/90 backdrop-blur-md text-inverse-on-surface p-3 rounded-xl border border-outline/30 text-xs space-y-1.5 shadow-lg max-w-[210px]">
+<div class="flex items-center justify-between">
+<span class="font-bold text-tertiary-fixed">HUD Telemetry</span>
+<span class="text-[10px] text-surface-variant font-mono">2024-11-04</span>
+</div>
+<div class="text-[11px] space-y-1">
+<div class="flex justify-between"><span class="text-outline-variant">Avg Chlorophyll:</span> <span class="font-semibold text-white">41.8 μg/cm²</span></div>
+<div class="flex justify-between"><span class="text-outline-variant">Cloud Obstruction:</span> <span class="font-semibold text-emerald-400">0.0% Clean</span></div>
+<div class="flex justify-between"><span class="text-outline-variant">Cadastral Boundary:</span> <span class="font-semibold text-white">4 Plots Locked</span></div>
+</div>
+</div>
+<!-- Cadastral Plot Indicators on GIS Tile -->
+<div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 bg-primary/80 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg border border-emerald-300/40 text-[11px] font-bold shadow-md cursor-pointer hover:scale-105 transition-transform">
+                Plot A • Grapes (5.2 Ac)
+              </div>
+<div class="absolute top-1/3 right-1/4 bg-primary/80 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg border border-emerald-300/40 text-[11px] font-bold shadow-md cursor-pointer hover:scale-105 transition-transform">
+                Plot B • Wheat (4.8 Ac)
+              </div>
+<div class="absolute bottom-1/4 left-1/4 bg-primary/80 backdrop-blur-sm text-white px-2.5 py-1 rounded-lg border border-emerald-300/40 text-[11px] font-bold shadow-md cursor-pointer hover:scale-105 transition-transform">
+                Plot C • Pomegranate (3.5 Ac)
+              </div>
+<div class="absolute bottom-1/4 right-1/3 bg-amber-900/80 backdrop-blur-sm text-amber-200 px-2.5 py-1 rounded-lg border border-amber-400/40 text-[11px] font-bold shadow-md cursor-pointer hover:scale-105 transition-transform">
+                Plot D • Fallow (5.0 Ac)
+              </div>
+<!-- NDVI Color Scale Gradient Bar -->
+<div class="absolute bottom-3 right-3 bg-inverse-surface/90 backdrop-blur-md px-3 py-2 rounded-xl border border-outline/30 text-[10px] text-inverse-on-surface shadow-md">
+<span class="block mb-1 font-semibold text-center">NDVI Index Legend</span>
+<div class="flex items-center gap-1.5">
+<span class="text-amber-400">-0.2 Bare</span>
+<div class="w-32 h-2.5 rounded bg-gradient-to-r from-red-600 via-amber-400 via-emerald-400 to-green-700"></div>
+<span class="text-emerald-400">+1.0 Lush</span>
+</div>
+</div>
+<!-- Map Navigation Floating Pills -->
+<div class="absolute bottom-3 left-3 flex items-center gap-1 bg-inverse-surface/90 backdrop-blur-md p-1 rounded-lg border border-outline/30">
+<button class="p-1 text-white hover:text-primary-fixed transition-colors" title="Zoom in"><span class="material-symbols-outlined text-sm" data-icon="add">add</span></button>
+<button class="p-1 text-white hover:text-primary-fixed transition-colors" title="Zoom out"><span class="material-symbols-outlined text-sm" data-icon="remove">remove</span></button>
+<button class="p-1 text-white hover:text-primary-fixed transition-colors" title="Cadastral Bounds"><span class="material-symbols-outlined text-sm" data-icon="layers">layers</span></button>
+</div>
+</div>
+<!-- Footer Meta for Map -->
+<div class="p-3 bg-surface-container-low border-t border-outline-variant/20 flex flex-wrap items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="satellite">satellite</span>
+<span>Source: ESA Copernicus Open Access Hub • Processed by CropSense Cloud Engine</span>
+</div>
+<button class="text-primary font-bold hover:underline flex items-center gap-1">
+<span>Request Custom Drone Flyover (Kisan Drone Scheme)</span>
+<span class="material-symbols-outlined text-xs" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Weather Radar & Smart Agro Spray Advisory (5 Cols) -->
+<div class="xl:col-span-5 tactile-card rounded-2xl p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-lg" data-icon="thunderstorm">thunderstorm</span>
+</div>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Nashik Agro-Met Advisory</h3>
+<p class="text-xs text-outline">IMD Niphad Agromet Station sync</p>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">No Rain (48h)</span>
+</div>
+<!-- High-Priority Safe Spray Window Badge (Warm Amber / Alert Mint) -->
+<div class="mt-4 p-3.5 rounded-xl bg-emerald-50/80 border border-emerald-200">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-emerald-700 text-lg" data-icon="water_drop" style="font-variation-settings: 'FILL' 1;">water_drop</span>
+<span class="font-label-lg text-label-lg font-bold text-emerald-900">Optimal Spray Window Identified</span>
+</div>
+<div class="mt-1 flex items-baseline justify-between">
+<span class="text-base font-extrabold text-emerald-800">TODAY: 04:30 PM — 07:15 PM</span>
+<span class="text-xs text-emerald-700 font-semibold">Window duration: 2h 45m</span>
+</div>
+<p class="text-xs text-emerald-800 mt-1 leading-relaxed">
+                  Surface wind speed under 8 km/h and RH stable at 58%. Zero drift penalty and no precipitation expected before 36 hours. Ideal for Plot A grape micronutrient spray.
+                </p>
+</div>
+<!-- 48-Hour Microclimate Radar Timeline -->
+<div class="mt-4">
+<p class="font-label-sm text-label-sm uppercase font-bold text-outline tracking-wider mb-2">Hourly Field Forecast</p>
+<div class="grid grid-cols-4 gap-2 text-center">
+<div class="p-2 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="text-[11px] text-outline block">14:00</span>
+<span class="material-symbols-outlined text-amber-500 text-base my-0.5" data-icon="sunny">sunny</span>
+<span class="text-xs font-bold text-on-surface block">30°C</span>
+<span class="text-[10px] text-outline">Wind 14km</span>
+</div>
+<div class="p-2 rounded-xl bg-emerald-100/50 border border-emerald-300">
+<span class="text-[11px] text-emerald-800 font-bold block">17:00</span>
+<span class="material-symbols-outlined text-emerald-600 text-base my-0.5" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+<span class="text-xs font-bold text-emerald-900 block">26°C</span>
+<span class="text-[10px] text-emerald-800 font-bold">Spray OK</span>
+</div>
+<div class="p-2 rounded-xl bg-emerald-100/50 border border-emerald-300">
+<span class="text-[11px] text-emerald-800 font-bold block">19:00</span>
+<span class="material-symbols-outlined text-primary text-base my-0.5" data-icon="air">air</span>
+<span class="text-xs font-bold text-emerald-900 block">23°C</span>
+<span class="text-[10px] text-emerald-800 font-bold">Spray OK</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low border border-outline-variant/20">
+<span class="text-[11px] text-outline block">22:00</span>
+<span class="material-symbols-outlined text-outline text-base my-0.5" data-icon="bedtime">bedtime</span>
+<span class="text-xs font-bold text-on-surface block">19°C</span>
+<span class="text-[10px] text-outline">Dew Point</span>
+</div>
+</div>
+</div>
+<!-- Disease / Pest Advisory Bulletin -->
+<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-amber-700 text-base mt-0.5" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div>
+<h4 class="font-label-md text-label-md font-bold text-amber-900">Crop Health Warning: Powdery Mildew Index</h4>
+<p class="text-xs text-amber-800 mt-0.5">
+                      Relative night humidity &gt;78% promotes spore incubation on Plot A Grapes. Apply organic Potassium Bicarbonate or Wettable Sulphur during the safe evening window.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Advisory action -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<span class="text-xs text-outline">Krishi Vigyan Kendra (KVK) verified</span>
+<button class="font-label-sm text-label-sm font-bold text-primary hover:underline flex items-center gap-1">
+<span>View Full 7-Day Agronomic Bulletin</span>
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- ROW 3: PLOT OPERATIONS DIRECTORY (INTERACTIVE BENTO GRID) -->
+<section class="space-y-4">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary font-bold tracking-tight">Active Cadastral Plots (4 Total)</h2>
+<p class="text-xs text-on-surface-variant">Real-time physiological stage telemetry, irrigation schedules, and individual plot action log</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="relative">
+<input class="pl-8 pr-3 py-1.5 rounded-lg border border-outline-variant/50 text-xs bg-white text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-48 md:w-64" placeholder="Filter plot, crop or stage..." type="text"/>
+<span class="material-symbols-outlined absolute left-2.5 top-1.5 text-outline text-base" data-icon="search">search</span>
+</div>
+<button class="p-1.5 rounded-lg border border-outline-variant/50 bg-white text-outline hover:text-primary">
+<span class="material-symbols-outlined text-base" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Plots Grid (4 Cadastral Plots) -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+<!-- Plot A: Thomson Seedless Grapes -->
+<div class="tactile-card tactile-card-lift rounded-2xl p-5 flex flex-col justify-between border-t-4 border-t-emerald-600">
+<div>
+<!-- Top Row: Plot Name & Badge -->
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">Plot A • Gat No. 142/1</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Thomson Seedless</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">5.2 Acres</span>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="grape">nutrition</span>
+<span class="text-xs font-semibold text-primary">Berry Development</span>
+<span class="text-xs text-outline">• Day 64 of 120</span>
+</div>
+<!-- Progress Bar: Phenological Cycle -->
+<div class="mt-2 w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full" style="width: 53%"></div>
+</div>
+<!-- Metrics breakdown -->
+<div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Plot NDVI</span>
+<span class="text-sm font-extrabold text-primary font-title-md">0.82 Lush</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Soil Moisture</span>
+<span class="text-sm font-extrabold text-on-surface font-title-md">36.8% VWC</span>
+</div>
+</div>
+<!-- Scheduled Activity Alert -->
+<div class="mt-3 p-2.5 rounded-xl bg-emerald-50 border border-emerald-200/80 flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-700 text-base" data-icon="schedule">schedule</span>
+<div class="text-[11px] text-emerald-900 leading-tight">
+<span class="font-bold block">Drip Fertigation Due:</span>
+<span>Potash + Zinc chelate in 3 hours</span>
+</div>
+</div>
+</div>
+<!-- Quick action links -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-white transition-colors text-xs font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="edit_note">edit_note</span>
+<span>Log Spray</span>
+</button>
+<button class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+<span>Sensors</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Plot B: Sharbati Durum Wheat -->
+<div class="tactile-card tactile-card-lift rounded-2xl p-5 flex flex-col justify-between border-t-4 border-t-amber-500">
+<div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">Plot B • Gat No. 142/2</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Sharbati Durum Wheat</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-surface-container-high text-on-surface-variant">4.8 Acres</span>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-700 text-base" data-icon="grass">grass</span>
+<span class="text-xs font-semibold text-amber-900">Crown Root Initiation</span>
+<span class="text-xs text-outline">• Day 22 of 110</span>
+</div>
+<!-- Progress Bar -->
+<div class="mt-2 w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-amber-600 h-full rounded-full" style="width: 20%"></div>
+</div>
+<!-- Metrics breakdown -->
+<div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Plot NDVI</span>
+<span class="text-sm font-extrabold text-primary font-title-md">0.74 Moderate</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Topsoil Moisture</span>
+<span class="text-sm font-extrabold text-on-surface font-title-md">41.2% VWC</span>
+</div>
+</div>
+<!-- Advisory Alert -->
+<div class="mt-3 p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="science">science</span>
+<div class="text-[11px] text-on-surface-variant leading-tight">
+<span class="font-bold block text-on-surface">Urea Top-Dress Alert:</span>
+<span>1st Split Nitrogen dosage recommended</span>
+</div>
+</div>
+</div>
+<!-- Quick action links -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-white transition-colors text-xs font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span>AI Leaf Scan</span>
+</button>
+<button class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+<span>Details</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Plot C: Bhagwa Pomegranate -->
+<div class="tactile-card tactile-card-lift rounded-2xl p-5 flex flex-col justify-between border-t-4 border-t-emerald-700">
+<div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">Plot C • Gat No. 143/1</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Bhagwa Pomegranate</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-800">3.5 Acres</span>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base" data-icon="park">park</span>
+<span class="text-xs font-semibold text-primary">Flowering &amp; Fruit Setting</span>
+<span class="text-xs text-outline">• Day 48</span>
+</div>
+<!-- Progress Bar -->
+<div class="mt-2 w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 40%"></div>
+</div>
+<!-- Metrics breakdown -->
+<div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Plot NDVI</span>
+<span class="text-sm font-extrabold text-primary font-title-md">0.79 Healthy</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Soil Moisture</span>
+<span class="text-sm font-extrabold text-on-surface font-title-md">34.1% VWC</span>
+</div>
+</div>
+<!-- Advisory Alert -->
+<div class="mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-700 text-base" data-icon="pest_control">pest_control</span>
+<div class="text-[11px] text-amber-900 leading-tight">
+<span class="font-bold block">Pheromone Trap Check:</span>
+<span>Fruit borer maintenance due tomorrow</span>
+</div>
+</div>
+</div>
+<!-- Quick action links -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-white transition-colors text-xs font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="checklist">checklist</span>
+<span>Tasks (3)</span>
+</button>
+<button class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+<span>Telemetry</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Plot D: Regenerative Fallow & Green Manure -->
+<div class="tactile-card tactile-card-lift rounded-2xl p-5 flex flex-col justify-between border-t-4 border-t-outline-variant">
+<div>
+<div class="flex items-start justify-between">
+<div>
+<span class="text-[10px] font-bold uppercase tracking-wider text-outline">Plot D • Gat No. 143/2</span>
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Dhaincha Green Manure</h3>
+</div>
+<span class="px-2 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-800">5.0 Acres</span>
+</div>
+<div class="mt-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-base" data-icon="recycling">recycling</span>
+<span class="text-xs font-semibold text-on-surface-variant">Soil Reconditioning</span>
+<span class="text-xs text-outline">• Pre-Kharif</span>
+</div>
+<!-- Progress Bar -->
+<div class="mt-2 w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-outline h-full rounded-full" style="width: 75%"></div>
+</div>
+<!-- Metrics breakdown -->
+<div class="mt-4 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Organic Carbon</span>
+<span class="text-sm font-extrabold text-on-surface font-title-md">0.68% (+0.22%)</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low">
+<span class="text-[10px] text-outline block">Soil Health Test</span>
+<span class="text-sm font-extrabold text-primary font-title-md">Due 12 Days</span>
+</div>
+</div>
+<!-- Advisory Alert -->
+<div class="mt-3 p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-base" data-icon="agriculture">agriculture</span>
+<div class="text-[11px] text-on-surface-variant leading-tight">
+<span class="font-bold block text-on-surface">Incorporation Scheduled:</span>
+<span>In-situ rotavator incorporation at 45 days</span>
+</div>
+</div>
+</div>
+<!-- Quick action links -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between">
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-high hover:bg-primary-container hover:text-white transition-colors text-xs font-semibold text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="biotech">biotech</span>
+<span>Book NABL Lab</span>
+</button>
+<button class="text-xs font-bold text-primary hover:underline flex items-center gap-0.5">
+<span>Soil Plan</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- ROW 4: AGRI-INPUTS, APMC MANDI COMMODITY TICKER & IOT HEALTH FOOTER -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-6 pt-2 pb-6">
+<!-- APMC Mandi Benchmark Rates -->
+<div class="tactile-card rounded-2xl p-5">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="storefront">storefront</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold">APMC Nashik &amp; Pimpalgaon Live</h4>
+</div>
+<span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded">Today 11:30 AM</span>
+</div>
+<div class="space-y-2.5 text-xs">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div>
+<span class="font-bold text-on-surface block">Grapes (Export Thomson)</span>
+<span class="text-[11px] text-outline">Nashik APMC Main Yard</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-primary font-title-md text-sm">₹92 / kg</span>
+<span class="text-[10px] text-emerald-700 block font-semibold">+₹4.50 Today</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div>
+<span class="font-bold text-on-surface block">Sharbati Durum Wheat</span>
+<span class="text-[11px] text-outline">Lasalgaon APMC</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-primary font-title-md text-sm">₹2,840 / Qtl</span>
+<span class="text-[10px] text-outline block">MSP: ₹2,275</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low">
+<div>
+<span class="font-bold text-on-surface block">Pomegranate (Bhagwa Grade-A)</span>
+<span class="text-[11px] text-outline">Dindori Mandi</span>
+</div>
+<div class="text-right">
+<span class="font-bold text-primary font-title-md text-sm">₹145 / kg</span>
+<span class="text-[10px] text-emerald-700 block font-semibold">+₹8.00 Strong</span>
+</div>
+</div>
+</div>
+<button class="mt-3 w-full py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant font-label-md text-label-md text-primary font-semibold transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="contract">contract</span>
+<span>Lock Buyer Forward Contract</span>
+</button>
+</div>
+<!-- Soil Nutrient Balance (NPK & Micro) -->
+<div class="tactile-card rounded-2xl p-5">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="science">science</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold">Soil Chemical &amp; NPK Status</h4>
+</div>
+<span class="text-xs text-outline font-medium">NABL Accredited</span>
+</div>
+<div class="space-y-3">
+<!-- Nitrogen -->
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface font-medium">Nitrogen (N) - Medium</span>
+<span class="font-bold text-on-surface">264 kg/Ha <span class="text-outline font-normal">(Optimal 280)</span></span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-amber-500 h-full rounded-full" style="width: 70%"></div>
+</div>
+</div>
+<!-- Phosphorus -->
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface font-medium">Phosphorus (P₂O₅) - High</span>
+<span class="font-bold text-emerald-700">38 kg/Ha <span class="text-outline font-normal">(Optimal 25)</span></span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-600 h-full rounded-full" style="width: 90%"></div>
+</div>
+</div>
+<!-- Potassium -->
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface font-medium">Potassium (K₂O) - Ideal</span>
+<span class="font-bold text-emerald-700">312 kg/Ha <span class="text-outline font-normal">(Optimal 300)</span></span>
+</div>
+<div class="w-full bg-surface-variant h-2 rounded-full overflow-hidden">
+<div class="bg-emerald-600 h-full rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<!-- pH and EC -->
+<div class="pt-2 grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded-xl bg-surface-container-low text-center">
+<span class="text-[10px] text-outline block">Soil pH</span>
+<span class="text-sm font-bold text-on-surface">7.2 (Neutral)</span>
+</div>
+<div class="p-2 rounded-xl bg-surface-container-low text-center">
+<span class="text-[10px] text-outline block">Electrical Cond.</span>
+<span class="text-sm font-bold text-on-surface">0.42 dS/m (Safe)</span>
+</div>
+</div>
+</div>
+<button class="mt-3 w-full py-2 rounded-xl bg-surface-container-high hover:bg-surface-variant font-label-md text-label-md text-primary font-semibold transition-colors flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+<span>Download Govt Soil Health Card</span>
+</button>
+</div>
+<!-- Connected IoT Node Diagnostics & Battery -->
+<div class="tactile-card rounded-2xl p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg" data-icon="router">router</span>
+<h4 class="font-title-md text-title-md text-on-surface font-bold">Field IoT Telemetry Mesh</h4>
+</div>
+<span class="text-[10px] font-bold px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded">LoRaWAN MH-04</span>
+</div>
+<div class="space-y-2 text-xs">
+<div class="flex items-center justify-between p-2 rounded-xl border border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-medium text-on-surface">Probe 01 • Plot A (Rootzone 30cm)</span>
+</div>
+<span class="text-outline font-mono">98% • -74dBm</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl border border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-medium text-on-surface">Probe 02 • Plot A (Leaf Wetness)</span>
+</div>
+<span class="text-outline font-mono">94% • -79dBm</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl border border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-medium text-on-surface">Station 03 • Central AWS Pyranometer</span>
+</div>
+<span class="text-outline font-mono">91% • -68dBm</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl border border-outline-variant/30 bg-surface">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span class="font-medium text-on-surface">Flow Meter • Main Drip Sub-Main</span>
+</div>
+<span class="text-outline font-mono">100% • Solar</span>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-xs">
+<span class="text-outline">Sync Interval: Every 15 mins</span>
+<button class="font-bold text-primary hover:underline flex items-center gap-1">
+<span>Manage Probes</span>
+<span class="material-symbols-outlined text-sm" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- MOBILE BOTTOM NAVIGATION BAR -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 w-full z-50 flex justify-around items-center px-space-xs py-space-xs max-w-lg mx-auto bg-surface-container-lowest shadow-md">
+  <!-- Home -->
+  <a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_dashboard.html">
+    <span class="material-symbols-outlined text-[20px]">home</span>
+    <span class="font-label-sm text-label-sm mt-0.5">Home</span>
+  </a>
+  <!-- Farms Command (Active) -->
+  <a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1.5 active:scale-95 duration-150" href="screen_desktop_farm_detail.html">
+    <span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">potted_plant</span>
+    <span class="font-label-sm text-label-sm mt-0.5">Farms</span>
+  </a>
+  <!-- Doctor -->
+  <a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_diagnose.html">
+    <span class="material-symbols-outlined text-[20px]">psychiatry</span>
+    <span class="font-label-sm text-label-sm mt-0.5">Doctor</span>
+  </a>
+  <!-- Soil & Satellite -->
+  <a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_soil_satellite.html">
+    <span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+    <span class="font-label-sm text-label-sm mt-0.5">Soil</span>
+  </a>
+  <!-- Profile / Security -->
+  <a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95 duration-150" href="screen_desktop_security.html">
+    <span class="material-symbols-outlined text-[20px]">person</span>
+    <span class="font-label-sm text-label-sm mt-0.5">Profile</span>
+  </a>
+</nav>
+</body></html>

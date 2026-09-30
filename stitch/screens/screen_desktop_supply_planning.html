@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AgriSense Premier - Predictive Supply Planning &amp; Harvest Cadence</title>
+<!-- Google Fonts: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 with Forms & Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            forest: {
+              DEFAULT: "#065f46",
+              light: "#047857",
+              dark: "#064e3b"
+            }
+          },
+          fontFamily: {
+            sans: ["'Plus Jakarta Sans'", "sans-serif"]
+          }
+        }
+      }
+    };
+</script>
+<style>
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+</style>
+</head>
+<body class="bg-[#faf9f5] text-[#1b1c1a] min-h-screen antialiased">
+  <!-- Top Navigation Header -->
+  <header class="bg-[#064e3b] text-white border-b border-emerald-800/60 sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center border border-emerald-400/30">
+            <span class="material-symbols-outlined text-emerald-300 text-2xl">event_available</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-extrabold text-base tracking-tight">CropSense AI</span>
+              <span class="text-[10px] uppercase font-bold tracking-widest bg-emerald-400/20 text-emerald-300 px-2 py-0.5 rounded-full border border-emerald-400/30">Planning</span>
+            </div>
+            <p class="text-[11px] text-emerald-200/80">Regional Harvest Cadence &amp; Supply Forecasting</p>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <a href="screen_desktop_dashboard.html" class="px-3 py-1.5 rounded-lg bg-emerald-800 hover:bg-emerald-700 text-xs font-bold transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">dashboard</span>
+            <span>Dashboard</span>
+          </a>
+          <a href="screen_desktop_buyer_dashboard.html" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-bold transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-sm">storefront</span>
+            <span>Buyer Console</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
+    <!-- Breadcrumb & Header Title -->
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+      <div>
+        <div class="flex items-center gap-2 text-xs text-slate-500 mb-1">
+          <a href="screen_desktop_dashboard.html" class="hover:text-forest transition-colors">Home</a>
+          <span>/</span>
+          <a href="screen_desktop_marketplace_bookings.html" class="hover:text-forest transition-colors">Marketplace</a>
+          <span>/</span>
+          <span class="font-medium text-slate-700">Predictive Supply &amp; Harvest Planning</span>
+        </div>
+        <h1 class="text-2xl font-black text-slate-900 tracking-tight">
+          Regional Harvest Cadence &amp; Supply Planning
+        </h1>
+        <p class="text-xs text-slate-500 mt-0.5">
+          Satellite crop acreage estimation, predicted harvest inflow dates, and institutional demand deficits
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <a href="screen_desktop_buyer_dashboard.html" class="px-4 py-2.5 bg-forest hover:bg-forest-light text-white text-xs font-bold rounded-xl shadow transition-all flex items-center gap-1.5">
+          <span class="material-symbols-outlined text-base">campaign</span>
+          <span>Launch Procurement Tender</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4 Summary KPI Metric Ribbon -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">60-Day District Harvest</span>
+          <span class="material-symbols-outlined text-forest text-lg">agriculture</span>
+        </div>
+        <div class="text-2xl font-black text-slate-900">14,800 MT</div>
+        <div class="text-[11px] text-emerald-700 font-semibold">Across Pune &amp; Nashik Divisions</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Institutional Deficit</span>
+          <span class="material-symbols-outlined text-red-600 text-lg">trending_down</span>
+        </div>
+        <div class="text-2xl font-black text-red-700">-2,400 MT</div>
+        <div class="text-[11px] text-red-600 font-semibold">High Pre-Booking Competition</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Peak Harvest Glut</span>
+          <span class="material-symbols-outlined text-amber-600 text-lg">event</span>
+        </div>
+        <div class="text-2xl font-black text-amber-700">15 Oct – 10 Nov</div>
+        <div class="text-[11px] text-slate-500">Recommended Storage Window</div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm space-y-1">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-500">Cold Chain Capacity</span>
+          <span class="material-symbols-outlined text-blue-600 text-lg">warehouse</span>
+        </div>
+        <div class="text-2xl font-black text-slate-900">68% Utilized</div>
+        <div class="text-[11px] text-forest font-semibold">3,200 MT WDRA Buffer Left</div>
+      </div>
+    </div>
+
+    <!-- Multi-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Left Column: Commodity Balance & Harvest Balance Cards (7 cols) -->
+      <div class="lg:col-span-7 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="font-black text-base text-slate-900">Commodity Supply vs Institutional Demand</h3>
+              <p class="text-xs text-slate-500">Cadastral satellite acreage forecast vs corporate procurement tenders</p>
+            </div>
+            <span class="text-xs font-bold text-forest">Rabi Season 2026</span>
+          </div>
+
+          <!-- Commodity Rows -->
+          <div class="space-y-4 text-xs">
+            <!-- Wheat -->
+            <div class="p-4 rounded-xl border border-slate-200 bg-slate-50 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-black text-sm text-slate-900">Sharbati Milling Wheat</h4>
+                  <div class="text-[11px] text-slate-500">Estimated Harvest: 6,400 MT • Demand: 5,100 MT</div>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800">
+                  +1,300 MT Surplus
+                </span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-2">
+                <div class="bg-forest h-2 rounded-full" style="width: 80%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500">
+                <span>Peak Inflow: 25 Oct – 15 Nov</span>
+                <span>Storage Recommendation: <strong>Hold 40% in WDRA Silo</strong></span>
+              </div>
+            </div>
+
+            <!-- Basmati Rice -->
+            <div class="p-4 rounded-xl border border-red-200 bg-red-50/40 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-black text-sm text-slate-900">Basmati 1121 Pusa Paddy</h4>
+                  <div class="text-[11px] text-slate-500">Estimated Harvest: 3,200 MT • Demand: 3,800 MT</div>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-red-100 text-red-800">
+                  -600 MT Deficit
+                </span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-2">
+                <div class="bg-red-500 h-2 rounded-full" style="width: 100%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500">
+                <span>Peak Inflow: 10 Nov – 30 Nov</span>
+                <span>Export Demand: <strong>Immediate Forward Lock Advised</strong></span>
+              </div>
+            </div>
+
+            <!-- Soybean -->
+            <div class="p-4 rounded-xl border border-amber-200 bg-amber-50/40 space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h4 class="font-black text-sm text-slate-900">Organic Soybean (JS-335)</h4>
+                  <div class="text-[11px] text-slate-500">Estimated Harvest: 2,900 MT • Demand: 3,400 MT</div>
+                </div>
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-amber-100 text-amber-800">
+                  -500 MT Deficit
+                </span>
+              </div>
+              <div class="w-full bg-slate-200 rounded-full h-2">
+                <div class="bg-amber-600 h-2 rounded-full" style="width: 85%"></div>
+              </div>
+              <div class="flex justify-between text-[11px] text-slate-500">
+                <span>Peak Inflow: 18 Oct – 05 Nov</span>
+                <span>Crushers Restocking: <strong>Pre-Harvest Escrows Active</strong></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Regional Harvest Timeline Heatmap (5 cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-6 shadow-sm space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="font-black text-base text-slate-900">Cluster Harvest Timeline</h3>
+              <p class="text-xs text-slate-500">Cadastral phenology stage radar</p>
+            </div>
+            <span class="text-xs font-bold text-forest">Sentinel-2 Sync</span>
+          </div>
+
+          <div class="space-y-3 text-xs">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-bold text-slate-900">
+                <span>Junnar &amp; Baramati Cluster (Wheat)</span>
+                <span class="text-forest">Ripening (88%)</span>
+              </div>
+              <div class="text-[11px] text-slate-500">Expected Harvest Window: 18 Oct – 28 Oct</div>
+              <div class="text-[10px] text-emerald-700 font-semibold">1,850 Farmers Ready • 4,200 MT</div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-bold text-slate-900">
+                <span>Niphad Valley Cluster (Basmati)</span>
+                <span class="text-amber-700">Grain Fill (74%)</span>
+              </div>
+              <div class="text-[11px] text-slate-500">Expected Harvest Window: 02 Nov – 15 Nov</div>
+              <div class="text-[10px] text-slate-600 font-semibold">920 Farmers Ready • 2,800 MT</div>
+            </div>
+
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-bold text-slate-900">
+                <span>Wardha Basin Cluster (Soybean)</span>
+                <span class="text-forest">Pod Maturity (92%)</span>
+              </div>
+              <div class="text-[11px] text-slate-500">Expected Harvest Window: 12 Oct – 22 Oct</div>
+              <div class="text-[10px] text-emerald-700 font-semibold">1,400 Farmers Ready • 3,100 MT</div>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <a href="screen_desktop_marketplace_bookings.html" class="w-full py-3 bg-forest hover:bg-forest-light text-white text-xs font-bold rounded-xl shadow transition-all flex items-center justify-center gap-1.5">
+              <span class="material-symbols-outlined text-sm">lock_clock</span>
+              <span>Reserve Cold Silo Slot (#W-14)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

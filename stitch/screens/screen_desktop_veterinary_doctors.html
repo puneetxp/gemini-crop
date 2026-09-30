@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Tele-Veterinary Consultations &amp; Doctor Booking (/livestock/doctors)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            primary: {
+              DEFAULT: '#065f46',
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#10b981',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            },
+            accent: {
+              amber: '#d97706',
+              mint: '#10b981',
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 450, 'GRAD' 0, 'opsz' 24;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.04);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(6, 95, 70, 0.25);
+      border-radius: 9999px;
+    }
+    .badge-vci {
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 1px solid #a7f3d0;
+    }
+    .dark .badge-vci {
+      background: rgba(6, 95, 70, 0.3);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+  </style>
+</link></head>
+<body class="bg-[#faf9f5] dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased min-h-full flex flex-col selection:bg-emerald-200 dark:selection:bg-emerald-900">
+<!-- Desktop & Tablet Root Container -->
+<div class="flex-1 flex w-full">
+<!-- DESKTOP SIDEBAR -->
+<aside class="hidden lg:flex flex-col w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0 sticky top-0 h-screen overflow-y-auto z-40">
+<!-- App Brand Header -->
+<div class="p-5 border-b border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-600 to-teal-800 text-white flex items-center justify-center shadow-md shadow-emerald-900/20">
+<span class="material-symbols-outlined text-2xl">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="font-bold text-lg tracking-tight text-slate-900 dark:text-white leading-none">CropSense</span>
+<span class="text-xs px-1.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold tracking-wider text-[10px]">PRO</span>
+</div>
+<p class="text-[11px] text-slate-400 dark:text-slate-500 font-medium mt-0.5">Krishi &amp; Pashu Suite 4.2</p>
+</div>
+</div>
+</div>
+<!-- Active Dairy Farm Unit Pill -->
+<div class="px-4 py-3 bg-slate-50 dark:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800">
+<div class="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-1">
+<span class="flex items-center gap-1 font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Active Unit
+          </span>
+<span class="font-semibold text-emerald-700 dark:text-emerald-400">18 Bovines</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-700/80 shadow-sm cursor-pointer hover:border-emerald-300 transition-colors">
+<div class="truncate">
+<p class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate">Krishna Valley Dairy</p>
+<p class="text-[10px] text-slate-400 truncate">Nashik • Herd Unit #04</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">unfold_more</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-3 py-4 space-y-1">
+<div class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Agronomic Ops</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+          Dashboard
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_plots.html">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+          My Farms &amp; Plots
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_strategy.html">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+          Annual Strategy
+          <span class="ml-auto text-[10px] bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-bold px-1.5 py-0.5 rounded">AI</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_diagnostics.html">
+<span class="material-symbols-outlined text-[20px]">biotech</span>
+          Crop Diagnostics
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_soil.html">
+<span class="material-symbols-outlined text-[20px]">satellite_alt</span>
+          Soil &amp; Satellite NDVI
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_marketplace.html">
+<span class="material-symbols-outlined text-[20px]">storefront</span>
+          Marketplace &amp; Escrow
+        </a>
+<div class="pt-4 text-[11px] font-bold text-slate-400 uppercase tracking-wider px-3 mb-2">Livestock &amp; Pashu Care</div>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_pashu_hub.html">
+<span class="material-symbols-outlined text-[20px]">pets</span>
+          Livestock Hub
+        </a>
+<a class="flex items-center gap-3 px-3 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors text-sm font-medium" href="screen_desktop_tmr.html">
+<span class="material-symbols-outlined text-[20px]">scale</span>
+          TMR Diet Balancer
+        </a>
+<!-- ACTIVE ROUTE -->
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl bg-emerald-900 text-white font-semibold text-sm shadow-sm shadow-emerald-950/20" href="screen_desktop_doctors.html">
+<span class="material-symbols-outlined fill text-[20px] text-emerald-300">medical_services</span>
+<span>Tele-Vet &amp; Doctors</span>
+<span class="ml-auto w-2 h-2 rounded-full bg-emerald-400"></span>
+</a>
+</nav>
+<!-- Sidebar Bottom Info -->
+<div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50">
+<div class="flex items-center gap-3">
+<img alt="Farmer Ramesh Patil" class="w-9 h-9 rounded-full object-cover border border-emerald-600" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1">
+<span class="text-xs font-bold text-slate-900 dark:text-white truncate">Ramesh Patil</span>
+<span class="material-symbols-outlined text-emerald-600 text-xs fill">verified</span>
+</div>
+<p class="text-[10px] text-slate-400 truncate">MH-LIV-409 • Agronomist</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" title="Options">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- MAIN APP CANVAS / CONTENT -->
+<main class="flex-1 flex flex-col min-w-0 pb-24 lg:pb-12">
+<!-- TOP UNIVERSAL NAV BAR -->
+<header class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 sticky top-0 z-30 px-4 sm:px-6 py-3">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+<!-- Mobile Brand Logo / Left -->
+<div class="flex items-center gap-2 lg:hidden">
+<div class="w-8 h-8 rounded-lg bg-emerald-800 text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-xl">psychiatry</span>
+</div>
+<div>
+<span class="font-extrabold text-slate-900 dark:text-white tracking-tight text-base">CropSense</span>
+<span class="text-[9px] bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 font-bold px-1.5 py-0.5 rounded ml-1">VET</span>
+</div>
+</div>
+<!-- Breadcrumb (Desktop) -->
+<div class="hidden lg:flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined text-base">home</span>
+<a class="hover:text-emerald-700" href="#">Home</a>
+<span>/</span>
+<a class="hover:text-emerald-700" href="#">Pashu &amp; Livestock</a>
+<span>/</span>
+<span class="font-semibold text-slate-800 dark:text-slate-200">Tele-Veterinary Consultations</span>
+</div>
+<!-- Quick Telemetry & Status Badges -->
+<div class="flex items-center gap-3">
+<div class="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-medium text-slate-600 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700">
+<span class="material-symbols-outlined text-amber-500 text-sm">wb_sunny</span>
+<span>Nashik 28°C</span>
+<span class="text-slate-300 dark:text-slate-600">•</span>
+<span class="text-emerald-600 font-bold">AQI 42 (Clean)</span>
+</div>
+<!-- KVK Vet Helpline Quick Button -->
+<a class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold hover:bg-emerald-100 transition-colors" href="tel:1962">
+<span class="material-symbols-outlined text-sm text-emerald-600">call</span>
+<span>KVK Helpline: 1800-180-1551</span>
+</a>
+<!-- Language Switcher -->
+<button class="flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<span class="material-symbols-outlined text-sm">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<!-- Notifications -->
+<button class="relative p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800">
+<span class="material-symbols-outlined text-xl">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-amber-500"></span>
+</button>
+<!-- Dark Mode Toggle Trigger -->
+<button class="p-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800" onclick="document.documentElement.classList.toggle('dark')" title="Toggle dark mode">
+<span class="material-symbols-outlined text-xl">dark_mode</span>
+</button>
+</div>
+</div>
+</header>
+<!-- PAGE MAIN BODY -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 pt-6 w-full space-y-6">
+<!-- 1. TOP EMERGENCY SOS BANNER (1962 Government Pashu Ambulance & Surge Support) -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-red-600 via-rose-700 to-amber-700 text-white shadow-xl shadow-red-950/10 border border-red-500/30">
+<div class="absolute -right-8 -bottom-10 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[200px]">emergency</span>
+</div>
+<div class="p-5 sm:p-6 relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-5">
+<div class="space-y-1.5 max-w-2xl">
+<div class="inline-flex items-center gap-2 px-2.5 py-0.5 rounded-full bg-white/20 backdrop-blur-sm text-xs font-bold tracking-wide uppercase text-white border border-white/30">
+<span class="w-2 h-2 rounded-full bg-amber-300 animate-ping"></span>
+<span>24x7 Critical Response</span>
+<span class="text-white/60">•</span>
+<span>Toll-Free Govt 1962</span>
+</div>
+<h1 class="text-xl sm:text-2xl lg:text-3xl font-extrabold tracking-tight">Livestock Emergency SOS &amp; Mobile Ambulance</h1>
+<p class="text-sm text-red-50/90 leading-relaxed">
+                Immediate on-call veterinary surgeons for acute bloat (tympanites), dystocia (calving crisis), severe milk fever, snake bites, or trauma. Dispatched via Govt Animal Husbandry network within 35 minutes.
+              </p>
+</div>
+<div class="flex flex-wrap sm:flex-nowrap items-center gap-3 shrink-0">
+<a class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white text-red-700 font-extrabold text-sm shadow-lg hover:bg-red-50 active:scale-95 transition-all" href="tel:1962">
+<span class="material-symbols-outlined text-xl fill text-red-600">e911_emergency</span>
+<span>Dial 1962 Govt SOS</span>
+</a>
+<button class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-900/60 hover:bg-red-900/80 backdrop-blur-md text-white font-bold text-sm border border-white/20 active:scale-95 transition-all" onclick="alert('Connecting to On-Call Triage Field Vet...')">
+<span class="material-symbols-outlined text-lg">medical_services</span>
+<span>Instant Video Triage</span>
+</button>
+</div>
+</div>
+</section>
+<!-- PAGE HEADER / SUMMARY STATS -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 pt-1">
+<div>
+<div class="flex items-center gap-2">
+<span class="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/70 px-2 py-0.5 rounded border border-emerald-200 dark:border-emerald-800">
+                VCI &amp; ICAR Registered Network
+              </span>
+<span class="text-xs text-slate-400">• Real-Time Availability</span>
+</div>
+<h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mt-1">Tele-Veterinary Consultations &amp; Field Doctors</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400 mt-1 max-w-3xl">
+              Connect with verified Veterinary Council of India (VCI) certified practitioners, gynaecologists, and animal nutritionists with verified e-prescriptions synced to your Pashu Aadhaar registry.
+            </p>
+</div>
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-200 hover:border-emerald-500 shadow-sm transition-colors" onclick="document.getElementById('prescriptionVault').scrollIntoView({behavior: 'smooth'})">
+<span class="material-symbols-outlined text-emerald-600 text-base">receipt_long</span>
+<span>Prescription Vault (3 Active)</span>
+</button>
+<div class="hidden sm:flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>42 Vets Online</span>
+</div>
+</div>
+</div>
+<!-- 2. SEARCH & ADVANCED FILTER BAR -->
+<section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 sm:p-5 shadow-sm space-y-4">
+<div class="flex flex-col lg:flex-row gap-3">
+<!-- Doctor / Clinic / Disease search -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500" placeholder="Search by doctor name, condition (e.g. Mastitis, Prolapse), or clinic..." type="text"/>
+</div>
+<!-- District / Location selector -->
+<div class="relative w-full lg:w-64">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-lg">location_on</span>
+<select class="w-full pl-10 pr-8 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-sm text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 appearance-none font-medium cursor-pointer">
+<option value="nashik">Nashik / Niphad (Your District)</option>
+<option value="pune">Pune &amp; Baramati</option>
+<option value="anand">Anand &amp; Kheda (NDDB Hub)</option>
+<option value="karnal">Karnal (NDRI Campus)</option>
+<option value="ludhiana">Ludhiana (GADVASU Cluster)</option>
+<option value="all">All India (Tele-Consult)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-base pointer-events-none">expand_more</span>
+</div>
+<!-- Mode Quick Filter Toggles -->
+<div class="flex items-center gap-2 shrink-0">
+<label class="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-emerald-300 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-950/40 text-xs font-bold text-emerald-800 dark:text-emerald-300 cursor-pointer select-none">
+<input checked="" class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 accent-emerald-600" type="checkbox"/>
+<span class="material-symbols-outlined text-sm">videocam</span>
+<span>Available Now (15m)</span>
+</label>
+<label class="flex items-center gap-2 px-3 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer select-none">
+<input class="rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 accent-emerald-600" type="checkbox"/>
+<span class="material-symbols-outlined text-sm">home_health</span>
+<span>Farm Visit (Field Vet)</span>
+</label>
+</div>
+</div>
+<!-- Specialty filter pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 pt-1 no-scrollbar">
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-emerald-800 text-white font-bold text-xs shadow-sm">
+              All Specialists (42)
+            </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+              Bovine Obstetrics &amp; AI (14)
+            </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+              Ruminant Nutrition &amp; TMR (9)
+            </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+              Surgery &amp; Teat Disorders (8)
+            </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+              Vaccination &amp; Prophylaxis (11)
+            </button>
+<button class="shrink-0 px-3.5 py-1.5 rounded-full bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-xs transition-colors">
+              Poultry &amp; Goat Care (6)
+            </button>
+</div>
+</section>
+<!-- 3. DOCTOR CARDS GRID -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- DOCTOR 1: Dr. Rajesh Patil (Obstetrics & AI) -->
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex flex-col p-5">
+<!-- Card Header: Avatar & VCI status -->
+<div class="flex items-start gap-4">
+<div class="relative shrink-0">
+<img alt="Dr. Rajesh Patil" class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-600/30" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" title="Online Now"></span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<h3 class="font-extrabold text-slate-900 dark:text-white text-base truncate">Dr. Rajesh Patil</h3>
+<span class="material-symbols-outlined text-emerald-600 text-base fill">verified</span>
+</div>
+<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-400 mt-0.5">MVSc (Animal Reproduction &amp; Gyn)</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">ICAR-NDRI Gold Medalist • 14 Yrs Exp</p>
+<div class="flex items-center gap-2 mt-1.5">
+<div class="flex items-center text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm fill">star</span>
+<span class="ml-0.5">4.9</span>
+<span class="text-slate-400 text-[10px] ml-1">(182 reviews)</span>
+</div>
+<span class="text-slate-300 dark:text-slate-700">•</span>
+<span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">In 15 mins</span>
+</div>
+</div>
+</div>
+<!-- VCI Badge & Specialties -->
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="badge-vci text-emerald-800 dark:text-emerald-300 font-mono font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> VCI-MH-2010-0491
+                </span>
+<span class="text-slate-500 text-[11px]">Niphad &amp; Nashik Taluka</span>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Bovine Insemination</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Dystocia &amp; Calving</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Repeat Breeding</span>
+</div>
+</div>
+<!-- Consultation Fees & Badges -->
+<div class="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-slate-400 text-[10px] block">Video Consult</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹300</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div>
+<span class="text-slate-400 text-[10px] block">Farm Field Visit</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹800</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-right">
+<span class="text-emerald-600 font-bold text-[10px] flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-xs">prescription</span> e-Prescription
+                </span>
+<span class="text-[10px] text-slate-400">Pashu Aadhaar Linked</span>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="mt-4 pt-2 grid grid-cols-2 gap-2 mt-auto">
+<button class="w-full py-2.5 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="alert('Starting Instant Video Consult with Dr. Rajesh Patil (₹300)...')">
+<span class="material-symbols-outlined text-sm">videocam</span>
+<span>Video Consult</span>
+</button>
+<button class="w-full py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all" onclick="alert('Farm visit slot booking opened for Dr. Patil')">
+<span class="material-symbols-outlined text-sm text-slate-500">calendar_add_on</span>
+<span>Farm Visit</span>
+</button>
+</div>
+<a class="mt-2 text-center text-[11px] text-slate-500 hover:text-emerald-600 flex items-center justify-center gap-1 font-semibold py-1" href="https://wa.me/919800000000?text=Namaste%20Doctor,%20consulting%20regarding%20bovine%20symptoms" target="_blank">
+<span class="material-symbols-outlined text-xs text-emerald-600">chat</span>
+<span>Direct WhatsApp Desk</span>
+</a>
+</article>
+<!-- DOCTOR 2: Dr. Meenakshi Sundaram (Ruminant Medicine) -->
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex flex-col p-5">
+<!-- Card Header: Avatar & VCI status -->
+<div class="flex items-start gap-4">
+<div class="relative shrink-0">
+<img alt="Dr. Meenakshi Sundaram" class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-600/30" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" title="Online Now"></span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<h3 class="font-extrabold text-slate-900 dark:text-white text-base truncate">Dr. Meenakshi Sundaram</h3>
+<span class="material-symbols-outlined text-emerald-600 text-base fill">verified</span>
+</div>
+<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-400 mt-0.5">BVSc &amp; AH (Ruminant Medicine)</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">IVRI Izatnagar • 8 Yrs Exp</p>
+<div class="flex items-center gap-2 mt-1.5">
+<div class="flex items-center text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm fill">star</span>
+<span class="ml-0.5">4.85</span>
+<span class="text-slate-400 text-[10px] ml-1">(94 reviews)</span>
+</div>
+<span class="text-slate-300 dark:text-slate-700">•</span>
+<span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">Available Now</span>
+</div>
+</div>
+</div>
+<!-- VCI Badge & Languages -->
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="badge-vci text-emerald-800 dark:text-emerald-300 font-mono font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> VCI-TN-2016-1180
+                </span>
+<span class="text-slate-600 dark:text-slate-300 font-medium text-[10px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">Hindi, Marathi, EN</span>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Subclinical Mastitis</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Acidosis &amp; Ketosis</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">FMD Vaccine Protocol</span>
+</div>
+</div>
+<!-- Fees & Badges -->
+<div class="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-slate-400 text-[10px] block">Audio / Video</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹250</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div>
+<span class="text-slate-400 text-[10px] block">Emergency Call</span>
+<span class="font-bold text-amber-600 text-sm">₹400</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-right">
+<span class="text-emerald-600 font-bold text-[10px] flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-xs">delivery_dining</span> Medicine Rx
+                </span>
+<span class="text-[10px] text-slate-400">1-hr Home Delivery</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-4 pt-2 grid grid-cols-2 gap-2 mt-auto">
+<button class="w-full py-2.5 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="alert('Connecting to Dr. Meenakshi Sundaram instant audio/video...')">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>Instant Call</span>
+</button>
+<button class="w-full py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all" onclick="alert('Booking video consult appointment...')">
+<span class="material-symbols-outlined text-sm text-slate-500">schedule</span>
+<span>Book Slot</span>
+</button>
+</div>
+<a class="mt-2 text-center text-[11px] text-slate-500 hover:text-emerald-600 flex items-center justify-center gap-1 font-semibold py-1" href="https://wa.me/919800000000?text=Namaste%20Dr.%20Sundaram" target="_blank">
+<span class="material-symbols-outlined text-xs text-emerald-600">chat</span>
+<span>Chat on WhatsApp</span>
+</a>
+</article>
+<!-- DOCTOR 3: Dr. Harpreet Singh Dhillon (Surgery & Radiology) -->
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex flex-col p-5">
+<!-- Card Header: Avatar & VCI status -->
+<div class="flex items-start gap-4">
+<div class="relative shrink-0">
+<img alt="Dr. Harpreet Singh Dhillon" class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-600/30" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" title="Online Now"></span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<h3 class="font-extrabold text-slate-900 dark:text-white text-base truncate">Dr. H. S. Dhillon</h3>
+<span class="material-symbols-outlined text-emerald-600 text-base fill">verified</span>
+</div>
+<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-400 mt-0.5">MVSc (Veterinary Surgery)</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">Ex-GADVASU Surgeon • 18 Yrs Exp</p>
+<div class="flex items-center gap-2 mt-1.5">
+<div class="flex items-center text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm fill">star</span>
+<span class="ml-0.5">4.95</span>
+<span class="text-slate-400 text-[10px] ml-1">(310 reviews)</span>
+</div>
+<span class="text-slate-300 dark:text-slate-700">•</span>
+<span class="text-[10px] font-bold text-amber-700 dark:text-amber-300 bg-amber-50 dark:bg-amber-950 px-1.5 py-0.5 rounded">Senior Surgeon</span>
+</div>
+</div>
+</div>
+<!-- VCI Badge & Specialties -->
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="badge-vci text-emerald-800 dark:text-emerald-300 font-mono font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> VCI-PB-2006-0129
+                </span>
+<span class="text-slate-500 text-[11px]">Ambulance Attached</span>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Vaginal/Uterine Prolapse</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Teat Obstruction Repair</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Caesarean Section</span>
+</div>
+</div>
+<!-- Fees & Badges -->
+<div class="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-slate-400 text-[10px] block">Surgical Consult</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹450</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div>
+<span class="text-slate-400 text-[10px] block">Emergency Surgery</span>
+<span class="font-bold text-red-600 text-sm">₹1,500+</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-right">
+<span class="text-emerald-600 font-bold text-[10px] flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-xs">local_shipping</span> Mobile OT
+                </span>
+<span class="text-[10px] text-slate-400">Portable Ultrasound</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-4 pt-2 grid grid-cols-2 gap-2 mt-auto">
+<button class="w-full py-2.5 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="alert('Calling Dr. Dhillon surgical triage desk...')">
+<span class="material-symbols-outlined text-sm">videocam</span>
+<span>Urgent Video</span>
+</button>
+<button class="w-full py-2.5 px-3 rounded-xl border border-red-300 dark:border-red-900/60 hover:bg-red-50 dark:hover:bg-red-950/40 text-red-700 dark:text-red-300 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all" onclick="alert('Requesting Emergency Surgical Farm Dispatch...')">
+<span class="material-symbols-outlined text-sm">ambulance</span>
+<span>Request Visit</span>
+</button>
+</div>
+<a class="mt-2 text-center text-[11px] text-slate-500 hover:text-emerald-600 flex items-center justify-center gap-1 font-semibold py-1" href="https://wa.me/919800000000?text=Urgent%20surgical%20query%20for%20Dr%20Dhillon" target="_blank">
+<span class="material-symbols-outlined text-xs text-emerald-600">chat</span>
+<span>WhatsApp Case Photos</span>
+</a>
+</article>
+<!-- DOCTOR 4: Dr. Anjali Deshmukh (Ruminant Nutritionist) -->
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex flex-col p-5">
+<!-- Card Header: Avatar & VCI status -->
+<div class="flex items-start gap-4">
+<div class="relative shrink-0">
+<img alt="Dr. Anjali Deshmukh" class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-600/30" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" title="Online Now"></span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<h3 class="font-extrabold text-slate-900 dark:text-white text-base truncate">Dr. Anjali Deshmukh</h3>
+<span class="material-symbols-outlined text-emerald-600 text-base fill">verified</span>
+</div>
+<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-400 mt-0.5">PhD (Ruminant Nutrition &amp; Feed)</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">NDDB Consultant • 11 Yrs Exp</p>
+<div class="flex items-center gap-2 mt-1.5">
+<div class="flex items-center text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm fill">star</span>
+<span class="ml-0.5">4.92</span>
+<span class="text-slate-400 text-[10px] ml-1">(214 reviews)</span>
+</div>
+<span class="text-slate-300 dark:text-slate-700">•</span>
+<span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">TMR Specialist</span>
+</div>
+</div>
+</div>
+<!-- VCI Badge & Specialties -->
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="badge-vci text-emerald-800 dark:text-emerald-300 font-mono font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> VCI-MH-2013-0872
+                </span>
+<span class="text-slate-500 text-[11px]">Niphad KVK Poly-clinic</span>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Bypass Fat &amp; Protein</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Milk SNF Boosting</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Silage Pit QA</span>
+</div>
+</div>
+<!-- Fees & Badges -->
+<div class="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-slate-400 text-[10px] block">Ration Audit</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹200</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div>
+<span class="text-slate-400 text-[10px] block">Farm Feed Plan</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹600</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-right">
+<span class="text-emerald-600 font-bold text-[10px] flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-xs">tune</span> TMR Sync
+                </span>
+<span class="text-[10px] text-slate-400">Auto-links to Balancer</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-4 pt-2 grid grid-cols-2 gap-2 mt-auto">
+<button class="w-full py-2.5 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" onclick="alert('Initiating Diet Consultation with Dr. Deshmukh...')">
+<span class="material-symbols-outlined text-sm">videocam</span>
+<span>Diet Consult</span>
+</button>
+<button class="w-full py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all" onclick="location.href='screen_desktop_tmr.html'">
+<span class="material-symbols-outlined text-sm text-emerald-600">calculate</span>
+<span>Open TMR Tool</span>
+</button>
+</div>
+<a class="mt-2 text-center text-[11px] text-slate-500 hover:text-emerald-600 flex items-center justify-center gap-1 font-semibold py-1" href="https://wa.me/919800000000?text=Namaste%20Dr.%20Anjali,%20seeking%20ration%20review" target="_blank">
+<span class="material-symbols-outlined text-xs text-emerald-600">chat</span>
+<span>WhatsApp Feed Formulation</span>
+</a>
+</article>
+<!-- DOCTOR 5: Dr. Sanjay Deshmukh (KVK Niphad Veterinary In-Charge) -->
+<article class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex flex-col p-5">
+<!-- Card Header: Avatar & VCI status -->
+<div class="flex items-start gap-4">
+<div class="relative shrink-0">
+<img alt="Dr. Sanjay Deshmukh" class="w-16 h-16 rounded-2xl object-cover border-2 border-emerald-600/30" src="https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-900" title="Online Now"></span>
+</div>
+<div class="min-w-0 flex-1">
+<div class="flex items-center gap-1.5">
+<h3 class="font-extrabold text-slate-900 dark:text-white text-base truncate">Dr. Sanjay Deshmukh</h3>
+<span class="material-symbols-outlined text-emerald-600 text-base fill">verified</span>
+</div>
+<p class="text-xs font-semibold text-emerald-800 dark:text-emerald-400 mt-0.5">MVSc (Surgery) • ICAR KVK</p>
+<p class="text-[11px] text-slate-500 dark:text-slate-400">Head, Niphad Polyclinic • 16 Yrs Exp</p>
+<div class="flex items-center gap-2 mt-1.5">
+<div class="flex items-center text-amber-500 text-xs font-bold">
+<span class="material-symbols-outlined text-sm fill">star</span>
+<span class="ml-0.5">4.97</span>
+<span class="text-slate-400 text-[10px] ml-1">(440 reviews)</span>
+</div>
+<span class="text-slate-300 dark:text-slate-700">•</span>
+<span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950 px-1.5 py-0.5 rounded">Govt Subsidized</span>
+</div>
+</div>
+</div>
+<!-- VCI Badge & Specialties -->
+<div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="badge-vci text-emerald-800 dark:text-emerald-300 font-mono font-bold px-2 py-0.5 rounded flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">shield</span> VCI-MH-2008-0312
+                </span>
+<span class="text-slate-500 text-[11px]">Free KVK Tele-Desk</span>
+</div>
+<div class="flex flex-wrap gap-1.5 pt-1">
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Lumpy Skin Disease (LSD)</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Brucellosis Cert</span>
+<span class="text-[10px] font-medium bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2 py-0.5 rounded-md">Deworming Drives</span>
+</div>
+</div>
+<!-- Fees & Badges -->
+<div class="mt-4 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">
+<div>
+<span class="text-slate-400 text-[10px] block">Govt Toll-Free</span>
+<span class="font-bold text-emerald-700 dark:text-emerald-400 text-sm">FREE (₹0)</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div>
+<span class="text-slate-400 text-[10px] block">KVK Hospital Token</span>
+<span class="font-bold text-slate-900 dark:text-white text-sm">₹50</span>
+</div>
+<div class="w-px h-6 bg-slate-200 dark:bg-slate-700"></div>
+<div class="text-right">
+<span class="text-emerald-600 font-bold text-[10px] flex items-center justify-end gap-0.5">
+<span class="material-symbols-outlined text-xs">verified_user</span> NADCP Sync
+                </span>
+<span class="text-[10px] text-slate-400">Govt Vaccine Portal</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-4 pt-2 grid grid-cols-2 gap-2 mt-auto">
+<a class="w-full py-2.5 px-3 rounded-xl bg-emerald-800 hover:bg-emerald-700 text-white font-bold text-xs flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all text-center" href="tel:18001801551">
+<span class="material-symbols-outlined text-sm">call</span>
+<span>Toll-Free Helpline</span>
+</a>
+<button class="w-full py-2.5 px-3 rounded-xl border border-slate-300 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center gap-1 active:scale-95 transition-all" onclick="alert('Priority appointment booked at KVK Niphad Veterinary Dispensary')">
+<span class="material-symbols-outlined text-sm text-slate-500">confirmation_number</span>
+<span>Hospital Token</span>
+</button>
+</div>
+<p class="mt-2 text-center text-[11px] text-slate-400 py-1">
+              Avg Response: ~7 mins • Supported by ICAR-IARI
+            </p>
+</article>
+<!-- DOCTOR 6: AI Pre-Triage Diagnostician Card -->
+<article class="bg-gradient-to-br from-emerald-950 via-slate-900 to-teal-950 text-white rounded-2xl border border-emerald-500/30 shadow-md p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Gemini 2.0 Flash Vision
+                </span>
+<span class="text-xs text-emerald-300 font-bold">Free Instant</span>
+</div>
+<div class="mt-4 flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-emerald-600/30 border border-emerald-400/30 flex items-center justify-center text-emerald-300">
+<span class="material-symbols-outlined text-2xl">document_scanner</span>
+</div>
+<div>
+<h3 class="font-extrabold text-white text-base">CropSense Pashu AI Scanner</h3>
+<p class="text-xs text-slate-300">Skin Lesions, Udder Health &amp; Mastitis</p>
+</div>
+</div>
+<p class="text-xs text-slate-300 mt-3 leading-relaxed">
+                Take a photo of bovine eyes, mucous membrane, hoof lesion, or udder swelling. Our multimodal AI performs automated ICAR-calibrated pre-triage in 0.8 seconds and attaches the report to your doctor's call.
+              </p>
+<div class="mt-4 p-3 rounded-xl bg-white/5 border border-white/10 space-y-1.5">
+<div class="flex items-center justify-between text-xs">
+<span class="text-slate-400">Pre-triage Accuracy:</span>
+<span class="text-emerald-400 font-bold">96.4%</span>
+</div>
+<div class="flex items-center justify-between text-xs">
+<span class="text-slate-400">Report generation:</span>
+<span class="text-emerald-400 font-bold">Instant (0.8s)</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-2 space-y-2">
+<button class="w-full py-2.5 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-all" onclick="alert('Camera opened for Bovine Health Triage Scan...')">
+<span class="material-symbols-outlined text-sm">photo_camera</span>
+<span>Scan Cattle Symptoms</span>
+</button>
+<button class="w-full py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center gap-1.5 active:scale-95 transition-all" onclick="alert('Pashu Mitra Voice Consultation starting in Hindi/Marathi...')">
+<span class="material-symbols-outlined text-sm text-emerald-300">mic</span>
+<span>Speak to Pashu Mitra (AI Voice)</span>
+</button>
+</div>
+</article>
+</section>
+<!-- 4. ACTIVE BOOKINGS & PRESCRIPTION VAULT -->
+<section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-6 shadow-sm space-y-5" id="prescriptionVault">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-4">
+<div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-emerald-700 dark:text-emerald-400">prescriptions</span>
+<h3 class="text-lg font-extrabold text-slate-900 dark:text-white">Active Veterinary Consultations &amp; e-Prescription Vault</h3>
+</div>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+                Digitally signed clinical summaries, withdrawal period logs, and ICAR dosage regimens for Krishna Valley Dairy herd.
+              </p>
+</div>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-bold transition-colors" onclick="alert('Exporting complete herd medical history PDF (SHA-256 Verified)...')">
+<span class="material-symbols-outlined text-sm">download</span>
+<span>Export Herd Medical PDF</span>
+</button>
+<button class="inline-flex items-center gap-1 px-2.5 py-2 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 text-xs font-semibold" onclick="alert('Synced with INAPH &amp; Bharat Pashudhan Portal')">
+<span class="material-symbols-outlined text-sm">sync</span>
+<span>INAPH Synced</span>
+</button>
+</div>
+</div>
+<!-- Prescriptions Table / Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Prescription 1 -->
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 hover:border-emerald-300 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                    Active Regimen • Day 3 of 5
+                  </span>
+<span class="text-[11px] text-slate-400">Sep 28, 2024</span>
+</div>
+<div class="mt-3">
+<h4 class="font-extrabold text-slate-900 dark:text-white text-sm">Subclinical Mastitis Treatment</h4>
+<p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">Target: Gauri (#IND-982104 • Gir Cow)</p>
+<p class="text-[11px] text-slate-400 mt-1">Prescribed by Dr. Sanjay Deshmukh (MVSc)</p>
+</div>
+<div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1">
+<div class="flex justify-between font-medium">
+<span class="text-slate-700 dark:text-slate-300">Cefquinome Sulfate 2.5%</span>
+<span class="text-emerald-700 dark:text-emerald-400 font-bold">10 ml IM</span>
+</div>
+<p class="text-[10px] text-red-600 dark:text-red-400 font-medium">⚠️ Milk Withdrawal: 48 hours post-dose</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+<span class="text-[10px] text-slate-400 font-mono">RX-KVK-98412</span>
+<div class="flex items-center gap-2">
+<button class="text-xs text-slate-600 dark:text-slate-300 font-bold hover:text-emerald-700" onclick="alert('Viewing dosage guide &amp; video instruction')">Guide</button>
+<button class="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 font-bold hover:underline" onclick="alert('Downloading e-Prescription PDF with Dr. Deshmukh digital signature...')">
+<span class="material-symbols-outlined text-sm">file_download</span> PDF
+                  </button>
+</div>
+</div>
+</div>
+<!-- Prescription 2 -->
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 hover:border-emerald-300 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                    Completed &amp; Validated
+                  </span>
+<span class="text-[11px] text-slate-400">Sep 20, 2024</span>
+</div>
+<div class="mt-3">
+<h4 class="font-extrabold text-slate-900 dark:text-white text-sm">Hypocalcaemia / Milk Fever Protocol</h4>
+<p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">Target: Lakshmi (#IND-451290 • Murrah)</p>
+<p class="text-[11px] text-slate-400 mt-1">Prescribed by Dr. Rajesh Patil (MVSc)</p>
+</div>
+<div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1">
+<div class="flex justify-between font-medium">
+<span class="text-slate-700 dark:text-slate-300">Calcium Borogluconate 25%</span>
+<span class="text-emerald-700 dark:text-emerald-400 font-bold">450 ml IV Slow</span>
+</div>
+<p class="text-[10px] text-emerald-600 dark:text-emerald-400 font-medium">✓ Rumination restored to 480 m/day</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+<span class="text-[10px] text-slate-400 font-mono">RX-RP-77210</span>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 font-bold hover:underline" onclick="alert('Downloading e-Prescription PDF...')">
+<span class="material-symbols-outlined text-sm">file_download</span> PDF
+                  </button>
+</div>
+</div>
+</div>
+<!-- Prescription 3: Prophylaxis & Deworming Certificate -->
+<div class="p-4 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/60 dark:bg-slate-800/40 hover:border-emerald-300 transition-all flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between">
+<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+                    NADCP Certificate
+                  </span>
+<span class="text-[11px] text-slate-400">Aug 22, 2024</span>
+</div>
+<div class="mt-3">
+<h4 class="font-extrabold text-slate-900 dark:text-white text-sm">HS &amp; FMD Vaccination Certification</h4>
+<p class="text-xs text-slate-600 dark:text-slate-300 font-medium mt-0.5">Target: Full Herd (18 Registered Heads)</p>
+<p class="text-[11px] text-slate-400 mt-1">Administered by Niphad Animal Husbandry</p>
+</div>
+<div class="mt-3 p-2.5 rounded-lg bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs space-y-1">
+<div class="flex justify-between font-medium">
+<span class="text-slate-700 dark:text-slate-300">Raksha-Ovac (Trivalent)</span>
+<span class="text-emerald-700 dark:text-emerald-400 font-bold">100% Verified</span>
+</div>
+<p class="text-[10px] text-slate-500 font-medium">Next Booster scheduled: Nov 15, 2024</p>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between">
+<span class="text-[10px] text-slate-400 font-mono">CERT-NADCP-4091</span>
+<div class="flex items-center gap-2">
+<button class="inline-flex items-center gap-1 text-xs text-emerald-700 dark:text-emerald-400 font-bold hover:underline" onclick="alert('Downloading official Govt Vaccination Certificate PDF...')">
+<span class="material-symbols-outlined text-sm">file_download</span> Certificate
+                  </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. HOW IT WORKS & KVK VETERINARY CODE OF CONDUCT -->
+<section class="bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-900 dark:to-slate-800/80 rounded-2xl border border-emerald-200/80 dark:border-slate-800 p-5">
+<div class="flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-emerald-800 text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-2xl">gavel</span>
+</div>
+<div>
+<h4 class="font-extrabold text-slate-900 dark:text-white text-sm sm:text-base">Compliant with Veterinary Council of India (VCI) Telemedicine Guidelines 2021</h4>
+<p class="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
+                  All tele-consultations are recorded with tamper-evident audit trails. Schedule H drugs and restricted antibiotics are only prescribed after verified video inspection or in-person evaluation.
+                </p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<a class="px-4 py-2 rounded-xl bg-white dark:bg-slate-800 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-300 dark:border-emerald-700 shadow-sm hover:bg-emerald-50" href="tel:18001801551">
+                KVK Veterinary Code
+              </a>
+<button class="px-4 py-2 rounded-xl bg-emerald-800 text-white text-xs font-bold hover:bg-emerald-700 shadow-sm" onclick="alert('Opening Pashu Doctor Registration Portal for certified vets...')">
+                Join as a Certified Vet
+              </button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- MOBILE BOTTOM DOCK (lg:hidden) with 5 Universal Destinations -->
+<nav class="lg:hidden fixed bottom-0 left-0 right-0 max-w-lg mx-auto w-full z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 flex justify-around py-2 shadow-2xl">
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-2 py-1" href="screen_desktop_dashboard.html">
+<span class="material-symbols-outlined text-xl">home</span>
+<span class="text-[10px] font-medium mt-0.5">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-emerald-800 text-white rounded-xl px-3 py-1 shadow-sm" href="screen_desktop_doctors.html">
+<span class="material-symbols-outlined fill text-xl text-emerald-300">medical_services</span>
+<span class="text-[10px] font-bold mt-0.5">Doctor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-2 py-1" href="javascript:void(0)" onclick="alert('Kisan Voice Assistant listening...')">
+<span class="material-symbols-outlined text-xl">mic</span>
+<span class="text-[10px] font-medium mt-0.5">Voice</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-2 py-1" href="screen_desktop_marketplace.html">
+<span class="material-symbols-outlined text-xl">storefront</span>
+<span class="text-[10px] font-medium mt-0.5">Mandi</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400 px-2 py-1" href="screen_desktop_pashu_hub.html">
+<span class="material-symbols-outlined text-xl">pets</span>
+<span class="text-[10px] font-medium mt-0.5">Livestock</span>
+</a>
+</nav>
+</body>
+</html>

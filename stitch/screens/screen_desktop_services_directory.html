@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Agricultural Services &amp; Machinery Rental Directory</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary": "#904d00",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#e3e2df",
+            "on-primary-fixed": "#002116",
+            "surface-bright": "#faf9f5",
+            "secondary-container": "#fe932c",
+            "primary-fixed": "#a6f2d1",
+            "surface-dim": "#dbdad6",
+            "primary": "#004532",
+            "error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-background": "#1b1c1a",
+            "error": "#ba1a1a",
+            "surface-container-high": "#e9e8e4",
+            "tertiary-fixed": "#6ffbbe",
+            "on-primary-fixed-variant": "#00513b",
+            "surface": "#faf9f5",
+            "secondary-fixed": "#ffdcc3",
+            "on-tertiary-fixed": "#002113",
+            "on-error-container": "#93000a",
+            "on-primary": "#ffffff",
+            "on-surface": "#1b1c1a",
+            "on-secondary-fixed": "#2f1500",
+            "on-error": "#ffffff",
+            "surface-container-highest": "#e3e2df",
+            "tertiary-container": "#006041",
+            "surface-container-lowest": "#ffffff",
+            "secondary-fixed-dim": "#ffb77d",
+            "primary-fixed-dim": "#8bd6b6",
+            "surface-container-low": "#f4f4f0",
+            "surface-container": "#efeeea",
+            "tertiary": "#00462e",
+            "primary-container": "#065f46",
+            "inverse-surface": "#2f312e",
+            "on-secondary-container": "#663500",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-surface-variant": "#3f4944",
+            "surface-tint": "#1b6b51",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#8bd6b7",
+            "inverse-on-surface": "#f2f1ed",
+            "outline-variant": "#bec9c2",
+            "on-secondary-fixed-variant": "#6e3900",
+            "background": "#faf9f5",
+            "on-tertiary-container": "#50e0a4",
+            "outline": "#6f7973",
+            "inverse-primary": "#8bd6b6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-desktop": "3rem",
+            "gutter-tablet": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-desktop": "2rem",
+            "space-xs": "0.25rem",
+            "space-xl": "2.25rem",
+            "margin-tablet": "2rem",
+            "margin": "1rem",
+            "gutter": "1rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #faf9f5;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #bec9c2;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col selection:bg-primary selection:text-white">
+<!-- TOP APP BAR -->
+<header class="bg-surface shadow-sm sticky top-0 z-40">
+<div class="flex justify-between items-center w-full px-4 lg:px-8 py-3 max-w-7xl mx-auto">
+<!-- Brand & Valley Node -->
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="psychiatry">psychiatry</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm font-bold text-primary">CropSense AI</span>
+<span class="hidden sm:inline-block bg-[#d1fae5] text-[#065f46] text-[11px] font-bold px-2 py-0.5 rounded-full">CHC Hubs 2.0</span>
+</div>
+<p class="text-xs text-on-surface-variant font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="location_on">location_on</span>
+            Nashik / Niphad Valley, MH
+          </p>
+</div>
+</div>
+<!-- Quick Telemetry & KVK Helpline Bar (Desktop/Tablet) -->
+<div class="hidden md:flex items-center gap-4">
+<!-- Weather pill -->
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1.5 rounded-full border border-outline-variant/30 text-xs font-semibold text-on-surface">
+<span class="material-symbols-outlined text-amber-600 text-base" data-icon="wb_sunny">wb_sunny</span>
+<span>28°C</span>
+<span class="text-outline-variant">|</span>
+<span class="text-emerald-700">AQI 42 (Pure)</span>
+</div>
+<!-- KVK Helpline -->
+<a class="flex items-center gap-1.5 bg-surface-container-lowest border border-outline-variant/40 px-3 py-1.5 rounded-full text-xs font-bold text-primary hover:bg-surface-container transition-colors shadow-sm" href="tel:18001801551">
+<span class="material-symbols-outlined text-secondary-container text-sm" data-icon="call">call</span>
+<span>KVK Toll-Free: 1800-180-1551</span>
+</a>
+</div>
+<!-- Trailing Action: Multilingual + Profile Avatar -->
+<div class="flex items-center gap-3">
+<!-- Language Switcher from JSON -->
+<button class="bg-surface-container-low hover:bg-surface-container border border-outline-variant/30 text-primary font-label-md text-label-md px-3 py-1.5 rounded-lg active:scale-[0.98] transition-transform duration-150 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-base" data-icon="translate">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<!-- User Profile Pill -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant/40">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center font-bold text-sm shadow-inner ring-2 ring-[#d1fae5]">
+            RP
+          </div>
+<div class="hidden xl:block text-left text-xs">
+<p class="font-bold text-on-surface leading-tight">Ramesh Patil</p>
+<p class="text-[11px] text-on-surface-variant">Krishna Valley Farm (4.5 Ac)</p>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- BODY CONTENT WRAPPER WITH RESPONSIVE DESKTOP SIDEBAR -->
+<div class="flex-1 flex max-w-7xl w-full mx-auto px-0 lg:px-6 py-4">
+<!-- DESKTOP SIDEBAR NAVIGATION -->
+<aside class="hidden lg:flex flex-col w-64 shrink-0 pr-6 space-y-6">
+<div class="bg-surface-container-lowest rounded-2xl p-3 border border-primary/10 shadow-sm">
+<p class="px-3 py-2 text-[11px] font-bold text-outline uppercase tracking-wider">Agrarian Operations</p>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="landscape">landscape</span>
+<span>My Farms &amp; Plots</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+<span>Crop Diagnostics</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="satellite_alt">satellite_alt</span>
+<span>Soil &amp; Satellite NDVI</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="storefront">storefront</span>
+<span>Marketplace &amp; Mandi</span>
+</a>
+<!-- ACTIVE DESTINATION: Services & Machinery Directory -->
+<a class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-primary text-on-primary font-semibold shadow-sm" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="font-label-lg text-label-lg">Services Directory</span>
+</div>
+<span class="text-[10px] bg-secondary-container text-on-secondary-container font-extrabold px-1.5 py-0.5 rounded-full">ACTIVE</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="pets">pets</span>
+<span>Pashu &amp; Livestock</span>
+</a>
+</nav>
+<div class="pt-4 mt-4 border-t border-outline-variant/30">
+<p class="px-3 py-1 text-[11px] font-bold text-outline uppercase tracking-wider">Hardware &amp; Network</p>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="sensors">sensors</span>
+<span>IoT Field Mesh (4 Nodes)</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-lg text-label-lg" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings">settings</span>
+<span>Farm Settings</span>
+</a>
+</div>
+</div>
+<!-- Farmer Verification Card -->
+<div class="bg-gradient-to-br from-[#065f46] to-[#004532] text-white p-4 rounded-2xl shadow-sm text-xs">
+<div class="flex items-center justify-between mb-2">
+<span class="bg-white/20 text-white font-bold text-[10px] px-2 py-0.5 rounded">PM-KISAN LINKED</span>
+<span class="material-symbols-outlined text-amber-300 text-sm" data-icon="verified">verified</span>
+</div>
+<p class="font-bold text-sm">MH-NAS-2024-8821</p>
+<p class="text-white/80 mt-1 text-[11px]">Direct Benefit Transfer (DBT) subsidy wallet linked. KYC updated 14 Nov.</p>
+</div>
+</aside>
+<!-- MAIN INTERACTIVE CANVAS -->
+<main class="flex-1 px-4 lg:px-0 pb-24 lg:pb-12 space-y-6">
+<!-- HERO / GOVT SUBSIDY BANNER (SMAM) -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-primary-container via-primary to-[#002e21] text-white p-5 lg:p-7 shadow-md">
+<!-- Botanical Ambient Texture Elements -->
+<div class="absolute -right-8 -bottom-8 w-48 h-48 rounded-full bg-white/5 blur-2xl pointer-events-none"></div>
+<div class="absolute right-12 top-4 opacity-15 pointer-events-none hidden sm:block">
+<span class="material-symbols-outlined text-9xl" data-icon="agriculture">agriculture</span>
+</div>
+<div class="relative z-10 max-w-2xl">
+<div class="flex flex-wrap items-center gap-2 mb-2">
+<span class="bg-secondary-container text-on-secondary-container font-extrabold text-[11px] px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="verified">verified</span>
+              DBT Govt Linked #SMAM-MH-2024
+            </span>
+<span class="text-white/80 text-xs font-semibold">Sub-Mission on Agricultural Mechanization</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg font-extrabold tracking-tight text-white mb-2 leading-tight">
+            Up to 50% Subsidy on Precision Drone Spraying &amp; Solar Pumps
+          </h1>
+<p class="font-body-md text-body-md text-white/90 mb-5 leading-relaxed">
+            Apply online for instant DBT clearance under Pradhan Mantri Krishi Yantrikaran Yojana. Verified Sahyadri CHC machines pre-approved with direct KCC credit integration.
+          </p>
+<div class="flex flex-wrap items-center gap-3">
+<button class="bg-secondary-container hover:bg-[#ff8414] text-on-secondary-container font-bold px-4 py-2.5 rounded-lg active:scale-95 transition-all text-xs flex items-center gap-2 shadow-sm">
+<span class="material-symbols-outlined text-base" data-icon="fact_check">fact_check</span>
+              Check Subsidy Eligibility
+            </button>
+<button class="bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-4 py-2.5 rounded-lg active:scale-95 transition-all text-xs flex items-center gap-1.5">
+<span class="material-symbols-outlined text-base" data-icon="account_balance">account_balance</span>
+              Explore PM-KISAN &amp; KCC Credit Schemes
+            </button>
+</div>
+</div>
+</section>
+<!-- REAL-TIME CHC TELEMETRY METERS -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-3">
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between text-outline-variant mb-1">
+<span class="text-xs font-semibold text-on-surface-variant">Active CHC Hubs</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="hub">hub</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">4</span>
+<span class="text-xs font-bold text-on-surface-variant">Centers (&lt;10 km)</span>
+</div>
+<span class="text-[11px] text-emerald-700 font-semibold flex items-center gap-0.5 mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Pimpalgaon, Niphad, Ozar, Vinchur
+          </span>
+</div>
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between text-outline-variant mb-1">
+<span class="text-xs font-semibold text-on-surface-variant">Machinery Available</span>
+<span class="material-symbols-outlined text-primary text-base" data-icon="agriculture">agriculture</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md font-extrabold text-primary">28</span>
+<span class="text-xs font-bold text-on-surface-variant">Units Ready</span>
+</div>
+<span class="text-[11px] text-emerald-700 font-semibold">Ready for deployment today</span>
+</div>
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between text-outline-variant mb-1">
+<span class="text-xs font-semibold text-on-surface-variant">DBT Claimed Locally</span>
+<span class="material-symbols-outlined text-amber-600 text-base" data-icon="currency_rupee">currency_rupee</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md font-extrabold text-on-surface">₹42,500</span>
+</div>
+<span class="text-[11px] text-on-surface-variant font-medium">By 16 Nashik farmers this week</span>
+</div>
+<div class="bg-surface-container-lowest p-3.5 rounded-xl border border-primary/10 shadow-sm">
+<div class="flex items-center justify-between text-outline-variant mb-1">
+<span class="text-xs font-semibold text-on-surface-variant">Escrow Protection</span>
+<span class="material-symbols-outlined text-emerald-600 text-base" data-icon="verified_user">verified_user</span>
+</div>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md font-extrabold text-emerald-800">100%</span>
+<span class="text-xs font-bold text-on-surface-variant">Guaranteed</span>
+</div>
+<span class="text-[11px] text-on-surface-variant font-medium">Released after GPS farm signoff</span>
+</div>
+</section>
+<!-- SEARCH & SERVICE CATEGORY FILTERS -->
+<section class="bg-surface-container-lowest p-4 rounded-2xl border border-primary/10 shadow-sm space-y-3">
+<!-- Top bar: Search input + Radius Slider -->
+<div class="flex flex-col md:flex-row gap-3 items-stretch md:items-center justify-between">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full pl-10 pr-4 py-2.5 text-xs md:text-sm bg-surface-container-low border border-outline-variant/50 rounded-xl focus:border-primary focus:ring-2 focus:ring-[#059669]/20 outline-none transition" placeholder="Search machinery, drone spraying, harvester, soil test..." type="text" value="Garuda Kisan Drone"/>
+</div>
+<!-- Radius filter pill -->
+<div class="flex items-center gap-3 bg-surface-container-low px-4 py-2 rounded-xl border border-outline-variant/40 shrink-0">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="near_me">near_me</span>
+<label class="text-xs font-bold text-on-surface whitespace-nowrap">Radius: <span class="text-primary font-extrabold">15 km</span></label>
+<input class="w-24 accent-[#004532] cursor-pointer" max="50" min="5" type="range" value="15"/>
+</div>
+</div>
+<!-- Horizontal scrollable filter pills -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 custom-scrollbar text-xs font-semibold">
+<button class="bg-primary text-white px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 shadow-sm">
+<span>All Services</span>
+<span class="bg-white/20 text-white text-[10px] px-1.5 py-0.2 rounded-full">14</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-outline-variant/40 transition">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="flight">flight</span>
+<span>Drone Spraying (DGCA Certified)</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-outline-variant/40 transition">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="agriculture">agriculture</span>
+<span>Heavy Machinery &amp; CHC</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-outline-variant/40 transition">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="biotechnology">chips</span>
+<span>Mobile Soil &amp; Water Lab</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-outline-variant/40 transition">
+<span class="material-symbols-outlined text-xs text-primary" data-icon="ac_unit">ac_unit</span>
+<span>Cold Storage &amp; Warehousing</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-on-surface px-3.5 py-1.5 rounded-full whitespace-nowrap flex items-center gap-1.5 border border-outline-variant/40 transition">
+<span class="material-symbols-outlined text-xs text-amber-700" data-icon="receipt_long">receipt_long</span>
+<span>Subsidies &amp; KCC Credit</span>
+</button>
+</div>
+</section>
+<!-- 6 SERVICE CARDS GRID -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+<!-- CARD 1: Garuda Kisan Drone (Featured & Primary Modal Trigger) -->
+<div class="bg-surface-container-lowest rounded-2xl border-2 border-primary/20 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern high-tech agricultural hexacopter drone hovering over lush green vineyard rows in bright morning sunlight, equipped with a blue spray tank releasing fine micro-droplets. The landscape exhibits rich organic earth tones and deep emerald green foliage under clear skies, reflecting modern Indian precision farming telemetry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBk7zbEQdiI5vljm6cquTqgx3IqNJFTECF2d9Qp7wj0NZo2mOAb8zxykKR_kMfpsgWSjx_-ZgtG5LSeuGj6s2hp292XX_B4BWTkmpsw6qktoSf6A7qHpcTdd5r7Z1h80WoWqrISrZ6EF4wiSDZLUExAIkRQ0rh8YjuZvwMT-hqRB9AX4p_inTZLclpLiMDd-GWNncrr-usswMje406dfoRQvOkiLYhIFYZjCsY3pwXxs3PXcwEowokTyk2giBv9ZVDlOvwBfwiIETY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
+<span class="bg-[#d1fae5] text-[#065f46] text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[#065f46]"></span>
+                Subsidized under SMAM
+              </span>
+<span class="bg-black/60 backdrop-blur-md text-white text-[11px] font-semibold px-2 py-0.5 rounded-full">
+                DGCA #DGCA-AG-8091
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" data-icon="star">star</span>
+                4.9 (128 Bookings)
+              </span>
+<span class="bg-emerald-600/90 text-white font-bold text-[10px] px-2 py-0.5 rounded">Available Tomorrow</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<div class="flex items-start justify-between gap-2 mb-1">
+<h3 class="font-title-md text-title-md font-bold text-on-surface">Precision Agricultural Drone Spraying</h3>
+</div>
+<p class="text-xs text-on-surface-variant mb-3">Garuda Kisan Drone • 10L Tank • 15 min/acre speed with nano-urea mixing and bio-pesticide calibration.</p>
+<!-- Specs Pills -->
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="speed">speed</span>
+<span>15 min / Acre</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="water_drop">water_drop</span>
+<span>90% Water Saved</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Per Acre Rate</p>
+<p class="text-lg font-bold text-primary">₹350 <span class="text-xs font-normal text-on-surface-variant">/ acre</span></p>
+</div>
+<button class="bg-primary hover:bg-primary-container text-white px-4 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all flex items-center gap-1 shadow-sm" onclick="document.getElementById('booking-drawer').classList.remove('translate-x-full')">
+<span>Book Service</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CARD 2: Combine Harvester with Straw Management -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Heavy green agricultural combine harvester machine operating across a sprawling ripe golden wheat field during late afternoon harvest. The backdrop captures a wide horizon with sun-drenched grain stalks and an experienced rural operator in the cab under warm cinematic sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtO9lMie1BMaZGS0fQPfwFqQH8pzk69AfGxGAJMTkKfRso1Rssziizm5pyrA2j-4FdWfJdlMMcENX35mTLQNNHMwvj30gRXEtDNu9PetCFs1okW-nCFPsSXY_P95U2hNRMTg5xSQgBkWa1aorOU0N1aCQccPMuTSLgGbbJe5WhqCW6aj3Ipqy7aIBLAizBW0wcHs6L87Qx_niuGHKvTXyoaHBNKAYG913Yo6qSRxIogI1p_eVe9PhEAftYANgdLIBwLxBtlmhaGYg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="bg-amber-100 text-amber-900 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                In High Demand
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" data-icon="star">star</span>
+                4.8 (84 Bookings)
+              </span>
+<span class="text-white/90 text-[11px]">Sahyadri CHC Hub #1</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Combine Harvester &amp; SMS</h3>
+<p class="text-xs text-on-surface-variant mb-3">Preet 987 Track Harvester for Paddy &amp; Wheat. Includes Super-SMS straw management attachment to prevent burning.</p>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person">person</span>
+<span>Driver Included</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="local_gas_station">local_gas_station</span>
+<span>Diesel Included</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Hourly Tariff</p>
+<p class="text-lg font-bold text-primary">₹1,800 <span class="text-xs font-normal text-on-surface-variant">/ hour</span></p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary px-3.5 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all">
+                Check Dates
+              </button>
+</div>
+</div>
+</div>
+<!-- CARD 3: Laser Land Leveler -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Tractor pulling an advanced hydraulic laser land leveler scraper across fertile brown agricultural soil, preparing an even seedbed for flood irrigation with precision laser transmitter mounted on tripod in background under bright clear daylight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAj9MQR1K1hOc9nGaVWopNKBA1S-PH0ZCD4FM43gt1OjrMwenQmfuX4N0eEstLrdv08KeV3Z-owP-yGEarSjuDE6OK4tkJfOjAxVPD0DxiGr-oEy7mqPZulwFuqSnUiZzHHJdYO6OnMUF6NGjylISCXc-w2_wWLyHaZMDvOA7iNU_nD8BM23RspoYAeCYXxRR2q155xp16eSah13vF7cQNcymmfuMahXgAAqS5JmBMLrEaojNwGb5j4RhfEFiDFTQoyMx8e1BCJtHs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="bg-[#d1fae5] text-[#065f46] text-[11px] font-bold px-2 py-0.5 rounded-full">
+                KVK Niphad Verified
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" data-icon="star">star</span>
+                4.9 (42 Bookings)
+              </span>
+<span class="text-white/90 text-[11px]">Saves 25% Water</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Laser Land Leveler (Trimble GPS)</h3>
+<p class="text-xs text-on-surface-variant mb-3">8ft heavy grade bucket with laser transmitter transmitter. Drastically cuts irrigation puddling and boosts crop yield uniformity.</p>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="water_damage">water_damage</span>
+<span>-25% Water Need</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="schedule">schedule</span>
+<span>2-Day Notice</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Acreage Rate</p>
+<p class="text-lg font-bold text-primary">₹900 <span class="text-xs font-normal text-on-surface-variant">/ acre</span></p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary px-3.5 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all">
+                Reserve Slot
+              </button>
+</div>
+</div>
+</div>
+<!-- CARD 4: Mobile Soil Testing Van -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Interior of a mobile agricultural soil testing laboratory van with automated spectrometer, test tubes, and digital sensor displays examining nutrient levels of dark rich loam soil samples. Agronomist in clean uniform inspecting readings under crisp laboratory lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCirqtsp0omVFmRWpaRjWkoEyNDNcFhk-VfF2D5oT0WruoW5I26JZKOXYnkbFbzJ-3B0iPvV8mdjWR5N7bYJUIzEvZH8PEDvI2nRZhKjbe0ukyZCpiGGrGR5twZt7loBRPMPdIkt94y8eUaDpjxRi8z0vgIsz_5pz17BQGsbpKgMy-wxmDkQWKsrkt01PXOmoimGUbUKKeeHgejVTP2ZJA8nsa3NDz5cAbykMng1IzZNCUfPMWQ7HkjPLq9W_dMCu3fAktMZPDK3dA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="bg-emerald-100 text-emerald-900 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="science">science</span>
+                ICAR Soil Card
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" data-icon="star">star</span>
+                5.0 (210 Reports)
+              </span>
+<span class="text-emerald-300 font-semibold text-[11px]">Farm Gate Delivery</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Mobile Soil &amp; Water Testing Van</h3>
+<p class="text-xs text-on-surface-variant mb-3">12-parameter NPK, pH, EC, Zinc &amp; Micronutrient check at your farm gate. Digital Soil Health Card generated within 2 hours.</p>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="timer">timer</span>
+<span>2 Hr Digital Turnaround</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="chat">chat</span>
+<span>WhatsApp Report</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Per Sample</p>
+<p class="text-lg font-bold text-primary">₹250 <span class="text-xs font-normal text-on-surface-variant">/ sample</span></p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary px-3.5 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all">
+                Request Van
+              </button>
+</div>
+</div>
+</div>
+<!-- CARD 5: Reefer Solar Cold Storage -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Solar powered cold storage warehouse at an Indian agricultural market yard, packed with stacked crates of freshly harvested green Thompson seedless grapes and pomegranates under cold vapor mist and digital temperature display showing 4 degrees Celsius." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAh0Urw5-4XN9wpookAvsdXMLNDE-tBjUcdMGm52VKdBA38-feeMg5nuck50zZaQie0DP1Ev7CAFDl36VguByTkbKiA6sxTTy5d6Je90eRMx0HTIT0a6YT1LmAJOiYeSRmvS7NgyNXcld8ZyaZmqPEDYzHBJDd5RFIF3HvPr2lmIeHwKeb9n72UmU-wV4fTlaVt6UZvoyFavTetmr6XKPrDqAsGIYBnUEKrk9GsPgVTjzGO14ukE-JTyhX8aQtM77AQgFhPHIShcXo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="bg-sky-100 text-sky-900 text-[11px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="ac_unit">ac_unit</span>
+                2°C to 8°C Controlled
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold">Pimpalgaon APMC Node</span>
+<span class="text-white/80 text-[11px]">NABL Certified</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Reefer Solar Cold Storage Space</h3>
+<p class="text-xs text-on-surface-variant mb-3">10 MT modular cold room powered by rooftop solar array with battery backup. Prevents distress selling of grapes and tomatoes.</p>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="warehouse">warehouse</span>
+<span>10 MT Capacity</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="solar_power">solar_power</span>
+<span>100% Solar Driven</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Monthly Rental</p>
+<p class="text-lg font-bold text-primary">₹1.20 <span class="text-xs font-normal text-on-surface-variant">/ kg / mo</span></p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary px-3.5 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all">
+                Reserve Space
+              </button>
+</div>
+</div>
+</div>
+<!-- CARD 6: Kisan Drone Battery & Charging Station -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-sm flex flex-col relative group hover:shadow-md transition">
+<div class="relative h-44 bg-slate-900 overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Agricultural drone battery swap station mounted on a rugged field utility trailer, showing stacked industrial high-capacity lithium polymer battery packs connected to fast smart charging ports with glowing green status LEDs in an orchard environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGKXz3DtNF9aRj8-JNMs2fMF-NiWhQsFD-Lu7ADXU-9RMAhGN4BkpnuQRCbkIrJuNMzOQhL9EllKLtoCFcN-3zXmm6S-jjOPQLxC5R6RRJI-aOOLhiVaWJxH650OC4Rcfyh2fhiqKK8ScoQaKD0fIPlMad95cTdBzO4oBzkJwrDRelihouhlX_2Yvr5dnmnukG_Pj1V46c1MacBAoK9s8Tfef4dJaSPQYCwdyeOcEnbn_bdmk6HiiUS3tqKAcLJu6qkg_9dZCt1bY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<div class="absolute top-3 left-3">
+<span class="bg-[#d1fae5] text-[#065f46] text-[11px] font-bold px-2 py-0.5 rounded-full">
+                20-Min Fast Charge
+              </span>
+</div>
+<div class="absolute bottom-2.5 left-3 right-3 flex items-center justify-between text-white text-xs">
+<span class="font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-amber-400 text-sm" data-icon="star">star</span>
+                4.7 (36 Rentals)
+              </span>
+<span class="text-emerald-300 font-semibold text-[11px]">8 Packs Available</span>
+</div>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-between">
+<div>
+<h3 class="font-title-md text-title-md font-bold text-on-surface mb-1">Drone Battery &amp; Hub Rental Kit</h3>
+<p class="text-xs text-on-surface-variant mb-3">Field swap LiPo 16,000mAh packs with 3.5 kW portable inverter generator kit for non-stop aerial farm coverage.</p>
+<div class="grid grid-cols-2 gap-2 text-[11px] font-medium text-on-surface mb-4">
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="battery_charging_full">battery_charging_full</span>
+<span>4x 16Ah Batteries</span>
+</div>
+<div class="bg-surface-container-low px-2 py-1.5 rounded-lg flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="bolt">bolt</span>
+<span>Includes Fast Hub</span>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant/30 flex items-center justify-between">
+<div>
+<p class="text-[10px] uppercase font-bold text-outline">Day Rate</p>
+<p class="text-lg font-bold text-primary">₹450 <span class="text-xs font-normal text-on-surface-variant">/ day</span></p>
+</div>
+<button class="bg-surface-container hover:bg-surface-container-high border border-outline-variant/40 text-primary px-3.5 py-2 rounded-lg text-xs font-bold active:scale-95 transition-all">
+                Rent Kit
+              </button>
+</div>
+</div>
+</div>
+</section>
+<!-- EXPERT ASSISTANCE & KVK HELPLINE BANNER -->
+<section class="bg-surface-container-low rounded-2xl p-5 border border-outline-variant/30 flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-primary flex items-center justify-center text-white shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-2xl" data-icon="support_agent">support_agent</span>
+</div>
+<div>
+<h4 class="font-title-md text-title-md font-bold text-on-surface">Unsure which machine fits your terrain?</h4>
+<p class="text-xs text-on-surface-variant">Speak directly to an agronomist at Krishi Vigyan Kendra (KVK) Niphad for custom machine sizing.</p>
+</div>
+</div>
+<div class="flex items-center gap-3 shrink-0">
+<a class="bg-primary hover:bg-primary-container text-white px-4 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 active:scale-95 transition shadow-sm" href="tel:18001801551">
+<span class="material-symbols-outlined text-base" data-icon="call">call</span>
+            Dial 1800-180-1551
+          </a>
+<button class="bg-surface-container-lowest hover:bg-surface-container border border-outline-variant/40 text-on-surface font-semibold px-3.5 py-2.5 rounded-xl text-xs flex items-center gap-1.5 transition">
+<span class="material-symbols-outlined text-base text-emerald-600" data-icon="chat">chat</span>
+            Kisan WhatsApp Bot
+          </button>
+</div>
+</section>
+</main>
+</div>
+<!-- INTERACTIVE BOOKING DRAWER / MODAL (Simulated Slide-Over) -->
+<div class="fixed inset-0 z-50 overflow-hidden transform translate-x-full transition-transform duration-300 ease-in-out" id="booking-drawer">
+<!-- Backdrop blur -->
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm cursor-pointer" onclick="document.getElementById('booking-drawer').classList.add('translate-x-full')"></div>
+<div class="absolute inset-y-0 right-0 max-w-full flex pl-10">
+<div class="w-screen max-w-md bg-surface-container-lowest shadow-2xl flex flex-col border-l border-outline-variant/30">
+<!-- Drawer Header -->
+<div class="p-5 border-b border-outline-variant/30 flex items-center justify-between bg-surface-container-low">
+<div>
+<span class="bg-[#d1fae5] text-[#065f46] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase">Instant Service Dispatch</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-primary mt-1">Book Agricultural Drone Spraying</h2>
+<p class="text-xs text-on-surface-variant">Garuda Kisan Drone • DGCA Certified Pilot</p>
+</div>
+<button class="w-8 h-8 rounded-full bg-surface hover:bg-surface-container flex items-center justify-center text-on-surface-variant transition" onclick="document.getElementById('booking-drawer').classList.add('translate-x-full')">
+<span class="material-symbols-outlined text-base" data-icon="close">close</span>
+</button>
+</div>
+<!-- Drawer Content Form -->
+<div class="p-5 flex-1 overflow-y-auto space-y-4 text-xs">
+<!-- Select Farm Plot -->
+<div>
+<label class="block font-bold text-on-surface mb-1.5">Select Farm Plot</label>
+<div class="space-y-2">
+<label class="flex items-center justify-between p-3 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer">
+<div class="flex items-center gap-2">
+<input checked="" class="w-4 h-4 text-primary focus:ring-primary" name="plot" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">Krishna Valley Plot A</p>
+<p class="text-[11px] text-on-surface-variant">4.5 Acres • Thompson Seedless Grapes</p>
+</div>
+</div>
+<span class="text-primary font-bold">4.5 Ac</span>
+</label>
+<label class="flex items-center justify-between p-3 rounded-xl border border-outline-variant/50 hover:bg-surface-container-low cursor-pointer">
+<div class="flex items-center gap-2">
+<input class="w-4 h-4 text-primary focus:ring-primary" name="plot" type="radio"/>
+<div>
+<p class="font-bold text-on-surface">Niphad River Block B</p>
+<p class="text-[11px] text-on-surface-variant">2.0 Acres • Red Onion Nursery</p>
+</div>
+</div>
+<span class="text-on-surface-variant font-bold">2.0 Ac</span>
+</label>
+</div>
+</div>
+<!-- Acreage & Target Chemical -->
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block font-bold text-on-surface mb-1">Target Acreage</label>
+<input class="w-full p-2.5 bg-surface border border-outline-variant/60 rounded-xl font-bold text-on-surface" step="0.5" type="number" value="4.5"/>
+</div>
+<div>
+<label class="block font-bold text-on-surface mb-1">Spraying Solution</label>
+<select class="w-full p-2.5 bg-surface border border-outline-variant/60 rounded-xl font-medium text-on-surface">
+<option>Nano-Urea + Micronutrients</option>
+<option>Organic Neem Bio-fungicide</option>
+<option>Gibberellic Acid (GA3)</option>
+</select>
+</div>
+</div>
+<!-- Preferred Spraying Time Slot (Agronomic Recommendation) -->
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="font-bold text-on-surface">Optimal Time Slot</label>
+<span class="text-[10px] text-emerald-800 font-bold bg-[#d1fae5] px-1.5 py-0.5 rounded">High Leaf Stomatal Uptake</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<label class="p-2.5 rounded-xl border-2 border-primary bg-primary/5 cursor-pointer text-center">
+<input checked="" class="sr-only" name="timeslot" type="radio"/>
+<p class="font-bold text-primary">Morning Slot</p>
+<p class="text-[10px] text-on-surface-variant">06:30 AM - 09:00 AM</p>
+</label>
+<label class="p-2.5 rounded-xl border border-outline-variant/60 hover:bg-surface-container-low cursor-pointer text-center">
+<input class="sr-only" name="timeslot" type="radio"/>
+<p class="font-bold text-on-surface">Late Evening Slot</p>
+<p class="text-[10px] text-on-surface-variant">04:30 PM - 06:45 PM</p>
+</label>
+</div>
+</div>
+<!-- Pilot Assignment Card -->
+<div class="bg-surface-container p-3 rounded-xl flex items-center justify-between border border-outline-variant/40">
+<div class="flex items-center gap-3">
+<div class="w-9 h-9 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-lg" data-icon="badge">badge</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Sanjay Gawande</p>
+<p class="text-[10px] text-on-surface-variant">Sahyadri Certified • 450+ Hours Flight</p>
+</div>
+</div>
+<span class="text-xs font-bold text-primary bg-white px-2 py-1 rounded-lg border border-outline-variant/30">Verified</span>
+</div>
+<!-- Escrow Guarantee Badge -->
+<div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-start gap-2 text-emerald-900">
+<span class="material-symbols-outlined text-emerald-700 text-lg shrink-0 mt-0.5" data-icon="shield">shield</span>
+<div>
+<p class="font-bold">CropSense Escrow Guarantee</p>
+<p class="text-[11px] text-emerald-800 leading-snug">
+                Your payment remains frozen in digital escrow. Funds are automatically disbursed to the pilot only after you verify the geofenced spray completion log in the app.
+              </p>
+</div>
+</div>
+<!-- Cost Breakdown Table -->
+<div class="border-t border-outline-variant/30 pt-3 space-y-1.5 text-xs text-on-surface-variant">
+<div class="flex justify-between">
+<span>Standard Spraying (4.5 Ac × ₹350)</span>
+<span>₹1,575.00</span>
+</div>
+<div class="flex justify-between text-emerald-700 font-semibold">
+<span>SMAM Govt Subsidy Credit (Pre-Applied)</span>
+<span>- ₹0.00 (Claim via DBT)</span>
+</div>
+<div class="flex justify-between font-bold text-on-surface text-sm pt-1 border-t border-dashed border-outline-variant/50">
+<span>Total Advance Required</span>
+<span class="text-primary font-headline-sm">₹1,575</span>
+</div>
+</div>
+</div>
+<!-- Drawer Footer Action -->
+<div class="p-4 border-t border-outline-variant/30 bg-surface-container-low">
+<button class="w-full bg-primary hover:bg-primary-container text-white py-3 rounded-xl font-bold text-xs active:scale-[0.98] transition flex items-center justify-center gap-2 shadow-sm" onclick="alert('Booking request dispatched! Pilot Sanjay Gawande will arrive at Krishna Valley Plot A tomorrow at 06:30 AM.'); document.getElementById('booking-drawer').classList.add('translate-x-full');">
+<span class="material-symbols-outlined text-base" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Confirm Booking &amp; Pay ₹1,575 Advance via UPI/Escrow</span>
+</button>
+<p class="text-center text-[10px] text-on-surface-variant mt-2">Zero cancellation fee up to 3 hours before dispatch</p>
+</div>
+</div>
+</div>
+</div>
+<!-- SHARED COMPONENT: MOBILE BOTTOM NAVIGATION BAR -->
+<!-- Strict adherence to JSON: labels ["Home", "Doctor", "Voice", "Mandi", "Profile"], icons ["home", "psychiatry", "mic", "storefront", "person"] -->
+<!-- Active Destination mapping: Current screen is Services / Mandi Directory -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-40 bg-surface-container-lowest border-t border-outline-variant/30 shadow-md">
+<div class="flex justify-around items-center px-1 py-1.5 max-w-lg mx-auto">
+<!-- Tab 1: Home (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</a>
+<!-- Tab 2: Doctor (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="psychiatry">psychiatry</span>
+<span class="font-label-sm text-label-sm">Doctor</span>
+</a>
+<!-- Tab 3: Voice (Center Mic Quick Action) -->
+<a class="flex flex-col items-center justify-center -mt-4" href="#">
+<div class="w-12 h-12 rounded-full bg-primary text-white flex items-center justify-center shadow-lg active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-2xl" data-icon="mic">mic</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold mt-0.5">Voice</span>
+</a>
+<!-- Tab 4: Mandi / Services Directory (ACTIVE STATE as per JSON style_active_navigation) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-3 py-1.5 active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="storefront">storefront</span>
+<span class="font-label-sm text-label-sm">Mandi</span>
+</a>
+<!-- Tab 5: Profile (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-2 py-1.5 hover:text-primary transition-colors active:scale-95" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CropSense AI - Farmer Produce Inventory &amp; Forward Contracts</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Google Font: Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-fixed": "#002113",
+            "surface-container-high": "#e9e8e4",
+            "on-tertiary-fixed-variant": "#005236",
+            "primary": "#004532",
+            "on-primary-fixed": "#002116",
+            "on-primary": "#ffffff",
+            "surface-tint": "#1b6b51",
+            "error-container": "#ffdad6",
+            "on-error-container": "#93000a",
+            "outline": "#6f7973",
+            "on-primary-container": "#8bd6b7",
+            "outline-variant": "#bec9c2",
+            "tertiary": "#00462e",
+            "inverse-primary": "#8bd6b6",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#00513b",
+            "tertiary-container": "#006041",
+            "on-secondary-container": "#663500",
+            "error": "#ba1a1a",
+            "surface": "#faf9f5",
+            "surface-container-low": "#f4f4f0",
+            "on-surface": "#1b1c1a",
+            "on-error": "#ffffff",
+            "inverse-surface": "#2f312e",
+            "inverse-on-surface": "#f2f1ed",
+            "primary-fixed-dim": "#8bd6b6",
+            "primary-fixed": "#a6f2d1",
+            "tertiary-fixed": "#6ffbbe",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-tertiary-container": "#50e0a4",
+            "on-background": "#1b1c1a",
+            "primary-container": "#065f46",
+            "secondary": "#904d00",
+            "on-secondary-fixed": "#2f1500",
+            "surface-dim": "#dbdad6",
+            "secondary-container": "#fe932c",
+            "surface-container": "#efeeea",
+            "secondary-fixed-dim": "#ffb77d",
+            "surface-variant": "#e3e2df",
+            "surface-container-highest": "#e3e2df",
+            "surface-bright": "#faf9f5",
+            "secondary-fixed": "#ffdcc3",
+            "background": "#faf9f5",
+            "on-secondary-fixed-variant": "#6e3900",
+            "on-surface-variant": "#3f4944"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter-desktop": "2rem",
+            "space-md": "1rem",
+            "margin": "1rem",
+            "gutter-tablet": "1.5rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem",
+            "space-xl": "2.25rem",
+            "space-lg": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-tablet": "2rem",
+            "margin-desktop": "3rem"
+          },
+          "fontFamily": {
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "body-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "400" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.25rem", "fontWeight": "500" }],
+            "title-md": ["1rem", { "lineHeight": "1.5rem", "fontWeight": "600" }],
+            "display-lg": ["2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.03em", "fontWeight": "800" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "fontWeight": "400" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.05em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["1.625rem", { "lineHeight": "2.125rem", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-sm": ["1.125rem", { "lineHeight": "1.625rem", "fontWeight": "600" }],
+            "headline-lg": ["2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["1.375rem", { "lineHeight": "1.875rem", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
+<!-- TOP ENTERPRISE APMC & HELPLINE LIVE TICKER (Desktop) -->
+<section class="bg-inverse-surface text-inverse-on-surface text-label-sm font-label-sm px-4 py-1.5 flex items-center justify-between border-none">
+<div class="flex items-center gap-4 overflow-x-auto no-scrollbar">
+<span class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary px-2 py-0.5 rounded-full text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed animate-pulse"></span>
+        APMC Live Stream
+      </span>
+<div class="flex items-center gap-6 text-inverse-on-surface/90 whitespace-nowrap">
+<span><strong class="text-white">Wheat (Sharbati):</strong> ₹2,450/qtl <span class="text-tertiary-fixed">▲ +1.4%</span></span>
+<span class="text-white/20">|</span>
+<span><strong class="text-white">Bengal Gram (Vijay):</strong> ₹5,820/qtl <span class="text-tertiary-fixed">▲ +0.8%</span></span>
+<span class="text-white/20">|</span>
+<span><strong class="text-white">Soybean (JS-335):</strong> ₹4,650/qtl <span class="text-secondary-fixed">▼ -0.3%</span></span>
+<span class="text-white/20">|</span>
+<span><strong class="text-white">Basmati 1121 Pusa:</strong> ₹3,900/qtl <span class="text-tertiary-fixed">▲ +2.1%</span></span>
+</div>
+</div>
+<div class="hidden lg:flex items-center gap-4 text-inverse-on-surface/80">
+<span class="inline-flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">call</span>
+        KVK Kisan Helpline: <span class="text-white font-semibold ml-1">1800-180-1551</span>
+</span>
+<span class="text-white/20">|</span>
+<span class="inline-flex items-center gap-1 text-tertiary-fixed">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+        Krishi Smart Portal Active
+      </span>
+</div>
+</section>
+<!-- SHARED COMPONENT: TopAppBar (Integrated Desktop/Mobile Shell) -->
+<header class="bg-surface dark:bg-inverse-surface shadow-sm dark:shadow-none w-full sticky top-0 z-40">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 flex items-center justify-between">
+<!-- Left: Logo & Leading Avatar Profile -->
+<div class="flex items-center gap-3.5">
+<div class="w-10 h-10 rounded-full ring-2 ring-primary/20 overflow-hidden bg-surface-container flex-shrink-0 flex items-center justify-center shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of Ramesh Patil, a confident progressive Indian farmer with a warm smile, wearing a traditional neat white kurta and saffron pagdi, standing in a lush green agronomy field under bright natural morning sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWFvqk-G4N1wqaTZabd5i8I1G-nNebA70EV5xYmpkabU0jxiEStM8vAGvoGRnChaoMnpZ2Ups6X7ZrKg_7FrE9iQpVicT6Jfs9w_11BSgf1EQUc5J-abMAASn7cWp8onga0IL0ylthkxTHOhdyIYbU5obIMPl9s7tkasZ3y_phwwTrYWEAur7vGlUZBMUQR_TcXXU_NwhUSRXsNyDS78GqRVMqv6HYv9Y6BzORTrgpasg4J2PB65v7w3TpbAI7NezpcBYDGUd5Ri0"/>
+</div>
+<div>
+<div class="flex items-center gap-1.5">
+<span class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">CropSense AI</span>
+<span class="bg-primary/10 text-primary text-[10px] font-bold px-1.5 py-0.5 rounded tracking-wider">ENTERPRISE</span>
+</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant flex items-center gap-1">
+<span>Ramesh Patil</span>
+<span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+<span class="text-primary font-medium">Sahyadri FPO #MH-NSK-2894</span>
+</div>
+</div>
+</div>
+<!-- Center Desktop Nav Links (Responsive Pivot) -->
+<nav class="hidden md:flex items-center gap-1 bg-surface-container-low px-2 py-1 rounded-full border border-outline-variant/30">
+<a class="px-3.5 py-1.5 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors rounded-full flex items-center gap-1.5" href="#home">
+<span class="material-symbols-outlined text-[18px]">home</span>
+<span>Home</span>
+</a>
+<a class="px-3.5 py-1.5 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors rounded-full flex items-center gap-1.5" href="#doctor">
+<span class="material-symbols-outlined text-[18px]">psychiatry</span>
+<span>Doctor</span>
+</a>
+<a class="px-3.5 py-1.5 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors rounded-full flex items-center gap-1.5" href="#voice">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+<span>Voice</span>
+</a>
+<!-- ACTIVE TAB: Mandi / Marketplace -->
+<a class="px-3.5 py-1.5 text-label-md font-label-md bg-primary-container text-on-primary shadow-sm rounded-full flex items-center gap-1.5" href="#mandi">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span>Mandi</span>
+</a>
+<a class="px-3.5 py-1.5 text-label-md font-label-md text-on-surface-variant hover:text-primary transition-colors rounded-full flex items-center gap-1.5" href="#profile">
+<span class="material-symbols-outlined text-[18px]">person</span>
+<span>Profile</span>
+</a>
+</nav>
+<!-- Right: Trailing Action (Language / Notifications) -->
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-outline-variant/40 bg-surface text-label-md font-label-md text-primary hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-[18px]">translate</span>
+<span>हिंदी / EN</span>
+</button>
+<button class="w-9 h-9 rounded-lg bg-surface border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:bg-surface-container-high flex items-center justify-center relative active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container absolute top-2 right-2 ring-2 ring-surface"></span>
+</button>
+</div>
+</div>
+</header>
+<!-- SUB-HEADER BREADCRUMB -->
+<div class="bg-surface-container-low">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant">
+<a class="hover:text-primary" href="#">Home</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary" href="#">Marketplace &amp; Contracts</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-semibold">Farmer Produce Inventory &amp; Escrow</span>
+</div>
+</div>
+<!-- MAIN CANVAS -->
+<main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6 pb-24 md:pb-12">
+<!-- HEADER HERO & ACTION CONTROLS -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-surface-container-lowest p-6 rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)]">
+<div>
+<div class="flex items-center gap-2 mb-1.5">
+<span class="inline-flex items-center gap-1 bg-primary/10 text-primary px-2.5 py-0.5 rounded-full text-label-sm font-label-sm">
+<span class="material-symbols-outlined text-[14px]">shield</span> NABL &amp; e-NAM Verified
+          </span>
+<span class="inline-flex items-center gap-1 bg-secondary-fixed/50 text-secondary px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold">
+<span class="material-symbols-outlined text-[14px]">account_balance</span> ICICI Escrow Protected
+          </span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-primary tracking-tight">Farmer Produce Inventory &amp; Forward Contracts</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1 max-w-2xl">
+          Manage NABL-certified lot assays, ICICI escrow tranches, WDRA cold storage telemetry, and APMC advance forward agreements.
+        </p>
+</div>
+<!-- Action Group -->
+<div class="flex flex-wrap items-center gap-3">
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-primary/20 bg-surface-container-lowest text-primary text-label-lg font-label-lg hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span>Export Invoices</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg border border-primary/20 bg-surface-container-lowest text-primary text-label-lg font-label-lg hover:bg-surface-container-high transition-colors active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+<span>Price Alert Bots</span>
+</button>
+<div class="relative inline-flex group">
+<button class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary-container text-on-primary text-label-lg font-label-lg shadow-sm hover:bg-primary transition-all active:scale-[0.98]">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Create New Produce Listing</span>
+<span class="material-symbols-outlined text-[18px]">arrow_drop_down</span>
+</button>
+</div>
+</div>
+</div>
+<!-- SUMMARY KPI METRIC RIBBON (4 Key Cards Bento Grid) -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- KPI 1: Active Listings -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Active Produce Lots</span>
+<div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+</div>
+<div class="text-display-lg font-display-lg text-primary leading-none">4 Lots</div>
+<div class="text-label-sm font-label-sm font-semibold text-primary mt-1">320 Quintals Total Volume</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">my_location</span>
+          100% geotagged &amp; cadastral linked
+        </div>
+</div>
+<!-- KPI 2: Escrow Locked Capital -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Escrow Locked Capital</span>
+<div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">lock</span>
+</div>
+</div>
+<div class="text-display-lg font-display-lg text-primary leading-none">₹3,85,000</div>
+<div class="inline-flex items-center gap-1.5 bg-[#d1fae5] text-[#065f46] px-2 py-0.5 rounded-full text-label-sm font-label-sm mt-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+          ICICI Smart Escrow Active
+        </div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-secondary">hourglass_top</span>
+          Milestone 2 release pending inspection
+        </div>
+</div>
+<!-- KPI 3: Completed Mandi Deliveries -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Fulfilled Mandi Deliveries</span>
+<div class="w-9 h-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">verified_user</span>
+</div>
+</div>
+<div class="flex items-baseline gap-2">
+<div class="text-display-lg font-display-lg text-primary leading-none">₹12.40 L</div>
+<span class="text-label-sm font-label-sm font-bold text-primary bg-[#d1fae5] px-1.5 py-0.5 rounded">+18.4% YoY</span>
+</div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">handshake</span>
+          14 fulfilled contracts with Sahyadri FPO
+        </div>
+</div>
+<!-- KPI 4: Buyer Inquiries & Bids -->
+<div class="bg-surface-container-lowest p-5 rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-on-surface-variant uppercase tracking-wider">Live Buyer Bids</span>
+<div class="w-9 h-9 rounded-xl bg-secondary-fixed/40 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">gavel</span>
+</div>
+</div>
+<div class="text-display-lg font-display-lg text-secondary leading-none">7 Offers</div>
+<div class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary font-semibold mt-1">
+<span class="material-symbols-outlined text-[15px]">trending_up</span>
+          2 bids exceeding reserve MSP (+8.2%)
+        </div>
+<div class="text-label-sm font-label-sm text-on-surface-variant mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px] text-primary">groups</span>
+          Verified flour millers &amp; grain exporters
+        </div>
+</div>
+</div>
+<!-- SATELLITE FIELD CADASTRAL TELEMETRY BANNER -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 overflow-hidden shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] grid grid-cols-1 lg:grid-cols-12">
+<div class="lg:col-span-8 relative min-h-[220px] bg-inverse-surface flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-90" data-alt="High-resolution aerial multispectral NDVI satellite view of agricultural farmland plots in Maharashtra India with vivid green, emerald and amber field crop grids, overlaid with precise polygon boundaries and cadastral mapping telemetry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAalUBW0K7-D4d7dDoyV7EZSpF3e0gAwaEwNRK_AE4N7ZcP8dz-YT2iVC0h80OZd0TIAeELV5rszFDODuhJdWo_zhTf0tbnvIDtfX5rZoTQHmH1yty3EwBrekMbf6VcuHCNVtxpcKBAKV3Lvja2K-FNZ5moWQ1jb3UOUdA5xuL6Z5_iYx-1hqHU-LgrZhLj8Obe-KUdA77tSR2alVGRpBzISVaHYGwnt1ywVv7rqYcKiAtAoI_tAA0BVhZj_RjchAsIJeDUBLgWt3A"/>
+<div class="absolute inset-0 bg-gradient-to-r from-inverse-surface/90 via-inverse-surface/40 to-transparent"></div>
+<div class="absolute top-4 left-4 p-3 bg-inverse-surface/80 backdrop-blur-md rounded-xl border border-white/10 text-white max-w-sm">
+<div class="flex items-center gap-2 mb-1">
+<span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed animate-ping"></span>
+<span class="text-label-sm font-label-sm font-bold tracking-wider">SENTINEL-2 LIVE ASSAY OVERLAY</span>
+</div>
+<div class="text-body-sm font-body-sm font-bold">Field ID: MH-PUN-091 (45.5 Hectares)</div>
+<div class="text-label-sm font-label-sm text-surface-container-high/80 mt-1 flex items-center justify-between">
+<span>NDVI Mean: <strong class="text-tertiary-fixed">0.85 (High Vigor)</strong></span>
+<span>Soil Moisture: <strong class="text-tertiary-fixed">68%</strong></span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 bg-inverse-surface/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-white text-[11px] font-mono">
+<span>Cadastral Sync: 12/09/2023 09:40 IST</span>
+</div>
+</div>
+<div class="lg:col-span-4 p-5 flex flex-col justify-between bg-surface-container-low">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-md font-label-md text-primary font-bold">WDRA Silo Telemetry</span>
+<span class="text-label-sm font-label-sm bg-[#d1fae5] text-[#065f46] px-2 py-0.5 rounded-full">Automated IoT Hub</span>
+</div>
+<h2 class="text-title-md font-title-md text-on-surface">Integrated Cold Chain &amp; Assay Sync</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">
+            All listed lots are bound to real-time temperature, relative humidity, and pest sensors installed at Baramati &amp; Pimpalgaon silos.
+          </p>
+<div class="mt-4 space-y-2">
+<div class="flex items-center justify-between text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Active Storage Capacity:</span>
+<span class="font-bold text-on-surface">320 / 500 Quintals (64%)</span>
+</div>
+<div class="w-full h-2 rounded-full bg-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 64%;"></div>
+</div>
+</div>
+</div>
+<div class="pt-4 flex items-center gap-2">
+<button class="w-full py-2 px-3 rounded-lg border border-primary/30 text-primary text-label-md font-label-md hover:bg-surface-container-high text-center">
+            Open Telemetry Terminal
+          </button>
+</div>
+</div>
+</div>
+<!-- FILTER & SEARCH BAR -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pt-2">
+<!-- Tabs -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar border-b border-outline-variant/20 md:border-none">
+<button class="px-4 py-2 rounded-xl bg-primary text-on-primary text-label-md font-label-md shadow-sm whitespace-nowrap">
+          All Listings (4)
+        </button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-primary hover:bg-surface-container text-label-md font-label-md whitespace-nowrap transition-colors">
+          Escrow Locked (2)
+        </button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-primary hover:bg-surface-container text-label-md font-label-md whitespace-nowrap transition-colors">
+          Open for Advance Booking (1)
+        </button>
+<button class="px-4 py-2 rounded-xl bg-surface-container-low text-on-surface-variant hover:text-primary hover:bg-surface-container text-label-md font-label-md whitespace-nowrap transition-colors">
+          Drafts / Assay Pending (1)
+        </button>
+</div>
+<!-- Search & Sort -->
+<div class="flex items-center gap-3">
+<div class="relative w-full md:w-72">
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-[18px]">search</span>
+<input class="w-full pl-9 pr-4 py-2 rounded-xl border border-outline-variant/40 bg-surface-container-lowest text-body-sm font-body-sm focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Filter Crop, Lot #, Silo... [Cmd+K]" type="text"/>
+</div>
+<select class="py-2 px-3 rounded-xl border border-outline-variant/40 bg-surface-container-lowest text-label-md font-label-md text-on-surface-variant focus:border-primary">
+<option>Harvest: Earliest</option>
+<option>Value: High to Low</option>
+<option>Escrow Status</option>
+</select>
+</div>
+</div>
+<!-- MAIN LISTING CARDS (Detailed 4 Commodity Lots Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- LOT 1: Sharbati Golden Wheat -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] p-5 flex flex-col justify-between hover:border-primary/30 transition-all">
+<div>
+<!-- Upper Metadata Band -->
+<div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">Sharbati Golden Wheat</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-mono">Lot #MH-PUN-8402</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-1 bg-[#d1fae5] text-[#065f46] px-2.5 py-0.5 rounded-full text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[#065f46]"></span>
+                  Escrow Locked (60% Funded)
+                </span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Grade A+ Milling</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">NABL Certified</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">WDRA Stored</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-label-md text-on-surface-variant">Total Volume</span>
+<div class="text-headline-md font-headline-md font-bold text-primary">85 Quintals</div>
+<span class="text-label-sm font-label-sm text-primary font-medium">₹2,450 / qtl</span>
+</div>
+</div>
+<!-- Silo Telemetry & Assay Metrics Grid -->
+<div class="grid grid-cols-3 gap-2 my-4 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-center">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Moisture Content</div>
+<div class="text-title-md font-title-md font-bold text-[#065f46]">11.8%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">Safe Limit &lt;12%</div>
+</div>
+<div class="border-x border-outline-variant/30 px-1">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Protein Ratio</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">13.6%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">High Gluten Band</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Cleanliness / Foreign</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">99.6%</div>
+<div class="text-[10px] text-[#065f46] font-medium">Optical Sorted</div>
+</div>
+</div>
+<!-- Origin & Warehouse Node -->
+<div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">warehouse</span>
+<span>Baramati Cold Hub Bay 4, Slot #W-14 (IoT Temp: <strong>18.2°C</strong>, RH: <strong>62%</strong>)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">business</span>
+<span>Buyer: <strong class="text-on-surface">Green Agro Mills Ltd</strong> • Total Value: <strong class="text-primary font-bold">₹2,08,250</strong></span>
+</div>
+</div>
+<!-- Escrow Milestone Progress Track -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20">
+<div class="flex items-center justify-between text-label-sm font-label-sm mb-1.5">
+<span class="font-semibold text-on-surface">Escrow Milestone: Quality Inspection Clear</span>
+<span class="text-primary font-bold">Step 3 of 5 (60%)</span>
+</div>
+<div class="grid grid-cols-5 gap-1.5 h-2">
+<div class="bg-primary rounded-full"></div>
+<div class="bg-primary rounded-full"></div>
+<div class="bg-primary rounded-full"></div>
+<div class="bg-outline-variant/40 rounded-full"></div>
+<div class="bg-outline-variant/40 rounded-full"></div>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant mt-1.5">
+<span>Advance (20% Paid)</span>
+<span class="text-primary font-bold">Inspection (40% In Escrow)</span>
+<span>Weighbridge &amp; Release</span>
+</div>
+</div>
+</div>
+<!-- Actionable Prompts / Buttons -->
+<div class="flex items-center gap-2 pt-5 mt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 px-3 rounded-lg bg-primary-container text-on-primary text-label-md font-label-md hover:bg-primary transition-colors text-center active:scale-[0.98]">
+            View Escrow Smart Contract
+          </button>
+<button class="py-2 px-3 rounded-lg border border-primary/20 text-primary text-label-md font-label-md hover:bg-surface-container transition-colors active:scale-[0.98]">
+            Harvest Dispatch
+          </button>
+<button class="p-2 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-container">
+<span class="material-symbols-outlined text-[20px]">description</span>
+</button>
+</div>
+</div>
+<!-- LOT 2: Basmati 1121 Pusa Paddy -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] p-5 flex flex-col justify-between hover:border-primary/30 transition-all">
+<div>
+<!-- Upper Metadata Band -->
+<div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">Basmati 1121 Pusa Paddy</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-mono">Lot #MH-NSK-9120</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-1 bg-[#d1fae5] text-[#065f46] px-2.5 py-0.5 rounded-full text-label-sm font-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-[#065f46]"></span>
+                  Escrow Locked (Step 2 - Gate Inspection)
+                </span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Export Standard</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Organic Cert</span>
+<span class="bg-secondary-fixed/50 text-secondary px-2 py-0.5 rounded-full text-label-sm font-label-sm">Pre-Harvest Forward</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-label-md text-on-surface-variant">Total Volume</span>
+<div class="text-headline-md font-headline-md font-bold text-primary">120 Quintals</div>
+<span class="text-label-sm font-label-sm text-primary font-medium">₹3,900 / qtl</span>
+</div>
+</div>
+<!-- Silo Telemetry & Assay Metrics Grid -->
+<div class="grid grid-cols-3 gap-2 my-4 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-center">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Moisture Level</div>
+<div class="text-title-md font-title-md font-bold text-[#065f46]">13.1%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">Target &lt;14.0%</div>
+</div>
+<div class="border-x border-outline-variant/30 px-1">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Average Grain Length</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">8.4 mm</div>
+<div class="text-[10px] text-[#065f46] font-medium">Extra Long Slender</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Aroma Retention</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">98.2%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">Niphad Valley Terroir</div>
+</div>
+</div>
+<!-- Origin & Warehouse Node -->
+<div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">fitbit_surfing</span>
+<span>Niphad Valley Farm, On-Farm Aerated Silo Node #02</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">business</span>
+<span>Buyer: <strong class="text-on-surface">Kohinoor Agri Export Corp</strong> • Contract: <strong class="text-primary font-bold">₹4,68,000</strong></span>
+</div>
+</div>
+<!-- Escrow Milestone Progress Track -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20">
+<div class="flex items-center justify-between text-label-sm font-label-sm mb-1.5">
+<span class="font-semibold text-on-surface">Escrow Locked: ₹1,87,200 (40% Tranche Ready)</span>
+<span class="text-primary font-bold">Step 2 of 5 (40%)</span>
+</div>
+<div class="grid grid-cols-5 gap-1.5 h-2">
+<div class="bg-primary rounded-full"></div>
+<div class="bg-primary rounded-full"></div>
+<div class="bg-outline-variant/40 rounded-full"></div>
+<div class="bg-outline-variant/40 rounded-full"></div>
+<div class="bg-outline-variant/40 rounded-full"></div>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant mt-1.5">
+<span>Advance (20% Paid)</span>
+<span class="text-primary font-bold">Gate Inspection Pending</span>
+<span>Dispatch Release</span>
+</div>
+</div>
+</div>
+<!-- Actionable Prompts / Buttons -->
+<div class="flex items-center gap-2 pt-5 mt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 px-3 rounded-lg bg-primary-container text-on-primary text-label-md font-label-md hover:bg-primary transition-colors text-center active:scale-[0.98]">
+            View Escrow Smart Contract
+          </button>
+<button class="py-2 px-3 rounded-lg border border-primary/20 text-primary text-label-md font-label-md hover:bg-surface-container transition-colors active:scale-[0.98]">
+            Coordinate Reefer Truck
+          </button>
+<button class="p-2 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-container" title="Gate Pass QR">
+<span class="material-symbols-outlined text-[20px]">qr_code_2</span>
+</button>
+</div>
+</div>
+<!-- LOT 3: Desi Chana (Bengal Gram - Vijay) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] p-5 flex flex-col justify-between hover:border-primary/30 transition-all">
+<div>
+<!-- Upper Metadata Band -->
+<div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">Desi Chana (Bengal Gram - Vijay)</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-mono">Lot #MH-JLG-5501</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-1 bg-[#fef3c7] text-[#92400e] px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Open for Advance Booking
+                </span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Seed Grade Bold</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">NABL Assay Pass</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">ICAR Certified</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-label-md text-on-surface-variant">Available Lot</span>
+<div class="text-headline-md font-headline-md font-bold text-primary">65 Quintals</div>
+<span class="text-label-sm font-label-sm text-secondary font-bold">Ask: ₹6,100 / qtl</span>
+</div>
+</div>
+<!-- Silo Telemetry & Assay Metrics Grid -->
+<div class="grid grid-cols-3 gap-2 my-4 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-center">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Moisture Level</div>
+<div class="text-title-md font-title-md font-bold text-[#065f46]">9.8%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">Optimal Storage</div>
+</div>
+<div class="border-x border-outline-variant/30 px-1">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Grain Defect / Weevil</div>
+<div class="text-title-md font-title-md font-bold text-[#065f46]">&lt;0.5%</div>
+<div class="text-[10px] text-[#065f46] font-medium">Ultra Premium Lot</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Current Spot MSP</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">₹5,820</div>
+<div class="text-[10px] text-secondary font-semibold">+4.8% Farmer Premium</div>
+</div>
+</div>
+<!-- Origin & Warehouse Node -->
+<div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">warehouse</span>
+<span>Pimpalgaon APMC Warehouse Hub, Jalgaon Taluka Bay 12</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">gavel</span>
+<span class="text-on-surface font-semibold">4 Active Verified Buyer Bids Received (High: ₹6,050/qtl)</span>
+</div>
+</div>
+<!-- Buyer Offer Card Banner -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 bg-secondary-fixed/20 p-2.5 rounded-xl border border-secondary/20 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px]">local_offer</span>
+<div class="text-label-sm font-label-sm text-on-surface">
+<strong>Patanjali Foods Ltd:</strong> ₹6,050/qtl (Full 65 qtls with 30% upfront escrow)
+              </div>
+</div>
+<span class="text-label-sm font-label-sm text-secondary font-bold">Expires in 6h</span>
+</div>
+</div>
+<!-- Actionable Prompts / Buttons -->
+<div class="flex items-center gap-2 pt-5 mt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 px-3 rounded-lg bg-secondary text-white text-label-md font-label-md hover:bg-[#783f00] transition-colors text-center active:scale-[0.98]">
+            Review 4 Buyer Bids
+          </button>
+<button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary text-label-md font-label-md hover:bg-primary transition-colors active:scale-[0.98]">
+            Lock Forward Contract
+          </button>
+<button class="py-2 px-3 rounded-lg border border-outline-variant/30 text-on-surface-variant hover:text-primary hover:bg-surface-container text-label-md font-label-md">
+            Edit Qty
+          </button>
+</div>
+</div>
+<!-- LOT 4: Organic Soybean (JS-335) -->
+<div class="bg-surface-container-lowest rounded-2xl border border-primary/10 shadow-[0_2px_8px_-1px_rgba(6,95,70,0.04)] p-5 flex flex-col justify-between hover:border-primary/30 transition-all">
+<div>
+<!-- Upper Metadata Band -->
+<div class="flex items-start justify-between gap-3 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="text-headline-sm font-headline-sm font-bold text-on-surface">Organic Soybean (JS-335)</span>
+<span class="text-label-sm font-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-mono">Lot #MH-WRD-3208</span>
+</div>
+<div class="flex flex-wrap items-center gap-1.5 mt-2">
+<span class="inline-flex items-center gap-1 bg-surface-container-high text-on-surface px-2.5 py-0.5 rounded-full text-label-sm font-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Draft / Assay Pending
+                </span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Non-GMO Verified</span>
+<span class="bg-surface-container text-on-surface-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm">Soil Association Org</span>
+<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full text-label-sm font-label-sm">Moisture Testing</span>
+</div>
+</div>
+<div class="text-right">
+<span class="text-label-md font-label-md text-on-surface-variant">Estimated Lot</span>
+<div class="text-headline-md font-headline-md font-bold text-primary">50 Quintals</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium">Est: ₹4,650 / qtl</span>
+</div>
+</div>
+<!-- Silo Telemetry & Assay Metrics Grid -->
+<div class="grid grid-cols-3 gap-2 my-4 bg-surface-container-low p-3 rounded-xl border border-outline-variant/20 text-center">
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">NABL Mobile Lab</div>
+<div class="text-title-md font-title-md font-bold text-secondary">In Transit</div>
+<div class="text-[10px] text-secondary font-medium">Results in ~4 hrs</div>
+</div>
+<div class="border-x border-outline-variant/30 px-1">
+<div class="text-label-sm font-label-sm text-on-surface-variant">Oil Content Target</div>
+<div class="text-title-md font-title-md font-bold text-on-surface">&gt; 18.5%</div>
+<div class="text-[10px] text-on-surface-variant font-medium">Refinery Standard</div>
+</div>
+<div>
+<div class="text-label-sm font-label-sm text-on-surface-variant">Estimated Valuation</div>
+<div class="text-title-md font-title-md font-bold text-primary">₹2,32,500</div>
+<div class="text-[10px] text-[#065f46] font-medium">At Current Mandi MSP</div>
+</div>
+</div>
+<!-- Origin & Warehouse Node -->
+<div class="space-y-1 text-body-sm font-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">pin_drop</span>
+<span>Wardha Krishna Plot B, KVK Niphad Mobile Van Sample Collected</span>
+</div>
+<div class="flex items-center gap-1.5 text-amber-700">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<span>Assay cert required before publishing to National e-NAM marketplace.</span>
+</div>
+</div>
+<!-- In-progress Banner -->
+<div class="mt-4 pt-3 border-t border-outline-variant/20 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px] text-primary animate-spin">sync</span>
+              Awaiting Digital Sign-off by Chief Agronomist
+            </span>
+<span class="text-primary font-bold">Draft 80% Complete</span>
+</div>
+</div>
+<!-- Actionable Prompts / Buttons -->
+<div class="flex items-center gap-2 pt-5 mt-4 border-t border-outline-variant/20">
+<button class="flex-1 py-2 px-3 rounded-lg bg-surface-container-high text-on-surface hover:bg-surface-container-highest text-label-md font-label-md transition-colors text-center active:scale-[0.98]">
+            Upload Assay Certificate
+          </button>
+<button class="py-2 px-3 rounded-lg bg-primary-container text-on-primary text-label-md font-label-md hover:bg-primary transition-colors active:scale-[0.98]">
+            Publish to Live Mandi
+          </button>
+<button class="py-2 px-3 rounded-lg border border-error-container text-error hover:bg-error-container/20 text-label-md font-label-md">
+            Discard
+          </button>
+</div>
+</div>
+</div>
+<!-- ESCROW SECURITY GUARANTEE BANNER -->
+<div class="bg-surface-container-low rounded-2xl p-4 md:p-5 border border-primary/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-[24px]">verified</span>
+</div>
+<div>
+<div class="text-title-md font-title-md text-primary">ICICI Virtual Escrow Trustee &amp; e-NAM Protocol Compliant</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Payment tranches are cryptographically locked until weighbridge slip authentication and optical assay confirmation. Zero defaults recorded across 1,400+ Sahyadri FPO contracts.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-2 flex-shrink-0">
+<button class="px-4 py-2 rounded-lg bg-surface-container-lowest border border-outline-variant/40 text-primary text-label-md font-label-md hover:bg-surface transition-colors">
+          Audit Escrow Protocol
+        </button>
+</div>
+</div>
+</main>
+<!-- SHARED COMPONENT: BottomNavBar (Active on Mobile, Hidden on Web via Semantic Shell Mandate) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest dark:bg-inverse-surface shadow-md dark:shadow-none border-none px-space-xs py-space-xs">
+<div class="flex justify-around items-center max-w-lg mx-auto">
+<!-- Inactive Tab: Home -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-2 py-1.5 active:scale-95 transition-transform duration-150" href="#home">
+<span class="material-symbols-outlined text-[22px]">home</span>
+<span class="text-label-sm font-label-sm mt-0.5">Home</span>
+</a>
+<!-- Inactive Tab: Doctor -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-2 py-1.5 active:scale-95 transition-transform duration-150" href="#doctor">
+<span class="material-symbols-outlined text-[22px]">psychiatry</span>
+<span class="text-label-sm font-label-sm mt-0.5">Doctor</span>
+</a>
+<!-- Inactive Tab: Voice -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-2 py-1.5 active:scale-95 transition-transform duration-150" href="#voice">
+<span class="material-symbols-outlined text-[22px]">mic</span>
+<span class="text-label-sm font-label-sm mt-0.5">Voice</span>
+</a>
+<!-- ACTIVE TAB: Mandi (Semantic Match to Marketplace & Produce Listings) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container dark:bg-primary dark:text-on-primary rounded-xl px-3 py-1.5 active:scale-95 transition-transform duration-150" href="#mandi">
+<span class="material-symbols-outlined text-[22px]" style="font-variation-settings: 'FILL' 1;">storefront</span>
+<span class="text-label-sm font-label-sm mt-0.5">Mandi</span>
+</a>
+<!-- Inactive Tab: Profile -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-2 py-1.5 active:scale-95 transition-transform duration-150" href="#profile">
+<span class="material-symbols-outlined text-[22px]">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Profile</span>
+</a>
+</div>
+</nav>
+<!-- MICRO-INTERACTIONS SCRIPT -->
+<script>
+    // Lightweight interactions for filters & demo feedbacks
+    document.addEventListener('DOMContentLoaded', () => {
+      const tabs = document.querySelectorAll('button');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function(e) {
+          // Provide tactile response
+          this.classList.add('opacity-90');
+          setTimeout(() => this.classList.remove('opacity-90'), 150);
+        });
+      });
+    });
+  </script>
+</body></html>
