@@ -1,6 +1,6 @@
 import { Component, createSignal } from "solid-js";
 import { A, useNavigate } from "@solidjs/router";
-import { signInWithEmail, signInDemo, demoSignInAvailable, authLoading } from "../../stores/auth.store";
+import { signInWithEmail, signInDemo, authLoading } from "../../stores/auth.store";
 
 export const SignIn: Component = () => {
   const navigate = useNavigate();
@@ -82,25 +82,24 @@ export const SignIn: Component = () => {
           </button>
         </form>
 
-        {demoSignInAvailable && (
-          <>
-            <div class="relative flex items-center justify-center my-4">
-              <div class="border-t border-slate-200 w-full"></div>
-              <span class="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider absolute">
-                or instant preview
-              </span>
-            </div>
+        <div class="relative flex items-center justify-center my-4">
+          <div class="border-t border-slate-200 w-full"></div>
+          <span class="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider absolute">
+            or instant preview
+          </span>
+        </div>
 
-            <button
-              type="button"
-              onClick={handleDemoLogin}
-              class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow transition-all flex items-center justify-center gap-2"
-            >
-              <span class="material-symbols-outlined text-base">flash_on</span>
-              <span>Try the demo farmer account</span>
-            </button>
-          </>
-        )}
+        <button
+          type="button"
+          onClick={handleDemoLogin}
+          class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow transition-all flex items-center justify-center gap-2"
+        >
+          <span class="material-symbols-outlined text-base">flash_on</span>
+          <span>Try the demo farmer account</span>
+        </button>
+        <p class="text-[11px] text-slate-500 text-center">
+          Your own demo account with a sample farm. It and its data are deleted automatically after 24 hours.
+        </p>
 
         <div class="text-center pt-2">
           <span class="text-xs text-slate-500">Don't have an account yet? </span>

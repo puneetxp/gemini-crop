@@ -6,6 +6,9 @@ Built for *Build with AI: Code for Communities* (2nd edition), **Track 04: Agric
 
 - **Live app:** https://cropsense-frontend-ttmistutza-uc.a.run.app
 - **API docs (OpenAPI):** https://cropsense-backend-ttmistutza-uc.a.run.app/docs
+- **Try it without signing up:** *Try the demo farmer account* on the sign-in page (or *Instant Demo Access* on the
+  home page) opens your own temporary account with a sample farm near Udaipur. It stays signed in for your visit
+  and is deleted, with everything you added, after 24 hours.
 
 A farmer registers a farm with a pincode. CropSense then places the farm in its district and uses the farm's soil
 test, the district weather forecast and satellite readings to build a regenerative, three-season crop plan with
@@ -34,7 +37,7 @@ Gemini receives the farm profile and live context, then returns structured JSON:
 | Input | Source |
 |---|---|
 | State, district, village | Pincode lookup (India Post) |
-| Soil N, P, K, pH, organic carbon | Soil test stored on the farm (Soil Health Card / lab values) |
+| Soil N, P, K, pH, organic carbon | The farmer's soil-test values, else a typical profile for the district (`services/soil_mapping.py`) |
 | Soil type, irrigation, area, budget per acre | Farm record and the request |
 | 5-day weather forecast | OpenWeather, at the farm's GPS point or the district's coordinates |
 | Crop vigour and water stress | Sentinel-2 NDVI / NDMI via Microsoft Planetary Computer (farms with a GPS point) |
@@ -102,8 +105,8 @@ npm ci
 VITE_API_URL=http://localhost:8000 npx vite --port 3000
 ```
 
-With `ENVIRONMENT=development` the sign-in page offers a demo farmer account (mock token). Production rejects mock
-tokens.
+The demo button works locally too: outside production it signs in with a mock token instead of creating a
+Firebase user. Demo lifetime and limits: `DEMO_TTL_HOURS` (24), `DEMO_MAX_ACTIVE` (200), `DEMO_LOGIN_ENABLED`.
 
 ## Deploy to Google Cloud
 

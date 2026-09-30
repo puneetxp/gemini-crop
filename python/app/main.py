@@ -341,6 +341,16 @@ async def _start_background_jobs():
         logger.error(f"Failed to start SLUSI ingestion scheduler: {e}")
         app.state.slusi_scheduler = None
 
+    # Delete expired temporary demo accounts every hour
+    if settings.DEMO_LOGIN_ENABLED:
+        try:
+            from app.services.demo_accounts import start_demo_cleanup_scheduler
+
+            app.state.demo_cleanup_scheduler = start_demo_cleanup_scheduler()
+            logger.info(f"Demo account clean-up scheduled hourly (lifetime {settings.DEMO_TTL_HOURS} h)")
+        except Exception as e:
+            logger.error(f"Failed to start demo clean-up scheduler: {e}")
+
     # Seed SHC state/district codes if table is empty
     try:
         from sqlalchemy import text
@@ -440,6 +450,12 @@ async def shutdown_event():
             logger.info("SLUSI ingestion scheduler stopped")
         except Exception as e:
             logger.warning(f"Error stopping SLUSI ingestion scheduler: {e}")
+
+    if getattr(app.state, "demo_cleanup_scheduler", None):
+        try:
+            app.state.demo_cleanup_scheduler.shutdown(wait=False)
+        except Exception as e:
+            logger.warning(f"Error stopping demo clean-up scheduler: {e}")
 
     # Close rate limiter connection
     if settings.RATE_LIMIT_ENABLED:

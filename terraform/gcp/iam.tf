@@ -31,3 +31,10 @@ resource "google_project_iam_member" "sql_client" {
   role    = "roles/cloudsql.client"
   member  = "serviceAccount:${google_service_account.run_sa.email}"
 }
+
+# Grant Firebase Authentication admin: sign-up and temporary demo accounts create and delete users
+resource "google_project_iam_member" "firebase_auth_admin" {
+  project = var.project_id
+  role    = "roles/firebaseauth.admin"
+  member  = "serviceAccount:${google_service_account.run_sa.email}"
+}

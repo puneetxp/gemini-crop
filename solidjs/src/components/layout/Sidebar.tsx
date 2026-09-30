@@ -1,7 +1,8 @@
 import { Component, For } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
 import { currentLanguage, setLanguage, SupportedLanguage, t } from "../../stores/i18n.store";
-import { user, isAuthenticated, signOut, signInDemo, demoSignInAvailable } from "../../stores/auth.store";
+import { user, isAuthenticated, signOut, signInDemo, isDemo, demoExpiresAt } from "../../stores/auth.store";
+import { showToast } from "../ui/Toast";
 import type { TKey } from "../../i18n/en";
 
 export const Sidebar: Component = () => {
@@ -85,6 +86,11 @@ export const Sidebar: Component = () => {
               <div class="truncate">
                 <span class="text-xs font-bold text-slate-900 block truncate">{user()?.name}</span>
                 <span class="text-[10px] text-emerald font-semibold uppercase">{user()?.role || "Farmer"}</span>
+                {isDemo() && (
+                  <span class="text-[10px] text-amber-700 block" title="Temporary demo account">
+                    Demo · deleted {new Date(demoExpiresAt()!).toLocaleString([], { dateStyle: "short", timeStyle: "short" })}
+                  </span>
+                )}
               </div>
             </div>
             <button
@@ -103,14 +109,15 @@ export const Sidebar: Component = () => {
             >
               Sign In
             </A>
-            {demoSignInAvailable && (
-              <button
-                onClick={() => signInDemo()}
-                class="w-full text-center py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-medium transition-all"
-              >
-                Demo Auto-Login
-              </button>
-            )}
+            <button
+              onClick={async () => {
+                const res = await signInDemo();
+                if (!res.success) showToast("error", res.error || "Could not start a demo session");
+              }}
+              class="w-full text-center py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-medium transition-all"
+            >
+              Demo Auto-Login
+            </button>
           </div>
         )}
       </div>

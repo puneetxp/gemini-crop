@@ -106,6 +106,11 @@ class Settings(BaseSettings):
     GEMINI_FALLBACK_MODEL: str = "gemini-2.5-flash"
     # Gemini 3.x is served from the global Vertex AI endpoint, not from us-central1
     GEMINI_LOCATION: str = "global"
+
+    # "Try the demo": a private temporary farmer account per visitor, deleted after DEMO_TTL_HOURS
+    DEMO_LOGIN_ENABLED: bool = True
+    DEMO_TTL_HOURS: int = 24
+    DEMO_MAX_ACTIVE: int = 200
     CLOUD_SQL_INSTANCE: Optional[str] = None
     GOOGLE_CLOUD_SQL_INSTANCE: Optional[str] = None  # Used by database.py for Cloud SQL connector
     CLOUD_SQL_DB: str = "cropsense_gcp"

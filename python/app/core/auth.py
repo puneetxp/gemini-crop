@@ -205,6 +205,12 @@ async def get_current_user_from_token(
             status_code=status.HTTP_403_FORBIDDEN, detail="User account is inactive"
         )
 
+    # Temporary demo accounts stop working at the end of their lifetime (then get deleted)
+    from app.services.demo_accounts import is_expired
+
+    if is_expired(getattr(user, "email", None), getattr(user, "created_at", None)):
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Demo session expired")
+
     return user
 
 

@@ -483,11 +483,11 @@ Answer ONLY with a valid JSON object matching the following format completely, n
         nutrients_str = (
             ", ".join(f"{k.replace('_', ' ')}: {v}" for k, v in soil_nutrients.items())
             if soil_nutrients
-            else "No soil test on file (use typical values for this district's soil)"
+            else "No soil values on file (use typical values for this district's soil)"
         )
         farm_profile = f"""{location_context}
 - Soil type: {soil_type or 'Not provided'}
-- Soil test (Soil Health Card / lab; N, P, K in kg/ha where given): {nutrients_str}
+- Soil nutrients (the farmer's soil test, or a typical profile for the district; N, P, K in kg/ha): {nutrients_str}
 - Farm size: {area_acres or 'Not provided'} acres; irrigation: {irrigation_type or 'Not provided'}
 - Previous crops: {previous_crops or 'Not provided'}
 - Budget per acre: {f'INR {budget_per_acre:,.0f}' if budget_per_acre else 'Not provided'}

@@ -14,9 +14,6 @@
 # Override defaults with env vars, e.g.:
 #   GCP_PROJECT=my-proj BILLING_ACCOUNT=XXXXXX-XXXXXX-XXXXXX ./deploy-gcp.sh
 #   OPENWEATHER_API_KEY=... ./deploy-gcp.sh      # only needed on first deploy
-#   DEMO_EMAIL=... DEMO_PASSWORD=... ./deploy-gcp.sh frontend
-#                                                 # one-click "demo farmer" sign-in; the account must exist
-#                                                 # (sign up once in the app); the password ships in the bundle
 #
 # Requires: gcloud (logged in: `gcloud auth login`), terraform, node/npm.
 # First deploy also needs psql + cloud-sql-proxy to load the DB schema
@@ -327,7 +324,6 @@ cd "$ROOT/solidjs"
 VITE_API_URL="$BACKEND_URL" VITE_ENV=production \
   VITE_FIREBASE_API_KEY="$FIREBASE_API_KEY" VITE_FIREBASE_AUTH_DOMAIN="$FIREBASE_AUTH_DOMAIN" \
   VITE_FIREBASE_PROJECT_ID="$GCP_PROJECT" \
-  VITE_DEMO_EMAIL="${DEMO_EMAIL:-}" VITE_DEMO_PASSWORD="${DEMO_PASSWORD:-}" \
   VITE_VAPID_PUBLIC_KEY="$(gc secrets versions access latest --secret=cropsense-vapid-public-key)" npx vite build
 FRONTEND_IMAGE="${GCP_REGION}-docker.pkg.dev/${GCP_PROJECT}/${GAR_REPO}/${FRONTEND_SERVICE}:$(image_tag solidjs)"
 gc builds submit . --tag="$FRONTEND_IMAGE"

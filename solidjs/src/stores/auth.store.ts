@@ -28,6 +28,13 @@ export function hasRole(requiredRole: string): boolean {
 export async function initializeAuth(): Promise<void> {
   setIsLoading(true);
   const token = localStorage.getItem("access_token");
+  const demoEnd = readDemoExpiry();
+  if (demoEnd !== null && demoEnd <= Date.now()) {
+    await signOut();
+    setIsLoading(false);
+    return;
+  }
+  if (demoEnd !== null) scheduleDemoExpiry();
 
   if (!token) {
     setCurrentUser(null);
@@ -137,19 +144,67 @@ export async function signInWithMock(email: string = "farmer@cropsense.ai"): Pro
   localStorage.setItem("user_data", JSON.stringify(mockUser));
 }
 
-// One-click demo: a mock token against a dev backend, or a real shared demo account when the
-// production build is given VITE_DEMO_EMAIL / VITE_DEMO_PASSWORD (the backend rejects mock tokens there)
-const DEMO_EMAIL = (import.meta as any).env?.VITE_DEMO_EMAIL as string | undefined;
-const DEMO_PASSWORD = (import.meta as any).env?.VITE_DEMO_PASSWORD as string | undefined;
-export const demoSignInAvailable = !!import.meta.env.DEV || !!(DEMO_EMAIL && DEMO_PASSWORD);
+// "Try the demo": POST /auth/demo makes a private temporary farmer account with a sample farm.
+// It refreshes like a normal sign-in until demo_expires_at; the backend then deletes it and its data.
+const DEMO_KEY = "demo_expires_at";
+const readDemoExpiry = (): number | null => {
+  try {
+    const v = localStorage.getItem(DEMO_KEY);
+    return v ? Date.parse(v) || null : null;
+  } catch {
+    return null;
+  }
+};
+const [demoExpiry, setDemoExpiry] = createSignal<number | null>(readDemoExpiry());
+export const demoExpiresAt = createMemo(() => demoExpiry());
+export const isDemo = createMemo(() => !!currentUser() && demoExpiry() !== null);
+
+let demoTimer: number | undefined;
+function scheduleDemoExpiry(): void {
+  window.clearTimeout(demoTimer);
+  const end = demoExpiry();
+  if (end === null) return;
+  // setTimeout can't wait longer than ~24.8 days; demo lifetimes are hours
+  demoTimer = window.setTimeout(() => {
+    void signOut();
+  }, Math.max(0, Math.min(end - Date.now(), 2 ** 31 - 1)));
+}
 
 export async function signInDemo(): Promise<{ success: boolean; error?: string }> {
-  if (import.meta.env.DEV) {
-    await signInWithMock();
-    return { success: true };
+  // Reuse this browser's demo session while it lasts
+  const end = demoExpiry();
+  if (end !== null && end > Date.now() && localStorage.getItem("access_token")) {
+    await initializeAuth();
+    if (currentUser()) return { success: true };
   }
-  if (DEMO_EMAIL && DEMO_PASSWORD) return signInWithEmail(DEMO_EMAIL, DEMO_PASSWORD);
-  return { success: false, error: "Demo sign-in is not configured" };
+  setIsLoading(true);
+  try {
+    let lang = "en";
+    try {
+      lang = localStorage.getItem("app_lang") || "en";
+    } catch {
+      // storage blocked; English
+    }
+    const res = await apiClient.post("/auth/demo", { lang }, { requiresAuth: false, timeoutMs: 30000 });
+    if (!res.ok || !res.data?.access_token) {
+      return { success: false, error: apiErrorMessage(res.data, "Could not start a demo session") };
+    }
+    const d = res.data;
+    apiClient.clearCache();
+    localStorage.setItem("access_token", d.access_token);
+    if (d.refresh_token) localStorage.setItem("refresh_token", d.refresh_token);
+    localStorage.setItem("username", d.user.email);
+    localStorage.setItem("user_data", JSON.stringify(d.user));
+    localStorage.setItem(DEMO_KEY, d.demo_expires_at);
+    setDemoExpiry(Date.parse(d.demo_expires_at));
+    setCurrentUser(d.user);
+    scheduleDemoExpiry();
+    return { success: true };
+  } catch (err: any) {
+    return { success: false, error: err?.message || "Network error while starting the demo" };
+  } finally {
+    setIsLoading(false);
+  }
 }
 
 export async function signOut(): Promise<void> {
@@ -163,6 +218,9 @@ export async function signOut(): Promise<void> {
   localStorage.removeItem("username");
   localStorage.removeItem("user_data");
   localStorage.removeItem("assistant_chat");
+  localStorage.removeItem(DEMO_KEY);
+  setDemoExpiry(null);
+  window.clearTimeout(demoTimer);
 
   // 3. Notify Service Worker to purge API cache
   if ("serviceWorker" in navigator && navigator.serviceWorker.controller) {

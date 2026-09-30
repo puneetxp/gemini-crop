@@ -6,7 +6,8 @@ Handles user registration, sign-in, MFA, password reset
 import logging
 from typing import Optional
 
-from fastapi import APIRouter, Depends, Header, HTTPException, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.core.config import settings
@@ -374,6 +375,42 @@ def _unique_username(db: Session, seed: str) -> str:
         n += 1
         candidate = f"{base}{n}"
     return candidate
+
+
+class DemoSignInRequest(BaseModel):
+    lang: str = Field("en", max_length=10)
+
+
+@router.post("/demo")
+async def demo_sign_in(body: DemoSignInRequest, request: Request, db: Session = Depends(get_db)):
+    """
+    Sign in to a new temporary demo farmer account with a sample farm.
+
+    Each call creates a separate account, so visitors never share data. The session refreshes like a
+    normal sign-in until DEMO_TTL_HOURS after creation; then the account and all its data are deleted.
+    Returns the same tokens as /auth/signin plus `demo_expires_at`.
+    """
+    from app.core.rate_limiter import client_ip
+    from app.services import demo_accounts
+
+    if not settings.DEMO_LOGIN_ENABLED:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Demo sign-in is disabled")
+    if not demo_accounts.allow_ip(client_ip(request)):
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail="Too many demo accounts from this network. Please try again in an hour.",
+        )
+    try:
+        lang = body.lang if body.lang.isalpha() else "en"
+        return demo_accounts.create_demo_account(db, lang=lang)
+    except RuntimeError as e:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail=str(e))
+    except Exception as e:
+        logger.error(f"Demo sign-in failed: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Could not start a demo session. Please try again.",
+        )
 
 
 @router.post("/firebase", response_model=SignInResponse)

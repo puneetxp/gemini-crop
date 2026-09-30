@@ -1,9 +1,11 @@
 import { Component } from "solid-js";
-import { A } from "@solidjs/router";
-import { isAuthenticated, user, signInDemo, demoSignInAvailable } from "../stores/auth.store";
+import { A, useNavigate } from "@solidjs/router";
+import { isAuthenticated, user, signInDemo } from "../stores/auth.store";
+import { showToast } from "../components/ui/Toast";
 import { t } from "../stores/i18n.store";
 
 export const Home: Component = () => {
+  const navigate = useNavigate();
   return (
     <div class="space-y-8 max-w-6xl mx-auto pb-16">
       {/* Hero Section */}
@@ -29,9 +31,13 @@ export const Home: Component = () => {
               <span>Launch Command Center</span>
               <span class="material-symbols-outlined text-lg">arrow_forward</span>
             </A>
-            {!isAuthenticated() && demoSignInAvailable && (
+            {!isAuthenticated() && (
               <button
-                onClick={() => signInDemo()}
+                onClick={async () => {
+                  const res = await signInDemo();
+                  if (res.success) navigate("/dashboard");
+                  else showToast("error", res.error || "Could not start a demo session");
+                }}
                 class="px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold rounded-xl text-sm transition-all"
               >
                 Instant Demo Access
