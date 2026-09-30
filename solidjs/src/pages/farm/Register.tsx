@@ -15,6 +15,8 @@ export const FarmRegister: Component = () => {
   const [plotName, setPlotName] = createSignal("Krishna Valley Organic Block B");
   const [stateDistrict, setStateDistrict] = createSignal("Maharashtra • Nashik");
   const [taluka, setTaluka] = createSignal("Niphad (निफाड)");
+  const [pincode, setPincode] = createSignal("422303");
+  const [totalAcres, setTotalAcres] = createSignal(18.5);
   const [surveyNumber, setSurveyNumber] = createSignal("Pimpalgaon Baswant — Gut #142/2A");
   const [ownershipType, setOwnershipType] = createSignal("Individual / Primary Cultivator (Bhumiswami)");
   
@@ -53,35 +55,89 @@ export const FarmRegister: Component = () => {
   const computedArea = "18.50 Ac (7.48 Ha)";
   const perimeter = "1.24 km";
 
+  // Pincode → state / district / village auto-fill (India Post via backend)
+  const [pincodeStatus, setPincodeStatus] = createSignal("");
+  const lookupPincode = async (pin: string) => {
+    if (!/^\d{6}$/.test(pin)) {
+      setPincodeStatus("");
+      return;
+    }
+    setPincodeStatus("Looking up pincode…");
+    const res = await apiClient.get<{ state: string; district: string; villages: string[] }>(
+      `/address/pincode/${pin}`
+    );
+    if (pin !== pincode()) return;
+    if (res.ok && res.data?.state) {
+      setStateDistrict(`${res.data.state} • ${res.data.district}`);
+      if (res.data.villages?.length) setTaluka(res.data.villages[0]);
+      setPincodeStatus(`✓ ${res.data.district}, ${res.data.state}`);
+    } else {
+      setPincodeStatus(`Pincode ${pin} not found`);
+    }
+  };
+
+  // Backend soil enum: clay, sandy, loamy, silt, peat, black, red, mixed
+  const soilToApi: Record<string, string> = {
+    black: "black",
+    red: "red",
+    alluvial: "loamy",
+    laterite: "red",
+  };
+
+  const apiErrorText = (data: any): string => {
+    const detail = data?.detail ?? data?.error ?? data;
+    if (Array.isArray(detail)) {
+      return detail
+        .map((d: any) => `${(d.loc || []).slice(1).join(".") || "field"}: ${d.msg}`)
+        .join("; ");
+    }
+    return typeof detail === "string" ? detail : "Failed to register farm";
+  };
+
   const handleRegister = async () => {
     setIsSubmitting(true);
     setErrorMessage("");
     setSuccessMessage("");
 
+    const [stateVal = "", districtVal = ""] = stateDistrict()
+      .split("•")
+      .map((part) => part.trim());
+    const villageVal = taluka().replace(/\(.*?\)/g, "").trim();
+
+    const irrigationMapped = selectedIrrigation().some((s) => s.toLowerCase().includes("drip"))
+      ? "drip"
+      : selectedIrrigation().some((s) => s.toLowerCase().includes("borewell"))
+      ? "borewell"
+      : selectedIrrigation().some((s) => s.toLowerCase().includes("canal"))
+      ? "canal"
+      : "rain-fed";
+
     try {
-      // POST to backend API /farms
-      await apiClient.post("/farms", {
-        name: plotName(),
-        location: `${taluka()}, ${stateDistrict()}`,
-        survey_number: surveyNumber(),
-        total_acres: 18.5,
-        ownership_type: ownershipType(),
-        soil_type: selectedSoil(),
-        irrigation_systems: selectedIrrigation(),
-        sensor_bound: isSensorBound()
+      // POST to backend API /farms with the FarmCreate schema
+      const res = await apiClient.post<{ id: number }>("/farms", {
+        name: plotName().trim(),
+        state: stateVal,
+        district: districtVal,
+        village: villageVal,
+        pincode: pincode().trim(),
+        total_area_acres: Number(totalAcres()),
+        primary_soil_type: soilToApi[selectedSoil()] || "mixed",
+        irrigation_type: irrigationMapped,
+        address_line: surveyNumber()
       });
 
-      setSuccessMessage("Farm & cadastral boundary registered successfully!");
-      setTimeout(() => {
-        navigate("/farm");
-      }, 1200);
+      if (res.ok) {
+        // Drop cached GET /farms so the list shows the new farm
+        apiClient.clearCache();
+        setSuccessMessage("Farm & cadastral boundary registered successfully!");
+        setTimeout(() => {
+          navigate("/farm");
+        }, 1200);
+      } else {
+        setErrorMessage(`Could not register farm (${res.status}): ${apiErrorText(res.data)}`);
+      }
     } catch (err: any) {
-      // In offline / mock mode, allow graceful progression
-      console.warn("Backend /farms endpoint returned error, saving locally:", err);
-      setSuccessMessage("Farm registered successfully in offline cache!");
-      setTimeout(() => {
-        navigate("/farm");
-      }, 1000);
+      setErrorMessage(`Could not register farm: ${err?.message || "network error"}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -133,6 +189,12 @@ export const FarmRegister: Component = () => {
         <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl flex items-center gap-2 text-xs font-bold shadow-xs">
           <span class="material-symbols-outlined text-emerald-600">check_circle</span>
           <span>{successMessage()}</span>
+        </div>
+      </Show>
+      <Show when={errorMessage()}>
+        <div role="alert" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl flex items-center gap-2 text-xs font-bold shadow-xs">
+          <span class="material-symbols-outlined text-red-600">error</span>
+          <span>{errorMessage()}</span>
         </div>
       </Show>
 
@@ -314,6 +376,36 @@ export const FarmRegister: Component = () => {
                     value={taluka()}
                     onInput={(e) => setTaluka(e.currentTarget.value)}
                     class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-700 font-medium focus:outline-none focus:border-emerald-600"
+                  />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">PIN / Postal Code</label>
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    maxlength="6"
+                    value={pincode()}
+                    onInput={(e) => {
+                      setPincode(e.currentTarget.value);
+                      lookupPincode(e.currentTarget.value.trim());
+                    }}
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:outline-none focus:border-emerald-600"
+                  />
+                  <Show when={pincodeStatus()}>
+                    <p class="mt-1 text-[11px] font-semibold text-emerald-700">{pincodeStatus()}</p>
+                  </Show>
+                </div>
+                <div>
+                  <label class="block font-bold text-slate-700 mb-1">Total Area (Acres)</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    value={totalAcres()}
+                    onInput={(e) => setTotalAcres(parseFloat(e.currentTarget.value) || 18.5)}
+                    class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-slate-900 font-semibold focus:outline-none focus:border-emerald-600"
                   />
                 </div>
               </div>

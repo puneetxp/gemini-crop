@@ -12,11 +12,11 @@ interface CropItem {
   stagePercent: number;
   stageType: "vegetative" | "flowering" | "ripening";
   qualityGrade: string;
-  gddCurrent: number;
-  gddTarget: number;
-  ndvi: number;
-  moistureVwc: number;
-  waterDailyMm: number;
+  gddCurrent?: number;
+  gddTarget?: number;
+  ndvi?: number;
+  moistureVwc?: number;
+  waterDailyMm?: number;
   alert?: {
     type: "warning" | "info";
     title: string;
@@ -32,98 +32,56 @@ export const MyCrops: Component = () => {
   const [isLoading, setIsLoading] = createSignal(false);
 
   // Initial mock crops matching Stitch screen
-  const initialCrops: CropItem[] = [
-    {
-      id: "crop-1",
-      name: "Table Grapes",
-      variety: "Thompson Seedless",
-      plotName: "Plot E • East Terrace",
-      acreage: 3.20,
-      stageName: "Berry Set",
-      stagePercent: 65,
-      stageType: "vegetative",
-      qualityGrade: "Export NABL Grade",
-      gddCurrent: 1420,
-      gddTarget: 1850,
-      ndvi: 0.81,
-      moistureVwc: 66,
-      waterDailyMm: 4.8,
-      alert: {
-        type: "warning",
-        title: "Bio-Alert: Downy Mildew Weather Caution",
-        description: "High morning humidity (78%) predicted. Recommended preventive foliar spray: Potassium Bicarbonate or Trichoderma viride.",
-        action: "Spray Advisory",
-      },
-      stages: [
-        { name: "Dormancy", status: "done" },
-        { name: "Bud Burst", status: "done" },
-        { name: "Flowering", status: "done" },
-        { name: "Berry Set", status: "active", targetDate: "Now (65%)" },
-        { name: "Veraison", status: "pending", targetDate: "28 Oct" },
-        { name: "Harvest", status: "pending", targetDate: "18 Nov" },
-      ],
-    },
-    {
-      id: "crop-2",
-      name: "Pomegranate",
-      variety: "Bhagwa Export",
-      plotName: "Plot A • North Orchard",
-      acreage: 4.50,
-      stageName: "Fruit Development",
-      stagePercent: 78,
-      stageType: "ripening",
-      qualityGrade: "APMC Super A Grade",
-      gddCurrent: 2150,
-      gddTarget: 2400,
-      ndvi: 0.76,
-      moistureVwc: 62,
-      waterDailyMm: 5.2,
-      stages: [
-        { name: "Flowering", status: "done" },
-        { name: "Fruit Set", status: "done" },
-        { name: "Fruit Development", status: "active", targetDate: "78%" },
-        { name: "Rind Pigmentation", status: "pending", targetDate: "14 Oct" },
-        { name: "Harvest in 28 Days", status: "pending", targetDate: "24 Oct" },
-      ],
-    },
-    {
-      id: "crop-3",
-      name: "Sharbati Wheat",
-      variety: "C-306 Certified",
-      plotName: "Plot B • Lower Basin",
-      acreage: 5.10,
-      stageName: "Crown Root Initiation / Tillering",
-      stagePercent: 35,
-      stageType: "vegetative",
-      qualityGrade: "Certified Foundation Cereal",
-      gddCurrent: 480,
-      gddTarget: 1450,
-      ndvi: 0.82,
-      moistureVwc: 70,
-      waterDailyMm: 3.5,
-      stages: [
-        { name: "Germination", status: "done" },
-        { name: "Crown Root", status: "done" },
-        { name: "Tillering", status: "active", targetDate: "35%" },
-        { name: "Jointing", status: "pending", targetDate: "15 Nov" },
-        { name: "Heading", status: "pending", targetDate: "12 Dec" },
-        { name: "Ripening", status: "pending", targetDate: "10 Jan" },
-      ],
-    },
-  ];
+  const [crops, setCrops] = createSignal<CropItem[]>([]);
+  const [loadError, setLoadError] = createSignal("");
 
-  const [crops, setCrops] = createSignal<CropItem[]>(initialCrops);
+  // Map GET /crops/my-crops rows onto the card model
+  const stageFor = (status: string): Pick<CropItem, "stageName" | "stagePercent" | "stageType"> => {
+    switch ((status || "").toLowerCase()) {
+      case "flowering":
+        return { stageName: "Flowering", stagePercent: 60, stageType: "flowering" };
+      case "harvesting":
+      case "ripening":
+      case "harvested":
+        return { stageName: "Ripening", stagePercent: 90, stageType: "ripening" };
+      case "growing":
+        return { stageName: "Vegetative", stagePercent: 35, stageType: "vegetative" };
+      default:
+        return { stageName: "Planted", stagePercent: 10, stageType: "vegetative" };
+    }
+  };
+
+  const toCropItem = (c: any): CropItem => {
+    const stage = stageFor(c.status);
+    const order = ["Planted", "Vegetative", "Flowering", "Ripening"];
+    const idx = order.indexOf(stage.stageName);
+    return {
+      id: String(c.id),
+      name: c.crop_name || "Crop",
+      variety: c.crop_variety || "—",
+      plotName: [c.farm_name, c.plot_name].filter(Boolean).join(" • ") || "Plot",
+      acreage: Number(c.area) || 0,
+      ...stage,
+      qualityGrade: (c.season || "").toUpperCase() || (c.crop_role || "main").toUpperCase(),
+      stages: order.map((name, i) => ({
+        name,
+        status: i < idx ? "done" : i === idx ? "active" : "pending",
+        targetDate: name === "Ripening" && c.expected_harvest_date ? String(c.expected_harvest_date).slice(0, 10) : undefined,
+      })),
+    };
+  };
 
   onMount(async () => {
+    setIsLoading(true);
     try {
-      setIsLoading(true);
-      const res = await apiClient.get<any[]>("/crops/my-crops");
-      if (res && Array.isArray(res) && res.length > 0) {
-        // Merge or populate if returned
-        console.log("Loaded my crops from API:", res.length);
+      const res = await apiClient.get<{ crops: any[] }>("/crops/my-crops", { skipCache: true });
+      if (res.ok) {
+        setCrops((res.data?.crops ?? []).map(toCropItem));
+      } else {
+        setLoadError(`Could not load crops (${res.status})`);
       }
-    } catch (e) {
-      console.warn("Using offline / initial crops data for my-crops:", e);
+    } catch (e: any) {
+      setLoadError(`Could not load crops: ${e?.message || "network error"}`);
     } finally {
       setIsLoading(false);
     }
@@ -146,7 +104,7 @@ export const MyCrops: Component = () => {
               <span class="material-symbols-outlined text-[12px]">chevron_right</span>
               <A href="/farm" class="hover:text-emerald-700">My Farms</A>
               <span class="material-symbols-outlined text-[12px]">chevron_right</span>
-              <span class="text-slate-600">Krishna Valley Farm</span>
+              <span class="text-slate-600">All Farms</span>
               <span class="material-symbols-outlined text-[12px]">chevron_right</span>
               <span class="text-emerald-800 font-bold">Active Crops</span>
             </div>
@@ -155,7 +113,7 @@ export const MyCrops: Component = () => {
                 Active Crop Portfolio & Phenology Lifecycle
               </h1>
               <span class="hidden sm:inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-900 border border-emerald-200">
-                18.5 Ac Holding • 4 Active Parcels
+                {crops().reduce((sum, c) => sum + c.acreage, 0)} Ac • {crops().length} Active Crops
               </span>
             </div>
           </div>
@@ -271,6 +229,23 @@ export const MyCrops: Component = () => {
       <main class="max-w-7xl mx-auto w-full px-4 md:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LEFT 8-COLS: ACTIVE CROP PORTFOLIO CARDS */}
         <div class="lg:col-span-8 space-y-6">
+          <Show when={isLoading()}>
+            <div class="bg-white rounded-2xl border border-slate-200/90 p-8 text-center text-xs text-slate-500">Loading crops…</div>
+          </Show>
+          <Show when={loadError()}>
+            <div role="alert" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-xs font-bold">{loadError()}</div>
+          </Show>
+          <Show when={!isLoading() && !loadError() && crops().length === 0}>
+            <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-10 text-center space-y-3">
+              <span class="material-symbols-outlined text-4xl text-slate-300">yard</span>
+              <p class="text-sm font-bold text-slate-700">No crops planted yet</p>
+              <p class="text-xs text-slate-500">Plant a crop on one of your plots to track it here.</p>
+              <A href="/crops/plant" class="px-4 py-2 bg-emerald-800 text-white text-xs font-bold rounded-lg inline-flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-base">add_circle</span>
+                <span>Plant a crop</span>
+              </A>
+            </div>
+          </Show>
           <For each={filteredCrops()}>
             {(crop) => (
               <div class="bg-white rounded-2xl border border-slate-200/90 shadow-xs overflow-hidden">
@@ -328,7 +303,8 @@ export const MyCrops: Component = () => {
                     </div>
                   </div>
 
-                  {/* Telemetry Metrics Row */}
+                  {/* Telemetry Metrics Row (only when sensor data exists) */}
+                  <Show when={crop.ndvi != null}>
                   <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                     <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200">
                       <span class="text-[10px] text-slate-400 uppercase font-semibold block">Accumulated GDD</span>
@@ -354,6 +330,7 @@ export const MyCrops: Component = () => {
                       <span class="text-[10px] text-slate-500 block">Drip Optimized</span>
                     </div>
                   </div>
+                  </Show>
 
                   {/* Disease / Bio Alert Banner */}
                   <Show when={crop.alert}>

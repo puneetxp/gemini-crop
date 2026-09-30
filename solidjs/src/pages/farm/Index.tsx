@@ -1,29 +1,30 @@
-import { Component, createSignal, For } from "solid-js";
+import { Component, createResource, For, Show } from "solid-js";
 import { A } from "@solidjs/router";
+import { apiClient } from "../../lib/api-client";
+
+interface FarmSummary {
+  id: number;
+  name: string;
+  state: string;
+  district: string;
+  village: string;
+  total_area_acres: number;
+  primary_soil_type?: string | null;
+  irrigation_type?: string | null;
+}
+
+const titleCase = (v?: string | null) =>
+  v ? v.replace(/[-_]/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "—";
 
 export const FarmIndex: Component = () => {
-  const [farms] = createSignal([
-    {
-      id: 1,
-      name: "Sukhdev Singh Farm - Sector 4",
-      location: "Ludhiana District, Punjab",
-      totalAcres: 12.5,
-      activePlots: 3,
-      primaryCrop: "Wheat (HD-2967)",
-      ndviStatus: "0.78 (Optimal)",
-      healthColor: "text-emerald-600 bg-emerald-50",
-    },
-    {
-      id: 2,
-      name: "Bhatinda Organic Parcel B",
-      location: "Bhatinda, Punjab",
-      totalAcres: 8.0,
-      activePlots: 2,
-      primaryCrop: "Mustard (Pusa Bold)",
-      ndviStatus: "0.64 (Moderate)",
-      healthColor: "text-amber-600 bg-amber-50",
-    },
-  ]);
+  const [farmList] = createResource(async () => {
+    const res = await apiClient.get<{ farms: FarmSummary[]; total: number }>("/farms", {
+      skipCache: true,
+    });
+    if (!res.ok) throw new Error(`Could not load farms (${res.status})`);
+    return res.data?.farms ?? [];
+  });
+  const farms = () => farmList() ?? [];
 
   return (
     <div class="space-y-6 max-w-7xl mx-auto pb-20">
@@ -41,6 +42,29 @@ export const FarmIndex: Component = () => {
         </A>
       </div>
 
+      <Show when={farmList.loading}>
+        <div class="bg-white rounded-2xl border border-slate-200/80 p-8 text-center text-xs text-slate-500">Loading farms…</div>
+      </Show>
+      <Show when={farmList.error}>
+        <div role="alert" class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-xs font-bold">
+          {String(farmList.error?.message || farmList.error)}
+        </div>
+      </Show>
+      <Show when={!farmList.loading && !farmList.error && farms().length === 0}>
+        <div class="bg-white rounded-2xl border border-dashed border-slate-300 p-10 text-center space-y-3">
+          <span class="material-symbols-outlined text-4xl text-slate-300">agriculture</span>
+          <p class="text-sm font-bold text-slate-700">No farms registered yet</p>
+          <p class="text-xs text-slate-500">Register your first farm to get field-level advice.</p>
+          <A
+            href="/farm/register"
+            class="px-4 py-2.5 bg-forest hover:bg-forest-light text-white text-xs font-bold rounded-xl shadow inline-flex items-center gap-2"
+          >
+            <span class="material-symbols-outlined text-base">add_location_alt</span>
+            <span>Register farm</span>
+          </A>
+        </div>
+      </Show>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
         <For each={farms()}>
           {(farm) => (
@@ -50,26 +74,26 @@ export const FarmIndex: Component = () => {
                   <h3 class="font-bold text-base text-slate-900">{farm.name}</h3>
                   <div class="flex items-center gap-1.5 text-xs text-slate-500 mt-1">
                     <span class="material-symbols-outlined text-sm text-slate-400">location_on</span>
-                    <span>{farm.location}</span>
+                    <span>{[farm.village, farm.district, farm.state].filter(Boolean).join(", ")}</span>
                   </div>
                 </div>
-                <span class={`text-[11px] font-bold px-2 py-1 rounded-lg ${farm.healthColor}`}>
-                  NDVI {farm.ndviStatus}
+                <span class="text-[11px] font-bold px-2 py-1 rounded-lg text-emerald-600 bg-emerald-50">
+                  #{farm.id}
                 </span>
               </div>
 
               <div class="grid grid-cols-3 gap-2 py-3 border-y border-slate-100 text-center text-xs">
                 <div>
                   <span class="text-slate-400 block text-[10px] uppercase font-bold">Total Area</span>
-                  <span class="font-bold text-slate-800">{farm.totalAcres} Acres</span>
+                  <span class="font-bold text-slate-800">{farm.total_area_acres} Acres</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Active Plots</span>
-                  <span class="font-bold text-slate-800">{farm.activePlots} Plots</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Soil</span>
+                  <span class="font-bold text-slate-800">{titleCase(farm.primary_soil_type)}</span>
                 </div>
                 <div>
-                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Current Crop</span>
-                  <span class="font-bold text-forest">{farm.primaryCrop}</span>
+                  <span class="text-slate-400 block text-[10px] uppercase font-bold">Irrigation</span>
+                  <span class="font-bold text-forest">{titleCase(farm.irrigation_type)}</span>
                 </div>
               </div>
 

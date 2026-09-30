@@ -6,6 +6,15 @@ export const Diagnose: Component = () => {
   const [previewUrl, setPreviewUrl] = createSignal<string | null>(null);
   const [isDiagnosing, setIsDiagnosing] = createSignal(false);
   const [result, setResult] = createSignal<any>(null);
+  const [errorMessage, setErrorMessage] = createSignal("");
+
+  const toBase64 = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result).split(",")[1] || "");
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
 
   const handleFileChange = (e: Event) => {
     const input = e.target as HTMLInputElement;
@@ -18,46 +27,42 @@ export const Diagnose: Component = () => {
   };
 
   const handleDiagnose = async () => {
-    if (!selectedFile()) return;
+    const file = selectedFile();
+    if (!file) return;
     setIsDiagnosing(true);
+    setErrorMessage("");
+    setResult(null);
 
     try {
-      const formData = new FormData();
-      formData.append("image", selectedFile()!);
-      formData.append("crop", "Wheat");
+      // POST /vision/diagnose-crop expects JSON { image_base64, mime_type, crop_name?, lang }
+      const res = await apiClient.post<any>(
+        "/vision/diagnose-crop",
+        {
+          image_base64: await toBase64(file),
+          mime_type: file.type || "image/jpeg",
+          lang: "en",
+        },
+        { timeoutMs: 90000 }
+      );
 
-      const res = await apiClient.post("/vision/diagnose-crop", formData, {
-        timeoutMs: 90000,
-      });
-
-      if (res.ok && res.data) {
-        setResult(res.data);
-      } else {
-        // Fallback realistic response for UI
+      const d = res.data?.diagnosis;
+      if (res.ok && d) {
+        const t = d.treatment || {};
         setResult({
-          disease_name: "Yellow Rust (Puccinia striiformis)",
-          confidence_score: 0.94,
-          severity: "Moderate (Early Infection)",
-          affected_parts: ["Upper foliage", "Leaf blades"],
-          recommended_treatment: [
-            "Apply Propiconazole 25% EC @ 1ml/liter water or Tebuconazole 25.9% EC",
-            "Spray in calm weather, preferably early morning or late afternoon",
-            "Avoid excessive nitrogen fertilization to curtail fungal spore propagation",
-          ],
-          safety_warning: "Observe 30-day pre-harvest interval (PHI) for Propiconazole.",
+          disease_name: d.disease_name,
+          confidence_score: Number(d.confidence) || 0,
+          severity: d.severity,
+          recommended_treatment: [...(t.cultural || []), ...(t.organic || []), ...(t.chemical || [])],
+          safety_warning: d.safety?.warning || d.better_photo_tip,
         });
+      } else {
+        const detail = res.data?.detail;
+        setErrorMessage(
+          `Diagnosis failed (${res.status}): ${typeof detail === "string" ? detail : "the AI service did not return a result"}`
+        );
       }
-    } catch {
-      setResult({
-        disease_name: "Yellow Rust (Puccinia striiformis)",
-        confidence_score: 0.92,
-        severity: "Moderate",
-        recommended_treatment: [
-          "Apply Propiconazole 25% EC @ 1ml/liter water",
-          "Ensure adequate coverage on both adaxial and abaxial leaf surfaces",
-        ],
-        safety_warning: "Always use protective eyewear and gloves during spraying.",
-      });
+    } catch (err: any) {
+      setErrorMessage(`Diagnosis failed: ${err?.message || "network error"}`);
     } finally {
       setIsDiagnosing(false);
     }
@@ -175,6 +180,11 @@ export const Diagnose: Component = () => {
                   <span>{result().safety_warning}</span>
                 </div>
               )}
+            </div>
+          ) : errorMessage() ? (
+            <div role="alert" class="p-4 bg-red-50 border border-red-200 rounded-xl text-xs text-red-800 font-semibold flex items-start gap-2">
+              <span class="material-symbols-outlined text-base text-red-600">error</span>
+              <span>{errorMessage()}</span>
             </div>
           ) : (
             <div class="min-h-[220px] flex flex-col items-center justify-center text-center p-6 text-slate-400">

@@ -45,8 +45,8 @@ export async function initializeAuth(): Promise<void> {
     }
   }
 
-  // Preserve mock demo accounts without remote verification
-  if (token.startsWith("mock-token-") || token.startsWith("mock-")) {
+  // Preserve mock demo accounts without remote verification (development mode only)
+  if (import.meta.env.DEV && (token.startsWith("mock-token-") || token.startsWith("mock-"))) {
     setIsLoading(false);
     return;
   }

@@ -26,17 +26,16 @@ export const Assistant: Component = () => {
       const res = await apiClient.post("/voice/assist", { text: query, query });
       const reply = res.data?.response || res.data?.data?.reply;
       if (res.ok && reply) {
-        setMessages((prev) => [
-          ...prev,
-          { sender: "ai", text: res.data.response, time: "Now" },
-        ]);
+        setMessages((prev) => [...prev, { sender: "ai", text: reply, time: "Now" }]);
       } else {
-        // Fallback realistic response
+        const unavailable = res.ok && res.data?.data?.fallback;
         setMessages((prev) => [
           ...prev,
           {
             sender: "ai",
-            text: `Based on your wheat plot telemetry on Sector 4, the soil moisture is currently 68% and nitrogen level is adequate. Rainfall is expected in 36 hours, so hold off on chemical sprays until Saturday.`,
+            text: unavailable
+              ? "Sorry, the AI assistant is unavailable right now. Please try again in a moment."
+              : `Sorry, I couldn't answer that (error ${res.status}). Please try again.`,
             time: "Now",
           },
         ]);
@@ -44,11 +43,7 @@ export const Assistant: Component = () => {
     } catch {
       setMessages((prev) => [
         ...prev,
-        {
-          sender: "ai",
-          text: `Based on your wheat plot telemetry on Sector 4, the soil moisture is currently 68% and nitrogen level is adequate. Rainfall is expected in 36 hours, so hold off on chemical sprays until Saturday.`,
-          time: "Now",
-        },
+        { sender: "ai", text: "Sorry, I couldn't reach the assistant. Check your connection and try again.", time: "Now" },
       ]);
     } finally {
       setIsSending(false);
