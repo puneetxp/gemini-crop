@@ -1,0 +1,22 @@
+export interface Veterinarian {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   added_by_user_id: number | null,
+   name: string,
+   clinic_name: string | null,
+   specialization: string | null,
+   species_supported: string | null,
+   phone: string,
+   whatsapp: string | null,
+   email: string | null,
+   location_state: string | null,
+   location_district: string | null,
+   address: string | null,
+   available_now: boolean,
+   verified: boolean,
+   rating: number | null,
+   total_ratings: number | null,
+   notes: string | null
+}

@@ -1,0 +1,22 @@
+export interface Service {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   category: string,
+   name: string,
+   organisation: string | null,
+   description: string | null,
+   phone: string,
+   whatsapp: string | null,
+   email: string | null,
+   location_state: string | null,
+   location_district: string | null,
+   address: string | null,
+   languages: string | null,
+   available_now: boolean,
+   verified: boolean,
+   is_active: boolean,
+   added_by_user_id: number | null,
+   user_id: number | null
+}

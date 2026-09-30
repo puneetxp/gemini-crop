@@ -1,0 +1,22 @@
+export interface Crop_diagnosis {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   crop_id: number | null,
+   farm_id: number | null,
+   crop_name: string | null,
+   state: string | null,
+   district: string | null,
+   disease_name: string | null,
+   scientific_name: string | null,
+   category: string | null,
+   severity: string | null,
+   urgency: string | null,
+   confidence: number | null,
+   language: string | null,
+   model_used: string | null,
+   safety_flags: number,
+   result: any | null,
+   user_id: number
+}

@@ -1,0 +1,16 @@
+{
+  "name": "CropSense AI — Premier AgriOS",
+  "short_name": "CropSense",
+  "description": "Smart Agriculture Intelligence, Satellite Telemetry & Forward Contracts",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#faf9f5",
+  "theme_color": "#004532",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}

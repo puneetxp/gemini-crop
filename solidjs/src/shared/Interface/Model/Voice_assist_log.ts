@@ -1,0 +1,20 @@
+export interface Voice_assist_log {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   source: string,
+   task: string | null,
+   ui_lang: string | null,
+   language_detected: string | null,
+   mime_type: string | null,
+   audio_bytes: number | null,
+   duration_ms: number | null,
+   transcript: string | null,
+   intent: string | null,
+   model_used: string | null,
+   status: string,
+   error: string | null,
+   latency_ms: number | null,
+   user_id: number
+}

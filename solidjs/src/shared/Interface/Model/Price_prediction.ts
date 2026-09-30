@@ -1,0 +1,23 @@
+export interface Price_prediction {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   item_type: string,
+   item_name: string,
+   variety: string | null,
+   state: string,
+   district: string | null,
+   prediction_date: Date,
+   target_date: Date,
+   predicted_price: number,
+   confidence_score: number,
+   price_range_min: number | null,
+   price_range_max: number | null,
+   trend: string | null,
+   demand_forecast: string | null,
+   supply_forecast: string | null,
+   season: string | null,
+   model_version: string | null,
+   factors: string | null
+}

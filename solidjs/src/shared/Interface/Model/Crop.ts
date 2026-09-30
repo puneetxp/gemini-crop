@@ -1,0 +1,21 @@
+export interface Crop {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   crop_name: string,
+   crop_variety: string | null,
+   season: string,
+   planting_date: Date,
+   expected_harvest_date: Date,
+   area: number,
+   expected_yield: number | null,
+   expected_profit: number | null,
+   actual_yield: number | null,
+   actual_profit: number | null,
+   status: string | null,
+   parent_crop_id: number | null,
+   crop_role: string | null,
+   farm_plot_id: number,
+   strategy_id: number | null
+}

@@ -1,0 +1,21 @@
+export interface Supply_match {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   matched_quantity: number,
+   match_score: number | null,
+   price_offered: number | null,
+   status: string,
+   match_explanation: string | null,
+   is_aggregated: boolean,
+   aggregation_group_id: string | null,
+   farmer_confirmation_status: string,
+   farmer_confirmed_at: Date | null,
+   buyer_accepted_at: Date | null,
+   delivery_status: string,
+   delivery_notes: string | null,
+   request_id: number,
+   listing_id: number | null,
+   farmer_id: number
+}

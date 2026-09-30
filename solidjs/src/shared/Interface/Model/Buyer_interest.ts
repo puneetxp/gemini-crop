@@ -1,0 +1,21 @@
+export interface Buyer_interest {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   buyer_name: string,
+   buyer_phone: string,
+   buyer_email: string | null,
+   buyer_type: string,
+   interested_quantity: number,
+   message: string | null,
+   status: string | null,
+   delivery_latitude: number | null,
+   delivery_longitude: number | null,
+   delivery_pincode: string | null,
+   delivery_state: string | null,
+   delivery_district: string | null,
+   delivery_village: string | null,
+   delivery_address_line: string | null,
+   listing_id: number
+}

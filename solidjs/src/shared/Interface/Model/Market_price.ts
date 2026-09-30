@@ -1,0 +1,22 @@
+export interface Market_price {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   item_type: string,
+   item_name: string,
+   variety: string | null,
+   price_per_unit: number,
+   quantity: number,
+   total_value: number,
+   quality_grade: string | null,
+   quality_premium_percent: number | null,
+   state: string,
+   district: string,
+   transaction_date: Date,
+   season: string | null,
+   source: string,
+   listing_id: number | null,
+   booking_id: number | null,
+   transaction_id: number | null
+}

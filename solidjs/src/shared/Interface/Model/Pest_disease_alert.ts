@@ -1,0 +1,22 @@
+export interface Pest_disease_alert {
+   id: number,
+   created_at: Date,
+   updated_at: Date,
+   enable: number,
+   pest_disease_name: string,
+   alert_type: string,
+   severity: string,
+   description: string,
+   crop_stage: string,
+   weather_conditions: string | null,
+   organic_recommendations: string | null,
+   chemical_recommendations: string | null,
+   prevention_measures: string | null,
+   timing_instructions: string | null,
+   notification_sent: boolean | null,
+   notification_sent_at: Date | null,
+   is_resolved: boolean | null,
+   resolved_at: Date | null,
+   crop_id: number,
+   farm_id: number
+}
