@@ -9,6 +9,7 @@ from typing import Optional
 from fastapi import APIRouter, Depends, Header, HTTPException, status
 from sqlalchemy.orm import Session
 
+from app.core.config import settings
 from app.core.auth import token_validator
 from app.core.database import get_db
 from app.orm.user_sqlalchemy import User
