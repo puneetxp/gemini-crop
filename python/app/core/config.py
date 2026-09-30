@@ -95,13 +95,13 @@ class Settings(BaseSettings):
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/{self.REDIS_DB}"
 
     # Google Cloud Configuration
-    GOOGLE_CLOUD_PROJECT: str = "your-project-id"
+    GOOGLE_CLOUD_PROJECT: str = "cropsense-ai-a4d5cf"
     GOOGLE_APPLICATION_CREDENTIALS: Optional[str] = None
-    GOOGLE_CLOUD_REGION: str = "asia-south1"
-    FIREBASE_PROJECT_ID: str = "your-firebase-project"
-    GEMINI_MODEL: str = "gemini-3.8-flash"
+    GOOGLE_CLOUD_REGION: str = "us-central1"
+    FIREBASE_PROJECT_ID: str = "cropsense-ai-a4d5cf"
+    GEMINI_MODEL: str = "gemini-2.5-flash"
     # Voice/text assistant (menu routing, vet chat, form filling): fast, cheap model; falls back to GEMINI_MODEL
-    GEMINI_ASSIST_MODEL: str = "gemini-3.5-flash-lite"
+    GEMINI_ASSIST_MODEL: str = "gemini-2.5-flash-lite"
     CLOUD_SQL_INSTANCE: Optional[str] = None
     GOOGLE_CLOUD_SQL_INSTANCE: Optional[str] = None  # Used by database.py for Cloud SQL connector
     CLOUD_SQL_DB: str = "cropsense_gcp"

@@ -1,109 +1,80 @@
-import { createSignal, createMemo } from "solid-js";
+/**
+ * Language store
+ * Current UI language plus t() for translated strings. The language comes
+ * from (in order) the viewer's explicit choice saved on this device, the
+ * user's profile language_preference, then English. Missing keys fall back
+ * to English, so a partly translated language never shows blanks.
+ */
 
-export type SupportedLanguage = "en" | "hi" | "mr" | "pa";
+import { createRoot, createSignal, createEffect } from 'solid-js';
+import { user } from './auth.store';
+import { en, type TKey, type Dictionary } from '../i18n/en';
+import LANGUAGE_CONFIG from '../i18n/languages.json';
 
-const translations: Record<SupportedLanguage, Record<string, string>> = {
-  en: {
-    "app.title": "CropSense AI",
-    "nav.home": "Home",
-    "nav.dashboard": "Dashboard",
-    "nav.farms": "Farms",
-    "nav.diagnose": "AI Doctor",
-    "nav.livestock": "Pashu Hub",
-    "nav.soil": "Soil & Satellite",
-    "nav.marketplace": "Marketplace",
-    "nav.bookings": "Advance Bookings",
-    "nav.strategy": "Annual Strategy",
-    "nav.assistant": "AI Voice Assistant",
-    "nav.settings": "Settings",
-    "auth.signin": "Sign In",
-    "auth.signup": "Sign Up",
-    "auth.signout": "Sign Out",
-    "status.offline": "You are currently offline. Changes will sync when connected.",
-    "status.connected": "Online",
-    "action.refresh": "Refresh",
-    "action.save": "Save Changes",
-    "action.cancel": "Cancel",
-  },
-  hi: {
-    "app.title": "क्रॉपसेंस एआई",
-    "nav.home": "होम",
-    "nav.dashboard": "डैशबोर्ड",
-    "nav.farms": "खेत",
-    "nav.diagnose": "फसल डॉक्टर",
-    "nav.livestock": "पशु हब",
-    "nav.soil": "मृदा व उपग्रह",
-    "nav.marketplace": "मंडी / बाज़ार",
-    "nav.bookings": "अग्रिम अनुबंध",
-    "nav.strategy": "वार्षिक रणनीति",
-    "nav.assistant": "आवाज़ सहायक",
-    "nav.settings": "सेटिंग्स",
-    "auth.signin": "लॉग इन",
-    "auth.signup": "साइन अप",
-    "auth.signout": "लॉग आउट",
-    "status.offline": "आप अभी ऑफलाइन हैं। नेटवर्क आने पर बदलाव सिंक होंगे।",
-    "status.connected": "ऑनलाइन",
-    "action.refresh": "ताज़ा करें",
-    "action.save": "सुरक्षित करें",
-    "action.cancel": "रद्द करें",
-  },
-  mr: {
-    "app.title": "क्रॉपसेन्स एआय",
-    "nav.home": "मुख्यपृष्ठ",
-    "nav.dashboard": "डॅशबोर्ड",
-    "nav.farms": "शेतजमीन",
-    "nav.diagnose": "पीक डॉक्टर",
-    "nav.livestock": "पशु हब",
-    "nav.soil": "माती व उपग्रह",
-    "nav.marketplace": "बाजारपेठ",
-    "nav.bookings": "आगाऊ करार",
-    "nav.strategy": "वार्षिक नियोजन",
-    "nav.assistant": "व्हॉइस असिस्टंट",
-    "nav.settings": "सेटिंग्ज",
-    "auth.signin": "साइन इन",
-    "auth.signup": "नोंदणी",
-    "auth.signout": "लॉग आउट",
-    "status.offline": "तुम्ही ऑफलाइन आहात. कनेक्टिव्हिटी आल्यावर बदल सेव्ह होतील.",
-    "status.connected": "ऑनलाइन",
-    "action.refresh": "रिफ्रेश",
-    "action.save": "जतन करा",
-    "action.cancel": "रद्द करा",
-  },
-  pa: {
-    "app.title": "ਕ੍ਰੌਪਸੈਂਸ ਏਆਈ",
-    "nav.home": "ਮੁੱਖ ਪੰਨਾ",
-    "nav.dashboard": "ਡੈਸ਼ਬੋਰਡ",
-    "nav.farms": "ਖੇਤ",
-    "nav.diagnose": "ਫ਼ਸਲ ਡਾਕਟਰ",
-    "nav.livestock": "ਪਸ਼ੂ ਹੱਬ",
-    "nav.soil": "ਮਿੱਟੀ ਤੇ ਸੈਟੇਲਾਈਟ",
-    "nav.marketplace": "ਮੰਡੀ",
-    "nav.bookings": "ਐਡਵਾਂਸ ਬੁਕਿੰਗ",
-    "nav.strategy": "ਸਾਲਾਨਾ ਰਣਨੀਤੀ",
-    "nav.assistant": "ਵੌਇਸ ਅਸਿਸਟੈਂਟ",
-    "nav.settings": "ਸੈਟਿੰਗਾਂ",
-    "auth.signin": "ਲਾਗਇਨ",
-    "auth.signup": "ਸਾਇਨ ਅੱਪ",
-    "auth.signout": "ਲਾਗ ਆਉਟ",
-    "status.offline": "ਤੁਸੀਂ ਆਫਲਾਈਨ ਹੋ। ਨੈੱਟਵਰਕ ਆਉਣ 'ਤੇ ਬਦਲਾਅ ਸੇਵ ਹੋਣਗੇ।",
-    "status.connected": "ਔਨਲਾਈਨ",
-    "action.refresh": "ਤਾਜ਼ਾ ਕਰੋ",
-    "action.save": "ਸੰਭਾਲੋ",
-    "action.cancel": "ਰੱਦ ਕਰੋ",
-  },
+// Every src/i18n/<code>.ts exports `const <code>: Dictionary` — written by
+// `npm run i18n:translate` for each language in i18n/languages.json.
+const modules = import.meta.glob('../i18n/*.ts', { eager: true }) as Record<string, Record<string, unknown>>;
+const DICTIONARIES: Record<string, Dictionary> = { en };
+for (const [path, mod] of Object.entries(modules)) {
+    const code = path.match(/\/([a-z]{2,3})\.ts$/)?.[1];
+    if (code && code !== 'en' && mod[code]) DICTIONARIES[code] = mod[code] as Dictionary;
+}
+
+export type Lang = string;
+
+/** Languages offered in the picker: configured and with a dictionary built */
+export const LANGUAGES: { code: Lang; label: string; name: string }[] = LANGUAGE_CONFIG.filter(
+    (l) => l.code in DICTIONARIES,
+);
+
+const STORAGE_KEY = 'app_lang';
+
+const isLang = (v: unknown): v is Lang => typeof v === 'string' && v in DICTIONARIES;
+
+const readSaved = (): Lang | null => {
+    try {
+        const v = localStorage.getItem(STORAGE_KEY);
+        return isLang(v) ? v : null;
+    } catch {
+        return null;
+    }
 };
 
-const initialLang = (localStorage.getItem("app_lang") as SupportedLanguage) || "en";
-const [lang, setLangState] = createSignal<SupportedLanguage>(initialLang);
+const [lang, setLangSignal] = createSignal<Lang>(readSaved() || 'en');
 
-export const currentLanguage = createMemo(() => lang());
+// Until the viewer picks a language here, follow their profile setting
+createRoot(() => {
+    createEffect(() => {
+        const pref = user()?.language_preference;
+        if (!readSaved() && isLang(pref)) setLangSignal(pref);
+    });
+});
 
-export function setLanguage(newLang: SupportedLanguage): void {
-  setLangState(newLang);
-  localStorage.setItem("app_lang", newLang);
+export function setLang(next: Lang) {
+    setLangSignal(next);
+    try {
+        localStorage.setItem(STORAGE_KEY, next);
+    } catch {
+        // storage blocked — choice lasts for this session only
+    }
+    document.documentElement.lang = next;
 }
 
-export function t(key: string): string {
-  const current = lang();
-  return translations[current]?.[key] || translations.en[key] || key;
+/** Translate a key, filling {placeholders} from vars */
+export function t(key: TKey, vars?: Record<string, string | number>): string {
+    let s = DICTIONARIES[lang()]?.[key] ?? en[key] ?? key;
+    if (vars) for (const [k, v] of Object.entries(vars)) s = s.replace(`{${k}}`, String(v));
+    return s;
 }
+
+/** Translate a value that came from the API (e.g. species), or show it as-is */
+export function tValue(prefix: 'species' | 'health', value?: string | null): string {
+    if (!value) return '';
+    const key = `${prefix}.${value.toLowerCase()}` as TKey;
+    return key in en ? t(key) : value;
+}
+
+export { lang };
+export type SupportedLanguage = Lang;
+export const currentLanguage = lang;
+export const setLanguage = setLang;

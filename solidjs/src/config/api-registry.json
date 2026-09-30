@@ -1,0 +1,193 @@
+{
+  "$schema": "./api-registry-schema.json",
+  "version": "1.0.0",
+  "generatedAt": "2026-03-02T15:50:00.000000Z",
+  "baseUrl": "http://localhost:8000/api/v1",
+  "apiVersion": "v1",
+  "endpoints": {
+    "auth": {
+      "login": "/auth/signin",
+      "signup": "/auth/signup",
+      "logout": "/auth/logout",
+      "refresh": "/auth/refresh",
+      "verifyEmail": "/auth/verify-email",
+      "resendVerification": "/auth/resend-verification",
+      "forgotPassword": "/auth/forgot-password",
+      "resetPassword": "/auth/reset-password",
+      "me": "/auth/user"
+    },
+    "users": {
+      "getProfile": "/users/profile",
+      "updateProfile": "/users/profile",
+      "changePassword": "/users/change-password"
+    },
+    "farms": {
+      "list": "/farms",
+      "create": "/farms",
+      "get": "/farms/{id}",
+      "update": "/farms/{id}",
+      "delete": "/farms/{id}",
+      "plots": "/farms/{id}/plots",
+      "deletePlot": "/farms/{farm_id}/plots/{id}"
+    },
+    "crops": {
+      "annualStrategy": "/annual-strategy",
+      "recommendations": "/crop-recommendations",
+      "yieldPrediction": "/yield-predictions",
+      "saveStrategy": "/annual-strategy/save",
+      "getStrategy": "/annual-strategy/{id}",
+      "listStrategies": "/annual-strategy/list",
+      "myStrategies": "/annual-strategy/list",
+      "updateStatus": "/annual-strategy/{id}/status",
+      "addFeedback": "/annual-strategy/{id}/feedback",
+      "updateYield": "/yield-predictions/{id}",
+      "checkHarvest": "/crops/harvest-readiness/{crop_id}",
+      "harvestAlert": "/crops/harvest-alert/{crop_id}"
+    },
+    "cropMilestones": {
+      "list": "/crop-milestones",
+      "create": "/crop-milestones",
+      "get": "/crop-milestones/{id}",
+      "update": "/crop-milestones/{id}",
+      "complete": "/crop-milestones/{id}/complete"
+    },
+    "marketplace": {
+      "listings": "/marketplace/listings",
+      "createListing": "/marketplace/listings",
+      "getListing": "/marketplace/listings/{id}",
+      "updateListing": "/marketplace/listings/{id}",
+      "deleteListing": "/marketplace/listings/{id}",
+      "search": "/marketplace/search",
+      "myListings": "/marketplace/my-listings"
+    },
+    "advanceBooking": {
+      "create": "/marketplace/advance-bookings",
+      "list": "/marketplace/advance-bookings",
+      "get": "/marketplace/advance-bookings/{id}",
+      "update": "/marketplace/advance-bookings/{id}",
+      "cancel": "/marketplace/advance-bookings/{id}/cancel",
+      "confirm": "/marketplace/advance-bookings/{id}/confirm",
+      "complete": "/marketplace/advance-bookings/{id}/complete",
+      "qualityVerify": "/marketplace/advance-bookings/{id}/quality-verify",
+    "dispute": "/marketplace/advance-bookings/{id}/dispute"
+    },
+    "marketData": {
+      "prices": "/market-data/prices",
+      "trends": "/market-data/trends",
+      "forecast": "/market-data/forecast"
+    },
+    "marketIntelligence": {
+      "priceTracking": "/market-intelligence/price-tracking",
+      "priceHistory": "/market-intelligence/price-history",
+      "trends": "/market-intelligence/trends/{item_type}/{item_name}",
+      "qualityPremiums": "/market-intelligence/quality-premiums/{item_type}/{item_name}",
+      "demandForecast": "/market-intelligence/demand-forecast/{item_type}/{item_name}",
+      "summary": "/market-intelligence/summary",
+      "dashboard": "/market-intelligence/dashboard",
+      "msp": "/market-intelligence/msp"
+    },
+    "predictiveAnalytics": {
+      "predictPrice": "/predictive-analytics/predict-price",
+      "predictDemand": "/predictive-analytics/predict-demand",
+      "supplyDemandGaps": "/predictive-analytics/supply-demand-gaps",
+      "opportunityScore": "/predictive-analytics/opportunity-score",
+      "buyerSupplyPlanning": "/predictive-analytics/buyer-supply-planning"
+    },
+    "notifications": {
+      "subscribe": "/notifications/subscribe",
+      "unsubscribe": "/notifications/unsubscribe",
+      "send": "/notifications/send",
+      "test": "/notifications/test",
+      "vapidPublicKey": "/notifications/vapid-public-key"
+    },
+    "weather": {
+      "current": "/weather/current",
+      "forecast": "/weather/forecast",
+      "alerts": "/weather/alerts",
+      "severe": "/severe-weather/alerts",
+      "recommendations": "/weather-recommendations"
+    },
+    "soil": {
+      "tests": "/soil-testing/tests",
+      "createTest": "/soil-testing/tests",
+      "getTest": "/soil-testing/tests/{id}",
+      "maps": "/soil-maps",
+      "health": "/soil-health/{plot_id}",
+      "recommendations": "/soil/recommendations",
+      "moisture": "/soil/moisture"
+    },
+    "fertilizer": {
+      "recommendations": "/fertilizer-recommendations",
+      "tracking": "/fertilizer-tracking",
+      "applications": "/fertilizer-tracking/applications",
+      "history": "/fertilizer-tracking/history/{plot_id}"
+    },
+    "pestDisease": {
+      "alerts": "/pest-disease/alerts",
+      "identify": "/pest-disease/identify",
+      "treatments": "/pest-disease/treatments",
+      "history": "/pest-disease/history/{crop_id}"
+    },
+    "livestock": {
+      "list": "/livestock",
+      "create": "/livestock",
+      "get": "/livestock/{id}",
+      "update": "/livestock/{id}",
+      "delete": "/livestock/{id}",
+      "health": "/livestock-health/{id}",
+      "nutrition": "/livestock-nutrition/{id}",
+      "breeding": "/livestock-breeding",
+      "vaccinations": "/vaccination-reminders",
+      "veterinary": "/veterinary/appointments"
+    },
+    "livestockTransactions": {
+      "create": "/livestock-transactions",
+      "list": "/livestock-transactions",
+      "get": "/livestock-transactions/{id}",
+      "update": "/livestock-transactions/{id}",
+      "cancel": "/livestock-transactions/{id}/cancel"
+    },
+    "transport": {
+      "providers": "/transport/providers",
+      "bookings": "/transport/bookings",
+      "createBooking": "/transport/bookings",
+      "tracking": "/transport/tracking/{booking_id}"
+    },
+    "plotAnalysis": {
+      "analyze": "/plot-analysis/analyze",
+      "profitability": "/plot-analysis/profitability",
+      "history": "/plot-analysis/history/{plot_id}",
+      "publish": "/plot-publishing/publish",
+      "listings": "/plot-publishing/listings"
+    },
+    "aiQuota": {
+      "getStatus": "/ai-quota/status/{user_id}",
+      "check": "/ai-quota/check",
+      "increment": "/ai-quota/increment",
+      "reset": "/ai-quota/reset",
+      "updateLimit": "/ai-quota/limit/{user_id}",
+      "statistics": "/ai-quota/statistics"
+    },
+    "address": {
+      "lookupPincode": "/address/pincode/{pincode}",
+      "validate": "/address/validate"
+    },
+    "analytics": {
+      "profileStatus": "/analytics/profile-status",
+      "dashboard": "/analytics/dashboard",
+      "farmPerformance": "/analytics/farm-performance",
+      "farmAnalytics": "/analytics/farm/{farm_id}",
+      "cropPerformance": "/analytics/crop-performance",
+      "marketTrends": "/analytics/market-trends"
+    },
+    "upload": {
+      "image": "/upload/image",
+      "document": "/upload/document"
+    },
+    "health": {
+      "check": "/health",
+      "ready": "/health/ready",
+      "live": "/health/live"
+    }
+  }
+}

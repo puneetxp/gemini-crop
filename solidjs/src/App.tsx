@@ -3,6 +3,8 @@ import { A, useLocation } from "@solidjs/router";
 import { Sidebar } from "./components/layout/Sidebar";
 import { BottomDock } from "./components/layout/BottomDock";
 import { OfflineIndicator } from "./components/common/OfflineIndicator";
+import ToastContainer from "./components/ui/Toast";
+import VoiceAssistant from "./components/assistant/VoiceAssistant";
 import { initializeAuth, user, isAuthenticated } from "./stores/auth.store";
 
 export const App: Component<{ children?: JSX.Element }> = (props) => {
@@ -14,6 +16,8 @@ export const App: Component<{ children?: JSX.Element }> = (props) => {
 
   return (
     <div class="min-h-screen bg-canvas flex flex-col text-slate-900 font-sans antialiased">
+      <ToastContainer />
+      <VoiceAssistant />
       <OfflineIndicator />
       <Sidebar />
 

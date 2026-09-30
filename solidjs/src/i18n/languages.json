@@ -1,0 +1,6 @@
+[
+    { "code": "en", "label": "English", "name": "English" },
+    { "code": "hi", "label": "हिन्दी", "name": "Hindi" },
+    { "code": "mr", "label": "मराठी", "name": "Marathi" },
+    { "code": "pa", "label": "ਪੰਜਾਬੀ", "name": "Punjabi" }
+]
