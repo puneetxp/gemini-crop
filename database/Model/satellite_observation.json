@@ -1,0 +1,85 @@
+{
+    "name": "satellite_observation",
+    "table": "satellite_observations",
+    "crud": {
+        "isuper": [
+            "r",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "scene_id",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Sentinel-2 item id'",
+            "mysql_data": "varchar(120)"
+        },
+        {
+            "name": "observed_on",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "source",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'sentinel-2-l2a' COMMENT 'sentinel-2-l2a via Planetary Computer, or earth-engine'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "ndvi",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'crop vigour, -1..1'",
+            "mysql_data": "DECIMAL(5,3)",
+            "default": "NULL"
+        },
+        {
+            "name": "ndmi",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'crop water content, -1..1'",
+            "mysql_data": "DECIMAL(5,3)",
+            "default": "NULL"
+        },
+        {
+            "name": "ndre",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'red-edge, nitrogen status, -1..1'",
+            "mysql_data": "DECIMAL(5,3)",
+            "default": "NULL"
+        },
+        {
+            "name": "clear_pct",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'share of the field free of cloud and shadow'",
+            "mysql_data": "DECIMAL(5,1)",
+            "default": "NULL"
+        },
+        {
+            "name": "pixels",
+            "datatype": "number",
+            "mysql_data": "INT",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "farm"
+    ]
+}

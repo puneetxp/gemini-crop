@@ -1,0 +1,28 @@
+{
+    "name": "active_role",
+    "table": "active_roles",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "d",
+            "p",
+            "a"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "data": [],
+    "relation": [
+        "user",
+        "role"
+    ],
+    "default": [
+        "updated_at",
+        "id"
+    ]
+}

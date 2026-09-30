@@ -1,0 +1,64 @@
+{
+    "name": "ndap_ingestion_run",
+    "table": "ndap_ingestion_runs",
+    "crud": {
+        "isuper": [
+            "r",
+            "a"
+        ],
+        "islogin": []
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "file_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)",
+            "comment": "NDAP CSV file name taken from the email attachment or download link"
+        },
+        {
+            "name": "file_hash",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL UNIQUE",
+            "mysql_data": "varchar(64)",
+            "comment": "SHA-256 of the file content; one run row per distinct file"
+        },
+        {
+            "name": "started_at",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp",
+            "comment": "When this ingestion run started"
+        },
+        {
+            "name": "completed_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "comment": "When this ingestion run completed (null if still running)",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(20)",
+            "comment": "Run status: running, completed, failed"
+        },
+        {
+            "name": "records_ingested",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "integer",
+            "comment": "Number of crop_market_data rows seeded from this file",
+            "default": "NULL"
+        },
+        {
+            "name": "error_message",
+            "datatype": "string",
+            "mysql_data": "text",
+            "comment": "Error details if status is failed",
+            "default": "NULL"
+        }
+    ]
+}

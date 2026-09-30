@@ -1,0 +1,148 @@
+{
+    "name": "livestock_transaction",
+    "table": "livestock_transactions",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "transaction_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'sale, breeding, lease'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 1",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "agreed_price",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Final agreed price in INR'",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'inquiry' COMMENT 'inquiry, negotiation, agreed, completed, cancelled'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "buyer_message",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Initial inquiry message from buyer'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "seller_response",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Response from seller'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "buyer_contact_phone",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "buyer_contact_email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_required",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "delivery_address",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_latitude",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_longitude",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "health_guarantee_days",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 7 COMMENT '7-day health guarantee'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "health_guarantee_expires",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "completed_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "cancelled_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "cancellation_reason",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Additional transaction notes'",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "livestock_listing",
+            "alias": "listing_id"
+        },
+        {
+            "name": "user",
+            "alias": "seller_id"
+        },
+        {
+            "name": "user",
+            "alias": "buyer_id"
+        }
+    ]
+}

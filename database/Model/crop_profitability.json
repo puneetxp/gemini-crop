@@ -1,0 +1,193 @@
+{
+    "name": "crop_profitability",
+    "table": "crop_profitability",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "relations": {},
+    "data": [
+        {
+            "name": "crop_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "variety",
+            "datatype": "string",
+            "mysql_data": "varchar(200)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "year",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "season",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "avg_profit_per_acre",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "min_profit_per_acre",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "max_profit_per_acre",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "seed_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "fertilizer_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "pesticide_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "labor_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "irrigation_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "equipment_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "other_costs",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "total_investment_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "avg_revenue_per_acre",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "roi_percentage",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "break_even_yield",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "profit_margin",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "risk_level",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "price_risk_score",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "yield_risk_score",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "market_demand",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "competition_level",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "data_source",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "sample_size",
+            "datatype": "number",
+            "mysql_data": "INT",
+            "default": "NULL"
+        }
+    ]
+}

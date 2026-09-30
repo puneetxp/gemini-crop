@@ -1,0 +1,177 @@
+{
+    "name": "soil_test_result",
+    "table": "soil_test_results",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "test_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL COMMENT 'Date of soil test'",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "lab_name",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Testing laboratory name'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "lab_reference_number",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Lab reference/report number'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "nitrogen_kg_per_ha",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Nitrogen content (kg/ha)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "phosphorus_kg_per_ha",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Phosphorus content (kg/ha)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "potassium_kg_per_ha",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Potassium content (kg/ha)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "ph_level",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Soil pH level (0-14)'",
+            "mysql_data": "DECIMAL(4,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "organic_carbon_percent",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Organic carbon percentage'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "organic_matter_percent",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Organic matter percentage'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "electrical_conductivity",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'EC (dS/m) - salinity indicator'",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "sulfur_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Sulfur content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "zinc_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Zinc content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "iron_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Iron content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "manganese_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Manganese content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "copper_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Copper content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "boron_ppm",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Boron content (ppm)'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "soil_health_score",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Calculated soil health score (0-100)'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "test_method",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Testing method used'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "raw_data_json",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Raw test data in JSON format'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "recommendations",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Lab recommendations'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Additional notes'",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "farm",
+        {
+            "name": "farm_plot",
+            "alias": "plot_id",
+            "default": "NULL"
+        }
+    ]
+}

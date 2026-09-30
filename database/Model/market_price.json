@@ -1,0 +1,122 @@
+{
+    "name": "market_price",
+    "table": "market_prices",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "item_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'crop, livestock'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "item_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Crop type or livestock species'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "variety",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Crop variety or livestock breed'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "price_per_unit",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Price per kg for crops, per animal for livestock'",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Quantity in kg or number of animals'",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "total_value",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Total transaction value in INR'",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "quality_grade",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'A, B, C grade for crops'",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "quality_premium_percent",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Premium percentage for quality'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "transaction_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "season",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Kharif, Rabi, Zaid'",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "source",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'marketplace, booking, livestock_transaction'",
+            "mysql_data": "varchar(50)"
+        }
+    ],
+    "relation": [
+        {
+            "name": "marketplace_listing",
+            "alias": "listing_id",
+            "default": "NULL"
+        },
+        {
+            "name": "advance_booking",
+            "alias": "booking_id",
+            "default": "NULL"
+        },
+        {
+            "name": "livestock_transaction",
+            "alias": "transaction_id",
+            "default": "NULL"
+        }
+    ]
+}

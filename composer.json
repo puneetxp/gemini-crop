@@ -1,0 +1,15 @@
+{
+    "name": "puneetxp/the_template_php",
+    "description": "PHP template for The framework",
+    "type": "template",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Puneet Sharma",
+            "email": "puneetsharma9@hotmail.com"
+        }
+    ],
+    "require": {
+        "puneetxp/compile-php": "^0.2"
+    }
+}

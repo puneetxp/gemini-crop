@@ -1,0 +1,170 @@
+{
+    "name": "slusi_lcc_report",
+    "table": "slusi_lcc_reports",
+    "crud": {
+        "isuper": [
+            "r",
+            "a"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)",
+            "comment": "State name from SLUSI DSS"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)",
+            "comment": "District name from SLUSI DSS"
+        },
+        {
+            "name": "report_no",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(50)",
+            "comment": "SLUSI report number e.g. AGR1716"
+        },
+        {
+            "name": "year",
+            "datatype": "number",
+            "mysql_data": "integer",
+            "comment": "Survey year",
+            "default": "NULL"
+        },
+        {
+            "name": "total_area_ha",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "Total surveyed area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_i",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class I area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_ii",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class II area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_iii",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class III area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_iv",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class IV area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_v",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class V area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_vi",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class VI area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_vii",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class VII area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "lcc_class_viii",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "LCC Class VIII area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "forest_area",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "Forest area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "miscellaneous_area",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(14,2)",
+            "comment": "Miscellaneous area in hectares",
+            "default": "NULL"
+        },
+        {
+            "name": "spatial_available",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT false",
+            "mysql_data": "boolean",
+            "comment": "Whether spatial data is available",
+            "default": "NULL"
+        },
+        {
+            "name": "non_spatial_available",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT false",
+            "mysql_data": "boolean",
+            "comment": "Whether non-spatial data is available",
+            "default": "NULL"
+        },
+        {
+            "name": "ingested_at",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "mysql_data": "timestamp",
+            "comment": "When this record was ingested from SLUSI DSS"
+        }
+    ],
+    "unique_constraints": [
+        {
+            "name": "uq_lcc_state_district_report",
+            "columns": [
+                "state",
+                "district",
+                "report_no"
+            ]
+        }
+    ],
+    "indexes": [
+        {
+            "name": "idx_lcc_state_district",
+            "columns": [
+                "state",
+                "district"
+            ]
+        },
+        {
+            "name": "idx_lcc_year",
+            "columns": [
+                "year DESC"
+            ]
+        }
+    ]
+}

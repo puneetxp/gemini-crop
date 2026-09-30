@@ -1,0 +1,120 @@
+{
+    "name": "buyer_interest",
+    "table": "buyer_interests",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "buyer_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "buyer_phone",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "buyer_email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "buyer_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'wholesaler, retailer, processor, cooperative'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "interested_quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Quantity in kg'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "message",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'pending' COMMENT 'pending, contacted, agreed, cancelled'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "delivery_latitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Buyer delivery location GPS latitude (optional)'",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_longitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Buyer delivery location GPS longitude (optional)'",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_pincode",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Buyer delivery location postal code'",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_state",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Buyer delivery location state'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_district",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Buyer delivery location district'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_village",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Buyer delivery location village/VPO'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_address_line",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Full buyer delivery address'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "marketplace_listing",
+            "alias": "listing_id"
+        }
+    ]
+}

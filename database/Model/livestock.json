@@ -1,0 +1,141 @@
+{
+    "name": "livestock",
+    "table": "livestock",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "species",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'cattle, goat, poultry, buffalo'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "breed",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "name",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Animal name the farmer uses, e.g. Lakshmi'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 1",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "purchase_price",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "purchase_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "purpose",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'dairy, meat, breeding, eggs'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "expected_roi",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Expected return on investment'",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "break_even_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'active' COMMENT 'active, sold, deceased'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "latitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Livestock location GPS latitude (optional, can differ from farm)'",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "longitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Livestock location GPS longitude (optional)'",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "pincode",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Livestock location postal code'",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Livestock location state'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Livestock location district'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "village",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Livestock location village/VPO'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "address_line",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Full livestock location address'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "farm",
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

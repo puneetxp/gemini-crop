@@ -1,0 +1,166 @@
+{
+    "name": "user",
+    "table": "users",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a",
+            "u"
+        ]
+    },
+    "enable": 1,
+    "_documentation": {
+        "standard_fields": "The fields 'id', 'created_at', 'updated_at', and 'enable' are standard auto-generated fields created by the pythonset code generator.",
+        "id_field": "The 'id' field is explicitly defined as BIGINT PRIMARY KEY AUTO_INCREMENT. This is the standard for all model primary keys.",
+        "foreign_key_standard": "All foreign key references to users.id (e.g., user_id in other tables) MUST use 'mysql_data': 'bigint' (lowercase) for consistency. See farm.json and ai_usage_quota.json as examples.",
+        "authentication": "Supports multiple authentication methods: AWS Cognito (cognito_user_id), Google OAuth (google_id), Facebook OAuth (facebook_id), and traditional password-based login (password). At least one authentication method must be set for each user."
+    },
+    "data": [
+        {
+            "name": "cognito_user_id",
+            "datatype": "string",
+            "sql_attribute": "UNIQUE  COMMENT 'Amazon Cognito User Pool ID'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "firebase_id",
+            "datatype": "string",
+            "sql_attribute": "UNIQUE  COMMENT 'Firebase User ID'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "username",
+            "datatype": "string",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "email",
+            "datatype": "string",
+            "sql_attribute": "UNIQUE",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "phone",
+            "datatype": "string",
+            "sql_attribute": "UNIQUE",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "google_id",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Google OAuth ID for social login'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "facebook_id",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Facebook OAuth ID for social login'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "password",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Hashed password for traditional login'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "user_type",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'farmer' COMMENT 'farmer, buyer, admin'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "preferred_language",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'en' COMMENT 'en, hi, ta, te, mr, bn'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "mfa_enabled",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "latitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Personal address GPS latitude (optional)'",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "longitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Personal address GPS longitude (optional)'",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "pincode",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Postal code for address'",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'State name'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'District name'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "village",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Village/VPO name'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "address_line",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Full address (house/building, street, landmark)'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "is_active",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 1 COMMENT 'User account active status'",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "is_verified",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0 COMMENT 'Email/phone verification status'",
+            "mysql_data": "TINYINT(1)"
+        }
+    ]
+}

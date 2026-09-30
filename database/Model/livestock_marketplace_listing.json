@@ -1,0 +1,161 @@
+{
+    "name": "livestock_marketplace_listing",
+    "table": "livestock_marketplace_listings",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "listing_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'sale, breeding_service, milk_production'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "asking_price",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "current_age_months",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "current_weight_kg",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "milk_production_liters_per_day",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'For dairy animals'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "breeding_history",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Number of successful breedings'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "health_status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'excellent' COMMENT 'excellent, good, fair, poor'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "vaccination_status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'up_to_date' COMMENT 'up_to_date, pending, none'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "total_investment",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Purchase + feed + healthcare costs'",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "total_revenue",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0 COMMENT 'Revenue from milk, eggs, breeding'",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "current_roi_percentage",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Calculated ROI percentage'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "break_even_achieved",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "break_even_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "projected_annual_profit",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'AI-calculated projected profit'",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "location_state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "location_district",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "farmer_contact_phone",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "farmer_contact_email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "listing_status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'active' COMMENT 'active, sold, withdrawn'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "views_count",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "bedrock_analysis",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'AI analysis of livestock value and ROI'",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "livestock",
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

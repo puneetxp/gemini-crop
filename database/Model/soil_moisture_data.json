@@ -1,0 +1,65 @@
+{
+    "name": "soil_moisture_data",
+    "table": "soil_moisture_data",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "year",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "integer"
+        },
+        {
+            "name": "month",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(2)"
+        },
+        {
+            "name": "moisture_level",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,4)"
+        },
+        {
+            "name": "agency_name",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        }
+    ]
+}

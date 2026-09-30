@@ -1,0 +1,145 @@
+{
+    "name": "supply_request",
+    "table": "supply_requests",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "crop_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "quantity_needed",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "quality_requirements",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_date_start",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "delivery_date_end",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "max_price_per_unit",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "recurring",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "recurrence_pattern",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "is_emergency",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'open'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "delivery_address",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_latitude",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_longitude",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_pincode",
+            "datatype": "string",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_state",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "embedding",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Vector embedding for similarity matching (384 dimensions)'",
+            "mysql_data": "vector(384)",
+            "default": "NULL"
+        },
+        {
+            "name": "embedding_cache_key",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Cache key for embedding to avoid regeneration'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "user",
+            "alias": "buyer_id"
+        }
+    ]
+}

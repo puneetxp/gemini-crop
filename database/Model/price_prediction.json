@@ -1,0 +1,135 @@
+{
+    "name": "price_prediction",
+    "table": "price_predictions",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "relations": {},
+    "data": [
+        {
+            "name": "item_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'crop, livestock'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "item_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Crop type or livestock species'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "variety",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Crop variety or livestock breed'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "prediction_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "target_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL COMMENT 'Date for which price is predicted'",
+            "mysql_data": "date"
+        },
+        {
+            "name": "predicted_price",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Predicted price per unit'",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "confidence_score",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Confidence score 0-1'",
+            "mysql_data": "DECIMAL(3,2)"
+        },
+        {
+            "name": "price_range_min",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Minimum expected price'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "price_range_max",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Maximum expected price'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "trend",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'up, down, stable'",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "demand_forecast",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'high, medium, low'",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "supply_forecast",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'high, medium, low'",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "season",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Kharif, Rabi, Zaid'",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "model_version",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Version of prediction model used'",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "factors",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON of factors influencing prediction'",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ]
+}

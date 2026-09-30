@@ -1,0 +1,110 @@
+{
+    "name": "supply_match",
+    "table": "supply_matches",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "matched_quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "match_score",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "price_offered",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'suggested'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "match_explanation",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "is_aggregated",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "aggregation_group_id",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "farmer_confirmation_status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'pending'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "farmer_confirmed_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "buyer_accepted_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'pending'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "delivery_notes",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "supply_request",
+            "alias": "request_id"
+        },
+        {
+            "name": "marketplace_listing",
+            "alias": "listing_id",
+            "default": "NULL"
+        },
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

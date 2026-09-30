@@ -1,0 +1,37 @@
+{
+    "name": "system_setting",
+    "table": "system_settings",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [],
+        "public": []
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "key",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL UNIQUE COMMENT 'Configuration key'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "value",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Configuration value'",
+            "mysql_data": "text"
+        },
+        {
+            "name": "description",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Setting description'",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ]
+}

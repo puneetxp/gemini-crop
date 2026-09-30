@@ -1,0 +1,44 @@
+{
+    "name": "push_subscription",
+    "table": "push_subscriptions",
+    "crud": {
+        "isuper": [
+            "r",
+            "a",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "user_id",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "bigint"
+        },
+        {
+            "name": "endpoint",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Browser push service URL, unique per browser'",
+            "mysql_data": "text"
+        },
+        {
+            "name": "p256dh",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "auth",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "user_agent",
+            "datatype": "string",
+            "mysql_data": "varchar(512)",
+            "default": "NULL"
+        }
+    ]
+}

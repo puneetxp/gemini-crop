@@ -1,0 +1,67 @@
+{
+    "name": "user_notification",
+    "table": "user_notifications",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "title",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "message",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "text"
+        },
+        {
+            "name": "type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'info' COMMENT 'alert, info, general, weather, market, booking, livestock'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "link",
+            "datatype": "string",
+            "mysql_data": "varchar(512)",
+            "default": "NULL"
+        },
+        {
+            "name": "data",
+            "datatype": "json",
+            "mysql_data": "jsonb",
+            "default": "NULL"
+        },
+        {
+            "name": "is_read",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT false",
+            "mysql_data": "boolean"
+        },
+        {
+            "name": "read_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "user"
+    ]
+}

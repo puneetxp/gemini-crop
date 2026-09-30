@@ -1,0 +1,157 @@
+{
+    "name": "marketplace_listing",
+    "table": "marketplace_listings",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "crop_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "crop_variety",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "expected_harvest_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "estimated_quantity",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Quantity in kg'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "available_quantity",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Available quantity for booking in kg (defaults to estimated_quantity)'",
+            "mysql_data": "INT",
+            "default": "NULL"
+        },
+        {
+            "name": "quality_grade",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'A, B, C grade prediction'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "location_state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "location_district",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "farmer_contact_phone",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "farmer_contact_email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'active' COMMENT 'active, booked, harvested, cancelled'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "delivery_latitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Delivery location GPS latitude (optional)'",
+            "mysql_data": "DECIMAL(10,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_longitude",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Delivery location GPS longitude (optional)'",
+            "mysql_data": "DECIMAL(11,8)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_pincode",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Delivery location postal code'",
+            "mysql_data": "varchar(10)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_village",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Delivery location village/VPO'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "delivery_address_line",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Full delivery address'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "embedding",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Vector embedding for similarity matching (384 dimensions)'",
+            "mysql_data": "vector(384)",
+            "default": "NULL"
+        },
+        {
+            "name": "embedding_cache_key",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Cache key for embedding to avoid regeneration'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "price_per_unit",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Price per kg in INR'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "farm",
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

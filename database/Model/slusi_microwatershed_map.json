@@ -1,0 +1,45 @@
+{
+    "name": "slusi_microwatershed_map",
+    "table": "slusi_microwatershed_maps",
+    "crud": {
+        "isuper": [
+            "r",
+            "a"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL UNIQUE",
+            "mysql_data": "varchar(100)",
+            "comment": "State name (unique - one map per state)"
+        },
+        {
+            "name": "map_data",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "bytea",
+            "comment": "PNG binary data of the microwatershed map"
+        },
+        {
+            "name": "file_size_bytes",
+            "datatype": "number",
+            "mysql_data": "integer",
+            "comment": "File size in bytes",
+            "default": "NULL"
+        },
+        {
+            "name": "ingested_at",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "mysql_data": "timestamp",
+            "comment": "When this map was downloaded from SLUSI"
+        }
+    ]
+}

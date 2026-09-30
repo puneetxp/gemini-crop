@@ -1,0 +1,97 @@
+{
+    "name": "breeding_record",
+    "table": "breeding_records",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "breeding_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'natural, artificial_insemination'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "breeding_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "mate_breed",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Mate breed if external'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "expected_delivery_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "actual_delivery_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "pregnancy_status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'pending' COMMENT 'pending, confirmed, delivered, failed'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "number_of_offspring",
+            "datatype": "number",
+            "mysql_data": "int",
+            "default": "NULL"
+        },
+        {
+            "name": "breeding_cost",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Cost in INR'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "veterinarian_name",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "livestock",
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        },
+        {
+            "name": "livestock",
+            "alias": "mate_id",
+            "default": "NULL"
+        }
+    ]
+}

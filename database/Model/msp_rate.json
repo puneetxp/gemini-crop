@@ -1,0 +1,80 @@
+{
+    "name": "msp_rate",
+    "table": "msp_rates",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "crop_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "year",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "integer"
+        },
+        {
+            "name": "season",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'kharif, rabi'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "msp_per_quintal",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "msp_per_kg",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "increase_over_previous",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'YoY increase percentage'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "cost_of_production",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Cost of production per quintal'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "return_over_cost_percent",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Return percentage over cost'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "source",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        }
+    ]
+}

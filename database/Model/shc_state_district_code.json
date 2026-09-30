@@ -1,0 +1,63 @@
+{
+    "name": "shc_state_district_code",
+    "table": "shc_state_district_codes",
+    "crud": {
+        "isuper": [
+            "r",
+            "a"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "state_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)",
+            "comment": "State name as used in the platform (e.g. Himachal Pradesh)"
+        },
+        {
+            "name": "state_code",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "integer",
+            "comment": "Numeric state code used by SHC WMS API"
+        },
+        {
+            "name": "district_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(100)",
+            "comment": "District name as used in the platform (e.g. Kangra)"
+        },
+        {
+            "name": "district_code",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "integer",
+            "comment": "Numeric district code used by SHC WMS API"
+        }
+    ],
+    "unique_constraints": [
+        {
+            "name": "uq_shc_state_district_code",
+            "columns": [
+                "state_code",
+                "district_code"
+            ]
+        }
+    ],
+    "indexes": [
+        {
+            "name": "idx_shc_codes_lookup",
+            "columns": [
+                "LOWER(state_name)",
+                "LOWER(district_name)"
+            ]
+        }
+    ]
+}

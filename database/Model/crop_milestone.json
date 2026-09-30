@@ -1,0 +1,87 @@
+{
+    "name": "crop_milestone",
+    "table": "crop_milestones",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "stage",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'germination, vegetative, flowering, maturation'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "expected_start_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "expected_end_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "actual_start_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "actual_end_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'pending' COMMENT 'pending, in_progress, completed, delayed'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "progress_percentage",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0 COMMENT 'Progress 0-100'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "recommendations",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array of stage-specific recommendations'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "alert_sent",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        }
+    ],
+    "relation": [
+        "crop"
+    ]
+}

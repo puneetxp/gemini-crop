@@ -1,0 +1,32 @@
+{
+    "name": "ndap_downloaded_file",
+    "table": "ndap_downloaded_files",
+    "crud": {
+        "isuper": [],
+        "islogin": []
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "file_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)",
+            "comment": "NDAP CSV file name"
+        },
+        {
+            "name": "file_hash",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL UNIQUE",
+            "mysql_data": "varchar(64)",
+            "comment": "SHA-256 of the file content, used to skip re-downloads"
+        },
+        {
+            "name": "file_content",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "bytea",
+            "comment": "Raw downloaded file bytes (CSV or ZIP) so reprocessing needs no mailbox access"
+        }
+    ]
+}

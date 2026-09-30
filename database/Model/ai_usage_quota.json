@@ -1,0 +1,53 @@
+{
+    "name": "ai_usage_quota",
+    "table": "ai_usage_quota",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL COMMENT 'Date for quota tracking'",
+            "mysql_data": "date"
+        },
+        {
+            "name": "gps_enhanced_requests",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 0 COMMENT 'GPS-enhanced Bedrock API calls count'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "pincode_requests",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 0 COMMENT 'Pincode-based recommendations count'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "last_reset",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'Last quota reset timestamp'",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "quota_limit",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 20 COMMENT 'Daily GPS-enhanced request limit'",
+            "mysql_data": "INT"
+        }
+    ],
+    "relation": [
+        "user"
+    ]
+}

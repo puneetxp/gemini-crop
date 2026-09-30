@@ -1,0 +1,81 @@
+{
+    "name": "weather_alert",
+    "table": "weather_alerts",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "state",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "alert_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'extreme_heat, heavy_rain, storm, hail, drought'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "severity",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'low, medium, high, critical'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "message",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "text"
+        },
+        {
+            "name": "recommendation",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Action recommendations'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "valid_from",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "valid_until",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "is_active",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 1",
+            "mysql_data": "TINYINT(1)"
+        }
+    ],
+    "relation": [
+        {
+            "name": "farm",
+            "default": "NULL"
+        }
+    ]
+}

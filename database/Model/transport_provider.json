@@ -1,0 +1,146 @@
+{
+    "name": "transport_provider",
+    "table": "transport_providers",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ],
+        "public": [
+            "r"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "company_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "contact_person",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "contact_phone",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(20)"
+        },
+        {
+            "name": "contact_email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "service_areas",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'JSON array of states/districts served'",
+            "mysql_data": "text"
+        },
+        {
+            "name": "vehicle_types",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'JSON array: truck, tempo, mini_truck, specialized_livestock'",
+            "mysql_data": "text"
+        },
+        {
+            "name": "livestock_specialization",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array: cattle, goat, sheep, poultry, buffalo'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "base_rate_per_km",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Base rate in INR per kilometer'",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "minimum_charge",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Minimum charge in INR'",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "insurance_available",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "insurance_rate_percentage",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Insurance cost as percentage of animal value'",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "max_capacity_animals",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Maximum number of animals per trip'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "rating",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0 COMMENT 'Average rating 0-5'",
+            "mysql_data": "DECIMAL(3,2)"
+        },
+        {
+            "name": "total_ratings",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "completed_transports",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "verified",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "verification_documents",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array of S3 document URLs'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "license_number",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'active' COMMENT 'active, inactive, suspended'",
+            "mysql_data": "varchar(50)"
+        }
+    ],
+    "relation": [
+        "user"
+    ]
+}

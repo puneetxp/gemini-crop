@@ -1,0 +1,241 @@
+{
+    "name": "weather_forecast",
+    "table": "weather_forecasts",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r",
+            "a"
+        ]
+    },
+    "enable": 1,
+    "relations": {},
+    "data": [
+        {
+            "name": "latitude",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,8)"
+        },
+        {
+            "name": "longitude",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(11,8)"
+        },
+        {
+            "name": "location_name",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "state",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "forecast_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "forecast_time",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "forecast_type",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "temperature_min",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "temperature_max",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "temperature_avg",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "feels_like",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "rainfall_probability",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "rainfall_amount",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "rainfall_intensity",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "wind_speed",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "wind_direction",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "wind_gust",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "humidity",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "pressure",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "dew_point",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "cloud_cover",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "visibility",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "uv_index",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(4,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "solar_radiation",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "weather_condition",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "weather_description",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "weather_icon",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "evapotranspiration",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "soil_moisture_index",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "growing_degree_days",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "data_source",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "source_forecast_id",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "data_quality_score",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "fetched_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "expires_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        }
+    ]
+}

@@ -1,0 +1,116 @@
+{
+    "name": "pest_disease_alert",
+    "table": "pest_disease_alerts",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "pest_disease_name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Name of pest or disease'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "alert_type",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'pest or disease'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "severity",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'low, medium, high'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "description",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "text"
+        },
+        {
+            "name": "crop_stage",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Growth stage when detected'",
+            "mysql_data": "varchar(100)"
+        },
+        {
+            "name": "weather_conditions",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON of weather conditions at detection'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "organic_recommendations",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array of organic treatment options'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "chemical_recommendations",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array of chemical treatment options'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "prevention_measures",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON array of prevention measures'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "timing_instructions",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Application timing guidance'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "notification_sent",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "notification_sent_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        },
+        {
+            "name": "is_resolved",
+            "datatype": "boolean",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "resolved_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "crop",
+        "farm"
+    ]
+}

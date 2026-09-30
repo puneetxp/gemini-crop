@@ -1,0 +1,98 @@
+{
+    "name": "offspring",
+    "table": "offspring",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "birth_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "gender",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'male, female'",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "birth_weight",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'kg'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "health_status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'healthy' COMMENT 'healthy, weak, deceased'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "current_weight",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'kg'",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "growth_rate",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "weaning_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "sale_date",
+            "datatype": "Date",
+            "mysql_data": "date",
+            "default": "NULL"
+        },
+        {
+            "name": "sale_price",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'INR'",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "notes",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        "breeding_record",
+        {
+            "name": "livestock",
+            "default": "NULL"
+        },
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

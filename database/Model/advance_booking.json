@@ -1,0 +1,97 @@
+{
+    "name": "advance_booking",
+    "table": "advance_bookings",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "quantity_booked",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "price_per_unit",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "total_amount",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "advance_payment_percent",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL DEFAULT 20",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "advance_payment_amount",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(10,2)"
+        },
+        {
+            "name": "booking_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "expected_delivery_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL DEFAULT 'pending'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "quality_standards",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "contract_terms",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "marketplace_listing",
+            "alias": "listing_id"
+        },
+        {
+            "name": "user",
+            "alias": "buyer_id"
+        },
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

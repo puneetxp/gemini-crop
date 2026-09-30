@@ -1,0 +1,257 @@
+{
+    "name": "soil_test",
+    "table": "soil_tests",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "test_date",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "date"
+        },
+        {
+            "name": "test_type",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "testing_lab",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "lab_report_url",
+            "datatype": "string",
+            "mysql_data": "varchar(500)",
+            "default": "NULL"
+        },
+        {
+            "name": "soil_type",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "soil_texture",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "soil_color",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "ph_level",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "DECIMAL(3,1)"
+        },
+        {
+            "name": "electrical_conductivity",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(6,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "organic_carbon",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "organic_matter",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "nitrogen_n",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "phosphorus_p",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "potassium_k",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "calcium_ca",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "magnesium_mg",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "sulfur_s",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "iron_fe",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "manganese_mn",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "zinc_zn",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "copper_cu",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "boron_b",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "molybdenum_mo",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(8,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "nitrogen_status",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "phosphorus_status",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "potassium_status",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "water_holding_capacity",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "drainage_quality",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "bulk_density",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "porosity",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(5,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "microbial_activity",
+            "datatype": "string",
+            "mysql_data": "varchar(50)",
+            "default": "NULL"
+        },
+        {
+            "name": "earthworm_count",
+            "datatype": "number",
+            "mysql_data": "INT",
+            "default": "NULL"
+        },
+        {
+            "name": "overall_health_score",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "fertility_rating",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "lab_recommendations",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "fertilizer_recommendations",
+            "datatype": "json",
+            "mysql_data": "jsonb",
+            "default": "NULL"
+        },
+        {
+            "name": "amendment_recommendations",
+            "datatype": "json",
+            "mysql_data": "jsonb",
+            "default": "NULL"
+        },
+        {
+            "name": "test_cost",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(10,2)",
+            "default": "NULL"
+        }
+    ],
+    "relation": [
+        {
+            "name": "farm_plot",
+            "alias": "plot_id"
+        }
+    ]
+}

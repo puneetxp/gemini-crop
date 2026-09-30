@@ -1,0 +1,133 @@
+{
+    "name": "annual_strategy",
+    "table": "annual_strategies",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "year",
+            "datatype": "number",
+            "sql_attribute": "NOT NULL COMMENT 'Agricultural year'",
+            "mysql_data": "INT"
+        },
+        {
+            "name": "kharif_crop",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "kharif_profit_estimate",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "kharif_confidence_score",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Confidence score 0-1'",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "rabi_crop",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "rabi_profit_estimate",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "rabi_confidence_score",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Confidence score 0-1'",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "zaid_crop",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "zaid_profit_estimate",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "zaid_confidence_score",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Confidence score 0-1'",
+            "mysql_data": "DECIMAL(3,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "total_annual_profit",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(12,2)",
+            "default": "NULL"
+        },
+        {
+            "name": "implementation_timeline",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON month-by-month plan'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "alternative_options",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON alternative crops'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "risk_mitigation",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'JSON risk strategies'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "bedrock_response",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Full Bedrock API response'",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "DEFAULT 'draft' COMMENT 'draft, active, completed'",
+            "mysql_data": "varchar(255)"
+        }
+    ],
+    "relation": [
+        "farm",
+        {
+            "name": "user",
+            "alias": "farmer_id"
+        }
+    ]
+}

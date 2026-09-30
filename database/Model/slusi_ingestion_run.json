@@ -1,0 +1,58 @@
+{
+    "name": "slusi_ingestion_run",
+    "table": "slusi_ingestion_runs",
+    "crud": {
+        "isuper": [
+            "r",
+            "a"
+        ],
+        "islogin": []
+    },
+    "enable": 0,
+    "data": [
+        {
+            "name": "started_at",
+            "datatype": "Date",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "timestamp",
+            "comment": "When this ingestion run started"
+        },
+        {
+            "name": "completed_at",
+            "datatype": "Date",
+            "mysql_data": "timestamp",
+            "comment": "When this ingestion run completed (null if still running)",
+            "default": "NULL"
+        },
+        {
+            "name": "status",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(20)",
+            "comment": "Run status: running, success, failed"
+        },
+        {
+            "name": "lcc_records_ingested",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "integer",
+            "comment": "Number of LCC records upserted in this run",
+            "default": "NULL"
+        },
+        {
+            "name": "maps_ingested",
+            "datatype": "number",
+            "sql_attribute": "DEFAULT 0",
+            "mysql_data": "integer",
+            "comment": "Number of microwatershed maps downloaded in this run",
+            "default": "NULL"
+        },
+        {
+            "name": "error_message",
+            "datatype": "string",
+            "mysql_data": "text",
+            "comment": "Error details if status is failed",
+            "default": "NULL"
+        }
+    ]
+}

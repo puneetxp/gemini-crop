@@ -1,0 +1,56 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "6a84763e83c3344434e0885b513872e0",
+    "packages": [
+        {
+            "name": "puneetxp/compile-php",
+            "version": "0.2.25",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/puneetxp/compile-php.git",
+                "reference": "b76ec5bfa57f1964d60fd2e8ec1ab936320c606a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/puneetxp/compile-php/zipball/b76ec5bfa57f1964d60fd2e8ec1ab936320c606a",
+                "reference": "b76ec5bfa57f1964d60fd2e8ec1ab936320c606a",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Puneetxp\\CompilePhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Puneetxp",
+                    "email": "puneetsharma9@hotmail.com"
+                }
+            ],
+            "description": "compile library with php from the framework",
+            "support": {
+                "issues": "https://github.com/puneetxp/compile-php/issues",
+                "source": "https://github.com/puneetxp/compile-php/tree/0.2.25"
+            },
+            "time": "2026-09-28T05:06:27+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {},
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {},
+    "platform-dev": {},
+    "plugin-api-version": "2.9.0"
+}

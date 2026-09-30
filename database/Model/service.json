@@ -1,0 +1,132 @@
+{
+    "name": "service",
+    "table": "services",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "r",
+            "a"
+        ],
+        "public": [
+            "r",
+            "a"
+        ],
+        "roles": {
+            "service_provider": [
+                "c",
+                "r",
+                "u",
+                "a",
+                "d"
+            ]
+        }
+    },
+    "enable": 1,
+    "data": [
+        {
+            "name": "category",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'vet, insurance, loan, shop, transport'",
+            "mysql_data": "varchar(50)"
+        },
+        {
+            "name": "name",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "organisation",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Clinic, company, bank or shop name'",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "description",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "phone",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL",
+            "mysql_data": "varchar(20)"
+        },
+        {
+            "name": "whatsapp",
+            "datatype": "string",
+            "mysql_data": "varchar(20)",
+            "default": "NULL"
+        },
+        {
+            "name": "email",
+            "datatype": "string",
+            "mysql_data": "varchar(255)",
+            "default": "NULL"
+        },
+        {
+            "name": "location_state",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "location_district",
+            "datatype": "string",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "address",
+            "datatype": "string",
+            "mysql_data": "text",
+            "default": "NULL"
+        },
+        {
+            "name": "languages",
+            "datatype": "string",
+            "sql_attribute": "COMMENT 'Comma-separated: en, hi, mr, pa'",
+            "mysql_data": "varchar(100)",
+            "default": "NULL"
+        },
+        {
+            "name": "available_now",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 1",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "verified",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 0",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "is_active",
+            "datatype": "boolean",
+            "sql_attribute": "NOT NULL DEFAULT 1",
+            "mysql_data": "TINYINT(1)"
+        },
+        {
+            "name": "added_by_user_id",
+            "datatype": "number",
+            "mysql_data": "bigint",
+            "default": "NULL"
+        },
+        {
+            "name": "user_id",
+            "datatype": "number",
+            "sql_attribute": "COMMENT 'Service-provider account that manages this service'",
+            "mysql_data": "bigint",
+            "default": "NULL"
+        }
+    ]
+}

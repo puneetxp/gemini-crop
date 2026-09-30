@@ -1,0 +1,48 @@
+{
+    "name": "crop_expense",
+    "table": "crop_expenses",
+    "crud": {
+        "isuper": [
+            "c",
+            "r",
+            "u",
+            "a",
+            "d"
+        ],
+        "islogin": [
+            "c",
+            "r",
+            "a",
+            "u",
+            "d"
+        ]
+    },
+    "enable": 1,
+    "relation": [
+        "crop"
+    ],
+    "data": [
+        {
+            "name": "category",
+            "datatype": "string",
+            "sql_attribute": "NOT NULL COMMENT 'Seeds, Labor, Fertilizer, Pesticide, Equipment, Other'",
+            "mysql_data": "varchar(255)"
+        },
+        {
+            "name": "amount",
+            "datatype": "number",
+            "mysql_data": "DECIMAL(12,2)"
+        },
+        {
+            "name": "description",
+            "datatype": "string",
+            "default": "NULL",
+            "mysql_data": "text"
+        },
+        {
+            "name": "expense_date",
+            "datatype": "Date",
+            "mysql_data": "date"
+        }
+    ]
+}
