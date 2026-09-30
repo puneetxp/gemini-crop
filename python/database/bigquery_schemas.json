@@ -1,0 +1,33 @@
+{
+  "ai_queries": [
+    {"name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Time when the query was processed"},
+    {"name": "user_id", "type": "STRING", "mode": "NULLABLE", "description": "Unique identifier of the user"},
+    {"name": "session_id", "type": "STRING", "mode": "NULLABLE", "description": "Session ID of the agent interaction"},
+    {"name": "query", "type": "STRING", "mode": "REQUIRED", "description": "User query prompt"},
+    {"name": "response", "type": "STRING", "mode": "NULLABLE", "description": "Generated AI response text"},
+    {"name": "subagent_called", "type": "STRING", "mode": "NULLABLE", "description": "Which specialized subagent was invoked"}
+  ],
+  "farm_events": [
+    {"name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Time of the event"},
+    {"name": "user_id", "type": "STRING", "mode": "REQUIRED", "description": "User identifier who performed the action"},
+    {"name": "farm_id", "type": "STRING", "mode": "REQUIRED", "description": "Farm profile ID"},
+    {"name": "action", "type": "STRING", "mode": "REQUIRED", "description": "Action type: CREATE, UPDATE, DELETE"},
+    {"name": "soil_type", "type": "STRING", "mode": "NULLABLE", "description": "Soil type of the farm plot"},
+    {"name": "irrigation_type", "type": "STRING", "mode": "NULLABLE", "description": "Irrigation type of the farm plot"}
+  ],
+  "market_transactions": [
+    {"name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Time of transaction"},
+    {"name": "buyer_id", "type": "STRING", "mode": "REQUIRED", "description": "Buyer ID"},
+    {"name": "seller_id", "type": "STRING", "mode": "REQUIRED", "description": "Seller ID"},
+    {"name": "listing_id", "type": "STRING", "mode": "REQUIRED", "description": "Marketplace listing ID"},
+    {"name": "quantity", "type": "FLOAT", "mode": "REQUIRED", "description": "Quantity purchased"},
+    {"name": "price", "type": "FLOAT", "mode": "REQUIRED", "description": "Total price paid"},
+    {"name": "status", "type": "STRING", "mode": "REQUIRED", "description": "Transaction status (COMPLETED, PENDING, CANCELLED)"}
+  ],
+  "weather_warnings": [
+    {"name": "timestamp", "type": "TIMESTAMP", "mode": "REQUIRED", "description": "Time of warning issuance"},
+    {"name": "region", "type": "STRING", "mode": "REQUIRED", "description": "Target weather region"},
+    {"name": "severity", "type": "STRING", "mode": "REQUIRED", "description": "Warning severity (INFO, WARNING, SEVERE)"},
+    {"name": "message", "type": "STRING", "mode": "REQUIRED", "description": "Details of weather event warning"}
+  ]
+}

@@ -460,8 +460,6 @@ Answer ONLY with a valid JSON object matching the following format completely, n
         weather_str = "Not available"
         if weather_forecast:
             try:
-                import json
-
                 weather_str = json.dumps(weather_forecast, indent=2)
             except Exception:
                 weather_str = str(weather_forecast)
