@@ -10,11 +10,17 @@
  * - 5-minute in-memory response cache with in-flight deduplication
  */
 
-export interface ApiRequestOptions extends RequestInit {
+export interface ApiRequestOptions extends Omit<RequestInit, "cache"> {
   requiresAuth?: boolean;
   timeoutMs?: number;
   skipCache?: boolean;
   retries?: number;
+  // Option names used by the services in src/services (from the v1 client); never forwarded to fetch
+  params?: Record<string, string | number | boolean | null | undefined>;
+  timeout?: number;
+  retry?: boolean;
+  cache?: boolean;
+  cacheTTL?: number;
 }
 
 export interface ApiResponse<T = any> {
@@ -46,16 +52,29 @@ class ApiClient {
     this.inFlightRequests.clear();
   }
 
-  private resolveUrl(path: string): string {
+  public clearCacheByPattern(pattern: RegExp | string): void {
+    const re = typeof pattern === "string" ? new RegExp(pattern) : pattern;
+    for (const key of this.cache.keys()) {
+      if (re.test(key)) this.cache.delete(key);
+    }
+  }
+
+  private resolveUrl(path: string, params?: ApiRequestOptions["params"]): string {
+    let url: string;
     if (path.startsWith("http://") || path.startsWith("https://")) {
-      return path;
+      url = path;
+    } else {
+      const cleanPath = path.startsWith("/") ? path : `/${path}`;
+      // Deduplicate if path already starts with /api/v1
+      url = cleanPath.startsWith("/api/v1/")
+        ? this.baseUrl.replace(/\/api\/v1$/, "") + cleanPath
+        : `${this.baseUrl}${cleanPath}`;
     }
-    const cleanPath = path.startsWith("/") ? path : `/${path}`;
-    // Deduplicate if path already starts with /api/v1
-    if (cleanPath.startsWith("/api/v1/")) {
-      return this.baseUrl.replace(/\/api\/v1$/, "") + cleanPath;
-    }
-    return `${this.baseUrl}${cleanPath}`;
+    const query = Object.entries(params || {})
+      .filter(([, v]) => v !== undefined && v !== null)
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+      .join("&");
+    return query ? `${url}${url.includes("?") ? "&" : "?"}${query}` : url;
   }
 
   private getTimeoutForPath(path: string, customTimeout?: number): number {
@@ -118,10 +137,19 @@ class ApiClient {
 
   public async request<T = any>(
     path: string,
-    options: ApiRequestOptions = {}
+    rawOptions: ApiRequestOptions = {}
   ): Promise<ApiResponse<T>> {
+    const { params, timeout, retry, cache, cacheTTL, requiresAuth, timeoutMs, skipCache, retries, ...init } = rawOptions;
+    const options = {
+      ...init,
+      requiresAuth,
+      timeoutMs: timeoutMs ?? timeout,
+      skipCache: skipCache ?? cache === false,
+      retries: retries ?? (retry === false ? 0 : undefined),
+    };
+    const cacheMs = cacheTTL ?? 5 * 60 * 1000;
     const method = (options.method || "GET").toUpperCase();
-    const fullUrl = this.resolveUrl(path);
+    const fullUrl = this.resolveUrl(path, params);
     const isIdempotent = ["GET", "PUT", "DELETE", "HEAD"].includes(method);
     const maxRetries = options.retries ?? (isIdempotent ? 3 : 0);
 
@@ -164,7 +192,7 @@ class ApiClient {
 
       try {
         const res = await fetch(fullUrl, {
-          ...options,
+          ...init,
           method,
           headers,
           signal: controller.signal,
@@ -215,11 +243,11 @@ class ApiClient {
           headers: res.headers,
         };
 
-        // Cache successful GET responses for 5 minutes
+        // Cache successful GET responses (5 minutes unless cacheTTL is given)
         if (res.ok && method === "GET" && !options.skipCache) {
           this.cache.set(cacheKey, {
             data: responseData,
-            expiry: Date.now() + 5 * 60 * 1000,
+            expiry: Date.now() + cacheMs,
           });
         }
 

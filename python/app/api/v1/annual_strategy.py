@@ -178,12 +178,36 @@ class AnnualStrategyRequest(BaseModel):
     )
 
 
+async def _district_coordinates(district: str, state: Optional[str]):
+    """Approximate (lat, lon) of an Indian district, or (None, None)"""
+    try:
+        import httpx
+
+        from app.core.config import get_system_setting
+
+        key = get_system_setting("OPENWEATHER_API_KEY")
+        if not key or key == "test-api-key":
+            return None, None
+        query = ",".join(x for x in (district, state, "IN") if x)
+        async with httpx.AsyncClient(timeout=10) as client:
+            res = await client.get(
+                "https://api.openweathermap.org/geo/1.0/direct",
+                params={"q": query, "limit": 1, "appid": key},
+            )
+        hits = res.json() if res.status_code == 200 else []
+        if hits:
+            return float(hits[0]["lat"]), float(hits[0]["lon"])
+    except Exception as e:
+        logger.warning(f"District geocoding failed for {district}: {e}")
+    return None, None
+
+
 @router.post("", response_model=AnnualStrategyResponse, status_code=status.HTTP_201_CREATED)
 async def generate_annual_strategy(
     request: AnnualStrategyRequest, db: AsyncDB, bedrock: BedrockSvc, current_user: CurrentUser
 ):
     """
-    Generate comprehensive annual crop strategy using Amazon Bedrock
+    Generate comprehensive annual crop strategy using Gemini on Vertex AI
     """
     try:
         farm_result = Farm.find(request.farm_id)
@@ -216,9 +240,9 @@ async def generate_annual_strategy(
             district_name = farm.get("location_district")
             if district_name:
                 norm_district = district_name.strip().upper()
-                moisture_records = await SoilMoistureData.where(
-                    db, {"district": norm_district, "enable": 1}
-                )
+                moisture_records = SoilMoistureData.where(
+                    {"district": norm_district, "enable": 1}
+                ).get()
                 if moisture_records and moisture_records.items:
                     # Get the most recent daily record
                     sorted_records = sorted(
@@ -242,9 +266,13 @@ async def generate_annual_strategy(
         try:
             from app.services.weather_service import get_weather_service
 
-            # Resolve coordinates or fallback to defaults
+            # The farm's GPS point, else the district's coordinates (farms registered by pincode)
             lat = farm.get("latitude")
             lon = farm.get("longitude")
+            if (lat is None or lon is None) and farm.get("location_district"):
+                lat, lon = await _district_coordinates(
+                    farm.get("location_district"), farm.get("location_state")
+                )
             if lat is not None and lon is not None:
                 weather_svc = get_weather_service(db)
                 forecast_res = await weather_svc.get_forecast(float(lat), float(lon), days=5)
@@ -254,7 +282,33 @@ async def generate_annual_strategy(
         except Exception as e:
             logger.error(f"Failed to fetch weather forecast context for strategy: {str(e)}")
 
-        # Call Bedrock API
+        # 3. Latest Sentinel-2 crop-vigour reading for the field (needs the farm's GPS point)
+        satellite_summary = None
+        try:
+            if farm.get("latitude") is not None and farm.get("longitude") is not None:
+                import asyncio
+
+                from app.services.satellite_health import farm_health
+
+                health = await asyncio.wait_for(farm_health(farm), timeout=30)
+                sat = (health or {}).get("summary") or {}
+                if sat.get("status") == "ok":
+                    satellite_summary = (
+                        f"Sentinel-2 scene of {sat['observed_on']} ({sat['days_old']} days old): "
+                        f"NDVI {sat.get('ndvi')} (vegetation {sat.get('vigour')}), "
+                        f"NDMI {sat.get('ndmi')} (water {sat.get('water')}), trend {sat.get('trend') or 'unknown'}"
+                    )
+        except Exception as e:
+            logger.error(f"Failed to fetch satellite context for strategy: {str(e)}")
+
+        # 4. Soil test values stored on the farm (Soil Health Card / lab report)
+        soil_nutrients = {
+            k: farm.get(k)
+            for k in ("nitrogen", "phosphorus", "potassium", "ph_level", "soil_ph", "organic_carbon")
+            if farm.get(k) is not None
+        }
+
+        # Call Gemini
         bedrock_response = await bedrock.get_annual_crop_strategy(
             state=farm.get("location_state"),
             district=farm.get("location_district"),
@@ -270,12 +324,14 @@ async def generate_annual_strategy(
             db_session=db,
             weather_forecast=weather_forecast,
             soil_moisture=soil_moisture,
+            soil_nutrients=soil_nutrients,
+            satellite_summary=satellite_summary,
         )
 
         if not bedrock_response or "kharif" not in bedrock_response:
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="Failed to generate annual strategy from Bedrock API",
+                detail="Failed to generate annual strategy from Gemini",
             )
 
         # Extract data
@@ -438,6 +494,7 @@ async def generate_annual_strategy(
             ),
             generated_at=datetime.now().isoformat(),
             quota_status=quota_status,
+            is_fallback=bool(bedrock_response.get("is_fallback")),
         )
 
     except Exception as e:
@@ -618,6 +675,7 @@ async def get_strategy(id: str, current_user: CurrentUser):
                 if hasattr(s.get("created_at"), "isoformat")
                 else datetime.now().isoformat()
             ),
+            is_fallback=bool(bedrock_response.get("is_fallback")),
         )
     except Exception as e:
         logger.error(f"Error getting strategy: {e}")

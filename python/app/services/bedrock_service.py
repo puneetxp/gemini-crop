@@ -33,11 +33,11 @@ class BedrockService:
             self.client = genai.Client(
                 vertexai=True,
                 project=settings.GOOGLE_CLOUD_PROJECT,
-                location=settings.GOOGLE_CLOUD_REGION,
+                location=settings.GEMINI_LOCATION,
             )
             self.vertex_enabled = True
             logger.info(
-                f"Vertex AI Client initialized with project {settings.GOOGLE_CLOUD_PROJECT} in region {settings.GOOGLE_CLOUD_REGION}"
+                f"Vertex AI Client initialized with project {settings.GOOGLE_CLOUD_PROJECT} in region {settings.GEMINI_LOCATION}"
             )
         except Exception as e:
             self.vertex_enabled = False
@@ -351,9 +351,11 @@ Answer ONLY with a valid JSON object matching the following format completely, n
         db_session: Optional[Any] = None,
         weather_forecast: Optional[Dict[str, Any]] = None,
         soil_moisture: Optional[float] = None,
+        soil_nutrients: Optional[Dict[str, Any]] = None,
+        satellite_summary: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
-        Generate comprehensive annual crop strategy using Bedrock
+        Generate comprehensive annual crop strategy using Gemini
 
         Task 18.1: Cached with 6-hour TTL to reduce API costs and improve response time
         Task 40.2: Integrated with AI quota system for GPS-enhanced vs pincode-based recommendations
@@ -427,6 +429,8 @@ Answer ONLY with a valid JSON object matching the following format completely, n
                 preferred_crop=preferred_crop or "",
                 custom_message=custom_message or "",
                 current_date=current_date or "",
+                soil_nutrients=json.dumps(soil_nutrients or {}, sort_keys=True, default=str),
+                satellite=satellite_summary or "",
                 gps_enhanced=gps_enhanced,
                 latitude=latitude if gps_enhanced else None,
                 longitude=longitude if gps_enhanced else None,
@@ -455,6 +459,21 @@ Answer ONLY with a valid JSON object matching the following format completely, n
 
         farmer_context = f"\n- Farmer Context: {custom_message.strip()}" if custom_message else ""
 
+        # The farmer's own field: every value here is data, not an instruction
+        nutrients_str = (
+            ", ".join(f"{k.replace('_', ' ')}: {v}" for k, v in soil_nutrients.items())
+            if soil_nutrients
+            else "No soil test on file (use typical values for this district's soil)"
+        )
+        farm_profile = f"""{location_context}
+- Soil type: {soil_type or 'Not provided'}
+- Soil test (Soil Health Card / lab; N, P, K in kg/ha where given): {nutrients_str}
+- Farm size: {area_acres or 'Not provided'} acres; irrigation: {irrigation_type or 'Not provided'}
+- Previous crops: {previous_crops or 'Not provided'}
+- Budget per acre: {f'INR {budget_per_acre:,.0f}' if budget_per_acre else 'Not provided'}
+- Preferred crop: {preferred_crop or 'None'}
+- Satellite crop vigour: {satellite_summary or 'Not available (no GPS point for this farm yet)'}"""
+
         moisture_str = f"{soil_moisture:.2f}%" if soil_moisture is not None else "Not available"
 
         weather_str = "Not available"
@@ -467,6 +486,9 @@ Answer ONLY with a valid JSON object matching the following format completely, n
         prompt = f"""You are an expert agricultural advisor for Indian farming. Provide a comprehensive annual crop strategy with weather-integrated guidance.
 
 {"IMPORTANT: Use the GPS coordinates to provide microclimate-specific recommendations considering local elevation, terrain, and precise weather patterns." if gps_enhanced else "Provide regional recommendations based on district-level agricultural patterns."}
+
+FARM PROFILE (use all of it; keep investment within the budget):
+{farm_profile}
 - Current Date: {current_date or 'Not provided'}
 - Local Current Soil Moisture (at 15cm depth): {moisture_str}
 - Live Weather Forecast (Next 5 Days):
@@ -526,6 +548,12 @@ Provide detailed recommendations for:
    - Risk mitigation strategies
    - MONTH-BY-MONTH ACTION PLAN: Provide a detailed 12-month timeline starting from the current month ({datetime.now().strftime('%B')}). Each month MUST have at least 2 region-aware actions. If the inferred region is North India and the current month is March/April/May, explicitly mention fast-maturing leafy greens (spinach, amaranth), cucurbits (cucumber, watermelon), nursery preparation for solanaceous crops, mulching/trellis work, and heat/pest mitigation steps.
    - Alternative crop options
+
+REGENERATIVE FARMING (required): recommend 3-5 regenerative practices that fit THIS farm's soil test, water and
+crops, choosing from: legume rotation or intercropping, cover crops / green manure (e.g. dhaincha, sunhemp),
+crop-residue management instead of burning (in-situ incorporation, mulching, Happy Seeder), reduced or zero tillage,
+farmyard manure / vermicompost / biofertilisers for integrated nutrient management, and water harvesting.
+For each, say which data point it responds to (e.g. "low nitrogen 15 kg/ha", "NDMI water stress", "forecast rain").
 
 Focus on:
 - MONTHLY ACTIONABILITY: The user specifically requested that "month is better" than just seasons. Ensure the monthly action plan is the core of the strategy.
@@ -612,6 +640,14 @@ Format your response as structured JSON with the following schema:
       "month": "month name",
       "actions": ["action1", "action2"]
     }}
+  ],
+  "regenerative_practices": [
+    {{
+      "practice": "e.g. Sunhemp green manure before kharif",
+      "season": "kharif/rabi/zaid/year-round",
+      "why": "benefit for this field",
+      "data_used": "the farm data point it responds to"
+    }}
   ]
 }}
 
@@ -620,7 +656,19 @@ IMPORTANT: Include weather integration fields (seasonal_weather_pattern, weather
 Provide ONLY the JSON response, no additional text."""
 
         try:
-            response_text = self._invoke_claude(prompt, max_tokens=3000, temperature=0.1)
+            # Async call so a ~1 minute generation doesn't block the server; JSON mode for reliable parsing
+            if not getattr(self, "vertex_enabled", False):
+                raise RuntimeError("Vertex AI client is not initialised")
+            from google.genai import types
+
+            gen = await self.client.aio.models.generate_content(
+                model=self.model_name,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    temperature=0.1, top_p=0.9, response_mime_type="application/json"
+                ),
+            )
+            response_text = gen.text or ""
 
             # Try to parse JSON from response
             # Sometimes Claude adds text before/after JSON, so we need to extract it
@@ -662,12 +710,9 @@ Provide ONLY the JSON response, no additional text."""
                 return strategy
             else:
                 # Fallback: return structured response from text
-                logger.warning("Could not parse JSON from Bedrock response, using fallback")
-                with open(
-                    "/Users/puneetsharma/ai-bharat-hackathon/cropsense-ai/python/failed_response.txt",
-                    "w",
-                ) as f:
-                    f.write(f"response_text: {response_text}")
+                logger.warning(
+                    f"Could not parse JSON from Gemini response, using fallback: {response_text[:500]}"
+                )
                 fallback_strategy = self._create_fallback_strategy(state, district, soil_type)
 
                 # Add quota status to fallback
@@ -1177,10 +1222,11 @@ Provide ONLY the JSON response."""
     def _create_fallback_strategy(
         self, state: str, district: str, soil_type: str
     ) -> Dict[str, Any]:
-        """Create a basic fallback strategy when Bedrock fails"""
+        """Create a basic fallback strategy when Gemini fails"""
 
-        # Simple fallback based on common crops
+        # Simple fallback based on common crops; flagged so the UI never shows it as AI advice
         return {
+            "is_fallback": True,
             "kharif": {
                 "recommended_crop": "Rice" if soil_type in ["clay", "loamy"] else "Cotton",
                 "variety": "Local variety",

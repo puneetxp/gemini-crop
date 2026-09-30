@@ -1,5 +1,7 @@
-import { Component, createSignal, For } from "solid-js";
+import { Component, createEffect, createResource, createSignal, For, Show } from "solid-js";
 import { A, useNavigate, useSearchParams } from "@solidjs/router";
+import { apiClient } from "../../lib/api-client";
+import { showToast } from "../../components/ui/Toast";
 
 interface SeasonOption {
   id: string;
@@ -33,6 +35,36 @@ export const RequestStrategy: Component = () => {
   const [budget, setBudget] = createSignal<number>(450000);
   const [riskTolerance, setRiskTolerance] = createSignal<string>("balanced");
   const [isGenerating, setIsGenerating] = createSignal<boolean>(false);
+  const [error, setError] = createSignal<string | null>(null);
+
+  // The farm the plan is for (GET /farms/{id})
+  const [farm] = createResource(farmId, async (id) => {
+    const res = await apiClient.get<any>(`/farms/${id}`);
+    return res.ok ? res.data : null;
+  });
+  const acres = () => Number(farm()?.total_area_acres) || 1;
+  const titleCase = (v?: string | null) =>
+    v ? v.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
+  const draftKey = () => `strategy-draft:${farmId()}`;
+  const readDraft = () => {
+    try {
+      return JSON.parse(localStorage.getItem(draftKey()) || "null");
+    } catch {
+      return null;
+    }
+  };
+  // Start from a saved draft, else ~₹25,000/acre once the farm size is known
+  createEffect(() => {
+    if (!farm()) return;
+    const draft = readDraft();
+    if (draft) {
+      setBudget(draft.budget);
+      setSelectedGoal(draft.goal);
+      setSelectedSeasons(draft.seasons);
+    } else {
+      setBudget(Math.max(10000, Math.round((acres() * 25000) / 5000) * 5000));
+    }
+  });
 
   // Crop Inclusions & Exclusions
   const [crops, setCrops] = createSignal<{ name: string; type: "include" | "exclude" }[]>([
@@ -123,12 +155,28 @@ export const RequestStrategy: Component = () => {
     setCrops(updated);
   };
 
-  const handleGenerate = () => {
+  // Gemini builds the kharif/rabi/zaid plan from the farm's soil, district weather and budget
+  const handleGenerate = async () => {
     setIsGenerating(true);
-    setTimeout(() => {
+    setError(null);
+    try {
+      const res = await apiClient.post<any>(
+        "/annual-strategy",
+        { farm_id: Number(farmId()), budget_per_acre: Math.round(budget() / acres()) },
+        { timeoutMs: 150000 },
+      );
+      if (!res.ok) {
+        const d = res.data?.detail;
+        setError(typeof d === "string" ? d : res.data?.error || `Could not generate a plan (HTTP ${res.status}).`);
+        return;
+      }
+      sessionStorage.setItem(`strategy:${farmId()}`, JSON.stringify(res.data));
+      navigate(`/crops/annual-strategy/${farmId()}`);
+    } catch {
+      setError("Network error: could not reach the server. Please try again.");
+    } finally {
       setIsGenerating(false);
-      navigate("/crops/annual-strategy/1");
-    }, 1200);
+    }
   };
 
   // Dynamic calculations based on slider
@@ -180,19 +228,19 @@ export const RequestStrategy: Component = () => {
             </span>
             <div>
               <strong class="text-emerald-950 dark:text-emerald-200 text-sm font-bold">
-                {farmId() === "2"
-                  ? "Sahyadri Terrace Agro (12.0 Ac)"
-                  : farmId() === "3"
-                  ? "Khandesh Alluvial Tract (24.0 Ac)"
-                  : "Krishna Valley Farm (18.5 Ac Cultivated)"}
+                {farm.loading ? "Loading farm…" : farm() ? `${farm().name} (${acres()} Ac)` : `Farm #${farmId()} not found`}
               </strong>
-              <span class="text-emerald-800 dark:text-emerald-400 ml-2">
-                Cadastral Gut #142/2A • Deep Black Vertisol (pH 7.2) • Nashik MH
-              </span>
+              <Show when={farm()}>
+                <span class="text-emerald-800 dark:text-emerald-400 ml-2">
+                  {[titleCase(farm().primary_soil_type) && `${titleCase(farm().primary_soil_type)} soil`, farm().district, farm().state]
+                    .filter(Boolean)
+                    .join(" • ")}
+                </span>
+              </Show>
             </div>
           </div>
           <span class="px-2.5 py-1 rounded-full bg-emerald-200/80 dark:bg-emerald-900/60 text-emerald-900 dark:text-emerald-300 font-bold text-[11px]">
-            ✓ 100% Calibrated Baseline
+            ✓ Soil & district weather included
           </span>
         </div>
       </div>
@@ -325,7 +373,7 @@ export const RequestStrategy: Component = () => {
                   ₹{budget().toLocaleString("en-IN")}
                 </span>
                 <span class="block text-[10px] text-slate-500">
-                  (₹{Math.round(budget() / 18.5).toLocaleString("en-IN")}/Acre)
+                  (₹{Math.round(budget() / acres()).toLocaleString("en-IN")}/Acre)
                 </span>
               </div>
             </div>
@@ -334,9 +382,9 @@ export const RequestStrategy: Component = () => {
             <div class="space-y-2 pt-2">
               <input
                 type="range"
-                min="150000"
+                min="10000"
                 max="900000"
-                step="25000"
+                step="5000"
                 value={budget()}
                 onInput={(e) => setBudget(parseInt(e.currentTarget.value, 10))}
                 class="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-emerald-600"
@@ -484,7 +532,7 @@ export const RequestStrategy: Component = () => {
 
         {/* Right 4-Columns: Real-Time Simulation & Execution */}
         <div class="lg:col-span-4 space-y-6">
-          {/* Gemini 2.0 Pre-flight Simulation */}
+          {/* Budget preview and generate */}
           <div class="bg-surface-container-lowest dark:bg-slate-900 border-2 border-emerald-600/60 rounded-2xl p-6 shadow-md space-y-5 sticky top-20">
             <div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
               <div class="flex items-center gap-2">
@@ -493,11 +541,11 @@ export const RequestStrategy: Component = () => {
                   <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
                 <h3 class="font-bold text-sm text-on-surface dark:text-white">
-                  Gemini 2.0 Live Simulation
+                  Gemini 3.8 Flash on Vertex AI
                 </h3>
               </div>
               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300">
-                96% Confidence
+                Budget preview
               </span>
             </div>
 
@@ -510,8 +558,8 @@ export const RequestStrategy: Component = () => {
                 <div class="text-xl font-bold text-emerald-600 dark:text-emerald-400 font-mono mt-0.5">
                   ₹{projectedGrossMin().toLocaleString("en-IN")} – ₹{projectedGrossMax().toLocaleString("en-IN")}
                 </div>
-                <div class="text-[10px] text-emerald-700 dark:text-emerald-400 mt-0.5">
-                  +22% vs. 2023-24 single-crop monoculture
+                <div class="text-[10px] text-slate-500 mt-0.5">
+                  Rough estimate from your budget; Gemini's plan gives crop-by-crop figures
                 </div>
               </div>
 
@@ -525,9 +573,9 @@ export const RequestStrategy: Component = () => {
 
                 <div class="p-3 rounded-xl bg-surface-container-low dark:bg-slate-800/80 border border-outline-variant/20">
                   <div class="text-lg font-bold text-blue-600 font-mono">
-                    +28%
+                    3
                   </div>
-                  <div class="text-[10px] text-slate-500">Water Saved</div>
+                  <div class="text-[10px] text-slate-500">Seasons planned</div>
                 </div>
               </div>
             </div>
@@ -536,7 +584,7 @@ export const RequestStrategy: Component = () => {
             <div class="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/40 text-xs flex items-center gap-2 text-amber-900 dark:text-amber-300">
               <span class="material-symbols-outlined text-base">bolt</span>
               <span>
-                Consumes <strong>1 Strategic Planning Credit</strong> (4/10 remaining).
+                Uses <strong>1 AI planning credit</strong> from your monthly quota.
               </span>
             </div>
 
@@ -549,21 +597,31 @@ export const RequestStrategy: Component = () => {
               <span class="material-symbols-outlined text-lg">auto_awesome</span>
               <span>
                 {isGenerating()
-                  ? "Calibrating Gemini 2.0 Model..."
+                  ? "Gemini is building your plan (up to a minute)…"
                   : "Generate 365-Day Strategy"}
               </span>
             </button>
+            <Show when={error()}>
+              <div class="p-3 rounded-xl bg-red-50 border border-red-200 text-xs text-red-700">{error()}</div>
+            </Show>
 
             {/* Secondary Actions */}
             <div class="grid grid-cols-2 gap-2 pt-1">
               <button
-                onClick={() => alert("Parameters saved to local draft!")}
+                onClick={() => {
+                  try {
+                    localStorage.setItem(draftKey(), JSON.stringify({ budget: budget(), goal: selectedGoal(), seasons: selectedSeasons() }));
+                    showToast("success", "Draft saved on this device");
+                  } catch {
+                    showToast("error", "Could not save the draft on this device");
+                  }
+                }}
                 class="py-2 px-3 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors text-center"
               >
                 Save Draft
               </button>
               <A
-                href="/crops/annual-strategy/1"
+                href={`/crops/annual-strategy/${farmId()}`}
                 class="py-2 px-3 rounded-xl border border-outline-variant/40 hover:bg-surface-container text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors text-center"
               >
                 View Past Plan
@@ -580,7 +638,7 @@ export const RequestStrategy: Component = () => {
                 class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 dark:text-emerald-400 hover:underline"
               >
                 <span class="material-symbols-outlined text-sm">call</span>
-                <span>KVK Helpline: 1800-180-1551</span>
+                <span>Kisan Call Centre: 1800-180-1551</span>
               </a>
             </div>
           </div>

@@ -204,7 +204,7 @@ export const Dashboard: Component = () => {
                 <span>Scan Leaf</span>
               </A>
               <A
-                href="/crops/annual-strategy/1"
+                href="/strategy/select-farm"
                 class="flex flex-col items-center justify-center p-3 rounded-xl bg-amber-50 hover:bg-amber-100 border border-amber-200/60 text-amber-800 font-semibold text-xs transition-all"
               >
                 <span class="material-symbols-outlined text-2xl mb-1">auto_awesome</span>

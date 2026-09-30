@@ -1,6 +1,6 @@
 import { Component, createSignal } from "solid-js";
 import { A, useNavigate } from "@solidjs/router";
-import { signInWithEmail, signInWithMock, authLoading } from "../../stores/auth.store";
+import { signInWithEmail, signInDemo, demoSignInAvailable, authLoading } from "../../stores/auth.store";
 
 export const SignIn: Component = () => {
   const navigate = useNavigate();
@@ -20,8 +20,10 @@ export const SignIn: Component = () => {
   };
 
   const handleDemoLogin = async () => {
-    await signInWithMock("farmer@cropsense.ai");
-    navigate("/dashboard");
+    setErrorMsg("");
+    const res = await signInDemo();
+    if (res.success) navigate("/dashboard");
+    else setErrorMsg(res.error || "Demo sign-in failed");
   };
 
   return (
@@ -80,21 +82,25 @@ export const SignIn: Component = () => {
           </button>
         </form>
 
-        <div class="relative flex items-center justify-center my-4">
-          <div class="border-t border-slate-200 w-full"></div>
-          <span class="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider absolute">
-            or instant preview
-          </span>
-        </div>
+        {demoSignInAvailable && (
+          <>
+            <div class="relative flex items-center justify-center my-4">
+              <div class="border-t border-slate-200 w-full"></div>
+              <span class="bg-white px-3 text-[11px] font-semibold text-slate-400 uppercase tracking-wider absolute">
+                or instant preview
+              </span>
+            </div>
 
-        <button
-          type="button"
-          onClick={handleDemoLogin}
-          class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow transition-all flex items-center justify-center gap-2"
-        >
-          <span class="material-symbols-outlined text-base">flash_on</span>
-          <span>Instant Demo Sign-In (Dev/E2E)</span>
-        </button>
+            <button
+              type="button"
+              onClick={handleDemoLogin}
+              class="w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-xl text-xs shadow transition-all flex items-center justify-center gap-2"
+            >
+              <span class="material-symbols-outlined text-base">flash_on</span>
+              <span>Try the demo farmer account</span>
+            </button>
+          </>
+        )}
 
         <div class="text-center pt-2">
           <span class="text-xs text-slate-500">Don't have an account yet? </span>

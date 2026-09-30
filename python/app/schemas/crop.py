@@ -86,6 +86,8 @@ class AnnualStrategyResponse(BaseModel):
     monthly_action_plan: List[MonthlyAction] = []
     generated_at: str
     quota_status: Optional[QuotaStatus] = None
+    # True when Gemini was unavailable and a generic regional plan was returned instead
+    is_fallback: bool = False
 
 
 class CropRecommendationRequest(BaseModel):

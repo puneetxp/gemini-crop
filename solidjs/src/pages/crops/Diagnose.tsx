@@ -1,5 +1,6 @@
 import { Component, createSignal } from "solid-js";
 import { apiClient } from "../../lib/api-client";
+import { lang } from "../../stores/i18n.store";
 
 export const Diagnose: Component = () => {
   const [selectedFile, setSelectedFile] = createSignal<File | null>(null);
@@ -40,7 +41,7 @@ export const Diagnose: Component = () => {
         {
           image_base64: await toBase64(file),
           mime_type: file.type || "image/jpeg",
-          lang: "en",
+          lang: lang(),
         },
         { timeoutMs: 90000 }
       );
@@ -53,7 +54,14 @@ export const Diagnose: Component = () => {
           confidence_score: Number(d.confidence) || 0,
           severity: d.severity,
           recommended_treatment: [...(t.cultural || []), ...(t.organic || []), ...(t.chemical || [])],
-          safety_warning: d.safety?.warning || d.better_photo_tip,
+          // Banned pesticides the safety check removed, the CIBRC label note, and any photo tip
+          safety_warning: [
+            ...((d.safety?.removed || []) as { reason: string }[]).map((r) => `Removed: ${r.reason}.`),
+            d.safety?.label_note,
+            d.better_photo_tip,
+          ]
+            .filter(Boolean)
+            .join(" "),
         });
       } else {
         const detail = res.data?.detail;

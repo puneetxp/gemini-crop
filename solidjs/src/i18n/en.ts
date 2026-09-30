@@ -14,6 +14,7 @@ export const en = {
     'nav.market': 'Market',
     'nav.farm': 'Farm',
     'nav.menu': 'Menu',
+    'nav.settings': 'Settings',
 
     // Livestock home
     'livestock.title': 'Livestock',

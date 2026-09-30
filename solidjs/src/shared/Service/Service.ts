@@ -3,11 +3,22 @@
  * Bridges generated ORM interfaces with apiClient.
  */
 
+import { createSignal } from "solid-js";
 import { apiClient } from "../../lib/api-client";
 
 export class ModelService<T> {
   private tableName: string = "";
   private endpointUrl: string = "";
+  // Last list loaded by all(), readable reactively via allstate()
+  private state = createSignal<T[]>([]);
+
+  public allstate = (): T[] => {
+    try {
+      return (this.state && typeof this.state[0] === "function" ? this.state[0]() : []) || [];
+    } catch {
+      return [];
+    }
+  };
 
   public seTable(tableName: string): this {
     this.tableName = tableName;
@@ -32,7 +43,9 @@ export class ModelService<T> {
 
   public async all(): Promise<T[]> {
     const res = await apiClient.get<T[]>(this.getPath());
-    return res.ok && Array.isArray(res.data) ? res.data : [];
+    const rows = res.ok && Array.isArray(res.data) ? res.data : [];
+    this.state[1](() => rows);
+    return rows;
   }
 
   public async find(id: number | string): Promise<T | null> {

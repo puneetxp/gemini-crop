@@ -102,6 +102,10 @@ class Settings(BaseSettings):
     GEMINI_MODEL: str = "gemini-2.5-flash"
     # Voice/text assistant (menu routing, vet chat, form filling): fast, cheap model; falls back to GEMINI_MODEL
     GEMINI_ASSIST_MODEL: str = "gemini-2.5-flash-lite"
+    # Used when neither model above answers
+    GEMINI_FALLBACK_MODEL: str = "gemini-1.5-flash"
+    # Vertex AI region for Gemini inference
+    GEMINI_LOCATION: str = "us-central1"
     CLOUD_SQL_INSTANCE: Optional[str] = None
     GOOGLE_CLOUD_SQL_INSTANCE: Optional[str] = None  # Used by database.py for Cloud SQL connector
     CLOUD_SQL_DB: str = "cropsense_gcp"

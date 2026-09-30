@@ -90,7 +90,7 @@ async def run_orchestrator_turn(query: str, farm_id: Optional[int] = None) -> st
         # Direct Google GenAI Gemini execution (3.8 Flash with 3.5 Flash Lite fallback)
         from app.core.config import settings
         client = None
-        for model_name in [settings.GEMINI_MODEL, settings.GEMINI_ASSIST_MODEL, "gemini-2.5-flash"]:
+        for model_name in [settings.GEMINI_MODEL, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_FALLBACK_MODEL]:
             try:
                 from google import genai
                 if client is None:

@@ -1,7 +1,7 @@
 import { Component, createSignal } from "solid-js";
 import { A, useNavigate } from "@solidjs/router";
 import { apiClient } from "../../lib/api-client";
-import { signInWithMock } from "../../stores/auth.store";
+import { apiErrorMessage, signInWithEmail } from "../../stores/auth.store";
 
 export const SignUp: Component = () => {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export const SignUp: Component = () => {
   const [pincode, setPincode] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [district, setDistrict] = createSignal("");
+  const [place, setPlace] = createSignal<{ state?: string; district?: string }>({});
   const [loading, setLoading] = createSignal(false);
   const [errorMsg, setErrorMsg] = createSignal("");
 
@@ -21,6 +22,7 @@ export const SignUp: Component = () => {
         const res = await apiClient.get(`/address/pincode/${pin}`, { requiresAuth: false });
         if (res.ok && res.data?.district) {
           setDistrict(`${res.data.district}, ${res.data.state}`);
+          setPlace({ state: res.data.state, district: res.data.district });
         }
       } catch {
         // ignore
@@ -34,29 +36,36 @@ export const SignUp: Component = () => {
     setErrorMsg("");
 
     try {
+      // Backend SignUpRequest: username 3-50 chars (the email when it fits), Indian mobile as +91XXXXXXXXXX
+      const mail = email().trim();
+      const digits = phone().replace(/\D/g, "");
       const res = await apiClient.post(
         "/auth/signup",
         {
-          name: name(),
-          email: email(),
-          phone: phone(),
-          pincode: pincode(),
+          username: mail.length <= 50 ? mail : mail.split("@")[0].slice(0, 50),
+          full_name: name().trim(),
+          email: mail,
           password: password(),
+          user_type: "farmer",
+          phone_number: digits ? `+91${digits.slice(-10)}` : undefined,
+          pincode: /^\d{6}$/.test(pincode()) ? pincode() : undefined,
+          state: place().state,
+          district: place().district,
         },
         { requiresAuth: false }
       );
-
-      if (res.ok) {
-        await signInWithMock(email());
-        navigate("/dashboard");
-      } else {
-        // Fallback for demo
-        await signInWithMock(email());
-        navigate("/dashboard");
+      if (!res.ok) {
+        setErrorMsg(apiErrorMessage(res.data, "Registration failed. Please check your details."));
+        return;
       }
-    } catch {
-      await signInWithMock(email());
+      const signIn = await signInWithEmail(mail, password());
+      if (!signIn.success) {
+        setErrorMsg(`Account created, but sign-in failed: ${signIn.error}. Please sign in.`);
+        return;
+      }
       navigate("/dashboard");
+    } catch {
+      setErrorMsg("Network error: could not reach the server. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -149,6 +158,7 @@ export const SignUp: Component = () => {
               placeholder="••••••••"
               class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-forest text-slate-900"
             />
+            <p class="text-[11px] text-slate-500 mt-1">At least 8 characters, with an upper-case letter, a lower-case letter and a number.</p>
           </div>
 
           <button

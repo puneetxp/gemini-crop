@@ -9,6 +9,7 @@ export const hi: Dictionary = {
     'nav.market': 'बाज़ार',
     'nav.farm': 'खेत',
     'nav.menu': 'मेन्यू',
+    'nav.settings': 'सेटिंग्स',
 
     'livestock.title': 'पशुधन',
     'livestock.subtitle': 'अपने पशु, उनकी सेहत और इलाज — सब एक जगह',

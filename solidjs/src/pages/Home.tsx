@@ -1,6 +1,6 @@
 import { Component } from "solid-js";
 import { A } from "@solidjs/router";
-import { isAuthenticated, user, signInWithMock } from "../stores/auth.store";
+import { isAuthenticated, user, signInDemo, demoSignInAvailable } from "../stores/auth.store";
 import { t } from "../stores/i18n.store";
 
 export const Home: Component = () => {
@@ -29,9 +29,9 @@ export const Home: Component = () => {
               <span>Launch Command Center</span>
               <span class="material-symbols-outlined text-lg">arrow_forward</span>
             </A>
-            {!isAuthenticated() && (
+            {!isAuthenticated() && demoSignInAvailable && (
               <button
-                onClick={() => signInWithMock()}
+                onClick={() => signInDemo()}
                 class="px-5 py-3 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold rounded-xl text-sm transition-all"
               >
                 Instant Demo Access

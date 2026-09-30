@@ -145,7 +145,13 @@ const ProposalCard: Component<ProposalCardProps> = (props) => {
     const entity = props.proposal.entity;
     const owner = OWNER[entity];
     const ownerField = owner ? OWNER_FIELD[owner] : null;
-    const farms = () => (FarmService.allstate() || []) as any[];
+    const farms = () => {
+        try {
+            return (typeof (FarmService as any)?.allstate === 'function' ? (FarmService as any).allstate() : []) as any[];
+        } catch {
+            return [] as any[];
+        }
+    };
     const ownerOptions = () =>
         owner === 'farm'
             ? farms().map((f) => ({ id: f.id as number, label: f.name || `#${f.id}` }))

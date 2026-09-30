@@ -9,10 +9,8 @@ CREATE TABLE IF NOT EXISTS system_settings (
     "description" TEXT NULL
 );
 
--- Seed initial API keys
-INSERT INTO system_settings ("key", "value", "description")
-VALUES 
-    ('DATAGOV_API_KEY', '579b464db66ec23bdd0000012cdbe49ab3c940207a454cd85898720b', 'API Key for data.gov.in mandi price tracking'),
-    ('DATAGOV_MOISTURE_API_KEY', '579b464db66ec23bdd0000012cdbe49ab3c940207a454cd85898720b', 'API Key for data.gov.in soil moisture tracking')
-ON CONFLICT ("key") DO UPDATE 
-SET "value" = EXCLUDED.value;
+-- API keys are not seeded here. Set DATAGOV_API_KEY / DATAGOV_MOISTURE_API_KEY as environment
+-- variables (Secret Manager on Cloud Run), or insert them into this table per deployment:
+--   INSERT INTO system_settings ("key", "value", "description")
+--   VALUES ('DATAGOV_API_KEY', '<your data.gov.in key>', 'API Key for data.gov.in mandi price tracking')
+--   ON CONFLICT ("key") DO UPDATE SET "value" = EXCLUDED.value;

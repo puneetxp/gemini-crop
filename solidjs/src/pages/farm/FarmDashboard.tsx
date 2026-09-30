@@ -263,7 +263,7 @@ export const FarmDashboard: Component = () => {
         </div>
 
         <A
-          href="/crops/annual-strategy/1"
+          href="/strategy/select-farm"
           class="px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-emerald-950 font-bold text-xs rounded-xl transition-all shrink-0 self-start md:self-auto"
         >
           View Full Advisory

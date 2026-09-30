@@ -72,10 +72,29 @@ export async function initializeAuth(): Promise<void> {
   }
 }
 
+const FIREBASE_ERRORS: Record<string, string> = {
+  INVALID_LOGIN_CREDENTIALS: "Wrong email or password.",
+  EMAIL_NOT_FOUND: "No account with this email. Please register first.",
+  INVALID_PASSWORD: "Wrong email or password.",
+  USER_DISABLED: "This account is disabled.",
+  TOO_MANY_ATTEMPTS_TRY_LATER: "Too many attempts. Please try again later.",
+};
+
+/** Readable message from a FastAPI error body (string detail or 422 validation list) */
+export function apiErrorMessage(data: any, fallback: string): string {
+  const d = data?.detail;
+  if (typeof d === "string") {
+    const code = Object.keys(FIREBASE_ERRORS).find((k) => d.includes(k));
+    return code ? FIREBASE_ERRORS[code] : d.replace(/^Sign in failed: /, "");
+  }
+  if (Array.isArray(d) && d.length) return d.map((e: any) => String(e.msg || "").replace(/^Value error, /, "")).join(" ");
+  return fallback;
+}
+
 export async function signInWithEmail(email: string, password: string): Promise<{ success: boolean; error?: string }> {
   setIsLoading(true);
   try {
-    const res = await apiClient.post("/auth/login", { email, password }, { requiresAuth: false });
+    const res = await apiClient.post("/auth/signin", { username: email, password }, { requiresAuth: false });
     if (res.ok && res.data) {
       const token = res.data.access_token || res.data.token;
       if (token) {
@@ -94,7 +113,7 @@ export async function signInWithEmail(email: string, password: string): Promise<
       }
       return { success: true };
     }
-    return { success: false, error: res.data?.detail || "Authentication failed" };
+    return { success: false, error: apiErrorMessage(res.data, "Authentication failed") };
   } catch (err: any) {
     return { success: false, error: err.message || "Network error during sign-in" };
   } finally {
@@ -116,6 +135,21 @@ export async function signInWithMock(email: string = "farmer@cropsense.ai"): Pro
   };
   setCurrentUser(mockUser);
   localStorage.setItem("user_data", JSON.stringify(mockUser));
+}
+
+// One-click demo: a mock token against a dev backend, or a real shared demo account when the
+// production build is given VITE_DEMO_EMAIL / VITE_DEMO_PASSWORD (the backend rejects mock tokens there)
+const DEMO_EMAIL = (import.meta as any).env?.VITE_DEMO_EMAIL as string | undefined;
+const DEMO_PASSWORD = (import.meta as any).env?.VITE_DEMO_PASSWORD as string | undefined;
+export const demoSignInAvailable = !!import.meta.env.DEV || !!(DEMO_EMAIL && DEMO_PASSWORD);
+
+export async function signInDemo(): Promise<{ success: boolean; error?: string }> {
+  if (import.meta.env.DEV) {
+    await signInWithMock();
+    return { success: true };
+  }
+  if (DEMO_EMAIL && DEMO_PASSWORD) return signInWithEmail(DEMO_EMAIL, DEMO_PASSWORD);
+  return { success: false, error: "Demo sign-in is not configured" };
 }
 
 export async function signOut(): Promise<void> {

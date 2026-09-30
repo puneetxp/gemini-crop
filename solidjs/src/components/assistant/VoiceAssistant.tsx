@@ -55,16 +55,26 @@ const VoiceAssistant: Component = () => {
     const visible = () => isAuthenticated() && !location.pathname.startsWith('/auth') && location.pathname !== '/assistant';
 
     // The farmer's own animals (livestock records), labelled by name when they have one
-    const animals = createMemo(() =>
-        ((LivestockService.allstate() || []) as any[]).map((a) => ({
-            id: a.id as number,
-            label: [a.name, a.breed, tValue('species', a.species)].filter(Boolean).join(' · ') + ` #${a.id}`,
-        })),
-    );
+    const animals = createMemo(() => {
+        try {
+            const list = typeof (LivestockService as any)?.allstate === 'function' ? (LivestockService as any).allstate() : [];
+            return ((list || []) as any[]).map((a) => ({
+                id: a.id as number,
+                label: [a.name, a.breed, tValue('species', a.species)].filter(Boolean).join(' · ') + ` #${a.id}`,
+            }));
+        } catch {
+            return [];
+        }
+    });
     const animalLabel = (id: number | null) => animals().find((a) => a.id === id)?.label || '';
-    const farmOptions = createMemo<Option[]>(() =>
-        ((FarmService.allstate() || []) as any[]).map((f) => ({ id: f.id as number, label: `${f.name || 'Farm'} #${f.id}` })),
-    );
+    const farmOptions = createMemo<Option[]>(() => {
+        try {
+            const list = typeof (FarmService as any)?.allstate === 'function' ? (FarmService as any).allstate() : [];
+            return ((list || []) as any[]).map((f) => ({ id: f.id as number, label: `${f.name || 'Farm'} #${f.id}` }));
+        } catch {
+            return [];
+        }
+    });
     const [crops, setCrops] = createSignal<Option[]>([]);
     const loadCrops = async () => setCrops(await AssistantService.cropOptions());
 

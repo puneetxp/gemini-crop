@@ -1,5 +1,6 @@
-import { Component, createSignal, For } from "solid-js";
+import { Component, createResource, createSignal, For, Show } from "solid-js";
 import { A, useNavigate } from "@solidjs/router";
+import { apiClient } from "../../lib/api-client";
 
 interface FarmOption {
   id: number;
@@ -20,69 +21,39 @@ interface FarmOption {
 
 export const SelectFarm: Component = () => {
   const navigate = useNavigate();
-  const [selectedFarmId, setSelectedFarmId] = createSignal<number>(1);
+  const [selectedFarmId, setSelectedFarmId] = createSignal<number>(0);
   const [filterQuery, setFilterQuery] = createSignal<string>("");
 
-  const farms: FarmOption[] = [
-    {
-      id: 1,
-      name: "Krishna Valley Farm",
-      badge: "Primary Farm",
-      area: "18.5 Ac Cultivated",
-      gutNo: "Cadastral Gut #142/2A",
-      location: "Nashik, Maharashtra",
-      soil: "Deep Black Vertisol (pH 7.2) • 14.8 Ac Active",
-      irrigation: "Drip Micro-Fertigation • Solar 7.5 HP (Godavari Sub-Basin)",
-      readiness: 100,
-      readinessLabel: "100% Ready • All Datasets Synced",
-      readinessColor: "bg-emerald-500",
-      features: [
-        "RTK GNSS Demarcated (0.4m)",
-        "LoRaWAN Soil Nodes Synced",
-        "Sentinel-2 NDVI: 0.79 (Healthy)"
-      ],
-      lastPlanned: "Kharif 2024 (98% harvest goal achieved)"
-    },
-    {
-      id: 2,
-      name: "Sahyadri Terrace Agro",
-      badge: "Secondary Farm",
-      area: "12.0 Ac Cultivated",
-      gutNo: "Cadastral Gut #89/B",
-      location: "Dindori, Nashik",
-      soil: "Red Sandy Loam (Alfisol, pH 6.4) • 8.5 Ac Active",
-      irrigation: "Canal Lift + Sprinkler Grid • Rotation Basin",
-      readiness: 94,
-      readinessLabel: "94% Ready • Pending Zinc/Boron",
-      readinessColor: "bg-amber-500",
-      features: [
-        "Canal Basin Demarcated",
-        "Automated Soil Moisture Vane",
-        "Sentinel-2 NDVI: 0.71 (Moderate)"
-      ],
-      note: "Gemini will estimate micronutrient levels from regional KVK soil samples.",
-      lastPlanned: "Rabi 2024"
-    },
-    {
-      id: 3,
-      name: "Khandesh Alluvial Tract",
-      badge: "Cash Crop Parcel",
-      area: "24.0 Ac Cultivated",
-      gutNo: "Cadastral Gut #301",
-      location: "Jalgaon, Maharashtra",
-      soil: "Alluvial Clay Loam (pH 7.8) • 20.0 Ac Active",
-      irrigation: "Borewell + Deep Trench Recharge",
-      readiness: 88,
-      readinessLabel: "88% Ready • Weather Radar Calibrating",
-      readinessColor: "bg-blue-500",
-      features: [
-        "Aadhaar Land Registry Synced",
-        "IMD Micro-radar Linked",
-        "Cotton / Maize Historical Yields"
-      ],
-      lastPlanned: "Zaid 2023"
-    }
-  ];
+  const titleCase = (v?: string | null) =>
+    v ? v.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
+
+  // The signed-in farmer's farms; profile completeness = how much field data Gemini gets to work with
+  const [farmList] = createResource(async () => {
+    const res = await apiClient.get<any>("/farms", { skipCache: true });
+    if (!res.ok) throw new Error(res.data?.detail || "Could not load your farms");
+    const rows: FarmOption[] = (res.data?.farms ?? []).map((f: any, i: number) => {
+      const known = [f.primary_soil_type, f.irrigation_type, f.pincode, f.total_area_acres];
+      const readiness = Math.round((known.filter(Boolean).length / known.length) * 100);
+      return {
+        id: f.id,
+        name: f.name || `Farm #${f.id}`,
+        badge: i === 0 ? "Primary Farm" : "Farm",
+        area: f.total_area_acres ? `${f.total_area_acres} Ac` : "Area not set",
+        gutNo: f.survey_number ? `Survey #${f.survey_number}` : `Pincode ${f.pincode || "—"}`,
+        location: [f.village, f.district, f.state].filter(Boolean).join(", "),
+        soil: titleCase(f.primary_soil_type) || "Soil type not set",
+        irrigation: titleCase(f.irrigation_type) || "Irrigation not set",
+        readiness,
+        readinessLabel: `Profile ${readiness}% complete`,
+        readinessColor: readiness === 100 ? "bg-emerald-500" : "bg-amber-500",
+        features: [f.district && `${f.district} district soil & weather`, f.pincode && `Pincode ${f.pincode}`].filter(Boolean),
+        note: readiness < 100 ? "Missing details are estimated from district soil and weather data." : undefined,
+      };
+    });
+    if (rows.length && !rows.some((r) => r.id === selectedFarmId())) setSelectedFarmId(rows[0].id);
+    return rows;
+  });
+  const farms = () => farmList() ?? [];
 
   const handleProceed = (farmId: number) => {
     navigate(`/strategy/request?farmId=${farmId}`);
@@ -90,8 +61,8 @@ export const SelectFarm: Component = () => {
 
   const filteredFarms = () => {
     const q = filterQuery().toLowerCase().trim();
-    if (!q) return farms;
-    return farms.filter(
+    if (!q) return farms();
+    return farms().filter(
       (f) =>
         f.name.toLowerCase().includes(q) ||
         f.location.toLowerCase().includes(q) ||
@@ -107,7 +78,7 @@ export const SelectFarm: Component = () => {
           <div>
             <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
               <span class="material-symbols-outlined text-sm">psychiatry</span>
-              <span>GEMINI 2.0 AGRI-STRATEGY ENGINE</span>
+              <span>GEMINI 3.8 FLASH · CROP PLAN</span>
               <span>•</span>
               <span>STEP 1 OF 3</span>
             </div>
@@ -122,7 +93,7 @@ export const SelectFarm: Component = () => {
 
           <div class="flex items-center gap-3">
             <A
-              href="/crops/annual-strategy/1"
+              href={`/crops/annual-strategy/${selectedFarmId()}`}
               class="px-4 py-2.5 rounded-xl border border-outline-variant/40 bg-surface-container-low dark:bg-slate-800 text-on-surface dark:text-slate-200 text-sm font-semibold hover:bg-surface-container transition-colors flex items-center gap-2"
             >
               <span class="material-symbols-outlined text-base">history</span>
@@ -153,7 +124,7 @@ export const SelectFarm: Component = () => {
             />
           </div>
           <div class="flex items-center gap-2 text-xs font-semibold text-slate-500 dark:text-slate-400 px-2">
-            <span>Showing {filteredFarms().length} of {farms.length} Onboarded Parcels</span>
+            <span>Showing {filteredFarms().length} of {farms().length} farms</span>
           </div>
         </div>
       </div>
@@ -162,6 +133,17 @@ export const SelectFarm: Component = () => {
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left Column: Farm Cards */}
         <div class="lg:col-span-8 space-y-4">
+          <Show when={farmList.loading}>
+            <div class="rounded-2xl p-6 border border-outline-variant/30 text-sm text-slate-500">Loading your farms…</div>
+          </Show>
+          <Show when={farmList.error}>
+            <div class="rounded-2xl p-6 border border-red-200 bg-red-50 text-sm text-red-700">{String(farmList.error?.message || farmList.error)}</div>
+          </Show>
+          <Show when={!farmList.loading && !farmList.error && farms().length === 0}>
+            <div class="rounded-2xl p-6 border border-outline-variant/30 text-sm text-slate-600">
+              No farms yet. Register a farm first; its pincode gives Gemini the district's soil and weather.
+            </div>
+          </Show>
           <For each={filteredFarms()}>
             {(farm) => {
               const isSelected = () => selectedFarmId() === farm.id;
@@ -244,7 +226,7 @@ export const SelectFarm: Component = () => {
                   {/* Action Bar */}
                   <div class="mt-5 pt-4 border-t border-outline-variant/20 flex flex-col sm:flex-row items-center justify-between gap-3">
                     <span class="text-xs text-slate-500 dark:text-slate-400">
-                      Last Strategy: <strong class="text-on-surface dark:text-slate-200">{farm.lastPlanned}</strong>
+                      Last Strategy: <strong class="text-on-surface dark:text-slate-200">{farm.lastPlanned || "None yet"}</strong>
                     </span>
 
                     <div class="flex items-center gap-3 w-full sm:w-auto">
@@ -311,7 +293,7 @@ export const SelectFarm: Component = () => {
               </div>
               <div>
                 <h3 class="font-bold text-sm text-on-surface dark:text-white">
-                  Gemini 2.0 Agronomy Core
+                  Gemini 3.8 Flash on Vertex AI
                 </h3>
                 <span class="text-[11px] text-slate-500">Autonomous Agricultural Planner</span>
               </div>
@@ -368,54 +350,6 @@ export const SelectFarm: Component = () => {
             </ul>
           </div>
 
-          {/* Past Outcome Widget */}
-          <div class="bg-surface-container-low dark:bg-slate-900/60 border border-outline-variant/30 rounded-2xl p-5 shadow-sm space-y-4">
-            <div class="flex items-center justify-between pb-2 border-b border-outline-variant/20">
-              <div class="flex items-center gap-2">
-                <span class="material-symbols-outlined text-emerald-600 text-base">
-                  history_edu
-                </span>
-                <h4 class="font-bold text-xs text-on-surface dark:text-white uppercase tracking-wider">
-                  2023-24 Strategy Audit
-                </h4>
-              </div>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300">
-                Verified
-              </span>
-            </div>
-
-            <div>
-              <div class="text-xs font-bold text-on-surface dark:text-white">
-                Krishna Valley Farm (18.5 Ac)
-              </div>
-              <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
-                Crop Cycle: Sharbati Wheat → Durum → Moong Pulse
-              </div>
-            </div>
-
-            <div class="grid grid-cols-3 gap-2 text-center">
-              <div class="p-2.5 rounded-xl bg-surface-container-lowest dark:bg-slate-800 border border-outline-variant/20">
-                <div class="text-base font-bold text-emerald-600">+14.2%</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Yield Gain</div>
-              </div>
-              <div class="p-2.5 rounded-xl bg-surface-container-lowest dark:bg-slate-800 border border-outline-variant/20">
-                <div class="text-base font-bold text-amber-600">₹4.8L</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Net Profit</div>
-              </div>
-              <div class="p-2.5 rounded-xl bg-surface-container-lowest dark:bg-slate-800 border border-outline-variant/20">
-                <div class="text-base font-bold text-blue-600">32%</div>
-                <div class="text-[10px] text-slate-500 mt-0.5">Water Saved</div>
-              </div>
-            </div>
-
-            <A
-              href="/crops/annual-strategy/1"
-              class="block text-center text-xs font-bold text-emerald-600 dark:text-emerald-400 hover:underline pt-1"
-            >
-              View Audited Multi-Season Plan →
-            </A>
-          </div>
-
           {/* KVK Helpline Card */}
           <div class="bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 rounded-2xl p-5 space-y-3">
             <div class="flex items-center gap-3">
@@ -427,7 +361,7 @@ export const SelectFarm: Component = () => {
                   Need Help Selecting Land?
                 </h4>
                 <p class="text-[11px] text-emerald-800 dark:text-emerald-400">
-                  Speak directly with Krishi Vigyan Kendra agronomists.
+                  Talk to an agriculture expert in your language (free).
                 </p>
               </div>
             </div>
@@ -437,7 +371,7 @@ export const SelectFarm: Component = () => {
               class="w-full bg-white dark:bg-slate-800 hover:bg-emerald-50 text-emerald-800 dark:text-emerald-300 text-xs font-bold py-2.5 px-4 rounded-xl border border-emerald-300 dark:border-emerald-700/50 flex items-center justify-center gap-2 shadow-sm transition-colors"
             >
               <span class="material-symbols-outlined text-sm">call</span>
-              <span>KVK Helpline: 1800-180-1551</span>
+              <span>Kisan Call Centre: 1800-180-1551</span>
             </a>
           </div>
         </div>

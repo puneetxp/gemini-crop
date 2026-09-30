@@ -1,20 +1,21 @@
 import { Component, For } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
 import { currentLanguage, setLanguage, SupportedLanguage, t } from "../../stores/i18n.store";
-import { user, isAuthenticated, signOut, signInWithMock } from "../../stores/auth.store";
+import { user, isAuthenticated, signOut, signInDemo, demoSignInAvailable } from "../../stores/auth.store";
+import type { TKey } from "../../i18n/en";
 
 export const Sidebar: Component = () => {
   const location = useLocation();
 
-  const navItems = [
-    { href: "/dashboard", labelKey: "nav.dashboard", icon: "dashboard" },
-    { href: "/farm", labelKey: "nav.farms", icon: "agriculture" },
-    { href: "/diagnose", labelKey: "nav.diagnose", icon: "psychology" },
+  const navItems: { href: string; labelKey: TKey; icon: string }[] = [
+    { href: "/dashboard", labelKey: "svc.dashboard", icon: "dashboard" },
+    { href: "/farm", labelKey: "nav.farm", icon: "agriculture" },
+    { href: "/diagnose", labelKey: "svc.diagnose", icon: "psychology" },
     { href: "/livestock", labelKey: "nav.livestock", icon: "pets" },
-    { href: "/soil/hub", labelKey: "nav.soil", icon: "satellite_alt" },
-    { href: "/marketplace", labelKey: "nav.marketplace", icon: "storefront" },
-    { href: "/crops/annual-strategy/1", labelKey: "nav.strategy", icon: "calendar_month" },
-    { href: "/assistant", labelKey: "nav.assistant", icon: "mic" },
+    { href: "/soil/hub", labelKey: "svc.soil", icon: "satellite_alt" },
+    { href: "/marketplace", labelKey: "svc.marketplace", icon: "storefront" },
+    { href: "/strategy/select-farm", labelKey: "nav.strategy", icon: "calendar_month" },
+    { href: "/assistant", labelKey: "svc.assistant", icon: "mic" },
     { href: "/settings", labelKey: "nav.settings", icon: "settings" },
   ];
 
@@ -102,12 +103,14 @@ export const Sidebar: Component = () => {
             >
               Sign In
             </A>
-            <button
-              onClick={() => signInWithMock()}
-              class="w-full text-center py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-medium transition-all"
-            >
-              Demo Auto-Login
-            </button>
+            {demoSignInAvailable && (
+              <button
+                onClick={() => signInDemo()}
+                class="w-full text-center py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-medium transition-all"
+              >
+                Demo Auto-Login
+              </button>
+            )}
           </div>
         )}
       </div>

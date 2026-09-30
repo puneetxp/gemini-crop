@@ -112,7 +112,7 @@ async def voice_query(
         import vertexai
         from vertexai.generative_models import GenerationConfig, GenerativeModel, Part
 
-        vertexai.init(project=settings.GOOGLE_CLOUD_PROJECT, location=settings.GOOGLE_CLOUD_REGION)
+        vertexai.init(project=settings.GOOGLE_CLOUD_PROJECT, location=settings.GEMINI_LOCATION)
 
         model = GenerativeModel(settings.GEMINI_MODEL)
         audio_part = Part.from_data(data=audio_bytes, mime_type=content_type)
@@ -309,7 +309,7 @@ async def voice_assist(request: AssistRequest, current_user=Depends(get_current_
         client = genai.Client(
             vertexai=True,
             project=settings.GOOGLE_CLOUD_PROJECT,
-            location=settings.GOOGLE_CLOUD_REGION,
+            location=settings.GEMINI_LOCATION,
         )
         contents: List[Any] = [prompt]
         if audio_bytes:
@@ -322,7 +322,7 @@ async def voice_assist(request: AssistRequest, current_user=Depends(get_current_
             response_mime_type="application/json",
         )
         # Flash-Lite first (fast, cheap); if it's unavailable in this project/region, use the main model
-        models = list(dict.fromkeys([settings.GEMINI_ASSIST_MODEL, settings.GEMINI_MODEL]))
+        models = list(dict.fromkeys([settings.GEMINI_ASSIST_MODEL, settings.GEMINI_MODEL, settings.GEMINI_FALLBACK_MODEL]))
         response, model_used = None, models[0]
         for model_used in models:
             try:

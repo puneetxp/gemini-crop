@@ -76,7 +76,7 @@ class PredictiveAnalyticsService:
 
         try:
             vertexai.init(
-                project=settings.GOOGLE_CLOUD_PROJECT, location=settings.GOOGLE_CLOUD_REGION
+                project=settings.GOOGLE_CLOUD_PROJECT, location=settings.GEMINI_LOCATION
             )
             self.vertex_enabled = True
         except Exception:

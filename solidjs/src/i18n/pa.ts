@@ -9,6 +9,7 @@ export const pa: Dictionary = {
     'nav.market': 'ਮੰਡੀ',
     'nav.farm': 'ਖੇਤ',
     'nav.menu': 'ਮੀਨੂ',
+    'nav.settings': 'ਸੈਟਿੰਗਾਂ',
 
     'livestock.title': 'ਪਸ਼ੂ ਧਨ',
     'livestock.subtitle': 'ਤੁਹਾਡੇ ਪਸ਼ੂ, ਉਹਨਾਂ ਦੀ ਸਿਹਤ ਅਤੇ ਇਲਾਜ — ਸਭ ਇੱਕ ਥਾਂ',
