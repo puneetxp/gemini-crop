@@ -45,6 +45,12 @@ export async function initializeAuth(): Promise<void> {
     }
   }
 
+  // Preserve mock demo accounts without remote verification
+  if (token.startsWith("mock-token-") || token.startsWith("mock-")) {
+    setIsLoading(false);
+    return;
+  }
+
   try {
     const res = await apiClient.get<UserProfile>("/auth/user");
     if (res.ok && res.data) {

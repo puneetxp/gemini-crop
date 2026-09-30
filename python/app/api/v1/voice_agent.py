@@ -227,6 +227,7 @@ class AssistRequest(BaseModel):
     # Recording length as measured by the browser (for the voice log)
     duration_ms: Optional[int] = Field(None, ge=0, le=600000)
     text: Optional[str] = Field(None, max_length=1000)
+    query: Optional[str] = Field(None, max_length=1000)
     lang: str = "en"
     menu: List[MenuEntry] = Field(default_factory=list, max_length=200)
     # The farmer's own livestock, so the assistant can ask "which animal?"
@@ -250,8 +251,10 @@ async def voice_assist(request: AssistRequest, current_user=Depends(get_current_
     open a menu option, answer briefly, or propose a record for the user to
     approve. Nothing is written to the database here.
     """
-    if not request.audio_base64 and not (request.text or "").strip():
+    effective_text = (request.text or request.query or "").strip()
+    if not request.audio_base64 and not effective_text:
         raise HTTPException(status_code=400, detail="Send a voice recording or some text.")
+    request.text = effective_text
 
     menu = [m.model_dump() for m in request.menu]
     menu_ids = [m["id"] for m in menu]

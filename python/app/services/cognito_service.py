@@ -351,6 +351,55 @@ class CognitoService:
         """
         Get user details from Firebase token
         """
+        # Mock tokens impersonate users, so they must never work outside dev/test.
+        if settings.ENVIRONMENT in ("development", "test", "testing") and (access_token.startswith("mock-") or access_token == "test-token"):
+            username_or_email = "farmer@cropsense.ai"
+            if access_token.startswith("mock-token-"):
+                username_or_email = access_token.replace("mock-token-", "")
+            elif access_token.startswith("mock-"):
+                username_or_email = access_token.replace("mock-", "")
+
+            from app.core.database import SessionLocal
+            from app.orm.user_sqlalchemy import User as SqlUser
+
+            db = SessionLocal()
+            db_user = None
+            try:
+                db_user = (
+                    db.query(SqlUser)
+                    .filter(
+                        (SqlUser.username == username_or_email)
+                        | (SqlUser.email == username_or_email)
+                    )
+                    .first()
+                )
+            except Exception as db_err:
+                logger.error(f"Failed to query user for mock user get_user fallback: {db_err}")
+            finally:
+                db.close()
+
+            if db_user:
+                return {
+                    "username": db_user.username,
+                    "user_sub": db_user.cognito_user_id or db_user.firebase_id or f"mock-{username_or_email}",
+                    "email": db_user.email,
+                    "email_verified": True,
+                    "phone_number": db_user.phone or "+919876543210",
+                    "phone_verified": True,
+                    "name": db_user.name,
+                    "attributes": {},
+                }
+            return {
+                "username": username_or_email,
+                "user_sub": f"mock-{username_or_email}",
+                "email": username_or_email,
+                "email_verified": True,
+                "phone_number": "+919876543210",
+                "phone_verified": True,
+                "name": username_or_email.split("@")[0].capitalize(),
+                "attributes": {},
+            }
+
         try:
             from firebase_admin import auth
 

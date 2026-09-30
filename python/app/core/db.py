@@ -1,290 +1,343 @@
 """
-Direct query builder and connection pool management using psycopg3.
-Provides DB.raw(sql, bind), .exe(), .result, .rows, .first(), and transaction context.
-Includes graceful fallback for test / development environments without active Postgres.
+Lightweight PostgreSQL Query Builder
+Similar to compile-php DB.php - builds SQL queries dynamically
 """
-from __future__ import annotations
 
-import logging
-import sqlite3
-from contextlib import contextmanager
-from typing import Any, Dict, Generator, List, Optional, Tuple, Union
+import os
+from typing import Any, Dict, List, Optional, Tuple
 
-from app.core.config import settings
-
-logger = logging.getLogger("cropsense.db")
-
-# Optional psycopg3 driver
-try:
-    import psycopg
-    from psycopg.rows import dict_row
-    from psycopg_pool import ConnectionPool
-    PSYCOPG3_AVAILABLE = True
-except ImportError:
-    try:
-        import psycopg2 as psycopg
-        import psycopg2.extras
-        PSYCOPG3_AVAILABLE = False
-        PSYCOPG2_AVAILABLE = True
-    except ImportError:
-        psycopg = None
-        PSYCOPG3_AVAILABLE = False
-        PSYCOPG2_AVAILABLE = False
+import psycopg
+from psycopg.rows import dict_row
+from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy import create_engine
 
 
-class RawQuery:
-    """Wrapper for raw SQL query execution."""
+class DatabaseSettings(BaseSettings):
+    """Database configuration from environment variables"""
 
-    def __init__(self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None):
-        self.sql = sql
-        self.bind = bind or {}
-        self._executed = False
-        self._rows: List[Dict[str, Any]] = []
-        self._rowcount: int = 0
-        self._last_id: Optional[int] = None
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
 
-    def exe(self) -> "RawQuery":
-        """Execute the query against the active database pool or fallback."""
-        if self._executed:
-            return self
+    postgres_server: str = "localhost"
+    postgres_db: str = "farming_db"
+    postgres_user: str = "postgres"
+    postgres_password: str = "postgres"
+    postgres_port: int = 5432
 
-        res_rows, rowcount, last_id = DB.execute_raw(self.sql, self.bind)
-        self._rows = res_rows
-        self._rowcount = rowcount
-        self._last_id = last_id
-        self._executed = True
+
+# Global settings instance
+_db_settings = None
+
+
+def get_db_settings() -> DatabaseSettings:
+    """Get database settings singleton"""
+    global _db_settings
+    if _db_settings is None:
+        _db_settings = DatabaseSettings()
+    return _db_settings
+
+
+# ── Connection pool ──────────────────────────────────────────────────────────
+# SQLAlchemy is used ONLY as a connection pool under this DB/Model API: no SQLAlchemy models,
+# no create_all, no Alembic. The schema comes from database/Model/*.json via `php setup.php`.
+# Before this, every DB() opened a fresh psycopg connection (slow, and it can exhaust
+# Cloud SQL's small connection limit). Size per worker process with DB_POOL_SIZE / DB_MAX_OVERFLOW.
+_pool_engine = None
+
+
+def _pool():
+    global _pool_engine
+    if _pool_engine is None:
+        settings = get_db_settings()
+
+        def _connect():
+            # Same parameters as the old per-query connect (host may be a /cloudsql/... socket dir)
+            return psycopg.connect(
+                host=settings.postgres_server,
+                dbname=settings.postgres_db,
+                user=settings.postgres_user,
+                password=settings.postgres_password,
+                port=settings.postgres_port,
+            )
+
+        _pool_engine = create_engine(
+            "postgresql+psycopg://",
+            creator=_connect,
+            pool_size=int(os.getenv("DB_POOL_SIZE", "2")),
+            max_overflow=int(os.getenv("DB_MAX_OVERFLOW", "2")),
+            pool_timeout=30,  # wait for a free connection instead of opening more
+            pool_pre_ping=True,  # drop dead connections (Cloud SQL restarts, idle timeouts)
+            pool_recycle=1800,
+        )
+    return _pool_engine
+
+
+class DB:
+    """
+    PostgreSQL Query Builder - builds SQL queries dynamically
+    Does NOT create tables - only generates and executes queries
+    """
+
+    def __init__(self, table: str = ""):
+        self.table = table
+        self.query = ""
+        self.placeholder = []
+        self.limit_val = None
+        self.offset_val = None
+        self.where_and = []
+        self.where_or = []
+        self.result = None
+        self.rows = 0
+        self._conn = None
+        self._cursor = None
+
+    def _get_connection(self):
+        """Get database connection"""
+        if not self._conn or self._conn.closed:
+            settings = get_db_settings()
+            self._conn = psycopg.connect(
+                host=settings.postgres_server,
+                dbname=settings.postgres_db,
+                user=settings.postgres_user,
+                password=settings.postgres_password,
+                port=settings.postgres_port,
+                row_factory=dict_row,
+            )
+        return self._conn
+
+    @staticmethod
+    def raw(sql: str, bind: List = None):
+        """Execute raw SQL query"""
+        db = DB()
+        db.rawsql(sql)
+        db.placeholder = bind or []
+        return db.exe()
+
+    def where(self, where: Dict):
+        """Add WHERE clause"""
+        return self.where_q(where)
+
+    def find(self, value: Any, key: str = "id"):
+        """Find by key"""
+        return self.find_q(value, key).limit_q(1)
+
+    def create(self, data: Dict):
+        """Create single record"""
+        return self.in_set().create_q(data).exe()
+
+    def update(self, data: Dict):
+        """Update records"""
+        return self.update_q(data).exe()
+
+    def insert(self, data: List[Dict]):
+        """Insert multiple records"""
+        return self.in_set().insert_q(data).exe()
+
+    def delete(self):
+        """Delete records"""
+        return self.del_set()
+
+    def upsert(self, data: List[Dict]):
+        """Insert or update on conflict"""
+        self.in_set().upsert_q(data).exe()
         return self
 
-    @property
-    def result(self) -> List[Dict[str, Any]]:
-        """Return all rows resulting from the query."""
-        if not self._executed:
-            self.exe()
-        return self._rows
+    def exe(self):
+        """Execute query with prepared statements"""
+        self.bind()
 
-    @property
-    def rows(self) -> List[Dict[str, Any]]:
-        """Alias for result."""
-        return self.result
-
-    @property
-    def rowcount(self) -> int:
-        if not self._executed:
-            self.exe()
-        return self._rowcount
-
-    @property
-    def last_id(self) -> Optional[int]:
-        if not self._executed:
-            self.exe()
-        return self._last_id
-
-    def first(self) -> Optional[Dict[str, Any]]:
-        """Return the first row or None."""
-        res = self.result
-        return res[0] if res else None
-
-    def scalar(self) -> Any:
-        """Return the first column value of the first row or None."""
-        first_row = self.first()
-        if first_row and isinstance(first_row, dict):
-            return next(iter(first_row.values()))
-        return None
-
-
-class DatabaseManager:
-    """Singleton database manager managing connection pools and raw queries."""
-
-    _instance: Optional["DatabaseManager"] = None
-    _pool: Any = None
-    _fallback_db: Optional[sqlite3.Connection] = None
-    _use_fallback: bool = False
-
-    def __new__(cls) -> "DatabaseManager":
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-            cls._instance._init_pool()
-        return cls._instance
-
-    def _init_pool(self) -> None:
-        """Initialize psycopg3 connection pool or prepare SQLite fallback."""
-        if PSYCOPG3_AVAILABLE and not settings.E2E_ACTIVE:
-            try:
-                conn_info = (
-                    f"host={settings.DB_HOST} "
-                    f"port={settings.DB_PORT} "
-                    f"dbname={settings.DB_NAME} "
-                    f"user={settings.DB_USER} "
-                    f"password={settings.DB_PASSWORD} "
-                    f"connect_timeout={settings.DB_TIMEOUT}"
-                )
-                self._pool = ConnectionPool(
-                    conninfo=conn_info,
-                    min_size=1,
-                    max_size=settings.DB_POOL_SIZE + settings.DB_MAX_OVERFLOW,
-                    kwargs={"row_factory": dict_row},
-                    open=False,
-                )
-                self._pool.open(wait=False)
-                self._use_fallback = False
-                logger.info("psycopg3 ConnectionPool initialized for %s", settings.DB_NAME)
-                return
-            except Exception as err:
-                logger.warning("Could not establish psycopg3 pool, switching to fallback DB: %s", err)
-
-        # Fallback to local SQLite / in-memory store for test/dev environments
-        self._use_fallback = True
-        self._fallback_db = sqlite3.connect(":memory:", check_same_thread=False)
-        self._fallback_db.row_factory = sqlite3.Row
-        logger.info("Database initialized using local fallback storage")
-
-    def raw(self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None) -> RawQuery:
-        """Create a RawQuery object."""
-        return RawQuery(sql, bind)
-
-    def execute_raw(
-        self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None
-    ) -> Tuple[List[Dict[str, Any]], int, Optional[int]]:
-        """Execute raw SQL statement and return (rows, rowcount, last_id)."""
-        bind = bind or {}
-
-        if not self._use_fallback and self._pool is not None:
-            try:
-                with self._pool.connection() as conn:
-                    with conn.cursor() as cur:
-                        cur.execute(sql, bind)
-                        rowcount = cur.rowcount
-                        rows: List[Dict[str, Any]] = []
-                        if cur.description is not None:
-                            rows = [dict(r) for r in cur.fetchall()]
-                        conn.commit()
-                        return rows, rowcount, None
-            except Exception as err:
-                logger.error("DB query execution error on PostgreSQL pool: %s (SQL: %s)", err, sql)
-                # Fallback transparently if pool drops during tests
-                pass
-
-        # Fallback SQLite execution
-        return self._execute_fallback(sql, bind)
-
-    def _execute_fallback(
-        self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None
-    ) -> Tuple[List[Dict[str, Any]], int, Optional[int]]:
-        """Execute SQL using SQLite fallback engine."""
-        if self._fallback_db is None:
-            self._fallback_db = sqlite3.connect(":memory:", check_same_thread=False)
-            self._fallback_db.row_factory = sqlite3.Row
-
-        # Adapt Postgres `%s` or `%(name)s` to SQLite `?` or `:name`
-        clean_sql = sql
-        sqlite_params = bind
+        # Borrow a pooled connection for this one statement; close() hands it back to the pool.
+        conn = _pool().raw_connection()
+        cursor = conn.cursor(row_factory=dict_row)
 
         try:
-            cur = self._fallback_db.cursor()
+            # psycopg3 uses %s placeholders, not $1, $2, ...
+            # Just replace ? with %s
+            pg_query = self.query.replace("?", "%s")
 
-            # Format parameters for sqlite3
-            if isinstance(bind, (list, tuple)):
-                clean_sql = clean_sql.replace("%s", "?")
-            elif isinstance(bind, dict):
-                import re
-                clean_sql = re.sub(r"%\((\w+)\)s", r":\1", clean_sql)
+            cursor.execute(pg_query, self.placeholder)
 
-            # Strip PostgreSQL type casts like ::text, ::int
-            import re
-            clean_sql = re.sub(r"::\w+", "", clean_sql)
-
-            # Auto-create missing tables or missing columns if this is an INSERT
-            tbl_insert = re.search(r"INSERT\s+INTO\s+([a-zA-Z0-9_]+)\s*\(([^)]+)\)", clean_sql, re.IGNORECASE | re.DOTALL)
-            if tbl_insert:
-                table_name = tbl_insert.group(1)
-                cols = [c.strip().strip('"').strip("'") for c in tbl_insert.group(2).split(",")]
-                tbl_check = cur.execute(
-                    "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table_name,)
-                ).fetchone()
-                if not tbl_check:
-                    col_defs = ["id INTEGER PRIMARY KEY AUTOINCREMENT"]
-                    for c in cols:
-                        if c != "id":
-                            col_defs.append(f'"{c}" TEXT')
-                    cur.execute(f'CREATE TABLE IF NOT EXISTS "{table_name}" ({", ".join(col_defs)})')
-                else:
-                    existing = {r["name"] for r in cur.execute(f'PRAGMA table_info("{table_name}")').fetchall()}
-                    for c in cols:
-                        if c not in existing and c != "id":
-                            try:
-                                cur.execute(f'ALTER TABLE "{table_name}" ADD COLUMN "{c}" TEXT')
-                            except Exception:
-                                pass
-                self._fallback_db.commit()
+            # Get results if SELECT query
+            if cursor.description:
+                self.result = cursor.fetchall()
             else:
-                # Check for generic table reference
-                tbl_match = re.search(r"(?:INSERT\s+INTO|UPDATE|FROM)\s+([a-zA-Z0-9_]+)", clean_sql, re.IGNORECASE | re.DOTALL)
-                if tbl_match:
-                    table_name = tbl_match.group(1)
-                    tbl_check = cur.execute(
-                        "SELECT 1 FROM sqlite_master WHERE type='table' AND name=?", (table_name,)
-                    ).fetchone()
-                    if not tbl_check:
-                        cur.execute(f'CREATE TABLE IF NOT EXISTS "{table_name}" (id INTEGER PRIMARY KEY AUTOINCREMENT, enable INTEGER DEFAULT 1)')
-                        self._fallback_db.commit()
+                self.result = []
 
-            # Execute query
-            is_insert = clean_sql.strip().upper().startswith("INSERT")
-            has_returning = "RETURNING" in clean_sql.upper()
+            self.rows = cursor.rowcount
+            conn.commit()
 
-            try:
-                if isinstance(sqlite_params, (dict, list, tuple)):
-                    cur.execute(clean_sql, sqlite_params)
-                else:
-                    cur.execute(clean_sql)
-            except sqlite3.OperationalError as op_err:
-                if "RETURNING" in clean_sql.upper():
-                    # Retry without RETURNING for older SQLite
-                    clean_sql_no_ret = re.sub(r"\s+RETURNING\s+.*$", "", clean_sql, flags=re.IGNORECASE)
-                    if isinstance(sqlite_params, (dict, list, tuple)):
-                        cur.execute(clean_sql_no_ret, sqlite_params)
-                    else:
-                        cur.execute(clean_sql_no_ret)
-                else:
-                    raise op_err
+        except Exception as e:
+            conn.rollback()
+            raise e
+        finally:
+            cursor.close()
+            conn.close()
 
-            rows: List[Dict[str, Any]] = []
-            if cur.description:
-                rows = [dict(row) for row in cur.fetchall()]
-            rowcount = cur.rowcount
-            last_id = cur.lastrowid
+        return self
 
-            # If insert and rows are empty (because RETURNING wasn't supported), fetch inserted row
-            if is_insert and not rows and last_id and tbl_match:
-                fetch_cur = self._fallback_db.cursor()
-                res = fetch_cur.execute(f'SELECT * FROM "{tbl_match.group(1)}" WHERE id = ?', (last_id,)).fetchone()
-                if res:
-                    rows = [dict(res)]
+    def bind(self):
+        """Bind WHERE, LIMIT, OFFSET to query"""
+        if len(self.where_and) > 0 or len(self.where_or) > 0:
+            self.query += " WHERE "
 
-            self._fallback_db.commit()
-            return rows, rowcount, last_id
-        except Exception as err:
-            logger.debug("Fallback SQLite query note: %s for SQL: %s", err, clean_sql)
-            return [], 0, None
+            if len(self.where_and) > 0:
+                self.bind_where(self.where_and, "AND")
 
-    @contextmanager
-    def transaction(self) -> Generator[Any, None, None]:
-        """Transaction context manager."""
-        if not self._use_fallback and self._pool is not None:
-            with self._pool.connection() as conn:
-                with conn.transaction():
-                    yield conn
-        else:
-            yield self._fallback_db
+            if len(self.where_or) > 0:
+                if len(self.where_and) > 0:
+                    self.query += " OR "
+                self.bind_where(self.where_or, "OR")
 
-    def query(self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None) -> List[Dict[str, Any]]:
-        """Execute SQL query and return rows directly."""
-        return self.raw(sql, bind).exe().rows
+        if self.limit_val and self.limit_val > 0:
+            self.query += f" LIMIT {self.limit_val}"
 
-    def execute(self, sql: str, bind: Optional[Union[Dict[str, Any], Tuple[Any, ...], List[Any]]] = None) -> int:
-        """Execute SQL statement and return affected rows."""
-        return self.raw(sql, bind).exe().rowcount
+        if self.offset_val and self.offset_val > 0:
+            self.query += f" OFFSET {self.offset_val}"
 
+    def bind_where(self, data: List, join: str = "AND"):
+        """Bind WHERE conditions"""
+        conditions = []
 
-# Global DB accessor singleton
-DB = DatabaseManager()
+        for value in data:
+            col, op, val = value[0], value[1], value[2]
+
+            if isinstance(val, list):
+                placeholders = ", ".join(["?" for _ in val])
+                conditions.append(f'"{col}" {op} ({placeholders})')
+                self.placeholder.extend(val)
+            else:
+                conditions.append(f'"{col}" {op} ?')
+                self.placeholder.append(val)
+
+        self.query += f" {join} ".join(conditions)
+
+    def many(self) -> List[Dict]:
+        """Fetch all results"""
+        return [dict(row) for row in self.result] if self.result else []
+
+    def first(self) -> Optional[Dict]:
+        """Fetch first result"""
+        return dict(self.result[0]) if self.result and len(self.result) > 0 else None
+
+    def last_inserted(self):
+        """Get last inserted record"""
+        # PostgreSQL uses RETURNING clause, but for compatibility we query by last insert id
+        return self.sel_set().rawsql(" ORDER BY id DESC ").limit_q(1).exe()
+
+    def get_inserted(self):
+        """Get recently inserted records"""
+        return self.sel_set().rawsql(" ORDER BY updated_at DESC ").limit_q(self.rows)
+
+    def find_q(self, value: Any, key: str = "id"):
+        """Add find condition"""
+        self.where_q({key: [value]})
+        return self
+
+    def upsert_q(self, data: List[Dict]):
+        """Build UPSERT query (PostgreSQL ON CONFLICT)"""
+        self.insert_q(data)
+        # Assume 'id' is the conflict column
+        update_cols = [f'"{k}" = EXCLUDED."{k}"' for k in data[0].keys() if k != "id"]
+        self.query += f" ON CONFLICT (id) DO UPDATE SET {', '.join(update_cols)}"
+        return self
+
+    def rawsql(self, sql: str):
+        """Append raw SQL"""
+        self.query += sql
+        return self
+
+    def create_q(self, data: Dict):
+        """Build CREATE query (single insert)"""
+        cols = list(data.keys())
+        placeholders = ", ".join(["?" for _ in cols])
+        col_names = ", ".join([f'"{c}"' for c in cols])
+        self.query += f"({col_names}) VALUES ({placeholders})"
+        self.placeholder.extend(data.values())
+        return self
+
+    def insert_q(self, data: List[Dict]):
+        """Build INSERT query (multiple inserts)"""
+        if len(data) > 0:
+            cols = list(data[0].keys())
+            col_names = ", ".join([f'"{c}"' for c in cols])
+            self.query += f"({col_names}) VALUES "
+
+            values = []
+            for row in data:
+                placeholders = ", ".join(["?" for _ in row])
+                values.append(f"({placeholders})")
+                self.placeholder.extend(row.values())
+
+            self.query += ", ".join(values)
+        return self
+
+    def update_q(self, data: Dict):
+        """Build UPDATE query"""
+        self.placeholder = []
+        set_clause = ", ".join([f'"{k}" = ?' for k in data.keys()])
+        self.query = f'UPDATE "{self.table}" SET {set_clause}'
+        self.placeholder.extend(data.values())
+        return self
+
+    def where_q(self, where: Dict, type: str = "AND"):
+        """Add WHERE IN conditions"""
+        for key, value in where.items():
+            # Ensure value is a list for IN clause
+            val_list = value if isinstance(value, list) else [value]
+            if type == "AND":
+                self.where_and.append([key, "IN", val_list])
+            else:
+                self.where_or.append([key, "IN", val_list])
+        return self
+
+    def where_custom_q(self, where: List[Tuple], type: str = "AND"):
+        """Add custom WHERE conditions"""
+        for condition in where:
+            if type == "AND":
+                self.where_and.append([condition[0], condition[1], condition[2]])
+            else:
+                self.where_or.append([condition[0], condition[1], condition[2]])
+        return self
+
+    def sel_set(self, cols: List[str] = None):
+        """Build SELECT query"""
+        self.placeholder = []
+        cols = cols or ["*"]
+        self.query = f'SELECT {", ".join(cols)} FROM "{self.table}"'
+        return self
+
+    def count_set(self, col: str = "*"):
+        """Build COUNT query"""
+        self.query = f'SELECT count({col}) FROM "{self.table}"'
+        return self
+
+    def in_set(self):
+        """Build INSERT INTO"""
+        self.query = f'INSERT INTO "{self.table}"'
+        return self
+
+    def up_set(self):
+        """Build UPDATE"""
+        self.query = f'UPDATE "{self.table}" SET '
+        return self
+
+    def del_set(self):
+        """Build DELETE"""
+        self.query = f'DELETE FROM "{self.table}" '
+        return self
+
+    def limit_q(self, limit: int):
+        """Add LIMIT"""
+        self.limit_val = limit
+        return self
+
+    def offset_q(self, offset: int):
+        """Add OFFSET"""
+        self.offset_val = offset
+        return self
+
+    def __del__(self):
+        """Close connection on cleanup"""
+        if self._cursor:
+            self._cursor.close()
+        if self._conn and not self._conn.closed:
+            self._conn.close()

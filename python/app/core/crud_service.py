@@ -1,191 +1,126 @@
 """
-Base CrudService implementation for CropSense AI services.
-Integrates row-level ownership security, parent validation, and parameter sanitization.
-"""
-from __future__ import annotations
+Base class for the generated per-table services (app/services/<table>_service.py).
 
-import logging
+Generated services only declare `model`; all CRUD lives here so the ORM is used one correct way.
+Pass `owner` (the signed-in user) from /islogin/* controllers to apply app/core/ownership.py rules;
+/isuper/* and /ipublic/* controllers call without it.
+"""
+
 from typing import Any, Dict, List, Optional
 
-from app.core.db import DB
-from app.core.ownership import (
-    enforce_owner_columns,
-    get_ownership_clause,
-    is_shared_read,
-    validate_parent_ownership,
-)
+from fastapi import HTTPException
 
-logger = logging.getLogger("cropsense.crud_service")
+from app.core import ownership
+from app.core.db import DB
 
 
 class CrudService:
-    """Base CRUD service providing secure data access and mutations."""
-
     model: Any = None
-    table: str = ""
 
-    def __init__(self, model_cls: Any = None, table: str = "") -> None:
-        if model_cls is not None:
-            self.model = model_cls
-        if table:
-            self.table = table
-        elif self.model and hasattr(self.model, "table"):
-            self.table = self.model.table
+    @property
+    def table(self) -> str:
+        return self.model.table
 
-    def _get_owner_id(self, owner: Optional[Dict[str, Any]]) -> Optional[int]:
-        """Extract verified user id from owner context."""
-        if not owner:
+    @property
+    def columns(self) -> List[str]:
+        return list(self.model.fillable)
+
+    # ── helpers ────────────────────────────────────────────────────────────
+    def _scope(self, owner, for_write: bool = False) -> Optional[str]:
+        if owner is None:
             return None
-        return owner.get("id")
-
-    def all(
-        self,
-        owner: Optional[Dict[str, Any]] = None,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None,
-    ) -> List[Dict[str, Any]]:
-        """Retrieve all records with optional pagination and ownership scoping."""
-        uid = self._get_owner_id(owner)
-        sql = f"SELECT t.* FROM {self.table} t"
-        params: Dict[str, Any] = {}
-
-        # Apply ownership rule if owner specified and not shared read
-        if uid is not None and not is_shared_read(self.table):
-            clause = get_ownership_clause(self.table, uid, alias="t")
-            if clause:
-                sql += f" WHERE {clause}"
-
-        sql += " ORDER BY t.id DESC"
-        if limit is not None:
-            sql += f" LIMIT {int(limit)}"
-        if offset is not None:
-            sql += f" OFFSET {int(offset)}"
-
-        return DB.raw(sql, params).exe().rows
-
-    def find(self, item_id: Any, owner: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
-        """Find a single record by primary key, verifying ownership."""
-        uid = self._get_owner_id(owner)
-        sql = f"SELECT t.* FROM {self.table} t WHERE t.id = %(id)s"
-        params: Dict[str, Any] = {"id": item_id}
-
-        if uid is not None and not is_shared_read(self.table):
-            clause = get_ownership_clause(self.table, uid, alias="t")
-            if clause:
-                sql += f" AND {clause}"
-
-        sql += " LIMIT 1"
-        return DB.raw(sql, params).exe().first()
-
-    def where(
-        self,
-        filters: Dict[str, Any],
-        owner: Optional[Dict[str, Any]] = None,
-        limit: Optional[int] = None,
-        offset: Optional[int] = None,
-    ) -> List[Dict[str, Any]]:
-        """Filter records by dictionary of column -> value."""
-        uid = self._get_owner_id(owner)
-        clauses = []
-        params: Dict[str, Any] = {}
-
-        for i, (col, val) in enumerate(filters.items()):
-            p_name = f"w_{col}_{i}"
-            clauses.append(f"t.{col} = %({p_name})s")
-            params[p_name] = val
-
-        where_str = " AND ".join(clauses) if clauses else "1=1"
-        sql = f"SELECT t.* FROM {self.table} t WHERE {where_str}"
-
-        if uid is not None and not is_shared_read(self.table):
-            clause = get_ownership_clause(self.table, uid, alias="t")
-            if clause:
-                sql += f" AND {clause}"
-
-        sql += " ORDER BY t.id DESC"
-        if limit is not None:
-            sql += f" LIMIT {int(limit)}"
-        if offset is not None:
-            sql += f" OFFSET {int(offset)}"
-
-        return DB.raw(sql, params).exe().rows
-
-    def create(self, data: Dict[str, Any], owner: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
-        """Insert record into database enforcing fillable, owner columns and parent checks."""
-        uid = self._get_owner_id(owner)
-        clean = dict(data)
-
-        # Force owner column if user is signed in
-        if uid is not None:
-            clean = enforce_owner_columns(self.table, clean, uid)
-            # Validate foreign key parent ownership
-            if not validate_parent_ownership(self.table, clean, uid):
-                logger.warning("Parent ownership validation failed for %s on table %s", clean, self.table)
-                return None
-
-        # Sanitize to fillable columns
-        fillable = getattr(self.model, "fillable", [])
-        if fillable:
-            allowed = set(fillable) | {"enable", "created_at", "updated_at"}
-            clean = {k: v for k, v in clean.items() if k in allowed and k != "id"}
-
-        clean.setdefault("enable", 1)
-
-        cols = list(clean.keys())
-        placeholders = [f"%({col})s" for col in cols]
-        sql = f"INSERT INTO {self.table} ({', '.join(cols)}) VALUES ({', '.join(placeholders)}) RETURNING *"
-
-        res = DB.raw(sql, clean).exe()
-        return res.first()
-
-    def update(
-        self,
-        item_id: Any,
-        data: Dict[str, Any],
-        owner: Optional[Dict[str, Any]] = None,
-    ) -> Optional[Dict[str, Any]]:
-        """Update existing record enforcing ownership checks and column immutability."""
-        existing = self.find(item_id, owner=owner)
-        if not existing:
+        if not for_write and self.table in ownership.SHARED_READ:
             return None
+        return ownership.owner_condition(self.table, owner.id)
 
-        clean = dict(data)
-        # Strip immutable primary key and owner columns on update
-        clean.pop("id", None)
-        uid = self._get_owner_id(owner)
-        if uid is not None:
-            # Cannot modify owner columns
-            from app.core.ownership import OWNER_COLUMNS
-            owner_col = OWNER_COLUMNS.get(self.table)
-            if owner_col:
-                clean.pop(owner_col, None)
+    def _select(
+        self, where: str = "", bind: Optional[list] = None, owner=None, for_write: bool = False
+    ) -> List[Dict]:
+        clauses = [f"({where})"] if where else []
+        scope = self._scope(owner, for_write)
+        if scope:
+            clauses.append(scope)
+        sql = f'SELECT t.* FROM "{self.table}" t'
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY t.id DESC"
+        return DB.raw(sql, bind or []).result or []
 
-        fillable = getattr(self.model, "fillable", [])
-        if fillable:
-            clean = {k: v for k, v in clean.items() if k in fillable}
+    def _clean(self, data: Dict) -> Dict:
+        allowed = set(self.columns)
+        return {k: v for k, v in data.items() if k in allowed}
 
-        if not clean:
-            return existing
+    def _check_parents(self, data: Dict, owner) -> None:
+        """Refuse to attach a row to a farm/crop/animal/booking the user doesn't own."""
+        for column, parent_table in ownership.PARENTS.get(self.table, {}).items():
+            parent_id = data.get(column)
+            if parent_id in (None, ""):
+                continue
+            rule = ownership.owner_condition(parent_table, owner.id)
+            if not rule:
+                continue
+            rows = DB.raw(
+                f'SELECT 1 FROM "{parent_table}" t WHERE t.id = ? AND {rule}', [parent_id]
+            ).result
+            if not rows:
+                raise HTTPException(status_code=404, detail=f"{parent_table} {parent_id} not found")
 
-        set_clauses = [f"{col} = %({col})s" for col in clean.keys()]
-        sql = f"UPDATE {self.table} SET {', '.join(set_clauses)}, updated_at = CURRENT_TIMESTAMP WHERE id = %(pk)s RETURNING *"
-        params = {**clean, "pk": item_id}
+    # ── CRUD ───────────────────────────────────────────────────────────────
+    def all(self, owner=None) -> List[Dict]:
+        return self._select(owner=owner)
 
-        return DB.raw(sql, params).exe().first()
+    def find(self, item_id: int, owner=None, for_write: bool = False) -> Optional[Dict]:
+        rows = self._select("t.id = ?", [item_id], owner=owner, for_write=for_write)
+        return rows[0] if rows else None
 
-    def upsert(self, data: Dict[str, Any], owner: Optional[Dict[str, Any]] = None) -> Optional[Dict[str, Any]]:
-        """Update if id present, otherwise create."""
-        item_id = data.get("id")
-        if item_id:
-            return self.update(item_id, data, owner=owner)
+    def where(self, filters: Dict, owner=None) -> List[Dict]:
+        filters = self._clean(filters)
+        if not filters:
+            return self._select(owner=owner)
+        where = " AND ".join(f't."{k}" = ?' for k in filters)
+        return self._select(where, list(filters.values()), owner=owner)
+
+    def create(self, data: Dict, owner=None) -> Dict:
+        data = self._clean(data)
+        data.pop("id", None)
+        if owner is not None:
+            for column in ownership.OWNER_COLUMNS.get(self.table, []):
+                if column in self.columns:
+                    data[column] = owner.id
+            self._check_parents(data, owner)
+        if not data:
+            raise HTTPException(status_code=422, detail="No valid fields to create")
+        cols = ", ".join(f'"{k}"' for k in data)
+        marks = ", ".join("?" for _ in data)
+        rows = DB.raw(
+            f'INSERT INTO "{self.table}" ({cols}) VALUES ({marks}) RETURNING *', list(data.values())
+        ).result
+        return rows[0]
+
+    def update(self, item_id: int, data: Dict, owner=None) -> Optional[Dict]:
+        if not self.find(item_id, owner=owner, for_write=True):
+            return None
+        data = self._clean(data)
+        data.pop("id", None)
+        if owner is not None:
+            for column in ownership.OWNER_COLUMNS.get(self.table, []):
+                data.pop(column, None)  # can't hand a row to someone else
+            self._check_parents(data, owner)
+        if not data:
+            return self.find(item_id)
+        sets = ", ".join(f'"{k}" = ?' for k in data)
+        rows = DB.raw(
+            f'UPDATE "{self.table}" SET {sets}, "updated_at" = CURRENT_TIMESTAMP WHERE id = ? RETURNING *',
+            list(data.values()) + [item_id],
+        ).result
+        return rows[0] if rows else None
+
+    def upsert(self, data: Dict, owner=None) -> Optional[Dict]:
+        if data.get("id"):
+            return self.update(data["id"], data, owner=owner)
         return self.create(data, owner=owner)
 
-    def delete(self, item_id: Any, owner: Optional[Dict[str, Any]] = None) -> bool:
-        """Delete record if accessible by owner."""
-        existing = self.find(item_id, owner=owner)
-        if not existing:
+    def delete(self, item_id: int, owner=None) -> bool:
+        if not self.find(item_id, owner=owner, for_write=True):
             return False
-
-        sql = f"DELETE FROM {self.table} WHERE id = %(id)s"
-        DB.raw(sql, {"id": item_id}).exe()
-        return True
+        return (DB.raw(f'DELETE FROM "{self.table}" WHERE id = ?', [item_id]).rows or 0) > 0

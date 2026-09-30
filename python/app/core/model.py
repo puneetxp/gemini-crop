@@ -1,353 +1,415 @@
 """
-Base ActiveRecord Model implementation for CropSense AI ORM.
-Supports fluent query builder (.where, .and_where, .or_where, .order_by, .limit, .offset, .paginate),
-CRUD operations (.get, .first, .find, .create, .update, .save, .delete, .upsert),
-fillable column protection, relationship resolution, and FastAPI serialization.
+Lightweight ORM Model Base Class
+Similar to compile-php Model.php - provides fluent query interface
 """
-from __future__ import annotations
 
-import datetime
-from copy import deepcopy
-from typing import Any, Dict, Iterator, List, Optional, Tuple, Type, TypeVar, Union
+from typing import Any, Dict, List, Optional, Type
 
 from app.core.db import DB
 
-T = TypeVar("T", bound="Model")
-
 
 class Model:
-    """ActiveRecord Base Model."""
+    """
+    Base Model class - provides ORM-like interface
+    Does NOT create tables - only provides query building
+
+    Subclasses must define:
+    - table: str (table name)
+    - fillable: List[str] (allowed fields)
+    - relations: Dict (relationship definitions)
+    """
 
     table: str = ""
-    primary_key: str = "id"
     fillable: List[str] = []
-    relations: Dict[str, Dict[str, Any]] = {}
+    relations: Dict = {}
 
-    def __init__(self, **attributes: Any) -> None:
-        # Internal query builder state
-        self._where_clauses: List[Tuple[str, str, Any, str]] = []  # (field, op, value, logic)
-        self._order_by: List[str] = []
-        self._limit: Optional[int] = None
-        self._offset: Optional[int] = None
-        self._eager_relations: List[str] = []
+    def __init__(self):
+        self.items = []
+        self.singular = False
+        self.db = DB(self.table)
+        self.with_relations = []
+        self.relation_data = {}
+        self.page = {}
 
-        # Model instance attributes
-        self._attributes: Dict[str, Any] = {}
-        self._loaded_relations: Dict[str, Any] = {}
+    def set_singular(self):
+        """Mark as single result"""
+        self.singular = True
+        return self
 
-        if attributes:
-            self._fill_attributes(attributes)
+    def paginate(self, page_number: int = 1, page_items: int = 25) -> Optional["Model"]:
+        """Paginate results"""
+        count_result = self.count()
+        total = count_result[0]["count"] if count_result else 0
 
-    # ------------------------------------------------------------------
-    # Attribute Access & Serialization
-    # ------------------------------------------------------------------
-    def _fill_attributes(self, data: Dict[str, Any]) -> None:
-        """Populate instance attributes."""
-        for key, value in data.items():
-            self._attributes[key] = value
+        if total:
+            self.page["result"] = total
+            self.page["page_number"] = page_number
+            self.page["page_items"] = page_items
+            self.page["total_pages"] = (total + page_items - 1) // page_items
+
+            offset = (page_number - 1) * page_items
+            while offset > total:
+                offset -= page_items
+
+            self.db.offset_q(offset).limit_q(page_items)
+            return self.get()
+
+        return None
+
+    @classmethod
+    def all(cls) -> "Model":
+        """Get all records"""
+        instance = cls()
+        instance.db.sel_set()
+        instance.get()
+        return instance
+
+    @classmethod
+    def where(cls, where: Dict) -> "Model":
+        """Add WHERE clause - strictly takes a dictionary"""
+        return cls()._where(where)
+
+    def save(self) -> "Model":
+        """Save current record (singular)"""
+        if not self.singular or not isinstance(self.items, dict):
+            # If not singular, maybe you want to update many?
+            # But normally save() is on a record.
+            return self
+
+        if "id" in self.items and self.items["id"]:
+            # Update existing
+            id_val = self.items["id"]
+            data = {k: v for k, v in self.items.items() if k in self.fillable}
+            self.db.where({"id": id_val}).update(data).exe()
+        else:
+            # Create new
+            data = {k: v for k, v in self.items.items() if k in self.fillable}
+            self.db.create(data).exe()
+            # Fetch last inserted ID
+            self.db.last_inserted().exe()
+            inserted = self.db.first()
+            if inserted:
+                self.items = inserted
+                self.singular = True
+        return self
+
+    def delete(self) -> bool:
+        """Delete current record (singular)"""
+        if not self.singular or not isinstance(self.items, dict) or "id" not in self.items:
+            # Fallback to class delete if where was called but not first()
+            # But the service expects record.delete()
+            return False
+
+        self.db.where({"id": self.items["id"]}).delete().exe()
+        return True
+
+    def and_where(self, data: Dict) -> "Model":
+        """Add AND WHERE"""
+        self.db.where_q(data)
+        return self
+
+    def or_where(self, data: Dict) -> "Model":
+        """Add OR WHERE"""
+        self.db.where_q(data, "OR")
+        return self
+
+    def and_where_custom(self, data: List) -> "Model":
+        """Add custom AND WHERE"""
+        self.db.where_custom_q(data)
+        return self
+
+    def or_where_custom(self, data: List) -> "Model":
+        """Add custom OR WHERE"""
+        self.db.where_custom_q(data, "OR")
+        return self
+
+    @classmethod
+    def where_custom(cls, where: List) -> "Model":
+        """Add custom WHERE clause"""
+        return cls()._where_custom(where)
+
+    def get(self) -> "Model":
+        """Execute query and get results"""
+        self.db.sel_set().exe()
+        self.items = self.db.many()
+        return self
+
+    def get_null(self) -> Optional["Model"]:
+        """Get results or None"""
+        self.db.sel_set().exe()
+        self.items = self.db.many()
+        return self if len(self.items) > 0 else None
+
+    def count(self) -> List[Dict]:
+        """Count records"""
+        self.db.count_set().exe()
+        return self.db.many()
+
+    def first(self, select: List[str] = None) -> Optional["Model"]:
+        """Get first result"""
+        select = select or ["*"]
+        self.items = self.db.sel_set(select).exe().first()
+
+        if self.items:
+            self.singular = True
+            return self
+
+        return None
+
+    def _where_custom(self, where: List = None) -> "Model":
+        """Internal custom where"""
+        where = where or []
+        self.db.sel_set().where_custom_q(where)
+        return self
+
+    def _where(self, where: Dict = None) -> "Model":
+        """Internal where"""
+        where = where or {}
+        filtered = {k: v for k, v in where.items() if k in self.fillable or k == "id"}
+        self.db.where(filtered)
+        return self
+
+    @classmethod
+    def find(cls, value: Any, key: str = "id") -> Optional["Model"]:
+        """Find by key"""
+        instance = cls()
+        instance.db.find(value, key)
+        return instance.first()
+
+    def get_inserted(self) -> "Model":
+        """Get last inserted record"""
+        self.db.last_inserted()
+        result = self.db.first()
+        if result:
+            self.items = result
+            self.singular = True
+        return self
+
+    def get_all_inserted(self) -> "Model":
+        """Get all inserted records"""
+        self.db.get_inserted().exe()
+        self.items = self.db.many()
+        return self
+
+    @classmethod
+    def create(cls, data: Dict = None) -> "Model":
+        """Create single record"""
+        data = data or {}
+        instance = cls()
+        filtered = {k: v for k, v in data.items() if k in instance.fillable}
+        instance.db.create(filtered)
+        return instance
+
+    @classmethod
+    def insert(cls, data: List[Dict]) -> "Model":
+        """Insert multiple records"""
+        instance = cls()
+        filtered_data = []
+        for row in data:
+            filtered_data.append({k: v for k, v in row.items() if k in instance.fillable})
+        instance.db.insert(filtered_data)
+        return instance
+
+    @classmethod
+    def upsert(cls, data: List[Dict]) -> "Model":
+        """Upsert records"""
+        return cls()._upsert(data)
+
+    def update(self, data: Dict) -> "Model":
+        """Update records"""
+        filtered = {k: v for k, v in data.items() if k in self.fillable}
+        self.db.update(filtered)
+        return self
+
+    def _upsert(self, data: List[Dict]) -> "Model":
+        """Internal upsert"""
+        filtered_data = []
+        for row in data:
+            filtered_data.append({k: v for k, v in row.items() if k in self.fillable})
+        self.db.upsert(filtered_data)
+        return self
+
+    @classmethod
+    def delete(cls, where: Dict) -> int:
+        """Delete records"""
+        instance = cls()
+        return instance.db.where(where).delete().exe().rows
+
+    def delete_current(self) -> "Model":
+        """Delete current records"""
+        self.db.delete()
+        return self
+
+    def clean(self, data: List[Dict]) -> List[Dict]:
+        """Clean data to only fillable fields"""
+        return [{k: v for k, v in item.items() if k in self.fillable} for item in data]
+
+    def to_dict(self) -> Dict | List[Dict]:
+        """Convert to dictionary"""
+        return self.items
+
+    def to_json(self) -> str:
+        """Convert to JSON string"""
+        import json
+
+        return json.dumps(self.items, default=str)
+
+    def with_rel(self, relations: List | str, first: bool = True) -> "Model":
+        """Eager load relationships"""
+        if not self.items and not self.singular:
+            return self
+
+        if first:
+            self.with_relations = relations if isinstance(relations, list) else [relations]
+
+        result = {}
+
+        if isinstance(relations, list):
+            for rel in relations:
+                if isinstance(rel, dict):
+                    for key, value in rel.items():
+                        rel_class = self.relation(key)
+                        if rel_class:
+                            self.relation_data[key] = {"class": rel_class.with_rel(value, False)}
+                            result[key] = rel_class.to_dict()
+                else:
+                    rel_class = self.relation(rel)
+                    if rel_class:
+                        self.relation_data[rel] = {"class": rel_class}
+                        result[rel] = rel_class.to_dict()
+        else:
+            rel_class = self.relation(relations)
+            if rel_class:
+                self.relation_data[relations] = {"class": rel_class}
+                result[relations] = rel_class.to_dict()
+
+        # Combine with main items
+        table_name = self.table
+        if self.singular:
+            result[table_name] = [self.items]
+        else:
+            result[table_name] = self.items
+
+        self.items = result
+        return self
+
+    def relation(self, rel_name: str) -> Optional["Model"]:
+        """Load relationship"""
+        if rel_name not in self.relations:
+            return None
+
+        rel_config = self.relations[rel_name]
+
+        # Get foreign key values
+        if self.singular:
+            fk_values = [self.items.get(rel_config["name"])]
+        else:
+            fk_values = [item.get(rel_config["name"]) for item in self.items]
+
+        # Filter out None values
+        fk_values = [v for v in fk_values if v is not None]
+
+        if not fk_values:
+            return None
+
+        # Query related model - handle string references, lambdas, and direct class references
+        related_class = rel_config["callback"]
+
+        if isinstance(related_class, str):
+            # String reference - import dynamically
+            import importlib
+
+            module = importlib.import_module(f"app.orm.{related_class.lower()}")
+            related_class = getattr(module, related_class)
+        elif callable(related_class) and not isinstance(related_class, type):
+            # It's a lambda, call it to get the class
+            related_class = related_class()
+
+        where = {rel_config["key"]: fk_values}
+
+        return related_class.where(where).get()
+
+    def sort_relations(self) -> "Model":
+        """Sort relationship data into parent records"""
+        if not self.with_relations:
+            return self
+
+        # This is a simplified version - full implementation would nest relations properly
+        if self.singular and isinstance(self.items, dict):
+            table_name = self.table
+            if table_name in self.items:
+                self.items = self.items[table_name][0] if self.items[table_name] else {}
+
+        return self
 
     def __getattr__(self, name: str) -> Any:
-        if name.startswith("_") or "_attributes" not in self.__dict__:
-            raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
+        """Proxy attribute access to items if singular"""
+        # Avoid recursion during initialization
+        if name == "items" or name == "singular":
+            raise AttributeError(name)
 
-        if name in self._attributes:
-            return self._attributes[name]
-
-        # Lazy resolve relation if defined
-        if name in self.relations:
-            if name not in self._loaded_relations:
-                self._load_relation(name)
-            return self._loaded_relations.get(name)
-
+        if (
+            hasattr(self, "singular")
+            and self.singular
+            and isinstance(self.items, dict)
+            and name in self.items
+        ):
+            return self.items[name]
         raise AttributeError(f"'{self.__class__.__name__}' object has no attribute '{name}'")
 
     def __setattr__(self, name: str, value: Any) -> None:
-        if name.startswith("_") or name in (
-            "table",
-            "primary_key",
-            "fillable",
-            "relations",
+        """Proxy attribute writing to items if singular and in fillable"""
+        if (
+            name != "items"
+            and name != "singular"
+            and hasattr(self, "singular")
+            and self.singular
+            and isinstance(self.items, dict)
+            and (name in self.fillable or name == "id")
         ):
+            self.items[name] = value
+        else:
             super().__setattr__(name, value)
+
+    def __getitem__(self, key: Any) -> Any:
+        """Dict-like or list-like access"""
+        if self.singular and isinstance(self.items, dict):
+            return self.items[key]
+        if isinstance(self.items, list):
+            return self.items[key]
+        raise KeyError(key)
+
+    def __setitem__(self, key: Any, value: Any) -> None:
+        """Dict-like access for singular items"""
+        if self.singular and isinstance(self.items, dict):
+            self.items[key] = value
         else:
-            if hasattr(self, "_attributes"):
-                self._attributes[name] = value
-            else:
-                super().__setattr__(name, value)
+            raise TypeError(f"'{self.__class__.__name__}' object does not support item assignment")
 
-    def __getitem__(self, item: str) -> Any:
-        return self._attributes[item]
+    def __iter__(self):
+        """Make model iterable if it contains a list of items"""
+        if hasattr(self, "singular") and not self.singular and isinstance(self.items, list):
+            return iter(self.items)
+        # If singular, return empty or self as a list
+        return iter([])
 
-    def __setitem__(self, key: str, value: Any) -> None:
-        self._attributes[key] = value
+    def __len__(self) -> int:
+        """Return number of items"""
+        if isinstance(self.items, list):
+            return len(self.items)
+        return 1 if self.items else 0
 
-    def __contains__(self, item: str) -> bool:
-        return item in self._attributes
+    def keys(self):
+        """Support dict-like keys() for serialization"""
+        if hasattr(self, "singular") and self.singular and isinstance(self.items, dict):
+            return self.items.keys()
+        return []
 
-    def __iter__(self) -> Iterator[str]:
-        return iter(self._attributes)
+    def __str__(self) -> str:
+        """String representation"""
+        return self.to_json()
 
-    def get(self, key: str, default: Any = None) -> Any:
-        return self._attributes.get(key, default)
-
-    def to_dict(self) -> Dict[str, Any]:
-        """Serialize model instance to dictionary."""
-        out = deepcopy(self._attributes)
-        for rel_name, rel_val in self._loaded_relations.items():
-            if isinstance(rel_val, Model):
-                out[rel_name] = rel_val.to_dict()
-            elif isinstance(rel_val, list):
-                out[rel_name] = [item.to_dict() if isinstance(item, Model) else item for item in rel_val]
-            else:
-                out[rel_name] = rel_val
-        return out
-
-    def dict(self) -> Dict[str, Any]:
-        """Pydantic compatibility method."""
-        return self.to_dict()
-
-    def model_dump(self) -> Dict[str, Any]:
-        """Pydantic v2 compatibility method."""
-        return self.to_dict()
-
-    # ------------------------------------------------------------------
-    # Query Builder Methods
-    # ------------------------------------------------------------------
-    def where(self: T, field: str, value_or_op: Any, value: Any = None) -> T:
-        """Add WHERE condition."""
-        clone = deepcopy(self)
-        if value is None:
-            operator = "="
-            val = value_or_op
-        else:
-            operator = value_or_op
-            val = value
-        clone._where_clauses.append((field, operator, val, "AND"))
-        return clone
-
-    def and_where(self: T, field: str, value_or_op: Any, value: Any = None) -> T:
-        """Chain additional AND WHERE condition."""
-        return self.where(field, value_or_op, value)
-
-    def or_where(self: T, field: str, value_or_op: Any, value: Any = None) -> T:
-        """Chain OR WHERE condition."""
-        clone = deepcopy(self)
-        if value is None:
-            operator = "="
-            val = value_or_op
-        else:
-            operator = value_or_op
-            val = value
-        clone._where_clauses.append((field, operator, val, "OR"))
-        return clone
-
-    def order_by(self: T, column: str, direction: str = "ASC") -> T:
-        """Order by column."""
-        clone = deepcopy(self)
-        clone._order_by.append(f"{column} {direction.upper()}")
-        return clone
-
-    def limit(self: T, count: int) -> T:
-        """Set query limit."""
-        clone = deepcopy(self)
-        clone._limit = count
-        return clone
-
-    def offset(self: T, count: int) -> T:
-        """Set query offset."""
-        clone = deepcopy(self)
-        clone._offset = count
-        return clone
-
-    def paginate(self: T, limit: int = 20, offset: int = 0) -> List[T]:
-        """Paginate results."""
-        return self.limit(limit).offset(offset).get()
-
-    def with_rel(self: T, *relation_names: str) -> T:
-        """Specify relationships to eager-load."""
-        clone = deepcopy(self)
-        clone._eager_relations.extend(relation_names)
-        return clone
-
-    # ------------------------------------------------------------------
-    # SQL Execution & Compilation
-    # ------------------------------------------------------------------
-    def _build_select_sql(self) -> Tuple[str, Dict[str, Any]]:
-        """Construct SELECT statement from clauses."""
-        sql = f"SELECT * FROM {self.table}"
-        params: Dict[str, Any] = {}
-
-        if self._where_clauses:
-            parts = []
-            for i, (field, op, val, logic) in enumerate(self._where_clauses):
-                param_name = f"p_{field}_{i}"
-                prefix = "" if i == 0 else f" {logic} "
-                if op.upper() in ("IN", "NOT IN") and isinstance(val, (list, tuple)):
-                    in_placeholders = []
-                    for j, item in enumerate(val):
-                        item_param = f"{param_name}_{j}"
-                        in_placeholders.append(f"%({item_param})s")
-                        params[item_param] = item
-                    parts.append(f"{prefix}{field} {op} ({', '.join(in_placeholders)})")
-                elif op.upper() in ("IS NULL", "IS NOT NULL"):
-                    parts.append(f"{prefix}{field} {op}")
-                else:
-                    parts.append(f"{prefix}{field} {op} %({param_name})s")
-                    params[param_name] = val
-            sql += " WHERE " + "".join(parts)
-
-        if self._order_by:
-            sql += " ORDER BY " + ", ".join(self._order_by)
-        else:
-            sql += f" ORDER BY {self.primary_key} DESC"
-
-        if self._limit is not None:
-            sql += f" LIMIT {int(self._limit)}"
-        if self._offset is not None:
-            sql += f" OFFSET {int(self._offset)}"
-
-        return sql, params
-
-    def get(self: T) -> List[T]:
-        """Execute SELECT query and return list of model instances."""
-        sql, params = self._build_select_sql()
-        raw_rows = DB.raw(sql, params).exe().rows
-        instances: List[T] = []
-        for row in raw_rows:
-            inst = self.__class__(**row)
-            if self._eager_relations:
-                for rel in self._eager_relations:
-                    inst._load_relation(rel)
-            instances.append(inst)
-        return instances
-
-    def first(self: T) -> Optional[T]:
-        """Return the first record matching the query, or None."""
-        results = self.limit(1).get()
-        return results[0] if results else None
-
-    @classmethod
-    def find(cls: Type[T], item_id: Any) -> Optional[T]:
-        """Find a single record by primary key."""
-        return cls().where(cls.primary_key, item_id).first()
-
-    # ------------------------------------------------------------------
-    # Persistence & Mutations
-    # ------------------------------------------------------------------
-    def _sanitize_data(self, data: Dict[str, Any]) -> Dict[str, Any]:
-        """Filter out fields that are not in the fillable list."""
-        if not self.fillable:
-            return data
-        allowed = set(self.fillable) | {self.primary_key, "id", "created_at", "updated_at"}
-        return {k: v for k, v in data.items() if k in allowed}
-
-    @classmethod
-    def create(cls: Type[T], data: Dict[str, Any]) -> T:
-        """Create a new record in the database."""
-        instance = cls()
-        clean = instance._sanitize_data(data)
-
-        # Automatically manage timestamps
-        now = datetime.datetime.now(datetime.timezone.utc)
-        if "created_at" in instance.fillable or "created_at" not in clean:
-            clean.setdefault("created_at", now)
-        if "updated_at" in instance.fillable or "updated_at" not in clean:
-            clean.setdefault("updated_at", now)
-        if "enable" not in clean:
-            clean["enable"] = 1
-
-        cols = [k for k in clean.keys() if k != cls.primary_key]
-        placeholders = [f"%({col})s" for col in cols]
-
-        sql = f"INSERT INTO {cls.table} ({', '.join(cols)}) VALUES ({', '.join(placeholders)}) RETURNING *"
-        params = {col: clean[col] for col in cols}
-
-        res = DB.raw(sql, params).exe()
-        row = res.first()
-        if not row:
-            # Fallback if SQLite last_id returned without RETURNING clause
-            created_id = res.last_id or 1
-            clean[cls.primary_key] = created_id
-            row = clean
-
-        return cls(**row)
-
-    def save(self) -> "Model":
-        """Persist current instance changes to database."""
-        now = datetime.datetime.now(datetime.timezone.utc)
-        pk_val = self._attributes.get(self.primary_key)
-
-        if pk_val is not None:
-            # Update
-            self._attributes["updated_at"] = now
-            cols = [
-                k
-                for k in self._attributes.keys()
-                if k != self.primary_key and (not self.fillable or k in self.fillable or k == "updated_at")
-            ]
-            set_clauses = [f"{col} = %({col})s" for col in cols]
-            sql = f"UPDATE {self.table} SET {', '.join(set_clauses)} WHERE {self.primary_key} = %(pk)s RETURNING *"
-            params = {col: self._attributes[col] for col in cols}
-            params["pk"] = pk_val
-            res = DB.raw(sql, params).exe().first()
-            if res:
-                self._fill_attributes(res)
-            return self
-        else:
-            # Insert
-            created = self.create(self._attributes)
-            self._fill_attributes(created.to_dict())
-            return self
-
-    def update(self, data: Optional[Dict[str, Any]] = None) -> "Model":
-        """Update instance attributes and save."""
-        if data:
-            clean = self._sanitize_data(data)
-            for k, v in clean.items():
-                self._attributes[k] = v
-        return self.save()
-
-    def delete(self) -> bool:
-        """Delete instance record from database."""
-        pk_val = self._attributes.get(self.primary_key)
-        if pk_val is None:
-            return False
-        sql = f"DELETE FROM {self.table} WHERE {self.primary_key} = %(pk)s"
-        DB.raw(sql, {"pk": pk_val}).exe()
-        return True
-
-    @classmethod
-    def upsert(cls: Type[T], data: Dict[str, Any]) -> T:
-        """Create or update based on primary key existence."""
-        pk = data.get(cls.primary_key)
-        if pk:
-            existing = cls.find(pk)
-            if existing:
-                existing.update(data)
-                return existing
-        return cls.create(data)
-
-    # ------------------------------------------------------------------
-    # Relationship Loader
-    # ------------------------------------------------------------------
-    def _load_relation(self, relation_name: str) -> None:
-        """Resolve defined relationship dynamically."""
-        rel_spec = self.relations.get(relation_name)
-        if not rel_spec:
-            return
-
-        try:
-            rel_model_cls = rel_spec["callback"]()
-            local_key = rel_spec["name"]
-            foreign_key = rel_spec["key"]
-            local_val = self._attributes.get(local_key)
-
-            if local_val is None:
-                self._loaded_relations[relation_name] = None
-                return
-
-            # Check if one-to-one or one-to-many
-            target_instance = rel_model_cls().where(foreign_key, local_val).first()
-            self._loaded_relations[relation_name] = target_instance
-        except Exception:
-            self._loaded_relations[relation_name] = None
+    def __repr__(self) -> str:
+        """Representation"""
+        items_count = len(self.items) if isinstance(self.items, list) else (1 if self.items else 0)
+        return f"<{self.__class__.__name__} items={items_count}>"

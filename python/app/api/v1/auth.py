@@ -672,6 +672,22 @@ async def get_current_user(
         )
 
         if not user:
+            # Mock tokens impersonate users, so they must never work outside dev/test.
+            if settings.ENVIRONMENT in ("development", "test", "testing") and (access_token.startswith("mock-") or access_token == "test-token"):
+                return {
+                    "id": 1,
+                    "username": cognito_user.get("username", "farmer"),
+                    "email": cognito_user.get("email", "farmer@cropsense.ai"),
+                    "name": cognito_user.get("name", "Farmer"),
+                    "user_type": "farmer",
+                    "phone": cognito_user.get("phone_number", "+919876543210"),
+                    "is_verified": 1,
+                    "is_active": 1,
+                    "cognito_user_id": cognito_user.get("user_sub"),
+                    "firebase_id": cognito_user.get("user_sub"),
+                    "email_verified": True,
+                    "phone_verified": True,
+                }
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND, detail="User not found in database"
             )

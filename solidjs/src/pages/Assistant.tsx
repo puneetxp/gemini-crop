@@ -23,8 +23,9 @@ export const Assistant: Component = () => {
     setIsSending(true);
 
     try {
-      const res = await apiClient.post("/voice/assist", { query });
-      if (res.ok && res.data?.response) {
+      const res = await apiClient.post("/voice/assist", { text: query, query });
+      const reply = res.data?.response || res.data?.data?.reply;
+      if (res.ok && reply) {
         setMessages((prev) => [
           ...prev,
           { sender: "ai", text: res.data.response, time: "Now" },

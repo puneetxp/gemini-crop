@@ -15,14 +15,8 @@ import logging
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
-try:
-    import boto3
-    from botocore.exceptions import ClientError
-    BOTO3_AVAILABLE = True
-except (ImportError, ModuleNotFoundError):
-    boto3 = None
-    ClientError = Exception
-    BOTO3_AVAILABLE = False
+import boto3
+from botocore.exceptions import ClientError
 
 logger = logging.getLogger(__name__)
 
