@@ -50,8 +50,7 @@
             "datatype": "number",
             "sql_attribute": "DEFAULT 0",
             "mysql_data": "integer",
-            "comment": "Number of crop_market_data rows seeded from this file",
-            "default": "NULL"
+            "comment": "Number of crop_market_data rows seeded from this file"
         },
         {
             "name": "error_message",

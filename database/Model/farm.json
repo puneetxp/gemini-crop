@@ -164,16 +164,14 @@
             "datatype": "boolean",
             "sql_attribute": "DEFAULT true",
             "mysql_data": "boolean",
-            "comment": "Farm active status",
-            "default": "NULL"
+            "comment": "Farm active status"
         },
         {
             "name": "is_verified",
             "datatype": "boolean",
             "sql_attribute": "DEFAULT false",
             "mysql_data": "boolean",
-            "comment": "Farm verification status",
-            "default": "NULL"
+            "comment": "Farm verification status"
         },
         {
             "name": "nitrogen",
@@ -327,8 +325,7 @@
             "datatype": "boolean",
             "sql_attribute": "DEFAULT false",
             "mysql_data": "boolean",
-            "comment": "True if some SHC WMS styles were unavailable during fetch",
-            "default": "NULL"
+            "comment": "True if some SHC WMS styles were unavailable during fetch"
         },
         {
             "name": "shc_unavailable_styles",

@@ -123,16 +123,14 @@
             "datatype": "boolean",
             "sql_attribute": "DEFAULT false",
             "mysql_data": "boolean",
-            "comment": "Whether spatial data is available",
-            "default": "NULL"
+            "comment": "Whether spatial data is available"
         },
         {
             "name": "non_spatial_available",
             "datatype": "boolean",
             "sql_attribute": "DEFAULT false",
             "mysql_data": "boolean",
-            "comment": "Whether non-spatial data is available",
-            "default": "NULL"
+            "comment": "Whether non-spatial data is available"
         },
         {
             "name": "ingested_at",

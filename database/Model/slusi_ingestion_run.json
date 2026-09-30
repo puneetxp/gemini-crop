@@ -36,16 +36,14 @@
             "datatype": "number",
             "sql_attribute": "DEFAULT 0",
             "mysql_data": "integer",
-            "comment": "Number of LCC records upserted in this run",
-            "default": "NULL"
+            "comment": "Number of LCC records upserted in this run"
         },
         {
             "name": "maps_ingested",
             "datatype": "number",
             "sql_attribute": "DEFAULT 0",
             "mysql_data": "integer",
-            "comment": "Number of microwatershed maps downloaded in this run",
-            "default": "NULL"
+            "comment": "Number of microwatershed maps downloaded in this run"
         },
         {
             "name": "error_message",
