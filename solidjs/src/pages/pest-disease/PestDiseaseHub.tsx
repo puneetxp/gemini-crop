@@ -206,7 +206,7 @@ export const PestDiseaseHub: Component = () => {
           <div>
             <div class="flex items-center gap-2">
               <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-full bg-emerald-400/20 text-emerald-300">
-                Gemini 2.0 Flash Vision
+                CropSense Vision AI
               </span>
               <span class="text-xs text-emerald-200">98.4% Pathology Accuracy • 0.8s Inference</span>
             </div>

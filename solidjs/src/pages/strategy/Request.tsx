@@ -155,7 +155,7 @@ export const RequestStrategy: Component = () => {
     setCrops(updated);
   };
 
-  // Gemini builds the kharif/rabi/zaid plan from the farm's soil, district weather and budget
+  // AI engine builds the kharif/rabi/zaid plan from the farm's soil, district weather and budget
   const handleGenerate = async () => {
     setIsGenerating(true);
     setError(null);
@@ -198,7 +198,7 @@ export const RequestStrategy: Component = () => {
           <div>
             <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
               <span class="material-symbols-outlined text-sm">psychiatry</span>
-              <span>GEMINI 2.0 AGRI-STRATEGY ENGINE</span>
+              <span>AGRISENSE AI STRATEGY ENGINE</span>
               <span>•</span>
               <span>STEP 2 OF 3: PARAMETER CALIBRATION</span>
             </div>
@@ -207,7 +207,7 @@ export const RequestStrategy: Component = () => {
             </h1>
             <p class="text-sm text-on-surface-variant dark:text-slate-400 mt-1 max-w-3xl">
               Calibrate operational capital, crop rotation choices, risk tolerance, and water quotas.
-              Gemini will synthesize a 365-day crop roadmap with input scheduling and forward hedging.
+              The AI engine will synthesize a 365-day crop roadmap with input scheduling and forward hedging.
             </p>
           </div>
 
@@ -315,7 +315,7 @@ export const RequestStrategy: Component = () => {
                 <span>2. Primary Strategic Goal</span>
               </h3>
               <p class="text-xs text-slate-500 mt-0.5">
-                Steers Gemini's crop rotation optimization function and input allocations.
+                Steers the AI crop rotation optimization function and input allocations.
               </p>
             </div>
 
@@ -541,7 +541,7 @@ export const RequestStrategy: Component = () => {
                   <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
                 </span>
                 <h3 class="font-bold text-sm text-on-surface dark:text-white">
-                  Gemini 3.8 Flash on Vertex AI
+                  AgriSense AI Strategy Engine
                 </h3>
               </div>
               <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-900 text-emerald-800 dark:text-emerald-300">
@@ -559,7 +559,7 @@ export const RequestStrategy: Component = () => {
                   ₹{projectedGrossMin().toLocaleString("en-IN")} – ₹{projectedGrossMax().toLocaleString("en-IN")}
                 </div>
                 <div class="text-[10px] text-slate-500 mt-0.5">
-                  Rough estimate from your budget; Gemini's plan gives crop-by-crop figures
+                  Rough estimate from your budget; the AI plan provides crop-by-crop figures
                 </div>
               </div>
 
@@ -597,7 +597,7 @@ export const RequestStrategy: Component = () => {
               <span class="material-symbols-outlined text-lg">auto_awesome</span>
               <span>
                 {isGenerating()
-                  ? "Gemini is building your plan (up to a minute)…"
+                  ? "Building your 365-day plan (up to a minute)…"
                   : "Generate 365-Day Strategy"}
               </span>
             </button>

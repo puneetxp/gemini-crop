@@ -63,7 +63,7 @@ export const AnnualStrategyDetail: Component = () => {
           <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
             <h1 class="text-xl font-black text-slate-900">Annual Crop Strategy</h1>
             <p class="text-sm text-slate-600">
-              No plan generated for this farm yet. Choose a farm and budget, and Gemini builds a kharif, rabi and zaid
+              No plan generated for this farm yet. Choose a farm and budget, and our AI strategy engine builds a kharif, rabi and zaid
               plan from its soil and district weather.
             </p>
             <A
@@ -83,7 +83,7 @@ export const AnnualStrategyDetail: Component = () => {
                 <div class="flex items-center gap-2 flex-wrap">
                   <h1 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">Annual Crop Strategy</h1>
                   <span class="text-xs font-bold px-2 py-0.5 rounded-full bg-forest/10 text-forest">
-                    {p().is_fallback ? "Generic regional plan" : "Gemini 3.8 Flash"}
+                    {p().is_fallback ? "Generic regional plan" : "CropSense AI Engine"}
                   </span>
                 </div>
                 <p class="text-xs text-slate-500 mt-0.5">
@@ -100,7 +100,7 @@ export const AnnualStrategyDetail: Component = () => {
 
             <Show when={p().is_fallback}>
               <div class="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-sm text-amber-900">
-                Gemini was unavailable, so this is a generic plan for the region, not advice for your field. Try
+                AI strategy service was temporarily unavailable, so this is a generic plan for the region, not specific advice for your field. Try
                 regenerating in a few minutes.
               </div>
             </Show>

@@ -31,9 +31,9 @@ const SERVICES: AgriService[] = [
     title: "AI Crop Diagnosis",
     category: "crops",
     icon: "psychiatry",
-    tag: "Gemini Vision AI",
+    tag: "Vision AI",
     tagColor: "bg-purple-50 text-purple-800 border-purple-200",
-    description: "Instant foliar disease scanning with Gemini Vision, lesion segmentation, and ICAR treatment plans.",
+    description: "Instant foliar disease scanning with Vision AI, lesion segmentation, and ICAR treatment plans.",
     route: "/diagnose",
     actionText: "Launch Scanner"
   },
@@ -214,7 +214,7 @@ export const AllServices: Component = () => {
             Agri-Services &amp; Intelligence Hub
           </h1>
           <p class="text-xs text-slate-500 mt-1 max-w-xl">
-            Access ICAR-compliant telemetric tools, multimodal Gemini AI diagnostics, and precision farming utilities.
+            Access ICAR-compliant telemetric tools, multimodal AI diagnostics, and precision farming utilities.
           </p>
         </div>
 
@@ -278,7 +278,7 @@ export const AllServices: Component = () => {
           </div>
           <div>
             <span class="text-xl font-extrabold text-purple-900">42/50 Remaining</span>
-            <p class="text-[11px] text-slate-400 mt-0.5">Gemini Multimodal Vision</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Multimodal Vision AI</p>
           </div>
         </div>
 

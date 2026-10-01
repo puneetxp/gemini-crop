@@ -100,9 +100,10 @@ class Settings(BaseSettings):
     GOOGLE_CLOUD_REGION: str = "us-central1"
     FIREBASE_PROJECT_ID: str = "cropsense-ai-a4d5cf"
     GEMINI_MODEL: str = "gemini-3.8-flash"
-    # Voice/text assistant (menu routing, vet chat, form filling): fast, cheap model; falls back to GEMINI_MODEL
+    # Voice/text assistant: fast, cheap models (3.5 flash lite, 3.1 flash lite, 3.8 flash)
     GEMINI_ASSIST_MODEL: str = "gemini-3.5-flash-lite"
-    # Used when neither model above answers
+    GEMINI_LITE_MODEL: str = "gemini-3.1-flash-lite"
+    # Used when models above are unavailable
     GEMINI_FALLBACK_MODEL: str = "gemini-2.5-flash"
     # Gemini 3.x is served from the global Vertex AI endpoint, not from us-central1
     GEMINI_LOCATION: str = "global"

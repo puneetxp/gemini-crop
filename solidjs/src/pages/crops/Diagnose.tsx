@@ -86,7 +86,7 @@ export const Diagnose: Component = () => {
           <div>
             <h1 class="text-xl md:text-2xl font-black text-slate-900 tracking-tight">AI Crop Pathology Doctor</h1>
             <p class="text-xs text-slate-500">
-              Powered by Multimodal Gemini Vision & agronomic safety guidelines
+              Powered by Multimodal Vision AI & agronomic safety guidelines
             </p>
           </div>
         </div>
@@ -140,7 +140,7 @@ export const Diagnose: Component = () => {
             {isDiagnosing() ? (
               <>
                 <span class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                <span>Analyzing Pathology via Gemini Vision…</span>
+                <span>Analyzing Pathology via Vision AI…</span>
               </>
             ) : (
               <>

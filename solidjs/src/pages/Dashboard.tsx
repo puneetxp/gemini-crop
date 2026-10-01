@@ -231,7 +231,7 @@ export const Dashboard: Component = () => {
           <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3">
             <div class="flex items-center gap-2">
               <span class="material-symbols-outlined text-amber-500">lightbulb</span>
-              <h3 class="font-bold text-slate-900 text-sm">Gemini Agronomist Insight</h3>
+              <h3 class="font-bold text-slate-900 text-sm">CropSense Agronomist Insight</h3>
             </div>
             <p class="text-xs text-slate-600 leading-relaxed">
               Based on your soil test and approaching humidity spike, apply 25 kg/ha Potassium Sulfate prior to irrigation on Plot 2.

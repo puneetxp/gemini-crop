@@ -27,7 +27,7 @@ export const SelectFarm: Component = () => {
   const titleCase = (v?: string | null) =>
     v ? v.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase()) : "";
 
-  // The signed-in farmer's farms; profile completeness = how much field data Gemini gets to work with
+  // The signed-in farmer's farms; profile completeness = how much field data the AI planner gets to work with
   const [farmList] = createResource(async () => {
     const res = await apiClient.get<any>("/farms", { skipCache: true });
     if (!res.ok) throw new Error(res.data?.detail || "Could not load your farms");
@@ -78,7 +78,7 @@ export const SelectFarm: Component = () => {
           <div>
             <div class="flex items-center gap-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400 mb-1">
               <span class="material-symbols-outlined text-sm">psychiatry</span>
-              <span>GEMINI 3.8 FLASH · CROP PLAN</span>
+              <span>AI CROP STRATEGY PLAN</span>
               <span>•</span>
               <span>STEP 1 OF 3</span>
             </div>
@@ -141,7 +141,7 @@ export const SelectFarm: Component = () => {
           </Show>
           <Show when={!farmList.loading && !farmList.error && farms().length === 0}>
             <div class="rounded-2xl p-6 border border-outline-variant/30 text-sm text-slate-600">
-              No farms yet. Register a farm first; its pincode gives Gemini the district's soil and weather.
+              No farms yet. Register a farm first; its pincode provides the district's soil and weather telemetry.
             </div>
           </Show>
           <For each={filteredFarms()}>
@@ -293,7 +293,7 @@ export const SelectFarm: Component = () => {
               </div>
               <div>
                 <h3 class="font-bold text-sm text-on-surface dark:text-white">
-                  Gemini 3.8 Flash on Vertex AI
+                  AgriSense AI Strategy Engine
                 </h3>
                 <span class="text-[11px] text-slate-500">Autonomous Agricultural Planner</span>
               </div>

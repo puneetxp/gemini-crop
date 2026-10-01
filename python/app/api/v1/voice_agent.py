@@ -321,8 +321,13 @@ async def voice_assist(request: AssistRequest, current_user=Depends(get_current_
             temperature=0.2,
             response_mime_type="application/json",
         )
-        # Flash-Lite first (fast, cheap); if it's unavailable in this project/region, use the main model
-        models = list(dict.fromkeys([settings.GEMINI_ASSIST_MODEL, settings.GEMINI_MODEL, settings.GEMINI_FALLBACK_MODEL]))
+        # Cascade: 3.5 Flash-Lite -> 3.1 Flash-Lite -> 3.8 Flash -> 2.5 Flash fallback
+        models = list(dict.fromkeys([
+            settings.GEMINI_ASSIST_MODEL,
+            settings.GEMINI_LITE_MODEL,
+            settings.GEMINI_MODEL,
+            settings.GEMINI_FALLBACK_MODEL,
+        ]))
         response, model_used = None, models[0]
         for model_used in models:
             try:

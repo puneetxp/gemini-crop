@@ -79,7 +79,7 @@ class BedrockService:
         try:
             from google.genai import types
 
-            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_FALLBACK_MODEL]))
+            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_LITE_MODEL, settings.GEMINI_FALLBACK_MODEL]))
             last_err = None
             for m in models:
                 try:
@@ -150,7 +150,7 @@ class BedrockService:
         try:
             from google.genai import types
 
-            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_FALLBACK_MODEL]))
+            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_LITE_MODEL, settings.GEMINI_FALLBACK_MODEL]))
             last_err = None
             for m in models:
                 try:
@@ -681,7 +681,7 @@ Provide ONLY the JSON response, no additional text."""
                 raise RuntimeError("Vertex AI client is not initialised")
             from google.genai import types
 
-            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_FALLBACK_MODEL]))
+            models = list(dict.fromkeys([self.model_name, settings.GEMINI_ASSIST_MODEL, settings.GEMINI_LITE_MODEL, settings.GEMINI_FALLBACK_MODEL]))
             gen = None
             for m in models:
                 try:
