@@ -22,14 +22,16 @@ for (const [path, mod] of Object.entries(modules)) {
 
 export type Lang = string;
 
-/** Languages offered in the picker: configured and with a dictionary built */
-export const LANGUAGES: { code: Lang; label: string; name: string }[] = LANGUAGE_CONFIG.filter(
-    (l) => l.code in DICTIONARIES,
-);
+/**
+ * Languages offered in the picker. Those with a built dictionary translate
+ * instantly; the rest (and any text a dictionary lacks) are translated live
+ * by lib/page-translator.ts, so the whole site follows the chosen language.
+ */
+export const LANGUAGES: { code: Lang; label: string; name: string }[] = LANGUAGE_CONFIG;
 
 const STORAGE_KEY = 'app_lang';
 
-const isLang = (v: unknown): v is Lang => typeof v === 'string' && v in DICTIONARIES;
+const isLang = (v: unknown): v is Lang => typeof v === 'string' && LANGUAGES.some((l) => l.code === v);
 
 const readSaved = (): Lang | null => {
     try {
@@ -41,6 +43,7 @@ const readSaved = (): Lang | null => {
 };
 
 const [lang, setLangSignal] = createSignal<Lang>(readSaved() || 'en');
+document.documentElement.lang = lang();
 
 // Until the viewer picks a language here, follow their profile setting
 createRoot(() => {

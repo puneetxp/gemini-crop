@@ -396,6 +396,8 @@ export const en = {
     'chat.back': 'Back to dashboard',
     'chat.talk': 'Talk mode',
     'chat.talkHint': 'Hands-free: I read replies aloud, then listen again',
+    'chat.voiceOn': 'Spoken replies on — tap to mute',
+    'chat.voiceOff': 'Spoken replies off — tap to turn on',
     'chat.speaking': 'Speaking… tap the mic to interrupt',
     'chat.listeningTap': 'Listening… tap ■ when you finish',
     'chat.knows': 'What I can see',

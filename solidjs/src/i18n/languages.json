@@ -1,6 +1,52 @@
 [
-    { "code": "en", "label": "English", "name": "English" },
-    { "code": "hi", "label": "हिन्दी", "name": "Hindi" },
-    { "code": "mr", "label": "मराठी", "name": "Marathi" },
-    { "code": "pa", "label": "ਪੰਜਾਬੀ", "name": "Punjabi" }
+    {
+        "code": "en",
+        "label": "English",
+        "name": "English"
+    },
+    {
+        "code": "hi",
+        "label": "हिन्दी",
+        "name": "Hindi"
+    },
+    {
+        "code": "mr",
+        "label": "मराठी",
+        "name": "Marathi"
+    },
+    {
+        "code": "pa",
+        "label": "ਪੰਜਾਬੀ",
+        "name": "Punjabi"
+    },
+    {
+        "code": "gu",
+        "label": "ગુજરાતી",
+        "name": "Gujarati"
+    },
+    {
+        "code": "bn",
+        "label": "বাংলা",
+        "name": "Bengali"
+    },
+    {
+        "code": "ta",
+        "label": "தமிழ்",
+        "name": "Tamil"
+    },
+    {
+        "code": "te",
+        "label": "తెలుగు",
+        "name": "Telugu"
+    },
+    {
+        "code": "kn",
+        "label": "ಕನ್ನಡ",
+        "name": "Kannada"
+    },
+    {
+        "code": "ml",
+        "label": "മലയാളം",
+        "name": "Malayalam"
+    }
 ]

@@ -2,6 +2,7 @@
 import { render } from "solid-js/web";
 import { Router, Route } from "@solidjs/router";
 import "./index.css";
+import { initPageTranslator } from "./lib/page-translator";
 
 import { App } from "./App";
 import { Home } from "./pages/Home";
@@ -359,6 +360,8 @@ render(
   ),
   root!
 );
+
+initPageTranslator();
 
 // Register Progressive Web App Service Worker if supported
 if ("serviceWorker" in navigator && !import.meta.env.DEV) {

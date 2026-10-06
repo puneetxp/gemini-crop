@@ -198,6 +198,7 @@ import time
 
 from app.services.voice_assist_audit import record_attempt
 from app.services.voice_assist_service import (
+    LANGS,
     build_prompt,
     keyword_fallback,
     parse_model_json,
@@ -384,3 +385,75 @@ async def voice_assist(request: AssistRequest, current_user=Depends(get_current_
                 detail="Voice understanding is unavailable right now. Please type or pick from the menu.",
             )
         return {"success": True, "data": keyword_fallback(request.text or "", menu, request.lang)}
+
+
+# ---------------------------------------------------------------------------
+# Whole-site translation: the frontend sends the English text it finds on the
+# page and gets it back in the chosen language. Cached per (language, text).
+# ---------------------------------------------------------------------------
+
+_TRANSLATE_CACHE: Dict[str, str] = {}
+_TRANSLATE_CACHE_MAX = 20000
+
+
+class TranslateRequest(BaseModel):
+    texts: List[str] = Field(..., max_length=60)
+    target: str = Field(..., min_length=2, max_length=5)
+
+
+@router.post("/translate", response_model=Dict[str, Any])
+async def translate_texts(request: TranslateRequest):
+    """Translate short UI strings into the target language (same order back)."""
+    target_name = LANGS.get(request.target)
+    if not target_name:
+        raise HTTPException(status_code=400, detail="Unsupported language.")
+    texts = [t[:500] for t in request.texts]
+
+    todo = list(dict.fromkeys(t for t in texts if f"{request.target}|{t}" not in _TRANSLATE_CACHE))
+    if todo:
+        prompt = (
+            f"Translate each UI string of a farming app from English into {target_name}.\n"
+            "Rules: keep numbers, ₹ amounts, units, emoji, brand names (CropSense AI) and {placeholders} unchanged; "
+            "use simple everyday words a farmer understands; keep it about as short as the original; "
+            "do not add explanations.\n"
+            f"Return ONLY a JSON array of exactly {len(todo)} strings, in the same order.\n\n"
+            f"{json.dumps(todo, ensure_ascii=False)}"
+        )
+        try:
+            from google import genai
+            from google.genai import types
+
+            client = genai.Client(
+                vertexai=True,
+                project=settings.GOOGLE_CLOUD_PROJECT,
+                location=settings.GEMINI_LOCATION,
+            )
+            config = types.GenerateContentConfig(
+                max_output_tokens=8000, temperature=0.1, response_mime_type="application/json"
+            )
+            models = list(dict.fromkeys([
+                settings.GEMINI_LITE_MODEL, settings.GEMINI_ASSIST_MODEL,
+                settings.GEMINI_MODEL, settings.GEMINI_FALLBACK_MODEL,
+            ]))
+            out = None
+            for model in models:
+                try:
+                    resp = await client.aio.models.generate_content(model=model, contents=[prompt], config=config)
+                    parsed = json.loads(resp.text)
+                    if isinstance(parsed, list) and len(parsed) == len(todo):
+                        out = [str(x) for x in parsed]
+                        break
+                    logger.warning(f"Translate model {model} returned wrong shape")
+                except Exception as model_error:
+                    logger.warning(f"Translate model {model} failed: {model_error}")
+            if out is None:
+                raise RuntimeError("no translation model available")
+            if len(_TRANSLATE_CACHE) > _TRANSLATE_CACHE_MAX:
+                _TRANSLATE_CACHE.clear()
+            for src, dst in zip(todo, out):
+                _TRANSLATE_CACHE[f"{request.target}|{src}"] = dst
+        except Exception as e:
+            logger.error(f"Translate failed: {e}")
+            raise HTTPException(status_code=503, detail="Translation is unavailable right now.")
+
+    return {"success": True, "data": {"translations": [_TRANSLATE_CACHE.get(f"{request.target}|{t}", t) for t in texts]}}

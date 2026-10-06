@@ -23,7 +23,7 @@ import { AssistantArchiveService, type ArchivedSession } from '../services/assis
 import { buildAssistantContext, clearAssistantContext } from '../services/assistant-context';
 import { FarmService, LivestockService } from '../shared/Service/Services';
 import { showToast } from '../components/ui/Toast';
-import { speakFluent, stopFluentSpeech } from '../lib/fluent-tts';
+import { speakFluent, stopFluentSpeech, voiceReplies, setVoiceReplies } from '../lib/fluent-tts';
 
 type Message = {
     role: 'user' | 'assistant';
@@ -275,7 +275,7 @@ export const Assistant: Component = () => {
                 speak(result.reply, result.language, () => {
                     if (talkMode() && !needsTap && !busy()) recorder.start();
                 });
-            } else if (payload.clip && result.reply) {
+            } else if (voiceReplies() && result.reply) {
                 speak(result.reply, result.language);
             }
         } catch (err: any) {
@@ -399,6 +399,21 @@ export const Assistant: Component = () => {
                         <div class="hidden sm:block">
                             <LanguageSwitcher />
                         </div>
+
+                        {/* Spoken replies on/off */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setVoiceReplies(!voiceReplies());
+                                if (!voiceReplies()) setSpeaking(false);
+                            }}
+                            aria-pressed={voiceReplies()}
+                            class="rounded-xl px-2.5 py-1.5 border border-outline-variant bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer"
+                            title={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                            aria-label={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                        >
+                            <span class="material-symbols-outlined text-base">{voiceReplies() ? 'volume_up' : 'volume_off'}</span>
+                        </button>
 
                         {/* Hands-Free Talk Mode Button */}
                         <button
