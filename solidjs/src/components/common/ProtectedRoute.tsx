@@ -1,5 +1,5 @@
 import { Component, JSX, Show } from "solid-js";
-import { Navigate } from "@solidjs/router";
+import { Navigate, useLocation } from "@solidjs/router";
 import { isAuthenticated, authLoading, userRoles } from "../../stores/auth.store";
 
 interface ProtectedRouteProps {
@@ -8,6 +8,8 @@ interface ProtectedRouteProps {
 }
 
 export const ProtectedRoute: Component<ProtectedRouteProps> = (props) => {
+  const location = useLocation();
+
   const isAuthorized = () => {
     if (!props.roles || props.roles.length === 0) return true;
     const currentRoles = userRoles();
@@ -28,7 +30,7 @@ export const ProtectedRoute: Component<ProtectedRouteProps> = (props) => {
     >
       <Show
         when={isAuthenticated()}
-        fallback={<Navigate href="/auth/signin" />}
+        fallback={<Navigate href={`/auth/signin?redirect=${encodeURIComponent(location.pathname + location.search)}`} />}
       >
         <Show
           when={isAuthorized()}

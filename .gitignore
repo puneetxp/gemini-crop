@@ -47,3 +47,4 @@ override.tf.json
 .claude/
 # Local MCP server config (OAuth client IDs; secrets live in macOS Keychain)
 .mcp.json
+artifacts/

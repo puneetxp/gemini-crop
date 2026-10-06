@@ -1,62 +1,14 @@
 {
   "base": "http://localhost:3002",
-  "recordedAt": "2026-09-30T18:37:00.630Z",
+  "recordedAt": "2026-10-02T16:01:34.774Z",
   "rows": [
     {
-      "segment": "02 landing",
-      "file": "02-landing.webm",
-      "duration": "22.4 s",
+      "segment": "06 diagnose",
+      "file": "06-diagnose.webm",
+      "duration": "25.1 s",
       "result": "PASS",
       "4xx/5xx": "none",
       "note": ""
-    },
-    {
-      "segment": "03 signin-language",
-      "file": "03-signin-language.webm",
-      "duration": "15.6 s",
-      "result": "PASS",
-      "4xx/5xx": "none",
-      "note": "Button reads \"Instant Demo Sign-In (Dev/E2E)\"; narration says \"sign in with Google\". Crop or re-word."
-    },
-    {
-      "segment": "04 register-farm",
-      "file": "04-register-farm.webm",
-      "duration": "31.3 s",
-      "result": "PASS",
-      "4xx/5xx": "none",
-      "note": "Soil Health Card / SLUSI nutrients are not shown on screen; narration mentions them."
-    },
-    {
-      "segment": "05 crop-plan",
-      "file": "05-crop-plan.webm",
-      "duration": "21.7 s",
-      "result": "PASS (sample data)",
-      "4xx/5xx": "none",
-      "note": "Generate never calls POST /annual-strategy (1.2 s timer, then a hardcoded page). The farm picker is hardcoded too; \"Udaipur Farm – Plot 1\" is not listed."
-    },
-    {
-      "segment": "06 diagnose",
-      "file": "—",
-      "duration": "—",
-      "result": "SKIPPED",
-      "4xx/5xx": "none",
-      "note": "artifacts/video/leaf.jpg is missing (add a real diseased-leaf photo)"
-    },
-    {
-      "segment": "07 voice",
-      "file": "07-voice.webm",
-      "duration": "23.4 s",
-      "result": "FAIL",
-      "4xx/5xx": "none",
-      "note": "assistant returned fallback (no Gemini reply); needs Google credentials"
-    },
-    {
-      "segment": "08 alerts-market",
-      "file": "08-alerts-market.webm",
-      "duration": "18.1 s",
-      "result": "PASS (sample data)",
-      "4xx/5xx": "none",
-      "note": "No API calls on /climate/hub or /marketplace; content is hardcoded."
     }
   ]
 }

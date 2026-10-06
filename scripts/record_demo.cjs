@@ -153,7 +153,7 @@ const SEGMENTS = [
     async run(page) {
       await page.goto(BASE + "/auth/signin", { waitUntil: "networkidle" });
       await pause(1500);
-      await hoverClick(page, page.getByRole("button", { name: /Instant Demo Sign-In/ }));
+      await hoverClick(page, page.getByRole("button", { name: /Instant Demo Sign-In|Try the demo farmer account/ }));
       await page.waitForURL(/\/dashboard/, { timeout: 15000 });
       await page.waitForLoadState("networkidle");
       await pause(2000);
@@ -170,7 +170,7 @@ const SEGMENTS = [
       if (!hindi) return { status: "fail", note: "switching to Hindi did not change any page text" };
       return {
         status: "ready",
-        note: 'Button reads "Instant Demo Sign-In (Dev/E2E)"; narration says "sign in with Google". Crop or re-word.',
+        note: "",
       };
     },
   },

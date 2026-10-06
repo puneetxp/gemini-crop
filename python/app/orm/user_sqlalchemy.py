@@ -30,7 +30,11 @@ class User(Base):
     name = Column(String(255), nullable=False)  # Full name (called 'name' in JSON model)
     email = Column(String(255), unique=True, nullable=True, index=True)
     phone = Column(String(255), unique=True, nullable=True, index=True)  # Called 'phone' in JSON model
-    
+
+    # Synonyms / Aliases for API & Schema compatibility (full_name, phone_number, language_preference, role)
+    full_name = synonym("name")
+    phone_number = synonym("phone")
+
     # OAuth fields
     google_id = Column(String(255), nullable=True)
     facebook_id = Column(String(255), nullable=True)
@@ -40,6 +44,9 @@ class User(Base):
     user_type = Column(String(255), nullable=True, server_default='farmer')  # farmer, buyer, admin
     preferred_language = Column(String(255), nullable=True, server_default='en')  # en, hi, ta, te, mr, bn
     mfa_enabled = Column(SmallInteger, nullable=True, server_default='0')
+
+    role = synonym("user_type")
+    language_preference = synonym("preferred_language")
     
     # Address fields
     latitude = Column(DECIMAL(10, 8), nullable=True)
@@ -54,6 +61,10 @@ class User(Base):
     # Underlying schema stores these as SMALLINT (0/1), so keep types aligned to avoid casting errors
     is_active = Column(SmallInteger, nullable=True, server_default='1')
     is_verified = Column(SmallInteger, nullable=True, server_default='0')
+
+    @property
+    def roles(self):
+        return [self.user_type] if self.user_type else ["farmer"]
     
     def __repr__(self):
         return f"<User(id={self.id}, username='{self.username}', email='{self.email}', user_type='{self.user_type}')>"

@@ -625,7 +625,7 @@ export const Assistant: Component = () => {
                                             </div>
                                         }
                                     >
-                                        /* Assistant Turn Message */
+                                        {/* Assistant Turn Message */}
                                         <div class="flex gap-3 items-start">
                                             <div class="w-8 h-8 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-0.5 shadow-2xs font-bold">
                                                 <span class="material-symbols-outlined text-sm">smart_toy</span>

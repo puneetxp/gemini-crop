@@ -1,9 +1,33 @@
-import { Component, createSignal } from "solid-js";
-import { A, useNavigate } from "@solidjs/router";
-import { signInWithEmail, signInDemo, authLoading } from "../../stores/auth.store";
+import { Component, createSignal, createEffect } from "solid-js";
+import { A, useNavigate, useSearchParams } from "@solidjs/router";
+import { signInWithEmail, signInDemo, authLoading, isAuthenticated } from "../../stores/auth.store";
 
 export const SignIn: Component = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const targetUrl = (): string => {
+    const raw = Array.isArray(searchParams.redirect) ? searchParams.redirect[0] : searchParams.redirect;
+    if (!raw || typeof raw !== "string") return "/dashboard";
+    // Only allow safe internal relative paths, avoid auth loop
+    if (
+      raw.startsWith("/") &&
+      !raw.startsWith("//") &&
+      !raw.startsWith("/auth/signin") &&
+      !raw.startsWith("/auth/signup")
+    ) {
+      return raw;
+    }
+    return "/dashboard";
+  };
+
+  // If already logged in, redirect immediately to intended target
+  createEffect(() => {
+    if (!authLoading() && isAuthenticated()) {
+      navigate(targetUrl(), { replace: true });
+    }
+  });
+
   const [email, setEmail] = createSignal("");
   const [password, setPassword] = createSignal("");
   const [errorMsg, setErrorMsg] = createSignal("");
@@ -13,7 +37,7 @@ export const SignIn: Component = () => {
     setErrorMsg("");
     const res = await signInWithEmail(email(), password());
     if (res.success) {
-      navigate("/dashboard");
+      navigate(targetUrl(), { replace: true });
     } else {
       setErrorMsg(res.error || "Failed to sign in");
     }
@@ -22,8 +46,11 @@ export const SignIn: Component = () => {
   const handleDemoLogin = async () => {
     setErrorMsg("");
     const res = await signInDemo();
-    if (res.success) navigate("/dashboard");
-    else setErrorMsg(res.error || "Demo sign-in failed");
+    if (res.success) {
+      navigate(targetUrl(), { replace: true });
+    } else {
+      setErrorMsg(res.error || "Demo sign-in failed");
+    }
   };
 
   return (

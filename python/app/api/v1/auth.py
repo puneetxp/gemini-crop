@@ -705,9 +705,17 @@ async def get_current_user(
             .filter(
                 (User.cognito_user_id == cognito_user["user_sub"])
                 | (User.firebase_id == cognito_user["user_sub"])
+                | (User.email == cognito_user.get("email"))
             )
             .first()
         )
+
+        if user and not user.firebase_id and cognito_user.get("user_sub"):
+            try:
+                user.firebase_id = cognito_user["user_sub"]
+                db.commit()
+            except Exception:
+                db.rollback()
 
         if not user:
             # Mock tokens impersonate users, so they must never work outside dev/test.
@@ -717,8 +725,14 @@ async def get_current_user(
                     "username": cognito_user.get("username", "farmer"),
                     "email": cognito_user.get("email", "farmer@cropsense.ai"),
                     "name": cognito_user.get("name", "Farmer"),
+                    "full_name": cognito_user.get("name", "Farmer"),
                     "user_type": "farmer",
+                    "role": "farmer",
+                    "roles": ["farmer"],
                     "phone": cognito_user.get("phone_number", "+919876543210"),
+                    "phone_number": cognito_user.get("phone_number", "+919876543210"),
+                    "preferred_language": "en",
+                    "language_preference": "en",
                     "is_verified": 1,
                     "is_active": 1,
                     "cognito_user_id": cognito_user.get("user_sub"),
@@ -735,8 +749,14 @@ async def get_current_user(
             "username": user.username,
             "email": user.email,
             "name": user.name,
+            "full_name": user.full_name or user.name,
             "user_type": user.user_type,
+            "role": user.role or user.user_type or "farmer",
+            "roles": user.roles or [user.user_type or "farmer"],
             "phone": user.phone,
+            "phone_number": user.phone_number or user.phone,
+            "preferred_language": user.preferred_language,
+            "language_preference": user.language_preference or user.preferred_language or "en",
             "is_verified": user.is_verified,
             "is_active": user.is_active,
             "cognito_user_id": user.cognito_user_id,
