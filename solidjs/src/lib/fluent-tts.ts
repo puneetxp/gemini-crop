@@ -4,6 +4,8 @@
  * strips technical markdown, normalizes numbers & currency, and speaks fluently.
  */
 
+import { createSignal } from "solid-js";
+
 let cachedVoices: SpeechSynthesisVoice[] = [];
 
 function loadVoices(): SpeechSynthesisVoice[] {
@@ -51,28 +53,17 @@ export function pickFluentVoice(langCode: string): SpeechSynthesisVoice | null {
   if (!voices.length) return null;
 
   const targetLang = (langCode || "en").toLowerCase();
-  const isHindi = targetLang.startsWith("hi");
-  const isPunjabi = targetLang.startsWith("pa");
-  const isMarathi = targetLang.startsWith("mr");
+  const base = targetLang.split("-")[0];
 
   const scoreVoice = (v: SpeechSynthesisVoice): number => {
     const name = v.name.toLowerCase();
-    const vlang = v.lang.toLowerCase();
+    const vlang = v.lang.toLowerCase().replace("_", "-");
     let score = 0;
 
-    // Prefer matching target language
-    if (isHindi) {
-      if (vlang.includes("hi")) score += 60;
-      if (name.includes("hindi") || name.includes("हिन्दी")) score += 30;
-    } else if (isMarathi) {
-      if (vlang.includes("mr")) score += 60;
-    } else if (isPunjabi) {
-      if (vlang.includes("pa")) score += 60;
-    } else {
-      // English
-      if (vlang.includes("en-in")) score += 50;
-      else if (vlang.includes("en")) score += 20;
-    }
+    // Prefer a voice for the target language (en prefers the Indian accent)
+    if (vlang === targetLang) score += 70;
+    else if (vlang.split("-")[0] === base) score += 60;
+    if (base === "en" && vlang === "en-in") score += 50;
 
     // High fidelity natural voice indicators
     if (name.includes("natural") || name.includes("online (natural)")) score += 40;
@@ -123,7 +114,7 @@ export function speakFluent(
     utterance.voice = voice;
     utterance.lang = voice.lang;
   } else {
-    utterance.lang = langCode.startsWith("hi") ? "hi-IN" : "en-IN";
+    utterance.lang = langCode === "en" ? "en-IN" : `${langCode}-IN`;
   }
 
   // Fluent, warm natural pacing
@@ -148,5 +139,27 @@ export function speakFluent(
 export function stopFluentSpeech(): void {
   if (typeof window !== "undefined" && "speechSynthesis" in window) {
     window.speechSynthesis.cancel();
+  }
+}
+
+
+// Spoken replies: on by default, the farmer can mute them (saved on this device)
+const SPEAK_KEY = "app_voice_replies";
+const readSpeak = (): boolean => {
+  try {
+    return localStorage.getItem(SPEAK_KEY) !== "off";
+  } catch {
+    return true;
+  }
+};
+const [voiceReplies, setVoiceRepliesSignal] = createSignal(readSpeak());
+export { voiceReplies };
+export function setVoiceReplies(on: boolean): void {
+  setVoiceRepliesSignal(on);
+  if (!on) stopFluentSpeech();
+  try {
+    localStorage.setItem(SPEAK_KEY, on ? "on" : "off");
+  } catch {
+    // storage blocked — applies for this session only
   }
 }

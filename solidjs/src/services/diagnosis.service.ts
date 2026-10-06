@@ -1,5 +1,5 @@
 /**
- * Crop photo diagnosis (Gemini multimodal) — /api/v1/vision/diagnose-crop
+ * Crop photo diagnosis (Multimodal Vision AI) — /api/v1/vision/diagnose-crop
  */
 
 import apiClient from '../lib/api-client';

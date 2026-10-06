@@ -470,12 +470,12 @@ export const FarmAnalytics: Component = () => {
             </div>
           </div>
 
-          {/* Card 3: Gemini Agri-CFO Intelligence Recommendation */}
+          {/* Card 3: Agri-CFO Intelligence Recommendation */}
           <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 text-white rounded-2xl p-5 shadow-sm space-y-3">
             <div class="flex items-center justify-between">
               <div class="flex items-center gap-1.5 text-emerald-300 font-bold text-xs">
                 <span class="material-symbols-outlined text-base">auto_awesome</span>
-                <span>Gemini Agri-CFO Intelligence</span>
+                <span>Agri-CFO Intelligence</span>
               </div>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-800 text-emerald-100">
                 94% Confidence

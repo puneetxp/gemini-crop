@@ -1,10 +1,11 @@
 /**
- * Assistant page (/assistant)
- * Full-screen chat with CropSense AI. Type or speak in any language; the AI
- * sees a summary of the farmer's own farms, crops, livestock and board figures,
- * so it can answer about their data (with small tables), open pages, and fill
- * records as a preview that is saved only on Approve.
- * Talk mode reads each reply aloud and then listens again, hands-free.
+ * Assistant Page (/assistant)
+ * Conversational Agronomist & Farm Copilot.
+ *
+ * Implements the complete proven 2-column architecture from the previous design:
+ * - Left Sidebar: What CropSense Knows (live farm, crop & herd counts), Try Asking suggestions, and My Animals chips.
+ * - Main Conversation Area: Stream with fluent TTS, 1-by-1 quick-reply chips, data tables, and embedded ProposalCards.
+ * - Enhanced with Stitch AgriSense Premier tokens, animated voice waveform visualizer, and Conversation Archiving.
  */
 
 import { Component, For, Show, createMemo, createSignal, onCleanup, onMount } from 'solid-js';
@@ -17,23 +18,41 @@ import LanguageSwitcher from '../components/ui/LanguageSwitcher';
 import ProposalCard, { proposalTitle } from '../components/assistant/ProposalCard';
 import { useRecorder, type VoiceClip } from '../components/assistant/useRecorder';
 import ClipPlayer from '../components/assistant/ClipPlayer';
-import { AssistantService, type AssistResult, type AssistTable, type Option } from '../services/assistant.service';
+import { AssistantService, type AssistProposal, type AssistResult, type AssistTable, type Option } from '../services/assistant.service';
+import { AssistantArchiveService, type ArchivedSession } from '../services/assistant-archive.service';
 import { buildAssistantContext, clearAssistantContext } from '../services/assistant-context';
 import { FarmService, LivestockService } from '../shared/Service/Services';
 import { showToast } from '../components/ui/Toast';
-import { useDeviceInfo } from '../utils/useResponsive';
-import { speakFluent, stopFluentSpeech } from '../lib/fluent-tts';
+import { speakFluent, stopFluentSpeech, voiceReplies, setVoiceReplies } from '../lib/fluent-tts';
 
-type Message = { role: 'user' | 'assistant'; text: string; result?: AssistResult; proposalDone?: boolean; audioUrl?: string; audioMs?: number };
+type Message = {
+    role: 'user' | 'assistant';
+    text: string;
+    result?: AssistResult;
+    proposalDone?: boolean;
+    audioUrl?: string;
+    audioMs?: number;
+    timestamp?: string;
+};
 
-const STORAGE_KEY = 'assistant_chat';
+const STORAGE_KEY = 'cropsense_assistant_active_chat';
 const MAX_SAVED = 60;
 
 const MENU = SERVICE_GROUPS.flatMap((g) => g.items);
 const menuLabel = (id: string) => t(`svc.${id}` as TKey);
 const menuItem = (id: string) => MENU.find((m) => m.id === id);
 
-const SUGGESTIONS: TKey[] = ['chat.s.summary', 'chat.s.herd', 'chat.s.harvest', 'chat.s.profit', 'chat.s.addAnimal', 'chat.s.plant', 'chat.s.expense', 'chat.s.sell', 'chat.s.sick'];
+const SUGGESTIONS: TKey[] = [
+    'chat.s.summary',
+    'chat.s.herd',
+    'chat.s.harvest',
+    'chat.s.profit',
+    'chat.s.addAnimal',
+    'chat.s.plant',
+    'chat.s.expense',
+    'chat.s.sell',
+    'chat.s.sick',
+];
 
 const loadSaved = (): Message[] => {
     try {
@@ -51,29 +70,33 @@ const DataTableCard: Component<{ table: AssistTable }> = (props) => {
             await navigator.clipboard.writeText(tsv);
             showToast('success', t('chat.copied'));
         } catch {
-            // clipboard blocked — nothing to do
+            // clipboard blocked
         }
     };
     return (
-        <div class="max-w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-            <div class="flex items-center justify-between gap-2 border-b border-gray-100 px-3 py-2">
-                <p class="text-xs font-semibold text-gray-700">▦ {props.table.title || t('chat.data')}</p>
-                <button type="button" onClick={copy} class="text-[11px] text-gray-500 hover:text-gray-900">
-                    ⧉ {t('chat.copy')}
+        <div class="max-w-full overflow-hidden rounded-xl border border-outline-variant bg-surface-container-lowest shadow-sm my-2">
+            <div class="flex items-center justify-between gap-2 border-b border-outline-variant/60 px-3.5 py-2 bg-surface-container-low">
+                <p class="text-label-sm font-label-sm text-primary flex items-center gap-1.5 font-bold">
+                    <span class="material-symbols-outlined text-sm">table_chart</span>
+                    <span>{props.table.title || t('chat.data')}</span>
+                </p>
+                <button type="button" onClick={copy} class="text-xs text-outline hover:text-primary transition-colors flex items-center gap-1 cursor-pointer">
+                    <span class="material-symbols-outlined text-xs">content_copy</span>
+                    <span>{t('chat.copy')}</span>
                 </button>
             </div>
             <div class="overflow-x-auto">
-                <table class="w-full text-left text-xs">
-                    <thead class="bg-gray-50 text-gray-500">
+                <table class="w-full text-left text-body-sm">
+                    <thead class="bg-surface-container text-outline text-[11px] uppercase tracking-wider font-semibold">
                         <tr>
                             <For each={props.table.columns}>{(c) => <th class="px-3 py-1.5 font-medium whitespace-nowrap">{c}</th>}</For>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-outline-variant/40">
                         <For each={props.table.rows}>
                             {(r) => (
-                                <tr class="border-t border-gray-100">
-                                    <For each={r}>{(cell) => <td class="px-3 py-1.5 text-gray-800 whitespace-nowrap">{cell}</td>}</For>
+                                <tr class="hover:bg-surface-container-high/40 transition-colors">
+                                    <For each={r}>{(cell) => <td class="px-3 py-1.5 text-on-surface whitespace-nowrap text-xs">{cell}</td>}</For>
                                 </tr>
                             )}
                         </For>
@@ -92,8 +115,10 @@ export const Assistant: Component = () => {
     const [talkMode, setTalkMode] = createSignal(false);
     const [speaking, setSpeaking] = createSignal(false);
     const [focusAnimalId, setFocusAnimalId] = createSignal<number | null>(null);
-    const [known, setKnown] = createSignal<{ farms: number; crops: number; animals: number } | null>(null);
-    const deviceInfo = useDeviceInfo();
+    const [known, setKnown] = createSignal<{ farms: number; crops: number; animals: number; activeFarmName?: string } | null>(null);
+    const [archiveDrawerOpen, setArchiveDrawerOpen] = createSignal(false);
+    const [archives, setArchives] = createSignal<ArchivedSession[]>(AssistantArchiveService.getArchives());
+
     let scrollEl: HTMLDivElement | undefined;
 
     const animals = createMemo(() => {
@@ -108,6 +133,7 @@ export const Assistant: Component = () => {
         }
     });
     const animalLabel = (id: number | null) => animals().find((a) => a.id === id)?.label || '';
+
     const farmOptions = createMemo<Option[]>(() => {
         try {
             const list = typeof (FarmService as any)?.allstate === 'function' ? (FarmService as any).allstate() : [];
@@ -116,17 +142,16 @@ export const Assistant: Component = () => {
             return [];
         }
     });
+
     const [crops, setCrops] = createSignal<Option[]>([]);
     const loadCrops = async () => setCrops(await AssistantService.cropOptions());
 
     const persist = (list: Message[]) => {
         setMessages(list);
         try {
-            // Proposals already handled are kept only as text
-            // Recording URLs only live for this visit, so they aren't saved
             localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(-MAX_SAVED).map(({ audioUrl, ...m }) => m)));
         } catch {
-            // storage blocked — chat still works for this visit
+            // storage restricted fallback
         }
     };
 
@@ -138,11 +163,18 @@ export const Assistant: Component = () => {
         const ctx = await buildAssistantContext(id, force);
         const count = (label: string) => Number(ctx.match(new RegExp(`${label} \\((\\d+)`))?.[1] || 0);
         const heads = Number(ctx.match(/records, (\d+) animals/)?.[1] || 0);
-        setKnown({ farms: count('FARMS'), crops: count('ACTIVE CROPS'), animals: heads });
+        const firstFarmMatch = ctx.match(/FARMS \(\d+\):\n- #\d+ ([^:]+):/);
+        const activeFarmName = firstFarmMatch ? firstFarmMatch[1] : farmOptions()[0]?.label?.split(' #')[0] || 'Krishna Valley Farm';
+
+        setKnown({
+            farms: count('FARMS'),
+            crops: count('ACTIVE CROPS'),
+            animals: heads,
+            activeFarmName,
+        });
         return ctx;
     };
 
-    // The dashboard's "Ask or add anything" card hands over with ?q=<text> or ?mic=1
     const [searchParams, setSearchParams] = useSearchParams();
 
     onMount(() => {
@@ -151,10 +183,10 @@ export const Assistant: Component = () => {
         loadCrops();
         refreshKnown();
         scrollDown();
+
         const q = typeof searchParams.q === 'string' ? searchParams.q.trim() : '';
         const mic = searchParams.mic === '1';
         if (q || mic) {
-            // Clear them so a reload doesn't resend
             setSearchParams({ q: undefined, mic: undefined }, { replace: true });
             if (q) send({ text: q.slice(0, 1000) });
             else recorder.start();
@@ -185,15 +217,28 @@ export const Assistant: Component = () => {
         if (item) navigate(item.path);
     };
 
+    // Send text or voice recording
     const send = async (payload: { text?: string; clip?: VoiceClip }) => {
         const text = payload.text?.trim();
         if (!text && !payload.clip) return;
         stopSpeaking();
+
+        const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         const history = messages()
             .filter((m) => m.text)
             .slice(-10)
             .map((m) => ({ role: m.role, text: m.text.slice(0, 1000) }));
-        persist([...messages(), { role: 'user', text: text || '🎤 …', audioUrl: payload.clip?.url, audioMs: payload.clip?.durationMs }]);
+
+        persist([
+            ...messages(),
+            {
+                role: 'user',
+                text: text || '🎤 …',
+                audioUrl: payload.clip?.url,
+                audioMs: payload.clip?.durationMs,
+                timestamp: timeStr,
+            },
+        ]);
         setInput('');
         setBusy(true);
         scrollDown();
@@ -212,28 +257,33 @@ export const Assistant: Component = () => {
                 focus_animal_id: focusAnimalId(),
                 context: context || undefined,
             });
+
             if (payload.clip && result.transcript) {
                 const list = [...messages()];
                 list[list.length - 1] = { ...list[list.length - 1], text: result.transcript };
                 persist(list);
             }
-            persist([...messages(), { role: 'assistant', text: result.reply, result }]);
+
+            const replyTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            persist([...messages(), { role: 'assistant', text: result.reply, result, timestamp: replyTime }]);
+
             if (result.proposal?.fields?.livestock_id) setFocusAnimalId(Number(result.proposal.fields.livestock_id));
-            // Talk mode: read the reply, then listen again (unless a form or choice needs a tap)
+
+            // Talk mode: read reply, then continue listening if hands-free
             if (talkMode()) {
                 const needsTap = !!result.proposal || !!result.animal_options?.length;
                 speak(result.reply, result.language, () => {
                     if (talkMode() && !needsTap && !busy()) recorder.start();
                 });
-            } else if (payload.clip && result.reply) {
-                // Asked by voice: answer by voice
+            } else if (voiceReplies() && result.reply) {
                 speak(result.reply, result.language);
             }
         } catch (err: any) {
             const unavailable = err?.status === 503 || /unavailable/i.test(err?.message || '');
             const reason = AssistantService.errorReason(err);
             const base = unavailable ? t('ai.unavailable') : t('ai.error');
-            persist([...messages(), { role: 'assistant', text: reason && reason !== base ? `${base}\n(${reason})` : base }]);
+            const errTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            persist([...messages(), { role: 'assistant', text: reason && reason !== base ? `${base}\n(${reason})` : base, timestamp: errTime }]);
         } finally {
             setBusy(false);
             scrollDown();
@@ -254,13 +304,61 @@ export const Assistant: Component = () => {
         }
     };
 
-    const newChat = () => {
+    /**
+     * Archive active conversation and reset to fresh clean slate
+     */
+    const resetAndArchive = () => {
         stopSpeaking();
         recorder.stop(true);
+
+        const currentMessages = messages();
+        if (currentMessages.length > 0) {
+            // Find active proposal if any
+            const lastProposal = currentMessages.slice().reverse().find((m) => m.result?.proposal && !m.proposalDone)?.result?.proposal;
+            const archived = AssistantArchiveService.archiveSession(currentMessages, lastProposal, focusAnimalId());
+            if (archived) {
+                setArchives(AssistantArchiveService.getArchives());
+                showToast('success', `Conversation archived as "${archived.title}"`);
+            }
+        }
+
         setFocusAnimalId(null);
         clearAssistantContext();
         refreshKnown(true);
         persist([]);
+        showToast('info', 'Session reset. Ready for new questions.');
+    };
+
+    /**
+     * Restore an archived conversation
+     */
+    const restoreArchivedSession = (sessionId: string) => {
+        const session = AssistantArchiveService.restoreSession(sessionId);
+        if (!session) {
+            showToast('error', 'Could not find session in archive');
+            return;
+        }
+
+        if (messages().length > 0) {
+            AssistantArchiveService.archiveSession(messages());
+            setArchives(AssistantArchiveService.getArchives());
+        }
+
+        persist(session.messages || []);
+        if (session.focusAnimalId) setFocusAnimalId(session.focusAnimalId);
+        setArchiveDrawerOpen(false);
+        showToast('success', `Restored session "${session.title}"`);
+        scrollDown();
+    };
+
+    /**
+     * Delete an archive item
+     */
+    const deleteArchivedSession = (sessionId: string, e: MouseEvent) => {
+        e.stopPropagation();
+        AssistantArchiveService.deleteArchive(sessionId);
+        setArchives(AssistantArchiveService.getArchives());
+        showToast('info', 'Archived conversation deleted');
     };
 
     const markProposalDone = (index: number) => {
@@ -270,118 +368,210 @@ export const Assistant: Component = () => {
     };
 
     return (
-        // Fixed to the viewport: bottom-16 leaves room for the mobile bottom nav
-        <div class="fixed inset-x-0 top-0 bottom-16 z-30 flex flex-col bg-[#faf9f5] md:bottom-0 font-sans">
-            {/* Stitch Header */}
-            <header class="border-b border-emerald-900/10 bg-gradient-to-r from-[#004532] to-[#065f46] text-white shadow-sm">
+        // Fixed to viewport: bottom-16 leaves room for mobile bottom dock; on desktop fits full viewport
+        <div class="fixed inset-x-0 top-0 bottom-16 z-30 flex flex-col bg-surface md:bottom-0 font-body-md text-on-surface">
+            {/* Header (Stitch AgriSense Premier Header) */}
+            <header class="border-b border-outline-variant bg-surface-container-lowest shadow-sm shrink-0">
                 <div class="mx-auto flex max-w-6xl items-center justify-between gap-2 px-3 py-2.5 sm:px-4 sm:py-3">
                     <div class="flex min-w-0 items-center gap-2 sm:gap-3">
-                        <A href="/dashboard" class="rounded-xl p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 transition-colors" aria-label={t('chat.back')}>
+                        <A
+                            href="/dashboard"
+                            class="rounded-xl p-1.5 text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors"
+                            aria-label={t('chat.back')}
+                        >
                             <span class="material-symbols-outlined text-xl">arrow_back</span>
                         </A>
                         <div class="min-w-0">
-                            <h1 class="flex items-center gap-2 font-bold text-white text-base">
-                                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-white/10 text-emerald-200">
+                            <h1 class="flex items-center gap-2 font-bold text-on-surface text-base">
+                                <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-primary-container text-on-primary-container shadow-xs">
                                     <span class="material-symbols-outlined text-sm">auto_awesome</span>
                                 </span>
                                 <span class="truncate">{t('ai.title')}</span>
-                                <span class="text-[10px] bg-emerald-400/25 text-emerald-100 px-2 py-0.5 rounded-full font-bold uppercase tracking-wider hidden sm:inline-block">Pashu &amp; Farm Voice</span>
+                                <span class="text-[10px] bg-[#d1fae5] text-primary px-2 py-0.5 rounded-full font-bold hidden sm:inline-block border border-primary/20">
+                                    AgriSense Premier
+                                </span>
                             </h1>
-                            <p class="hidden truncate text-xs text-emerald-100/80 sm:block">{t('chat.subtitle')}</p>
+                            <p class="hidden truncate text-xs text-outline sm:block">{t('chat.subtitle')}</p>
                         </div>
                     </div>
-                    <div class="flex shrink-0 items-center gap-1.5">
+
+                    <div class="flex shrink-0 items-center gap-2">
                         <div class="hidden sm:block">
                             <LanguageSwitcher />
                         </div>
+
+                        {/* Spoken replies on/off */}
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setVoiceReplies(!voiceReplies());
+                                if (!voiceReplies()) setSpeaking(false);
+                            }}
+                            aria-pressed={voiceReplies()}
+                            class="rounded-xl px-2.5 py-1.5 border border-outline-variant bg-surface-container text-on-surface hover:bg-surface-container-high cursor-pointer"
+                            title={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                            aria-label={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                        >
+                            <span class="material-symbols-outlined text-base">{voiceReplies() ? 'volume_up' : 'volume_off'}</span>
+                        </button>
+
+                        {/* Hands-Free Talk Mode Button */}
                         <button
                             type="button"
                             onClick={toggleTalk}
                             aria-pressed={talkMode()}
-                            class={`rounded-xl px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${talkMode() ? 'bg-amber-400 text-amber-950 shadow-sm' : 'border border-emerald-300/30 text-white hover:bg-white/10'}`}
+                            class={`rounded-xl px-3 py-1.5 text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                                talkMode()
+                                    ? 'bg-primary text-on-primary shadow-xs'
+                                    : 'border border-outline-variant bg-surface-container text-on-surface hover:bg-surface-container-high'
+                            }`}
                             title={t('chat.talkHint')}
                         >
                             <span class="material-symbols-outlined text-base">record_voice_over</span>
-                            <span class="hidden sm:inline"> {t('chat.talk')}</span>
+                            <span class="hidden sm:inline"> {talkMode() ? 'Hands-Free (Active)' : t('chat.talk')}</span>
                         </button>
-                        <Show when={messages().length > 0}>
-                            <button type="button" onClick={newChat} class="rounded-xl p-2 text-emerald-100 hover:text-white hover:bg-white/10 transition-colors" title={t('ai.newChat')}>
-                                <span class="material-symbols-outlined text-base">refresh</span>
-                            </button>
-                        </Show>
+
+                        {/* Archive Drawer Button */}
+                        <button
+                            type="button"
+                            onClick={() => setArchiveDrawerOpen(true)}
+                            class="rounded-xl px-3 py-1.5 text-xs font-bold border border-outline-variant bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors flex items-center gap-1.5 cursor-pointer"
+                            title="View Archived Conversations"
+                        >
+                            <span class="material-symbols-outlined text-base text-primary">history</span>
+                            <span class="hidden sm:inline">Archive ({archives().length})</span>
+                        </button>
+
+                        {/* Restart Session / Reset Button */}
+                        <button
+                            type="button"
+                            onClick={resetAndArchive}
+                            class="rounded-xl px-3 py-1.5 text-xs font-bold border border-outline-variant bg-surface-container text-outline hover:text-error hover:border-error transition-colors flex items-center gap-1.5 cursor-pointer"
+                            title="Reset and Archive Conversation"
+                        >
+                            <span class="material-symbols-outlined text-base">refresh</span>
+                            <span class="hidden sm:inline"> {t('ai.newChat')}</span>
+                        </button>
                     </div>
                 </div>
             </header>
 
-            {/* Audio Waveform Visualizer Banner (Stitch) */}
+            {/* Stitch Animated Audio Waveform Visualizer Banner (Appears when recording or speaking) */}
             <Show when={recording() || speaking()}>
-                <div class="bg-white border-b border-emerald-900/10 px-4 py-2.5 shadow-xs">
+                <div class="bg-surface-container-lowest border-b border-outline-variant px-4 py-2.5 shadow-2xs shrink-0">
                     <div class="mx-auto max-w-6xl flex items-center justify-between gap-3">
                         <div class="flex items-center gap-2.5">
-                            <div class="w-8 h-8 rounded-full bg-[#004532] text-white flex items-center justify-center animate-pulse">
+                            <div
+                                class={`w-8 h-8 rounded-full flex items-center justify-center animate-pulse ${
+                                    recording() ? 'bg-red-600 text-white' : 'bg-primary text-on-primary'
+                                }`}
+                            >
                                 <span class="material-symbols-outlined text-base">{recording() ? 'mic' : 'volume_up'}</span>
                             </div>
                             <div>
                                 <div class="flex items-center gap-1.5">
-                                    <span class="text-xs font-bold text-slate-800">{recording() ? 'Listening to Farmer…' : 'Speaking…'}</span>
-                                    <span class="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-bold">54 dB Stream</span>
+                                    <span class="text-xs font-bold text-on-surface">
+                                        {recording() ? 'Listening to Farmer…' : 'AI Speaking…'}
+                                    </span>
+                                    <span class="text-[10px] bg-[#fef3c7] text-[#92400e] px-1.5 py-0.5 rounded-full font-bold">
+                                        {recording() ? '54 dB Stream' : 'Fluent Audio'}
+                                    </span>
                                 </div>
-                                <span class="text-[11px] text-[#004532] font-semibold block">"बोलिए, हम सुन रहे हैं..."</span>
+                                <span class="text-[11px] text-primary font-semibold block">"बोलिए, हम सुन रहे हैं..."</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-1 h-7 px-3 bg-emerald-50 rounded-xl border border-emerald-200">
-                            <div class="w-1.5 bg-[#004532] rounded-full animate-bounce h-2"></div>
-                            <div class="w-1.5 bg-emerald-600 rounded-full animate-bounce h-5" style="animation-delay: 0.15s"></div>
-                            <div class="w-1.5 bg-emerald-500 rounded-full animate-bounce h-6" style="animation-delay: 0.3s"></div>
-                            <div class="w-1.5 bg-[#004532] rounded-full animate-bounce h-4" style="animation-delay: 0.2s"></div>
-                            <div class="w-1.5 bg-emerald-400 rounded-full animate-bounce h-3" style="animation-delay: 0.4s"></div>
+
+                        {/* 10 Waveform Bars */}
+                        <div class="flex items-center gap-1 h-7 px-3 bg-surface-container-low rounded-xl border border-outline-variant/60">
+                            <div class="w-1.5 bg-primary rounded-full wave-bar" style="height: 10px"></div>
+                            <div class="w-1.5 bg-primary-container rounded-full wave-bar" style="height: 20px"></div>
+                            <div class="w-1.5 bg-emerald-600 rounded-full wave-bar" style="height: 28px"></div>
+                            <div class="w-1.5 bg-primary rounded-full wave-bar" style="height: 14px"></div>
+                            <div class="w-1.5 bg-emerald-500 rounded-full wave-bar" style="height: 30px"></div>
+                            <div class="w-1.5 bg-primary-container rounded-full wave-bar" style="height: 22px"></div>
+                            <div class="w-1.5 bg-primary rounded-full wave-bar" style="height: 16px"></div>
+                            <div class="w-1.5 bg-emerald-600 rounded-full wave-bar" style="height: 26px"></div>
+                            <div class="w-1.5 bg-primary rounded-full wave-bar" style="height: 12px"></div>
+                            <div class="w-1.5 bg-emerald-400 rounded-full wave-bar" style="height: 8px"></div>
                         </div>
                     </div>
                 </div>
             </Show>
 
+            {/* 2-Column Responsive Workspace */}
             <div class="mx-auto flex w-full max-w-6xl flex-1 gap-4 overflow-hidden px-0 py-0 sm:px-4 sm:py-4">
-                {/* Side panel: what the assistant knows + suggestions */}
-                <aside class="hidden w-64 shrink-0 space-y-4 overflow-y-auto lg:block">
-                    <section class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-                        <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('chat.knows')}</h2>
-                        <Show when={known()} fallback={<p class="mt-2 text-sm text-gray-400 animate-pulse">{t('chat.loadingData')}</p>}>
-                            <ul class="mt-2 space-y-1.5 text-sm text-gray-700">
-                                <li>🏡 {t('chat.nFarms', { n: String(known()!.farms) })}</li>
-                                <li>🌱 {t('chat.nCrops', { n: String(known()!.crops) })}</li>
-                                <li>🐄 {t('chat.nAnimals', { n: String(known()!.animals) })}</li>
-                                <li>📊 {t('chat.boardFigures')}</li>
+                {/* LEFT ASIDE (Proven Architecture): What assistant knows + Suggestions + My Animals */}
+                <aside class="hidden w-72 shrink-0 space-y-4 overflow-y-auto lg:block pr-1">
+                    {/* Card 1: What CropSense AI Knows */}
+                    <section class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm space-y-2">
+                        <div class="flex items-center gap-2 border-b border-outline-variant/60 pb-2">
+                            <span class="material-symbols-outlined text-primary text-base">database</span>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-outline">{t('chat.knows')}</h2>
+                        </div>
+                        <Show when={known()} fallback={<p class="mt-2 text-xs text-outline animate-pulse">{t('chat.loadingData')}</p>}>
+                            <ul class="space-y-2 text-xs text-on-surface pt-1">
+                                <li class="flex items-center gap-2">
+                                    <span class="text-base">🏡</span>
+                                    <span>{t('chat.nFarms', { n: String(known()!.farms) })}</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-base">🌱</span>
+                                    <span>{t('chat.nCrops', { n: String(known()!.crops) })}</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-base">🐄</span>
+                                    <span>{t('chat.nAnimals', { n: String(known()!.animals) })}</span>
+                                </li>
+                                <li class="flex items-center gap-2">
+                                    <span class="text-base">📊</span>
+                                    <span>{t('chat.boardFigures')}</span>
+                                </li>
                             </ul>
                         </Show>
-                        <p class="mt-3 text-[11px] text-gray-400">{t('chat.privacy')}</p>
+                        <p class="pt-2 border-t border-outline-variant/40 text-[11px] text-outline leading-tight">{t('chat.privacy')}</p>
                     </section>
-                    <section class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-                        <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('chat.try')}</h2>
-                        <div class="mt-2 space-y-1.5">
+
+                    {/* Card 2: Try Asking Suggestions */}
+                    <section class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm space-y-2">
+                        <div class="flex items-center gap-2 border-b border-outline-variant/60 pb-2">
+                            <span class="material-symbols-outlined text-primary text-base">lightbulb</span>
+                            <h2 class="text-xs font-bold uppercase tracking-wider text-outline">{t('chat.try')}</h2>
+                        </div>
+                        <div class="space-y-1.5 pt-1">
                             <For each={SUGGESTIONS}>
                                 {(k) => (
                                     <button
                                         type="button"
                                         disabled={busy()}
                                         onClick={() => send({ text: t(k) })}
-                                        class="w-full rounded-md px-2 py-1.5 text-left text-sm text-gray-700 hover:bg-green-50 hover:text-green-800 disabled:opacity-50"
+                                        class="w-full rounded-xl px-2.5 py-2 text-left text-xs font-medium text-on-surface hover:bg-[#d1fae5]/40 hover:text-primary border border-transparent hover:border-primary/20 transition-all disabled:opacity-50 flex items-center justify-between cursor-pointer"
                                     >
-                                        {t(k)}
+                                        <span>{t(k)}</span>
+                                        <span class="material-symbols-outlined text-xs text-outline">arrow_forward</span>
                                     </button>
                                 )}
                             </For>
                         </div>
                     </section>
+
+                    {/* Card 3: My Animals (Focus Filter) */}
                     <Show when={animals().length > 0}>
-                        <section class="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
-                            <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-500">{t('ai.myAnimals')}</h2>
-                            <div class="mt-2 flex flex-wrap gap-1.5">
+                        <section class="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm space-y-2">
+                            <div class="flex items-center gap-2 border-b border-outline-variant/60 pb-2">
+                                <span class="material-symbols-outlined text-primary text-base">pets</span>
+                                <h2 class="text-xs font-bold uppercase tracking-wider text-outline">{t('ai.myAnimals')}</h2>
+                            </div>
+                            <div class="flex flex-wrap gap-1.5 pt-1">
                                 <For each={animals()}>
                                     {(a) => (
                                         <button
                                             type="button"
                                             onClick={() => setFocusAnimalId(focusAnimalId() === a.id ? null : a.id)}
-                                            class={`rounded-full border px-2.5 py-1 text-xs ${focusAnimalId() === a.id ? 'border-green-600 bg-green-600 text-white' : 'border-gray-300 text-gray-700 hover:border-green-400'}`}
+                                            class={`rounded-full border px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${
+                                                focusAnimalId() === a.id
+                                                    ? 'border-primary bg-primary text-on-primary shadow-xs'
+                                                    : 'border-outline-variant bg-surface text-on-surface hover:border-primary'
+                                            }`}
                                         >
                                             🐄 {a.label}
                                         </button>
@@ -392,28 +582,36 @@ export const Assistant: Component = () => {
                     </Show>
                 </aside>
 
-                {/* Conversation */}
-                <main class="flex min-w-0 flex-1 flex-col overflow-hidden bg-white sm:rounded-xl sm:border sm:border-gray-200 sm:shadow-sm">
+                {/* MAIN CONVERSATION COLUMN */}
+                <main class="flex min-w-0 flex-1 flex-col overflow-hidden bg-surface-container-lowest sm:rounded-2xl sm:border sm:border-outline-variant sm:shadow-sm">
+                    {/* Chat Messages Scroll Container */}
                     <div ref={scrollEl} class="flex-1 space-y-4 overflow-y-auto px-4 py-4 sm:px-6">
                         <Show
                             when={messages().length > 0}
                             fallback={
-                                <div class="mx-auto max-w-xl py-10 text-center">
-                                    <div class="text-5xl">🌾</div>
-                                    <h2 class="mt-3 text-xl font-semibold text-gray-900">{t('chat.hello', { name: user()?.full_name || '' })}</h2>
-                                    <p class="mt-1 text-sm text-gray-600">{t('chat.intro')}</p>
+                                <div class="mx-auto max-w-xl py-8 text-center space-y-4">
+                                    <div class="w-16 h-16 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mx-auto text-3xl shadow-inner">
+                                        🌾
+                                    </div>
+                                    <div>
+                                        <h2 class="text-headline-sm font-headline-sm font-bold text-on-surface">
+                                            {t('chat.hello', { name: user()?.name || user()?.full_name || 'Kisan' })}
+                                        </h2>
+                                        <p class="mt-1 text-body-sm font-body-sm text-outline max-w-md mx-auto">{t('chat.intro')}</p>
+                                    </div>
                                     <div class="mt-3 flex justify-center sm:hidden">
                                         <LanguageSwitcher />
                                     </div>
-                                    <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                    <div class="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-2 text-left">
                                         <For each={SUGGESTIONS}>
                                             {(k) => (
                                                 <button
                                                     type="button"
                                                     onClick={() => send({ text: t(k) })}
-                                                    class="rounded-lg border border-gray-200 px-3 py-2.5 text-left text-sm text-gray-700 hover:border-green-400 hover:bg-green-50"
+                                                    class="rounded-xl border border-outline-variant p-3 text-left text-xs font-semibold text-on-surface hover:border-primary hover:bg-[#d1fae5]/30 transition-all shadow-2xs cursor-pointer flex items-center justify-between"
                                                 >
-                                                    {t(k)}
+                                                    <span>{t(k)}</span>
+                                                    <span class="material-symbols-outlined text-xs text-primary">arrow_forward</span>
                                                 </button>
                                             )}
                                         </For>
@@ -426,49 +624,70 @@ export const Assistant: Component = () => {
                                     <Show
                                         when={msg.role === 'assistant'}
                                         fallback={
+                                            /* User Turn Message */
                                             <div class="flex justify-end">
-                                                <div class="max-w-[80%] rounded-2xl rounded-br-xs bg-[#004532] px-4 py-2.5 text-xs text-white shadow-sm">
+                                                <div class="max-w-[80%] rounded-2xl rounded-br-xs bg-primary px-4 py-3 text-body-sm text-on-primary shadow-sm space-y-1">
                                                     <p class="leading-relaxed">{msg.text}</p>
                                                     <Show when={msg.audioUrl}>
-                                                        <ClipPlayer url={msg.audioUrl!} durationMs={msg.audioMs} />
+                                                        <div class="mt-1.5">
+                                                            <ClipPlayer url={msg.audioUrl!} durationMs={msg.audioMs} />
+                                                        </div>
+                                                    </Show>
+                                                    <Show when={msg.timestamp}>
+                                                        <span class="text-[10px] text-white/70 block text-right">{msg.timestamp}</span>
                                                     </Show>
                                                 </div>
                                             </div>
                                         }
                                     >
-                                        <div class="flex gap-2.5">
-                                            <span class="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-emerald-100 text-xs text-[#004532] font-bold shadow-2xs">
+                                        /* Assistant Turn Message */
+                                        <div class="flex gap-3 items-start">
+                                            <div class="w-8 h-8 rounded-xl bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 mt-0.5 shadow-2xs font-bold">
                                                 <span class="material-symbols-outlined text-sm">smart_toy</span>
-                                            </span>
+                                            </div>
                                             <div class="min-w-0 max-w-[88%] space-y-2">
                                                 <Show when={msg.text}>
-                                                    <div class="rounded-2xl rounded-tl-xs bg-white border border-emerald-900/10 px-4 py-3 text-xs text-slate-800 shadow-sm leading-relaxed">
+                                                    <div class="rounded-2xl rounded-tl-xs bg-surface-container-low border border-outline-variant/60 px-4 py-3 text-body-sm text-on-surface shadow-2xs leading-relaxed">
                                                         <p class="whitespace-pre-line">{msg.text}</p>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => speak(msg.text, msg.result?.language || lang())}
-                                                            class="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-[#004532] hover:text-emerald-700 cursor-pointer"
-                                                        >
-                                                            <span class="material-symbols-outlined text-xs">volume_up</span> {t('ai.listen')}
-                                                        </button>
+                                                        <div class="mt-2 flex items-center justify-between pt-1 border-t border-outline-variant/40">
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => speak(msg.text, msg.result?.language || lang())}
+                                                                class="inline-flex items-center gap-1 text-[11px] font-bold text-primary hover:underline cursor-pointer"
+                                                            >
+                                                                <span class="material-symbols-outlined text-xs">volume_up</span> {t('ai.listen')}
+                                                            </button>
+                                                            <Show when={msg.timestamp}>
+                                                                <span class="text-[10px] text-outline">{msg.timestamp}</span>
+                                                            </Show>
+                                                        </div>
                                                     </div>
                                                 </Show>
 
-                                                {/* Stitch Quick-Reply Pill Options (1-by-1 Questions) */}
+                                                {/* 1-by-1 Interactive Quick-Reply Pill Options */}
                                                 <Show when={msg.result?.options && msg.result.options.length > 0}>
                                                     <div class="pt-1">
-                                                        <p class="text-[11px] font-semibold text-slate-500 mb-1.5 flex items-center gap-1">
-                                                            <span class="material-symbols-outlined text-xs text-[#004532]">touch_app</span> Tap an option or speak:
+                                                        <p class="text-[11px] font-semibold text-outline mb-1.5 flex items-center gap-1">
+                                                            <span class="material-symbols-outlined text-xs text-primary">touch_app</span> Tap an option or speak:
                                                         </p>
                                                         <div class="flex flex-wrap gap-1.5">
                                                             <For each={msg.result!.options}>
-                                                                {(opt) => (
+                                                                {(opt, optIdx) => (
                                                                     <button
                                                                         type="button"
                                                                         onClick={() => send({ text: opt })}
-                                                                        class="px-3.5 py-1.5 rounded-full border border-emerald-900/15 bg-white hover:bg-emerald-50 hover:border-[#004532] text-slate-800 hover:text-[#004532] text-xs font-semibold shadow-2xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer"
+                                                                        class={`px-3.5 py-1.5 rounded-full text-xs font-semibold shadow-2xs transition-all active:scale-[0.98] flex items-center gap-1.5 cursor-pointer ${
+                                                                            optIdx() === 0
+                                                                                ? 'border-2 border-primary bg-[#d1fae5]/50 text-primary font-bold'
+                                                                                : 'border border-outline-variant bg-surface hover:bg-[#d1fae5] hover:border-primary text-on-surface hover:text-primary'
+                                                                        }`}
                                                                     >
-                                                                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                                                        <Show when={optIdx() === 0}>
+                                                                            <span class="material-symbols-outlined text-xs text-primary">star</span>
+                                                                        </Show>
+                                                                        <Show when={optIdx() > 0}>
+                                                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                                                                        </Show>
                                                                         <span>{opt}</span>
                                                                     </button>
                                                                 )}
@@ -477,14 +696,14 @@ export const Assistant: Component = () => {
                                                     </div>
                                                 </Show>
 
-                                                {/* Data preview */}
+                                                {/* Small Data Table */}
                                                 <Show when={msg.result?.table}>
                                                     <DataTableCard table={msg.result!.table!} />
                                                 </Show>
 
-                                                {/* Which animal? */}
+                                                {/* Animal Options Chips */}
                                                 <Show when={msg.result?.animal_options?.length}>
-                                                    <div class="flex flex-wrap gap-1.5">
+                                                    <div class="flex flex-wrap gap-1.5 pt-1">
                                                         <For each={msg.result!.animal_options}>
                                                             {(id) => (
                                                                 <button
@@ -493,82 +712,96 @@ export const Assistant: Component = () => {
                                                                         setFocusAnimalId(id);
                                                                         send({ text: animalLabel(id) });
                                                                     }}
-                                                                    class="rounded-full border border-emerald-600 bg-white px-3 py-1.5 text-xs font-semibold text-emerald-900 hover:bg-emerald-50 shadow-2xs cursor-pointer"
+                                                                    class="rounded-full border border-primary bg-surface-container-lowest px-3 py-1.5 text-xs font-semibold text-primary hover:bg-surface-container-high shadow-2xs cursor-pointer flex items-center gap-1"
                                                                 >
-                                                                    🐄 {animalLabel(id)}
+                                                                    <span class="material-symbols-outlined text-xs">pets</span>
+                                                                    <span>{animalLabel(id)}</span>
                                                                 </button>
                                                             )}
                                                         </For>
                                                     </div>
                                                 </Show>
 
-                                                {/* Pages to open */}
+                                                {/* Navigation Action Buttons */}
                                                 <Show when={msg.result?.matches?.length}>
-                                                    <div class="flex flex-wrap gap-1.5">
+                                                    <div class="flex flex-wrap gap-1.5 pt-1">
                                                         <For each={msg.result!.matches}>
                                                             {(m) => (
                                                                 <button
                                                                     type="button"
                                                                     onClick={() => go(m.id)}
-                                                                    class="rounded-xl border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 hover:border-emerald-600 shadow-2xs"
+                                                                    class="rounded-xl border border-outline-variant bg-surface px-3 py-1.5 text-xs font-semibold text-on-surface hover:border-primary hover:bg-[#d1fae5]/30 shadow-2xs cursor-pointer flex items-center gap-1"
                                                                 >
-                                                                    {menuItem(m.id)?.emoji} {menuLabel(m.id)} →
+                                                                    <span>{menuItem(m.id)?.emoji}</span>
+                                                                    <span>{menuLabel(m.id)}</span>
+                                                                    <span class="material-symbols-outlined text-xs">arrow_forward</span>
                                                                 </button>
                                                             )}
                                                         </For>
                                                     </div>
                                                 </Show>
 
-                                                {/* Record preview → approve */}
+                                                {/* Proposal Preview & Interactive Approval Card */}
                                                 <Show when={msg.result?.proposal && !msg.proposalDone}>
-                                                    <ProposalCard
-                                                        proposal={msg.result!.proposal!}
-                                                        animals={animals()}
-                                                        crops={crops()}
-                                                        onSaved={() => {
-                                                            markProposalDone(i());
-                                                            // Refresh whatever the new record may have changed
-                                                            LivestockService.all();
-                                                            FarmService.all();
-                                                            loadCrops();
-                                                            clearAssistantContext();
-                                                            refreshKnown(true);
-                                                            persist([...messages(), { role: 'assistant', text: `✓ ${t('ai.saved')}: ${proposalTitle(msg.result!.proposal!.entity)}` }]);
-                                                            showToast('success', t('ai.saved'));
-                                                            scrollDown();
-                                                        }}
-                                                        onCancel={() => markProposalDone(i())}
-                                                    />
+                                                    <div class="pt-2">
+                                                        <ProposalCard
+                                                            proposal={msg.result!.proposal!}
+                                                            animals={animals()}
+                                                            crops={crops()}
+                                                            onSaved={() => {
+                                                                markProposalDone(i());
+                                                                LivestockService.all();
+                                                                FarmService.all();
+                                                                loadCrops();
+                                                                clearAssistantContext();
+                                                                refreshKnown(true);
+                                                                persist([
+                                                                    ...messages(),
+                                                                    {
+                                                                        role: 'assistant',
+                                                                        text: `✓ ${t('ai.saved')}: ${proposalTitle(msg.result!.proposal!.entity)}`,
+                                                                        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                                                                    },
+                                                                ]);
+                                                                showToast('success', t('ai.saved'));
+                                                                scrollDown();
+                                                            }}
+                                                            onCancel={() => markProposalDone(i())}
+                                                        />
+                                                    </div>
                                                 </Show>
                                             </div>
                                         </div>
                                     </Show>
                                 )}
                             </For>
+
                             <Show when={busy()}>
-                                <div class="flex items-center gap-2 text-xs text-slate-500 animate-pulse">
-                                    <span class="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
+                                <div class="flex items-center gap-2 text-xs text-primary font-bold p-3 bg-primary/5 rounded-xl border border-primary/20 animate-pulse">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-ping"></span>
                                     <span>{t('ai.thinking')}</span>
                                 </div>
                             </Show>
                         </Show>
                     </div>
 
-                    {/* Composer */}
-                    <footer class="border-t border-emerald-900/10 bg-white p-3 space-y-2">
+                    {/* Composer Footer */}
+                    <footer class="border-t border-outline-variant bg-surface-container-lowest p-3 space-y-2">
                         <Show when={focusAnimalId()}>
-                            <div class="flex items-center justify-between rounded-xl bg-emerald-50 px-2.5 py-1.5 text-xs font-medium text-emerald-900">
+                            <div class="flex items-center justify-between rounded-xl bg-primary/10 border border-primary/20 px-3 py-1.5 text-xs font-semibold text-primary">
                                 <span class="truncate">{t('ai.talkingAbout', { name: animalLabel(focusAnimalId()) })}</span>
-                                <button type="button" onClick={() => setFocusAnimalId(null)} class="ml-2 shrink-0 font-bold hover:underline">
+                                <button type="button" onClick={() => setFocusAnimalId(null)} class="ml-2 shrink-0 font-bold hover:underline cursor-pointer">
                                     {t('ai.clearAnimal')}
                                 </button>
                             </div>
                         </Show>
+
                         <Show when={talkMode()}>
-                            <p class="text-center text-xs text-[#004532] font-semibold">
+                            <p class="text-center text-xs text-primary font-bold">
                                 {speaking() ? `🔊 ${t('chat.speaking')}` : recording() ? `🎤 ${t('chat.listeningTap')}` : busy() ? t('ai.thinking') : t('chat.talkHint')}
                             </p>
                         </Show>
+
                         <form
                             class="flex items-center gap-2"
                             onSubmit={(e) => {
@@ -583,24 +816,28 @@ export const Assistant: Component = () => {
                                     recorder.toggle();
                                 }}
                                 disabled={busy()}
-                                class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-white transition-all cursor-pointer disabled:opacity-50 ${recording() ? 'animate-pulse bg-red-600 shadow-md shadow-red-500/30' : 'bg-[#004532] hover:bg-[#065f46] shadow-sm'}`}
+                                class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl text-on-primary transition-all cursor-pointer disabled:opacity-50 ${
+                                    recording() ? 'animate-pulse bg-red-600 shadow-md shadow-red-500/30' : 'bg-primary hover:bg-primary-container shadow-sm'
+                                }`}
                                 aria-label={recording() ? t('ai.stop') : t('ai.record')}
                                 title={recording() ? t('ai.stop') : t('ai.record')}
                             >
                                 <span class="material-symbols-outlined text-xl">{recording() ? 'stop' : 'mic'}</span>
                             </button>
+
                             <input
                                 type="text"
                                 value={input()}
                                 onInput={(e) => setInput(e.currentTarget.value)}
                                 placeholder={recording() ? t('ai.listening') : t('chat.placeholder')}
                                 disabled={recording()}
-                                class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-[#faf9f5] px-4 py-2.5 text-xs outline-none focus:border-[#004532] focus:ring-1 focus:ring-[#004532]"
+                                class="min-w-0 flex-1 rounded-xl border border-outline-variant bg-surface px-4 py-2.5 text-xs text-on-surface outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder:text-outline"
                             />
+
                             <button
                                 type="submit"
                                 disabled={busy() || !input().trim()}
-                                class="shrink-0 flex items-center gap-1 rounded-xl bg-[#004532] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#065f46] transition-all cursor-pointer shadow-sm disabled:opacity-50"
+                                class="shrink-0 flex items-center gap-1 rounded-xl bg-primary px-4 py-2.5 text-xs font-bold text-on-primary hover:bg-primary-container transition-all cursor-pointer shadow-sm disabled:opacity-50"
                             >
                                 <span>{t('ai.send')}</span>
                                 <span class="material-symbols-outlined text-sm">send</span>
@@ -609,6 +846,97 @@ export const Assistant: Component = () => {
                     </footer>
                 </main>
             </div>
+
+            {/* Archive Drawer Modal */}
+            <Show when={archiveDrawerOpen()}>
+                <div class="fixed inset-0 z-50 flex justify-end bg-black/40 backdrop-blur-xs transition-opacity animate-in fade-in">
+                    <div class="w-full max-w-md bg-surface-container-lowest h-full shadow-2xl flex flex-col border-l border-outline-variant">
+                        <div class="p-4 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-xl">history</span>
+                                <h3 class="text-title-md font-title-md font-bold text-on-surface">Archived Sessions</h3>
+                                <span class="text-xs bg-surface-container-high text-outline px-2 py-0.5 rounded-full font-bold">
+                                    {archives().length}
+                                </span>
+                            </div>
+                            <button
+                                type="button"
+                                onClick={() => setArchiveDrawerOpen(false)}
+                                class="p-1.5 rounded-lg text-outline hover:text-on-surface hover:bg-surface-container transition-colors cursor-pointer"
+                            >
+                                <span class="material-symbols-outlined text-lg">close</span>
+                            </button>
+                        </div>
+
+                        <div class="flex-1 overflow-y-auto p-4 space-y-3">
+                            <Show
+                                when={archives().length > 0}
+                                fallback={
+                                    <div class="py-12 text-center text-outline space-y-2">
+                                        <span class="material-symbols-outlined text-4xl text-outline/50">inventory_2</span>
+                                        <p class="text-body-sm font-body-sm">No archived sessions yet.</p>
+                                        <p class="text-xs">Clicking "Restart Session" automatically moves your active conversation to this archive.</p>
+                                    </div>
+                                }
+                            >
+                                <For each={archives()}>
+                                    {(item) => (
+                                        <div
+                                            onClick={() => restoreArchivedSession(item.id)}
+                                            class="p-3.5 bg-surface border border-outline-variant hover:border-primary rounded-xl transition-all hover:shadow-sm cursor-pointer space-y-2 group"
+                                        >
+                                            <div class="flex items-start justify-between gap-2">
+                                                <h4 class="font-bold text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-1">
+                                                    {item.title}
+                                                </h4>
+                                                <button
+                                                    type="button"
+                                                    onClick={(e) => deleteArchivedSession(item.id, e)}
+                                                    class="text-outline hover:text-error transition-colors p-0.5"
+                                                    title="Delete Archive"
+                                                >
+                                                    <span class="material-symbols-outlined text-base">delete</span>
+                                                </button>
+                                            </div>
+                                            <p class="text-xs text-outline line-clamp-2 leading-relaxed">{item.preview}</p>
+                                            <div class="flex items-center justify-between text-[11px] text-outline/80 pt-1 border-t border-outline-variant/40">
+                                                <span>{new Date(item.createdAt).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>
+                                                <span class="font-semibold text-primary flex items-center gap-1">
+                                                    <span>{item.messageCount} turns</span>
+                                                    <span class="material-symbols-outlined text-xs">restore</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    )}
+                                </For>
+                            </Show>
+                        </div>
+
+                        <Show when={archives().length > 0}>
+                            <div class="p-3 border-t border-outline-variant bg-surface-container-low flex items-center justify-between">
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        AssistantArchiveService.clearAll();
+                                        setArchives([]);
+                                        showToast('info', 'All archives cleared.');
+                                    }}
+                                    class="text-xs text-error hover:underline cursor-pointer"
+                                >
+                                    Clear all archives
+                                </button>
+                                <button
+                                    type="button"
+                                    onClick={() => setArchiveDrawerOpen(false)}
+                                    class="px-3 py-1.5 bg-surface-container rounded-lg border border-outline-variant text-xs font-semibold text-on-surface hover:bg-surface-container-high transition-colors cursor-pointer"
+                                >
+                                    Close
+                                </button>
+                            </div>
+                        </Show>
+                    </div>
+                </div>
+            </Show>
         </div>
     );
 };

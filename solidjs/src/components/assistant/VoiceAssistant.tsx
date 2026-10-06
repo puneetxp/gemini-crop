@@ -22,10 +22,11 @@ import ProposalCard, { proposalTitle } from './ProposalCard';
 import { useRecorder, type VoiceClip } from './useRecorder';
 import ClipPlayer from './ClipPlayer';
 import { AssistantService, type AssistResult, type Option } from '../../services/assistant.service';
+import { AssistantArchiveService } from '../../services/assistant-archive.service';
 import { FarmService, LivestockService } from '../../shared/Service/Services';
 import { VeterinaryDoctorsService, type VeterinaryDoctor } from '../../services/veterinary-doctors.service';
 import { showToast } from '../ui/Toast';
-import { speakFluent, stopFluentSpeech } from '../../lib/fluent-tts';
+import { speakFluent, stopFluentSpeech, voiceReplies, setVoiceReplies } from '../../lib/fluent-tts';
 
 type Message = { role: 'user' | 'assistant'; text: string; result?: AssistResult; proposalDone?: boolean; audioUrl?: string; audioMs?: number };
 
@@ -171,8 +172,8 @@ const VoiceAssistant: Component = () => {
                 setMessages(list);
             }
             setMessages([...messages(), { role: 'assistant', text: result.reply, result }]);
-            // Asked by voice: answer by voice
-            if (payload.clip && result.reply) speak(result.reply, result.language || lang());
+            // Always answer aloud (unless the farmer muted replies)
+            if (voiceReplies() && result.reply) speak(result.reply, result.language || lang());
 
             if (result.proposal?.fields?.livestock_id) setFocusAnimalId(Number(result.proposal.fields.livestock_id));
             if (result.vet_help) loadVets();
@@ -201,6 +202,12 @@ const VoiceAssistant: Component = () => {
 
     const newChat = () => {
         cancelAutoOpen();
+        if (messages().length > 0) {
+            const archived = AssistantArchiveService.archiveSession(messages());
+            if (archived) {
+                showToast('success', `Conversation archived as "${archived.title}"`);
+            }
+        }
         setMessages([]);
         setFocusAnimalId(null);
         setVets([]);
@@ -255,6 +262,18 @@ const VoiceAssistant: Component = () => {
                             </div>
                             <div class="flex items-center gap-1 shrink-0">
                                 <LanguageSwitcher />
+                                <button
+                                    onClick={() => {
+                                        setVoiceReplies(!voiceReplies());
+                                        if (!voiceReplies()) setSpeaking(false);
+                                    }}
+                                    class="p-1.5 text-emerald-100 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
+                                    aria-pressed={voiceReplies()}
+                                    title={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                                    aria-label={voiceReplies() ? t('chat.voiceOn') : t('chat.voiceOff')}
+                                >
+                                    <span class="material-symbols-outlined text-sm">{voiceReplies() ? 'volume_up' : 'volume_off'}</span>
+                                </button>
                                 <button
                                     onClick={() => {
                                         closePanel();

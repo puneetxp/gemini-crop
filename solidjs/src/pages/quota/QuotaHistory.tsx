@@ -16,7 +16,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-1",
     timestamp: "Today, 11:42 AM",
-    model: "Gemini 2.0 Flash Vision",
+    model: "Vision AI Pathology",
     category: "vision",
     target: "Krishna Valley Plot A (Sharbati Wheat)",
     consumption: "1 Leaf Scan (1,420 tokens)",
@@ -27,7 +27,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-2",
     timestamp: "Today, 09:15 AM",
-    model: "Gemini Live Kisan Audio",
+    model: "Voice Agronomist Audio",
     category: "voice",
     target: "Marathi Voice Query: Onion Downy Mildew",
     consumption: "2.4 Voice Mins (3,800 tokens)",
@@ -37,7 +37,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-3",
     timestamp: "Today, 08:30 AM",
-    model: "Sentinel-2 + Gemini 1.5 Pro",
+    model: "Sentinel-2 + Spectral AI",
     category: "satellite",
     target: "Plot B (Table Grapes 8.5 Ac)",
     consumption: "1 Satellite NDVI Pass",
@@ -48,7 +48,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-4",
     timestamp: "Yesterday, 04:30 PM",
-    model: "Gemini Flash Market Forecaster",
+    model: "Market AI Forecaster",
     category: "market",
     target: "Nashik APMC Onion Price 7-Day Curve",
     consumption: "850 tokens",
@@ -58,7 +58,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-5",
     timestamp: "Yesterday, 02:10 PM",
-    model: "Gemini 2.0 Flash Vision",
+    model: "Vision AI Biometric",
     category: "vision",
     target: "Krishna Dairy Shed (Gauri Gir Cow)",
     consumption: "1 Biometric Scan (1,150 tokens)",
@@ -69,7 +69,7 @@ const AUDIT_LOGS: AuditLogItem[] = [
   {
     id: "log-6",
     timestamp: "Sep 27, 10:05 AM",
-    model: "Gemini 2.0 Pro Soil Agronomist",
+    model: "Soil Agronomist AI",
     category: "satellite",
     target: "NPK Certified Soil Card Rebalance",
     consumption: "2,400 tokens",
@@ -118,7 +118,7 @@ export const QuotaHistory: Component = () => {
         <div>
           <div class="flex items-center gap-2 text-xs font-semibold text-emerald-800 uppercase tracking-wider mb-1">
             <span class="material-symbols-outlined text-base">neurology</span>
-            <span>Gemini 2.0 AI Telemetry</span>
+            <span>CropSense AI Telemetry</span>
           </div>
           <h1 class="text-2xl font-extrabold text-slate-900 tracking-tight">
             AI Quota &amp; Telemetry Usage History
@@ -131,7 +131,7 @@ export const QuotaHistory: Component = () => {
         <div class="flex items-center gap-2">
           <span class="px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-forest border border-emerald-200 flex items-center gap-1.5">
             <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span>Gemini Multimodal TPU Engine Online</span>
+            <span>AgriSense Multimodal AI Engine Online</span>
           </span>
         </div>
       </div>
@@ -155,7 +155,7 @@ export const QuotaHistory: Component = () => {
               <div class="h-full bg-emerald-500 rounded-full w-[84%]" />
             </div>
             <p class="text-[11px] text-slate-400 mt-2">
-              Resets in 6h 24m &bull; Gemini 2.0 Flash
+              Resets in 6h 24m &bull; AI Active
             </p>
           </div>
         </div>
@@ -246,7 +246,7 @@ export const QuotaHistory: Component = () => {
             <ul class="mt-4 space-y-2 text-xs text-emerald-100">
               <li class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
-                <span>Priority Gemini 2.0 Flash TPU Queuing</span>
+                <span>Priority AI Diagnostic Processing Queuing</span>
               </li>
               <li class="flex items-center gap-2">
                 <span class="material-symbols-outlined text-sm text-emerald-300">check_circle</span>
@@ -285,7 +285,7 @@ export const QuotaHistory: Component = () => {
             <div class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex flex-col justify-between">
               <div>
                 <span class="text-xs font-bold text-slate-600">+25 Leaf Scans</span>
-                <p class="text-[11px] text-slate-400 mt-1">Instant Gemini Vision pack</p>
+                <p class="text-[11px] text-slate-400 mt-1">Instant Vision AI pack</p>
                 <div class="text-lg font-extrabold text-forest mt-2">&#8377;49</div>
               </div>
               <button

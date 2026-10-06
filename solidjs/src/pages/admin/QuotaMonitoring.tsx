@@ -32,7 +32,7 @@ export const QuotaMonitoring: Component = () => {
     {
       id: "vision-1",
       name: "Crop Disease Vision Diagnostic",
-      model: "Gemini 1.5 Flash Vision",
+      model: "Vision AI Pathology",
       callCount: 14200,
       tokenCount: 2450000,
       percentOfTotal: 50.8,
@@ -43,7 +43,7 @@ export const QuotaMonitoring: Component = () => {
     {
       id: "satellite-1",
       name: "Satellite Cadastral Soil & NDVI Ingestion",
-      model: "Sentinel-2 L2A + Gemini Reasoning",
+      model: "Sentinel-2 L2A + AI Reasoning",
       callCount: 2800,
       tokenCount: 1120000,
       percentOfTotal: 23.2,
@@ -54,7 +54,7 @@ export const QuotaMonitoring: Component = () => {
     {
       id: "strategy-1",
       name: "Seasonal Crop Strategy & Agronomy Engine",
-      model: "Gemini 1.5 Pro Thinking",
+      model: "Agronomy Strategic AI",
       callCount: 940,
       tokenCount: 820000,
       percentOfTotal: 17.0,
@@ -65,7 +65,7 @@ export const QuotaMonitoring: Component = () => {
     {
       id: "voice-1",
       name: "Multilingual Pashu Voice Assistant",
-      model: "Whisper + Gemini Audio",
+      model: "Voice Agronomist Audio",
       callCount: 470,
       tokenCount: 430000,
       percentOfTotal: 9.0,
@@ -128,7 +128,7 @@ export const QuotaMonitoring: Component = () => {
                     Admin Quota
                   </span>
                 </div>
-                <p class="text-[11px] text-emerald-200/80">Gemini 1.5 Flash Token Allocations &amp; Sliding Window Rate Limits</p>
+                <p class="text-[11px] text-emerald-200/80">AI Token Allocations &amp; Sliding Window Rate Limits</p>
               </div>
             </div>
 
@@ -167,7 +167,7 @@ export const QuotaMonitoring: Component = () => {
               AI Token Quota &amp; Rate Limiter Governance
             </h1>
             <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              Real-time Gemini API token burn rate, sliding window throttle exceptions, and tier allocation grants
+              Real-time AI token burn rate, sliding window throttle exceptions, and tier allocation grants
             </p>
           </div>
 
@@ -229,7 +229,7 @@ export const QuotaMonitoring: Component = () => {
               <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
                 <div>
                   <h3 class="font-black text-base text-slate-900 dark:text-white">Token Consumption by AI Microservice</h3>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Gemini 1.5 Flash, Satellite NDVI and Voice processing loads</p>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Vision AI, Satellite NDVI and Voice processing loads</p>
                 </div>
                 <span class="text-xs font-bold text-emerald-700 dark:text-emerald-400 flex items-center gap-1">
                   <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
