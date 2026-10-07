@@ -277,7 +277,7 @@ export const PlotCreate: Component = () => {
             <img
               alt="Multispectral Satellite Imagery Base"
               class="absolute inset-0 w-full h-full object-cover opacity-85 filter contrast-105"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMmhUBZ4CCQRwvN70jI8DaNLRz3_31B26DD2sAkxibrOFpJdEXKzPNzh8JV8Gc-gdzSZV7Cc7ySPxLRPlH03gboU_Irrj14nUEfEMtJ3CvQGSuznd-N4JDzV-3U8VUrQOS6L2BrAdqoRwEIuLFyVRvXWX4FshZEZIlKzxTeBEvPVvyUmy6Q0hmEa6yBKn_diF_58bGCLLSg6pSnciTXlH7xQjUE2ADKvpAN3hlAluFQ1_tdpWUofLUqEGVlRB_6ADd9eGx3-BgFtE"
+              src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80"
             />
 
             {/* SVG Vector Cadastral Overlay Layer */}

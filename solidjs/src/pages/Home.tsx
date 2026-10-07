@@ -51,7 +51,7 @@ export const Home: Component = () => {
           <div class="lg:col-span-5 relative">
             <div class="relative rounded-2xl overflow-hidden shadow-2xl border-2 border-white/20 aspect-[4/3] bg-emerald-900 group">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1XCpypR4-aqatPr_yZgeZb5YcAtLWB9qgNnL-dmWNKq83PI7Ogmld4I2mfxdMH7fgmB8B5KDXt4cA41PfxQIxgYmtKZqKsQe1frZH_p8w-NhBTDtskbksaVNjHZuM_un25quQJq3aLr1Oq9ne4qYW2n4EQNhutXS2VCtRPBrd-CKCzyErvcugucZ0lSMdmg3Mq4tcqMbjpb_cQqr00VeX6fns-wd8p3fXrURpz1hEFM4aRH4_PPKN7JLA"
+                src="/images/farmer-hero.jpg"
                 alt="Smiling Indian farmer with Desi cow and dairy goat"
                 class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
@@ -103,7 +103,7 @@ export const Home: Component = () => {
 
         <div class="w-full md:w-80 h-44 rounded-2xl overflow-hidden shadow-md relative z-10 shrink-0">
           <img
-            src="https://lh3.googleusercontent.com/aida/AEtjO1WBngYvX6VITfnXZEtcX4Jv5VNg6R4FO9eG0PtNOUnxbk02IyP6mEro_KcbmmJvL98OSfVJwxEbKYs2W-tloYXcoLKkd2TmHG1lIuKARnPSl9XnzWiCdpqtZk3yrpd3q_DjIY87IryUNAUhEKbKs45Eior4ubsf8CMdzpYEcK5f4e-G3e8ShcIi8-yOQhVbACrePLmLw6fp19KAWW5NhkUokwcgs4VxAPlp0_uk7Ab4MptfjuBA-5oT5tw"
+            src="/images/gir-cow.jpg"
             alt="Indigenous Gir Cow"
             class="w-full h-full object-cover"
           />
@@ -315,7 +315,7 @@ export const Home: Component = () => {
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <div class="rounded-xl overflow-hidden aspect-square relative bg-slate-100 group border border-slate-200">
             <img
-              src="https://lh3.googleusercontent.com/aida/AEtjO1WwaDmBphlHnVg1Pqo8DOVCYo0FrPe2ygx4IgyO__oq3fcB6DhBNq5rcy-gEp-SMEhiV6PY4UKmesknzBi4Ob4s-GAQ6awDAQ-5ZnwRMbdmeiQE5PUaUjRcFB8dyfSnyk0MOp87-LUq3crvhdRmt4L9x74SQL4WHC9VEGC1xq0y-yqQYzNPRBkafPAYo4r1X23M4iO_lzUjNAmw-uYL1vOVUQNWCHmLk29NOAY5fyMB8K7JTXkp3ej0Oz4"
+              src="/images/murrah-buffalo.jpg"
               alt="Murrah Buffalo"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform"
             />
@@ -326,7 +326,7 @@ export const Home: Component = () => {
 
           <div class="rounded-xl overflow-hidden aspect-square relative bg-slate-100 group border border-slate-200">
             <img
-              src="https://lh3.googleusercontent.com/aida/AEtjO1WBngYvX6VITfnXZEtcX4Jv5VNg6R4FO9eG0PtNOUnxbk02IyP6mEro_KcbmmJvL98OSfVJwxEbKYs2W-tloYXcoLKkd2TmHG1lIuKARnPSl9XnzWiCdpqtZk3yrpd3q_DjIY87IryUNAUhEKbKs45Eior4ubsf8CMdzpYEcK5f4e-G3e8ShcIi8-yOQhVbACrePLmLw6fp19KAWW5NhkUokwcgs4VxAPlp0_uk7Ab4MptfjuBA-5oT5tw"
+              src="/images/gir-cow.jpg"
               alt="Gir Cow"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform"
             />
@@ -337,7 +337,7 @@ export const Home: Component = () => {
 
           <div class="rounded-xl overflow-hidden aspect-square relative bg-slate-100 group border border-slate-200">
             <img
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBABO7nxSKmgm0aU80yG74_kIDLPOdlMOXCnXu-A0yFe94e_qfFM5BYZMhxW3X5CJWb4G7ATVffIaaFl2vVBEkriuSp1C-wXl-jNvh7s32dVtRuPWbqxdnJrH01-R2UXv1GEu4wlxM34Ua_bKi857aMBezdGQl1I7rBvKWbAxmHCkB2-Je_Dc2CoFJ5boIKrvv6W80K9Y3zFLiDP2kjtDjZ8oLdswBUR4Z-rVx7mxJewMrQ3UmF1aoGOkzaJ1UJ90etxLVZ2FKVW4c"
+              src="/images/udder-check.jpg"
               alt="Udder health check"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform"
             />
@@ -348,7 +348,7 @@ export const Home: Component = () => {
 
           <div class="rounded-xl overflow-hidden aspect-square relative bg-slate-100 group border border-slate-200">
             <img
-              src="https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=600&q=80"
+              src="/images/sahiwal-cow.jpg"
               alt="Sahiwal Cow"
               class="w-full h-full object-cover group-hover:scale-105 transition-transform"
             />
@@ -395,7 +395,7 @@ export const Home: Component = () => {
           <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col sm:flex-row group">
             <div class="sm:w-44 h-40 sm:h-auto relative overflow-hidden bg-slate-100 shrink-0">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UH4pQ9KI3pN7k3AQCFJPFSsslmfSRqI4UiA610qbjehZzVvSX8bLu_rtVO5913eF-aXHvGINybxUv0S_7Nv1a7ouRVQb86_Jx3YDRWwyjxBozzuj0ISXN50t8HBhXcWEJhAKBi4SijlSLRQwsuOXTYSOct_9NWHd9CnTXcfWCMlMuPyVmVZocQ-lSFdTYsQHNabIEVJVW4_uLANVbh3j9RBeTI0ojsItM0c3T3QNbWMsY5absxLXSyESc"
+                src="/images/sharbati-wheat.jpg"
                 alt="Golden Sharbati Wheat"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -422,7 +422,7 @@ export const Home: Component = () => {
           <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm flex flex-col sm:flex-row group">
             <div class="sm:w-44 h-40 sm:h-auto relative overflow-hidden bg-slate-100 shrink-0">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1XQPHJBsetogv6RoQ-cPg70CSfKt9WKPcv0-YhQ4AjdNq0APaJafaE2Hymj-9SHR7H2u7qcoODEvDbeQNHgW4kF9OgBptpkGy8Y9VqB1VR_HAe4xqG64hzs83XIZegFTV9tFC7d2TMqEnTTSkLcfoSdLqcaQ8rz14_CqoC110qs2aONuX1hKcoEND-bMVxNj_SJcaxh7Zz2RJ7ADhBVIywBgsogM_Xf8gTY4gh0Fi2VbwHVskyXBTIDX3I"
+                src="/images/sweet-corn.jpg"
                 alt="Sweet Corn Maize"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />

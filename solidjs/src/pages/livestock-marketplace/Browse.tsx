@@ -48,8 +48,8 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 125000,
       badge: "Verified Elite",
       badgeColor: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1WwaDmBphlHnVg1Pqo8DOVCYo0FrPe2ygx4IgyO__oq3fcB6DhBNq5rcy-gEp-SMEhiV6PY4UKmesknzBi4Ob4s-GAQ6awDAQ-5ZnwRMbdmeiQE5PUaUjRcFB8dyfSnyk0MOp87-LUq3crvhdRmt4L9x74SQL4WHC9VEGC1xq0y-yqQYzNPRBkafPAYo4r1X23M4iO_lzUjNAmw-uYL1vOVUQNWCHmLk29NOAY5fyMB8K7JTXkp3ej0Oz4",
-      udderImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBABO7nxSKmgm0aU80yG74_kIDLPOdlMOXCnXu-A0yFe94e_qfFM5BYZMhxW3X5CJWb4G7ATVffIaaFl2vVBEkriuSp1C-wXl-jNvh7s32dVtRuPWbqxdnJrH01-R2UXv1GEu4wlxM34Ua_bKi857aMBezdGQl1I7rBvKWbAxmHCkB2-Je_Dc2CoFJ5boIKrvv6W80K9Y3zFLiDP2kjtDjZ8oLdswBUR4Z-rVx7mxJewMrQ3UmF1aoGOkzaJ1UJ90etxLVZ2FKVW4c",
+      image: "/images/murrah-buffalo.jpg",
+      udderImage: "/images/udder-check.jpg",
       udderVerified: true,
     },
     {
@@ -69,8 +69,8 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 85000,
       badge: "A2 Vedic Certified",
       badgeColor: "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1WBngYvX6VITfnXZEtcX4Jv5VNg6R4FO9eG0PtNOUnxbk02IyP6mEro_KcbmmJvL98OSfVJwxEbKYs2W-tloYXcoLKkd2TmHG1lIuKARnPSl9XnzWiCdpqtZk3yrpd3q_DjIY87IryUNAUhEKbKs45Eior4ubsf8CMdzpYEcK5f4e-G3e8ShcIi8-yOQhVbACrePLmLw6fp19KAWW5NhkUokwcgs4VxAPlp0_uk7Ab4MptfjuBA-5oT5tw",
-      udderImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBABO7nxSKmgm0aU80yG74_kIDLPOdlMOXCnXu-A0yFe94e_qfFM5BYZMhxW3X5CJWb4G7ATVffIaaFl2vVBEkriuSp1C-wXl-jNvh7s32dVtRuPWbqxdnJrH01-R2UXv1GEu4wlxM34Ua_bKi857aMBezdGQl1I7rBvKWbAxmHCkB2-Je_Dc2CoFJ5boIKrvv6W80K9Y3zFLiDP2kjtDjZ8oLdswBUR4Z-rVx7mxJewMrQ3UmF1aoGOkzaJ1UJ90etxLVZ2FKVW4c",
+      image: "/images/gir-cow.jpg",
+      udderImage: "/images/udder-check.jpg",
       udderVerified: true,
     },
     {
@@ -90,7 +90,7 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 92000,
       badge: "High Resistance",
       badgeColor: "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300",
-      image: "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=800&q=80",
+      image: "/images/sahiwal-cow.jpg",
       udderVerified: true,
     },
     {
@@ -110,7 +110,7 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 28000,
       badge: "High Prolificacy",
       badgeColor: "bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300",
-      image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=800&q=80",
+      image: "/images/breeding-goat.jpg",
       udderVerified: true,
     },
   ]);
@@ -246,7 +246,7 @@ export const LivestockMarketplaceBrowse: Component = () => {
           </div>
           <div class="w-full md:w-72 h-36 rounded-2xl overflow-hidden shadow-lg relative shrink-0">
             <img
-              src="https://lh3.googleusercontent.com/aida/AEtjO1XCpypR4-aqatPr_yZgeZb5YcAtLWB9qgNnL-dmWNKq83PI7Ogmld4I2mfxdMH7fgmB8B5KDXt4cA41PfxQIxgYmtKZqKsQe1frZH_p8w-NhBTDtskbksaVNjHZuM_un25quQJq3aLr1Oq9ne4qYW2n4EQNhutXS2VCtRPBrd-CKCzyErvcugucZ0lSMdmg3Mq4tcqMbjpb_cQqr00VeX6fns-wd8p3fXrURpz1hEFM4aRH4_PPKN7JLA"
+              src="/images/farmer-hero.jpg"
               alt="Farmer with cow and goat"
               class="w-full h-full object-cover"
             />

@@ -11,7 +11,7 @@ export const PashuHome: Component = () => {
       healthStatus: "Optimal",
       nextVaccination: "12 Oct 2026 (FMD Booster)",
       statusColor: "text-emerald-700 bg-emerald-50",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1WwaDmBphlHnVg1Pqo8DOVCYo0FrPe2ygx4IgyO__oq3fcB6DhBNq5rcy-gEp-SMEhiV6PY4UKmesknzBi4Ob4s-GAQ6awDAQ-5ZnwRMbdmeiQE5PUaUjRcFB8dyfSnyk0MOp87-LUq3crvhdRmt4L9x74SQL4WHC9VEGC1xq0y-yqQYzNPRBkafPAYo4r1X23M4iO_lzUjNAmw-uYL1vOVUQNWCHmLk29NOAY5fyMB8K7JTXkp3ej0Oz4",
+      image: "/images/murrah-buffalo.jpg",
     },
     {
       id: "TAG-4092",
@@ -21,7 +21,7 @@ export const PashuHome: Component = () => {
       healthStatus: "Checkup Due",
       nextVaccination: "02 Nov 2026 (Brucellosis)",
       statusColor: "text-amber-700 bg-amber-50",
-      image: "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=400&q=80",
+      image: "/images/sahiwal-cow.jpg",
     },
     {
       id: "TAG-4093",
@@ -31,7 +31,7 @@ export const PashuHome: Component = () => {
       healthStatus: "Optimal",
       nextVaccination: "12 Oct 2026 (FMD Booster)",
       statusColor: "text-emerald-700 bg-emerald-50",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1WBngYvX6VITfnXZEtcX4Jv5VNg6R4FO9eG0PtNOUnxbk02IyP6mEro_KcbmmJvL98OSfVJwxEbKYs2W-tloYXcoLKkd2TmHG1lIuKARnPSl9XnzWiCdpqtZk3yrpd3q_DjIY87IryUNAUhEKbKs45Eior4ubsf8CMdzpYEcK5f4e-G3e8ShcIi8-yOQhVbACrePLmLw6fp19KAWW5NhkUokwcgs4VxAPlp0_uk7Ab4MptfjuBA-5oT5tw",
+      image: "/images/gir-cow.jpg",
     },
   ]);
 

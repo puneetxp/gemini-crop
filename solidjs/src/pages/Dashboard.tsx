@@ -266,7 +266,7 @@ export const Dashboard: Component = () => {
           <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
             <div class="relative h-44 overflow-hidden bg-slate-100">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1UH4pQ9KI3pN7k3AQCFJPFSsslmfSRqI4UiA610qbjehZzVvSX8bLu_rtVO5913eF-aXHvGINybxUv0S_7Nv1a7ouRVQb86_Jx3YDRWwyjxBozzuj0ISXN50t8HBhXcWEJhAKBi4SijlSLRQwsuOXTYSOct_9NWHd9CnTXcfWCMlMuPyVmVZocQ-lSFdTYsQHNabIEVJVW4_uLANVbh3j9RBeTI0ojsItM0c3T3QNbWMsY5absxLXSyESc"
+                src="/images/sharbati-wheat.jpg"
                 alt="Sharbati Golden Wheat"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -290,7 +290,7 @@ export const Dashboard: Component = () => {
           <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
             <div class="relative h-44 overflow-hidden bg-slate-100">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1XQPHJBsetogv6RoQ-cPg70CSfKt9WKPcv0-YhQ4AjdNq0APaJafaE2Hymj-9SHR7H2u7qcoODEvDbeQNHgW4kF9OgBptpkGy8Y9VqB1VR_HAe4xqG64hzs83XIZegFTV9tFC7d2TMqEnTTSkLcfoSdLqcaQ8rz14_CqoC110qs2aONuX1hKcoEND-bMVxNj_SJcaxh7Zz2RJ7ADhBVIywBgsogM_Xf8gTY4gh0Fi2VbwHVskyXBTIDX3I"
+                src="/images/sweet-corn.jpg"
                 alt="Sweet Corn Maize"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />
@@ -314,7 +314,7 @@ export const Dashboard: Component = () => {
           <div class="bg-white rounded-2xl border border-slate-200/80 overflow-hidden shadow-sm hover:shadow-md transition-shadow group">
             <div class="relative h-44 overflow-hidden bg-slate-100">
               <img
-                src="https://lh3.googleusercontent.com/aida/AEtjO1WwaDmBphlHnVg1Pqo8DOVCYo0FrPe2ygx4IgyO__oq3fcB6DhBNq5rcy-gEp-SMEhiV6PY4UKmesknzBi4Ob4s-GAQ6awDAQ-5ZnwRMbdmeiQE5PUaUjRcFB8dyfSnyk0MOp87-LUq3crvhdRmt4L9x74SQL4WHC9VEGC1xq0y-yqQYzNPRBkafPAYo4r1X23M4iO_lzUjNAmw-uYL1vOVUQNWCHmLk29NOAY5fyMB8K7JTXkp3ej0Oz4"
+                src="/images/murrah-buffalo.jpg"
                 alt="Murrah Buffalo"
                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
               />

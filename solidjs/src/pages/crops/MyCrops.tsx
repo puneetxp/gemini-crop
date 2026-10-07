@@ -43,7 +43,7 @@ export const MyCrops: Component = () => {
       stagePercent: 65,
       stageType: "flowering",
       qualityGrade: "GRADE A1",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1UH4pQ9KI3pN7k3AQCFJPFSsslmfSRqI4UiA610qbjehZzVvSX8bLu_rtVO5913eF-aXHvGINybxUv0S_7Nv1a7ouRVQb86_Jx3YDRWwyjxBozzuj0ISXN50t8HBhXcWEJhAKBi4SijlSLRQwsuOXTYSOct_9NWHd9CnTXcfWCMlMuPyVmVZocQ-lSFdTYsQHNabIEVJVW4_uLANVbh3j9RBeTI0ojsItM0c3T3QNbWMsY5absxLXSyESc",
+      image: "/images/sharbati-wheat.jpg",
       ndvi: 0.81,
       moistureVwc: 42.4,
       waterDailyMm: 4.2,
@@ -64,7 +64,7 @@ export const MyCrops: Component = () => {
       stagePercent: 40,
       stageType: "vegetative",
       qualityGrade: "PREMIUM",
-      image: "https://lh3.googleusercontent.com/aida/AEtjO1XQPHJBsetogv6RoQ-cPg70CSfKt9WKPcv0-YhQ4AjdNq0APaJafaE2Hymj-9SHR7H2u7qcoODEvDbeQNHgW4kF9OgBptpkGy8Y9VqB1VR_HAe4xqG64hzs83XIZegFTV9tFC7d2TMqEnTTSkLcfoSdLqcaQ8rz14_CqoC110qs2aONuX1hKcoEND-bMVxNj_SJcaxh7Zz2RJ7ADhBVIywBgsogM_Xf8gTY4gh0Fi2VbwHVskyXBTIDX3I",
+      image: "/images/sweet-corn.jpg",
       ndvi: 0.74,
       moistureVwc: 38.0,
       waterDailyMm: 5.1,
@@ -109,8 +109,8 @@ export const MyCrops: Component = () => {
       plotName: [c.farm_name, c.plot_name].filter(Boolean).join(" • ") || "Plot",
       acreage: Number(c.area) || 0,
       image: isWheat
-        ? "https://lh3.googleusercontent.com/aida/AEtjO1UH4pQ9KI3pN7k3AQCFJPFSsslmfSRqI4UiA610qbjehZzVvSX8bLu_rtVO5913eF-aXHvGINybxUv0S_7Nv1a7ouRVQb86_Jx3YDRWwyjxBozzuj0ISXN50t8HBhXcWEJhAKBi4SijlSLRQwsuOXTYSOct_9NWHd9CnTXcfWCMlMuPyVmVZocQ-lSFdTYsQHNabIEVJVW4_uLANVbh3j9RBeTI0ojsItM0c3T3QNbWMsY5absxLXSyESc"
-        : "https://lh3.googleusercontent.com/aida/AEtjO1XQPHJBsetogv6RoQ-cPg70CSfKt9WKPcv0-YhQ4AjdNq0APaJafaE2Hymj-9SHR7H2u7qcoODEvDbeQNHgW4kF9OgBptpkGy8Y9VqB1VR_HAe4xqG64hzs83XIZegFTV9tFC7d2TMqEnTTSkLcfoSdLqcaQ8rz14_CqoC110qs2aONuX1hKcoEND-bMVxNj_SJcaxh7Zz2RJ7ADhBVIywBgsogM_Xf8gTY4gh0Fi2VbwHVskyXBTIDX3I",
+        ? "/images/sharbati-wheat.jpg"
+        : "/images/sweet-corn.jpg",
       ...stage,
       qualityGrade: (c.season || "").toUpperCase() || (c.crop_role || "main").toUpperCase(),
       stages: order.map((name, i) => ({
