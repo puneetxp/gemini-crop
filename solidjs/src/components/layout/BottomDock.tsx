@@ -6,11 +6,11 @@ export const BottomDock: Component = () => {
   const location = useLocation();
 
   const dockItems = [
-    { href: "/dashboard", label: "Dashboard", icon: "dashboard" },
-    { href: "/farm", label: "Farms", icon: "agriculture" },
-    { href: "/diagnose", label: "AI Doctor", icon: "psychology" },
-    { href: "/livestock", label: "Pashu", icon: "pets" },
-    { href: "/marketplace", label: "Mandi", icon: "storefront" },
+    { href: "/dashboard", labelKey: "nav.home" as const, defaultLabel: "Dashboard", icon: "dashboard" },
+    { href: "/farm", labelKey: "nav.farm" as const, defaultLabel: "Farms", icon: "agriculture" },
+    { href: "/diagnose", labelKey: "home.card.diagnose.title" as const, defaultLabel: "AI Doctor", icon: "psychology" },
+    { href: "/livestock", labelKey: "nav.livestock" as const, defaultLabel: "Pashu", icon: "pets" },
+    { href: "/marketplace", labelKey: "nav.market" as const, defaultLabel: "Mandi", icon: "storefront" },
   ];
 
   return (
@@ -32,7 +32,7 @@ export const BottomDock: Component = () => {
             >
               {item.icon}
             </span>
-            <span class="text-[10px] tracking-tight">{item.label}</span>
+            <span class="text-[10px] tracking-tight">{t(item.labelKey) || item.defaultLabel}</span>
           </A>
         );
       })}

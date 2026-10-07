@@ -29,6 +29,7 @@ AUTO_OPEN_CONFIDENCE = 0.9
 LANGS = {
     "en": "English", "hi": "Hindi", "mr": "Marathi", "pa": "Punjabi", "gu": "Gujarati",
     "bn": "Bengali", "ta": "Tamil", "te": "Telugu", "kn": "Kannada", "ml": "Malayalam",
+    "mwr": "Marwari (Marvadi)", "marvadi": "Marwari (Marvadi)",
     "or": "Odia", "as": "Assamese", "ur": "Urdu", "raj": "Rajasthani", "bho": "Bhojpuri",
 }
 

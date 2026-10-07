@@ -18,6 +18,9 @@ interface LivestockListing {
   priceReserveInr: number;
   badge: string;
   badgeColor: string;
+  image: string;
+  udderImage?: string;
+  udderVerified?: boolean;
 }
 
 export const LivestockMarketplaceBrowse: Component = () => {
@@ -45,6 +48,9 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 125000,
       badge: "Verified Elite",
       badgeColor: "bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300",
+      image: "https://lh3.googleusercontent.com/aida/AEtjO1WwaDmBphlHnVg1Pqo8DOVCYo0FrPe2ygx4IgyO__oq3fcB6DhBNq5rcy-gEp-SMEhiV6PY4UKmesknzBi4Ob4s-GAQ6awDAQ-5ZnwRMbdmeiQE5PUaUjRcFB8dyfSnyk0MOp87-LUq3crvhdRmt4L9x74SQL4WHC9VEGC1xq0y-yqQYzNPRBkafPAYo4r1X23M4iO_lzUjNAmw-uYL1vOVUQNWCHmLk29NOAY5fyMB8K7JTXkp3ej0Oz4",
+      udderImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBABO7nxSKmgm0aU80yG74_kIDLPOdlMOXCnXu-A0yFe94e_qfFM5BYZMhxW3X5CJWb4G7ATVffIaaFl2vVBEkriuSp1C-wXl-jNvh7s32dVtRuPWbqxdnJrH01-R2UXv1GEu4wlxM34Ua_bKi857aMBezdGQl1I7rBvKWbAxmHCkB2-Je_Dc2CoFJ5boIKrvv6W80K9Y3zFLiDP2kjtDjZ8oLdswBUR4Z-rVx7mxJewMrQ3UmF1aoGOkzaJ1UJ90etxLVZ2FKVW4c",
+      udderVerified: true,
     },
     {
       id: "gc-1",
@@ -63,6 +69,9 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 85000,
       badge: "A2 Vedic Certified",
       badgeColor: "bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300",
+      image: "https://lh3.googleusercontent.com/aida/AEtjO1WBngYvX6VITfnXZEtcX4Jv5VNg6R4FO9eG0PtNOUnxbk02IyP6mEro_KcbmmJvL98OSfVJwxEbKYs2W-tloYXcoLKkd2TmHG1lIuKARnPSl9XnzWiCdpqtZk3yrpd3q_DjIY87IryUNAUhEKbKs45Eior4ubsf8CMdzpYEcK5f4e-G3e8ShcIi8-yOQhVbACrePLmLw6fp19KAWW5NhkUokwcgs4VxAPlp0_uk7Ab4MptfjuBA-5oT5tw",
+      udderImage: "https://lh3.googleusercontent.com/aida-public/AB6AXuBABO7nxSKmgm0aU80yG74_kIDLPOdlMOXCnXu-A0yFe94e_qfFM5BYZMhxW3X5CJWb4G7ATVffIaaFl2vVBEkriuSp1C-wXl-jNvh7s32dVtRuPWbqxdnJrH01-R2UXv1GEu4wlxM34Ua_bKi857aMBezdGQl1I7rBvKWbAxmHCkB2-Je_Dc2CoFJ5boIKrvv6W80K9Y3zFLiDP2kjtDjZ8oLdswBUR4Z-rVx7mxJewMrQ3UmF1aoGOkzaJ1UJ90etxLVZ2FKVW4c",
+      udderVerified: true,
     },
     {
       id: "sw-1",
@@ -81,6 +90,8 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 92000,
       badge: "High Resistance",
       badgeColor: "bg-blue-100 dark:bg-blue-950/60 text-blue-800 dark:text-blue-300",
+      image: "https://images.unsplash.com/photo-1546445317-29f4545e9d53?auto=format&fit=crop&w=800&q=80",
+      udderVerified: true,
     },
     {
       id: "jg-1",
@@ -99,6 +110,8 @@ export const LivestockMarketplaceBrowse: Component = () => {
       priceReserveInr: 28000,
       badge: "High Prolificacy",
       badgeColor: "bg-purple-100 dark:bg-purple-950/60 text-purple-800 dark:text-purple-300",
+      image: "https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=800&q=80",
+      udderVerified: true,
     },
   ]);
 
@@ -198,12 +211,45 @@ export const LivestockMarketplaceBrowse: Component = () => {
 
           <div class="flex items-center gap-2">
             <A
-              href="/marketplace/bookings"
+              href="/livestock/voice-wizard"
               class="px-4 py-2.5 bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold rounded-xl shadow transition-all flex items-center gap-1.5"
             >
-              <span class="material-symbols-outlined text-base">add_circle</span>
-              <span>List Animal for Sale</span>
+              <span class="material-symbols-outlined text-base">mic</span>
+              <span>बोलकर पशु दर्ज करें</span>
             </A>
+          </div>
+        </div>
+
+        {/* Animall-Style Featured Banner */}
+        <div class="rounded-3xl bg-[#004532] text-white p-6 shadow-md flex flex-col md:flex-row items-center justify-between gap-6 overflow-hidden relative">
+          <div class="space-y-2 z-10 max-w-lg">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-300 bg-white/10 px-3 py-1 rounded-full inline-block">
+              गाय, भैंस, बकरी — हर पशु के लिए
+            </span>
+            <h2 class="text-2xl font-black tracking-tight">बेचना आसान है CropSense के साथ</h2>
+            <p class="text-xs text-emerald-100">
+              लाखों सक्रिय खरीदार। सीधा मोलभाव, थन जांच वीडियो, और 100% सुरक्षित बैंक एस्क्रो भुगतान।
+            </p>
+            <div class="pt-2 flex items-center gap-3">
+              <A
+                href="/livestock/voice-wizard"
+                class="px-5 py-2.5 bg-white text-[#004532] font-black rounded-xl text-xs hover:bg-slate-100 shadow transition-all inline-flex items-center gap-1.5"
+              >
+                <span>पशु दर्ज करें</span>
+                <span class="material-symbols-outlined text-sm">add_circle</span>
+              </A>
+              <span class="text-xs text-amber-300 font-bold flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
+                <span>868+ खरीदार लाइव हैं</span>
+              </span>
+            </div>
+          </div>
+          <div class="w-full md:w-72 h-36 rounded-2xl overflow-hidden shadow-lg relative shrink-0">
+            <img
+              src="https://lh3.googleusercontent.com/aida/AEtjO1XCpypR4-aqatPr_yZgeZb5YcAtLWB9qgNnL-dmWNKq83PI7Ogmld4I2mfxdMH7fgmB8B5KDXt4cA41PfxQIxgYmtKZqKsQe1frZH_p8w-NhBTDtskbksaVNjHZuM_un25quQJq3aLr1Oq9ne4qYW2n4EQNhutXS2VCtRPBrd-CKCzyErvcugucZ0lSMdmg3Mq4tcqMbjpb_cQqr00VeX6fns-wd8p3fXrURpz1hEFM4aRH4_PPKN7JLA"
+              alt="Farmer with cow and goat"
+              class="w-full h-full object-cover"
+            />
           </div>
         </div>
 
@@ -281,7 +327,36 @@ export const LivestockMarketplaceBrowse: Component = () => {
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <For each={filteredAnimals()}>
             {(animal) => (
-              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+              <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 overflow-hidden shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow group">
+                {/* Photo Thumbnail */}
+                <div class="relative h-48 bg-slate-100 dark:bg-slate-800 overflow-hidden">
+                  <img
+                    src={animal.image}
+                    alt={animal.title}
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div class="absolute top-2.5 left-2.5 flex items-center gap-1.5">
+                    <span class={`px-2 py-0.5 rounded-full text-[10px] font-bold ${animal.badgeColor} shadow`}>
+                      {animal.badge}
+                    </span>
+                    <span class="bg-black/60 backdrop-blur-sm text-white px-2 py-0.5 rounded-full text-[10px] font-mono">
+                      TAG #{animal.tagNumber}
+                    </span>
+                  </div>
+                  {animal.udderVerified && (
+                    <span class="absolute bottom-2.5 left-2.5 bg-emerald-700/90 text-white text-[10px] font-bold px-2 py-0.5 rounded-md backdrop-blur-sm flex items-center gap-1 shadow">
+                      <span class="material-symbols-outlined text-[13px]">verified</span>
+                      <span>थन परीक्षण OK</span>
+                    </span>
+                  )}
+                  {animal.udderImage && (
+                    <div class="absolute bottom-2.5 right-2.5 w-10 h-10 rounded-lg overflow-hidden border-2 border-white shadow-md" title="थन का क्लोज़अप फ़ोटो">
+                      <img src={animal.udderImage} alt="Udder check" class="w-full h-full object-cover" />
+                    </div>
+                  )}
+                </div>
+
                 <div class="p-5 space-y-4">
                   <div class="flex items-start justify-between">
                     <div>

@@ -1,6 +1,6 @@
 import { Component, For } from "solid-js";
 import { A, useLocation } from "@solidjs/router";
-import { currentLanguage, setLanguage, SupportedLanguage, t } from "../../stores/i18n.store";
+import { currentLanguage, setLanguage, SupportedLanguage, LANGUAGES, t } from "../../stores/i18n.store";
 import { user, isAuthenticated, signOut, signInDemo, isDemo, demoExpiresAt } from "../../stores/auth.store";
 import { showToast } from "../ui/Toast";
 import type { TKey } from "../../i18n/en";
@@ -63,16 +63,19 @@ export const Sidebar: Component = () => {
       <div class="pt-4 border-t border-slate-200 space-y-3">
         {/* Language Selector */}
         <div class="flex items-center justify-between px-2">
-          <span class="text-xs text-slate-500 font-medium">Language</span>
+          <span class="text-xs text-slate-500 font-medium">{t("lang.label")}</span>
           <select
-            class="text-xs font-medium bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-forest"
+            class="text-xs font-medium bg-slate-100 border border-slate-200 rounded-lg px-2 py-1 text-slate-700 focus:outline-none focus:ring-1 focus:ring-forest max-w-[130px]"
             value={currentLanguage()}
             onChange={(e) => setLanguage(e.currentTarget.value as SupportedLanguage)}
           >
-            <option value="en">English (EN)</option>
-            <option value="hi">हिंदी (HI)</option>
-            <option value="mr">मराठी (MR)</option>
-            <option value="pa">ਪੰਜਾਬੀ (PA)</option>
+            <For each={LANGUAGES}>
+              {(l) => (
+                <option value={l.code}>
+                  {l.label} ({l.code.toUpperCase()})
+                </option>
+              )}
+            </For>
           </select>
         </div>
 
@@ -107,7 +110,7 @@ export const Sidebar: Component = () => {
               href="/auth/signin"
               class="w-full text-center py-2 px-3 bg-forest text-white rounded-xl text-xs font-semibold shadow hover:bg-forest-light transition-all"
             >
-              Sign In
+              {t("auth.signin")}
             </A>
             <button
               onClick={async () => {
@@ -116,7 +119,7 @@ export const Sidebar: Component = () => {
               }}
               class="w-full text-center py-1.5 px-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-[11px] font-medium transition-all"
             >
-              Demo Auto-Login
+              {t("auth.demoAutoLogin")}
             </button>
           </div>
         )}

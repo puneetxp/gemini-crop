@@ -42,7 +42,7 @@ const readSaved = (): Lang | null => {
     }
 };
 
-const [lang, setLangSignal] = createSignal<Lang>(readSaved() || 'en');
+const [lang, setLangSignal] = createSignal<Lang>(readSaved() || 'hi');
 document.documentElement.lang = lang();
 
 // Until the viewer picks a language here, follow their profile setting
@@ -77,7 +77,7 @@ export function tValue(prefix: 'species' | 'health', value?: string | null): str
     return key in en ? t(key) : value;
 }
 
-export { lang };
+export { lang, DICTIONARIES };
 export type SupportedLanguage = Lang;
 export const currentLanguage = lang;
 export const setLanguage = setLang;

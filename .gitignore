@@ -48,3 +48,4 @@ override.tf.json
 # Local MCP server config (OAuth client IDs; secrets live in macOS Keychain)
 .mcp.json
 artifacts/
+.playwright-mcp/

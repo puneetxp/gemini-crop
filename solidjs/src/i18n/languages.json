@@ -20,6 +20,11 @@
         "name": "Punjabi"
     },
     {
+        "code": "mwr",
+        "label": "मारवाड़ी",
+        "name": "Marwari (Marvadi)"
+    },
+    {
         "code": "gu",
         "label": "ગુજરાતી",
         "name": "Gujarati"

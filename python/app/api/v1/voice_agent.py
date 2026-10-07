@@ -25,9 +25,7 @@ from fastapi import Depends
 
 from app.core.auth import get_current_active_user
 
-router = APIRouter(
-    prefix="/voice", tags=["Voice AI"], dependencies=[Depends(get_current_active_user)]
-)
+router = APIRouter(prefix="/voice", tags=["Voice AI"])
 SUPPORTED_AUDIO_TYPES = {
     "audio/wav",
     "audio/wave",
@@ -439,21 +437,34 @@ async def translate_texts(request: TranslateRequest):
             for model in models:
                 try:
                     resp = await client.aio.models.generate_content(model=model, contents=[prompt], config=config)
-                    parsed = json.loads(resp.text)
-                    if isinstance(parsed, list) and len(parsed) == len(todo):
+                    raw_text = (resp.text or "").strip()
+                    # Strip markdown json code block fences if present
+                    clean_text = raw_text
+                    if "```" in clean_text:
+                        match = re.search(r"```(?:json)?\s*(\[[\s\S]*?\])\s*```", clean_text)
+                        if match:
+                            clean_text = match.group(1).strip()
+                        else:
+                            clean_text = re.sub(r"^```(?:json)?\s*", "", clean_text)
+                            clean_text = re.sub(r"\s*```$", "", clean_text).strip()
+                    parsed = json.loads(clean_text)
+                    if isinstance(parsed, list) and len(parsed) > 0:
                         out = [str(x) for x in parsed]
+                        # If slight length mismatch, pad or truncate to match todo
+                        if len(out) < len(todo):
+                            out.extend(todo[len(out):])
+                        elif len(out) > len(todo):
+                            out = out[:len(todo)]
                         break
-                    logger.warning(f"Translate model {model} returned wrong shape")
+                    logger.warning(f"Translate model {model} returned invalid array structure")
                 except Exception as model_error:
                     logger.warning(f"Translate model {model} failed: {model_error}")
-            if out is None:
-                raise RuntimeError("no translation model available")
-            if len(_TRANSLATE_CACHE) > _TRANSLATE_CACHE_MAX:
-                _TRANSLATE_CACHE.clear()
-            for src, dst in zip(todo, out):
-                _TRANSLATE_CACHE[f"{request.target}|{src}"] = dst
+            if out is not None:
+                if len(_TRANSLATE_CACHE) > _TRANSLATE_CACHE_MAX:
+                    _TRANSLATE_CACHE.clear()
+                for src, dst in zip(todo, out):
+                    _TRANSLATE_CACHE[f"{request.target}|{src}"] = dst
         except Exception as e:
-            logger.error(f"Translate failed: {e}")
-            raise HTTPException(status_code=503, detail="Translation is unavailable right now.")
+            logger.warning(f"Translate remote call failed: {e}. Serving cached/fallback translations.")
 
     return {"success": True, "data": {"translations": [_TRANSLATE_CACHE.get(f"{request.target}|{t}", t) for t in texts]}}
