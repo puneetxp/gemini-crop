@@ -48,5 +48,11 @@ dependencies {
     implementation(libs.androidx.webkit)
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.activity.ktx)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
     implementation(libs.play.services.location)
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp.logging.interceptor)
+    implementation(libs.kotlinx.coroutines.android)
 }
