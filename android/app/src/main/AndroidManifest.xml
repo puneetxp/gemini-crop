@@ -30,6 +30,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="ai.cropsense.app.ui.dashboard.DashboardActivity"
+            android:exported="false"
+            android:configChanges="orientation|keyboardHidden|screenSize|uiMode"
+            android:hardwareAccelerated="true" />
     </application>
 
 </manifest>

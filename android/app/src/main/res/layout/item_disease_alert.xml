@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#fef2f2"
+    android:padding="14dp"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvAlertSeverity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HIGH SEVERITY"
+            android:textColor="#ffffff"
+            android:background="#dc2626"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp" />
+
+        <TextView
+            android:id="@+id/tvAlertDistrict"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Pune &amp; Satara"
+            android:textColor="#991b1b"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/tvAlertTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 hrs ago"
+            android:textColor="#b91c1c"
+            android:textSize="11sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvAlertTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Soybean: Yellow Mosaic Virus Alert"
+        android:textColor="#7f1d1d"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/tvAlertAdvisory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Advisory: Spray Imidacloprid 17.8 SL @ 0.5ml/L."
+        android:textColor="#991b1b"
+        android:textSize="12sp"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>
