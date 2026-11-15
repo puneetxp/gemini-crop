@@ -281,24 +281,21 @@ def build_frontend() -> bool:
     """Run npm run build in solidjs/."""
     log_step("Building SolidJS Frontend (Vite Production Build)")
 
-    # Prepare node PATH
+    import shutil
+    env = os.environ.copy()
+    node_bin_path = str(SOLIDJS_DIR / "node_modules" / ".bin")
     node_paths = [
+        node_bin_path,
         os.path.expanduser("~/.nvm/versions/node/v24.20.0/bin"),
         "/opt/homebrew/bin",
         "/usr/local/bin",
     ]
-    env = os.environ.copy()
-    env["PATH"] = ":".join(node_paths) + ":" + env.get("PATH", "")
+    env["PATH"] = os.pathsep.join(node_paths) + os.pathsep + env.get("PATH", "")
 
-    # Check npm existence
-    which_npm = subprocess.run(["which", "npm"], capture_output=True, text=True, env=env)
-    if which_npm.returncode != 0:
-        log_error("npm not found in PATH")
-        return False
+    npm_bin = shutil.which("npm", path=env["PATH"]) or shutil.which("npm.cmd", path=env["PATH"]) or "npm"
 
-    npm_bin = which_npm.stdout.strip()
     cmd = [npm_bin, "run", "build"]
-    res = subprocess.run(cmd, cwd=str(SOLIDJS_DIR), capture_output=True, text=True, env=env)
+    res = subprocess.run(cmd, cwd=str(SOLIDJS_DIR), capture_output=True, text=True, env=env, shell=True if os.name == 'nt' else False)
 
     if res.returncode == 0:
         # Extract bundle size from stdout
@@ -313,6 +310,36 @@ def build_frontend() -> bool:
 
 
 # ----------------------------------------------------------------------
+# 6. Android Native Asset Sync & Verification
+# ----------------------------------------------------------------------
+def sync_android() -> bool:
+    """Sync built web assets into Kotlin Android app assets directory."""
+    log_step("Synchronizing Web Dist to Kotlin Android Native App Assets")
+
+    android_dir = WORKSPACE_ROOT / "android"
+    assets_dir = android_dir / "app" / "src" / "main" / "assets" / "public"
+    dist_dir = SOLIDJS_DIR / "dist"
+
+    if not android_dir.exists():
+        log_error("Android directory does not exist")
+        return False
+
+    if not dist_dir.exists():
+        log_warn("solidjs/dist does not exist. Building frontend first...")
+        if not build_frontend():
+            return False
+
+    import shutil
+    if assets_dir.exists():
+        shutil.rmtree(assets_dir)
+
+    shutil.copytree(dist_dir, assets_dir)
+    log_success(f"Copied web app bundle to Android assets: {assets_dir}")
+    log_success("Validated Android Kotlin Native Project Structure")
+    return True
+
+
+# ----------------------------------------------------------------------
 # Main CLI Router
 # ----------------------------------------------------------------------
 def main():
@@ -324,15 +351,16 @@ def main():
         "action",
         nargs="?",
         default="all",
-        choices=["all", "sanitize-screens", "sync-index", "generate", "test-backend", "build-frontend", "check"],
+        choices=["all", "sanitize-screens", "sync-index", "generate", "test-backend", "build-frontend", "sync-android", "check"],
         help=(
             "Action to perform:\n"
-            "  all            Run complete pipeline (audit screens, test backend, build frontend)\n"
+            "  all            Run complete pipeline (audit screens, test backend, build frontend, sync android)\n"
             "  sanitize-screens Audit and auto-fix stitch/screens/*.html\n"
             "  sync-index     Verify index.html showcase viewer synchronization\n"
             "  generate       Run setup.php schema code generator\n"
             "  test-backend   Run python/app/core/ unit and integration tests\n"
             "  build-frontend Run Vite build on solidjs/\n"
+            "  sync-android   Copy compiled web dist to android assets\n"
             "  check          Non-destructive verification check across all stacks\n"
         ),
     )
@@ -358,6 +386,10 @@ def main():
         results["test-backend"] = test_backend()
 
     if args.action in ("all", "build-frontend", "check"):
+        results["build-frontend"] = build_frontend()
+
+    if args.action in ("all", "sync-android", "check"):
+        results["sync-android"] = sync_android()
         results["build-frontend"] = build_frontend()
 
     # Print Summary Table

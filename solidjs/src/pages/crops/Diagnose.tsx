@@ -1,10 +1,12 @@
 import { Component, createSignal } from "solid-js";
 import { apiClient } from "../../lib/api-client";
 import { lang } from "../../stores/i18n.store";
+import { isAndroidNative, takeNativePhoto } from "../../lib/kotlin-native-bridge";
 
 export const Diagnose: Component = () => {
   const [selectedFile, setSelectedFile] = createSignal<File | null>(null);
   const [previewUrl, setPreviewUrl] = createSignal<string | null>(null);
+  const [rawBase64, setRawBase64] = createSignal<string | null>(null);
   const [isDiagnosing, setIsDiagnosing] = createSignal(false);
   const [result, setResult] = createSignal<any>(null);
   const [errorMessage, setErrorMessage] = createSignal("");
@@ -23,24 +25,35 @@ export const Diagnose: Component = () => {
       const file = input.files[0];
       setSelectedFile(file);
       setPreviewUrl(URL.createObjectURL(file));
+      setRawBase64(null);
       setResult(null);
     }
   };
 
+  const handleNativeCamera = () => {
+    takeNativePhoto((dataUrl) => {
+      setPreviewUrl(dataUrl);
+      setRawBase64(dataUrl.split(",")[1] || dataUrl);
+      setSelectedFile(null);
+      setResult(null);
+    });
+  };
+
   const handleDiagnose = async () => {
     const file = selectedFile();
-    if (!file) return;
+    const directBase64 = rawBase64();
+    if (!file && !directBase64) return;
     setIsDiagnosing(true);
     setErrorMessage("");
     setResult(null);
 
     try {
-      // POST /vision/diagnose-crop expects JSON { image_base64, mime_type, crop_name?, lang }
+      const base64Payload = directBase64 || (file ? await toBase64(file) : "");
       const res = await apiClient.post<any>(
         "/vision/diagnose-crop",
         {
-          image_base64: await toBase64(file),
-          mime_type: file.type || "image/jpeg",
+          image_base64: base64Payload,
+          mime_type: file?.type || "image/jpeg",
           lang: lang(),
         },
         { timeoutMs: 90000 }
@@ -109,6 +122,7 @@ export const Diagnose: Component = () => {
                   onClick={() => {
                     setSelectedFile(null);
                     setPreviewUrl(null);
+                    setRawBase64(null);
                     setResult(null);
                   }}
                   class="text-xs font-semibold text-rose-600 hover:underline"
@@ -117,24 +131,35 @@ export const Diagnose: Component = () => {
                 </button>
               </div>
             ) : (
-              <label class="cursor-pointer block space-y-2">
-                <span class="material-symbols-outlined text-4xl text-slate-400">add_a_photo</span>
-                <div class="text-xs font-bold text-slate-700">Click to upload photo or take a picture</div>
-                <div class="text-[11px] text-slate-400">Supports JPG, PNG up to 10MB</div>
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleFileChange}
-                  class="hidden"
-                />
-              </label>
+              <div class="space-y-3">
+                {isAndroidNative() && (
+                  <button
+                    onClick={handleNativeCamera}
+                    class="w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl text-xs flex items-center justify-center gap-2 shadow-sm transition-all"
+                  >
+                    <span class="material-symbols-outlined text-base">photo_camera</span>
+                    <span>Launch Android Native Camera</span>
+                  </button>
+                )}
+                <label class="cursor-pointer block space-y-2">
+                  <span class="material-symbols-outlined text-4xl text-slate-400">add_a_photo</span>
+                  <div class="text-xs font-bold text-slate-700">Click to upload photo or take a picture</div>
+                  <div class="text-[11px] text-slate-400">Supports JPG, PNG up to 10MB</div>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={handleFileChange}
+                    class="hidden"
+                  />
+                </label>
+              </div>
             )}
           </div>
 
           <button
             onClick={handleDiagnose}
-            disabled={!selectedFile() || isDiagnosing()}
+            disabled={(!selectedFile() && !rawBase64()) || isDiagnosing()}
             class="w-full py-3 bg-forest hover:bg-forest-light text-white font-bold rounded-xl text-sm shadow-md shadow-forest/20 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
           >
             {isDiagnosing() ? (
