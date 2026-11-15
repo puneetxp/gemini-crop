@@ -99,9 +99,21 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Load root index
-        webView.loadUrl("https://appassets.androidview.app/assets/public/index.html")
+        val sessionManager = ai.cropsense.app.data.SessionManager(this)
+        
+        if (!sessionManager.isLoggedIn()) {
+            val intent = android.content.Intent(this, ai.cropsense.app.ui.auth.LoginActivity::class.java)
+            startActivity(intent)
+            finish()
+            return
+        }
+
+        // If logged in, navigate directly to Native Dashboard!
+        val intent = android.content.Intent(this, ai.cropsense.app.ui.dashboard.DashboardActivity::class.java)
+        startActivity(intent)
+        finish()
     }
+}
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun configureWebViewSettings() {

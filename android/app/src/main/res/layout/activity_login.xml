@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background"
+    android:padding="24dp"
+    android:gravity="center">
+
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:background="@color/primary"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CropSense AI"
+        android:textColor="@color/primary"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Smart Agriculture Platform"
+        android:textColor="#64748b"
+        android:textSize="14sp"
+        android:layout_marginBottom="32dp" />
+
+    <!-- Email Field -->
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Email or Phone Number"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:background="@color/surface"
+        android:textColor="#ffffff"
+        android:textColorHint="#94a3b8"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Password Field -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:padding="16dp"
+        android:background="@color/surface"
+        android:textColor="#ffffff"
+        android:textColorHint="#94a3b8"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Sign In Button -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp">
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Sign In"
+            android:textColor="#ffffff"
+            android:backgroundTint="@color/primary"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressLogin"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="#ffffff" />
+    </FrameLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="OR"
+        android:textColor="#64748b"
+        android:textSize="14sp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Demo Button -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnDemo"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:text="Continue as Demo Farmer"
+            android:textColor="@color/primary"
+            android:backgroundTint="@color/surface"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/progressDemo"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:indeterminateTint="@color/primary" />
+    </FrameLayout>
+
+</LinearLayout>
