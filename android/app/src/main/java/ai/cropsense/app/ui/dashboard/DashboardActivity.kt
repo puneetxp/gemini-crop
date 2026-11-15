@@ -88,6 +88,15 @@ class DashboardActivity : AppCompatActivity() {
                 tvBadge.visibility = View.GONE
             }
 
+            itemView.setOnClickListener {
+                if (action.actionType == ActionType.DIAGNOSE_PATHOLOGY) {
+                    val intent = android.content.Intent(this, ai.cropsense.app.ui.diagnose.DiagnoseActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    android.widget.Toast.makeText(this, "${action.title} coming soon!", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
+
             container.addView(itemView)
         }
     }
