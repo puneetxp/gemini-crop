@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageButton
@@ -15,15 +17,14 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.WindowCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import ai.cropsense.app.R
 
-class DiagnoseActivity : AppCompatActivity() {
+class DiagnoseFragment : Fragment() {
 
-    private val viewModel: DiagnoseViewModel by viewModels { DiagnoseViewModelFactory(this) }
+    private val viewModel: DiagnoseViewModel by viewModels { DiagnoseViewModelFactory(requireContext()) }
 
     private lateinit var boxImageUpload: FrameLayout
     private lateinit var containerPlaceholder: LinearLayout
@@ -46,32 +47,37 @@ class DiagnoseActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_diagnose)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_diagnose, container, false)
+    }
 
-        bindViews()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        bindViews(view)
         setupListeners()
         setupObservers()
     }
 
-    private fun bindViews() {
-        boxImageUpload = findViewById(R.id.boxImageUpload)
-        containerPlaceholder = findViewById(R.id.containerPlaceholder)
-        ivPreview = findViewById(R.id.ivPreview)
-        btnRemoveImage = findViewById(R.id.btnRemoveImage)
-        btnDiagnose = findViewById(R.id.btnDiagnose)
-        progressDiagnose = findViewById(R.id.progressDiagnose)
-        containerResults = findViewById(R.id.containerResults)
+    private fun bindViews(view: View) {
+        boxImageUpload = view.findViewById(R.id.boxImageUpload)
+        containerPlaceholder = view.findViewById(R.id.containerPlaceholder)
+        ivPreview = view.findViewById(R.id.ivPreview)
+        btnRemoveImage = view.findViewById(R.id.btnRemoveImage)
+        btnDiagnose = view.findViewById(R.id.btnDiagnose)
+        progressDiagnose = view.findViewById(R.id.progressDiagnose)
+        containerResults = view.findViewById(R.id.containerResults)
 
-        tvDiseaseName = findViewById(R.id.tvDiseaseName)
-        tvSeverityBadge = findViewById(R.id.tvSeverityBadge)
-        tvConfidence = findViewById(R.id.tvConfidence)
-        tvTreatment = findViewById(R.id.tvTreatment)
+        tvDiseaseName = view.findViewById(R.id.tvDiseaseName)
+        tvSeverityBadge = view.findViewById(R.id.tvSeverityBadge)
+        tvConfidence = view.findViewById(R.id.tvConfidence)
+        tvTreatment = view.findViewById(R.id.tvTreatment)
 
-        findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
-            finish()
+        view.findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -92,7 +98,7 @@ class DiagnoseActivity : AppCompatActivity() {
     }
 
     private fun launchCamera() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA)
             == PackageManager.PERMISSION_GRANTED) {
             cameraLauncher.launch(null)
         } else {
@@ -101,7 +107,7 @@ class DiagnoseActivity : AppCompatActivity() {
     }
 
     private fun setupObservers() {
-        viewModel.state.observe(this) { state ->
+        viewModel.state.observe(viewLifecycleOwner) { state ->
             when (state) {
                 is DiagnoseState.Idle -> {
                     containerPlaceholder.visibility = View.VISIBLE
@@ -164,7 +170,7 @@ class DiagnoseActivity : AppCompatActivity() {
                     btnDiagnose.isEnabled = true
                     progressDiagnose.visibility = View.GONE
                     btnRemoveImage.visibility = View.VISIBLE
-                    Toast.makeText(this, state.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), state.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

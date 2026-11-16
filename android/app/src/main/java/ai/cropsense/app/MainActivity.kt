@@ -108,8 +108,8 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        // If logged in, navigate directly to Native Dashboard!
-        val intent = android.content.Intent(this, ai.cropsense.app.ui.dashboard.DashboardActivity::class.java)
+        // If logged in, navigate directly to Native Shell!
+        val intent = android.content.Intent(this, ai.cropsense.app.ui.MainShellActivity::class.java)
         startActivity(intent)
         finish()
     }

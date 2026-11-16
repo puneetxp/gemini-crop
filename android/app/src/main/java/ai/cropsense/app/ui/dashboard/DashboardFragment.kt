@@ -1,39 +1,46 @@
 package ai.cropsense.app.ui.dashboard
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import ai.cropsense.app.R
 import ai.cropsense.app.model.ActionType
 import ai.cropsense.app.model.CropOverview
 import ai.cropsense.app.model.DiseaseAlert
 import ai.cropsense.app.model.QuickAction
+import ai.cropsense.app.ui.diagnose.DiagnoseFragment
 import ai.cropsense.app.viewmodel.DashboardViewModel
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardFragment : Fragment() {
 
     private val viewModel: DashboardViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_dashboard)
-
-        setupObservers()
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_dashboard, container, false)
     }
 
-    private fun setupObservers() {
-        val tvLocation = findViewById<TextView>(R.id.tvWeatherLocation)
-        val tvCondition = findViewById<TextView>(R.id.tvWeatherCondition)
-        val tvTemp = findViewById<TextView>(R.id.tvWeatherTemp)
-        val tvAlert = findViewById<TextView>(R.id.tvWeatherAlert)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupObservers(view)
+    }
 
-        viewModel.weather.observe(this) { weather ->
+    private fun setupObservers(view: View) {
+        val tvLocation = view.findViewById<TextView>(R.id.tvWeatherLocation)
+        val tvCondition = view.findViewById<TextView>(R.id.tvWeatherCondition)
+        val tvTemp = view.findViewById<TextView>(R.id.tvWeatherTemp)
+        val tvAlert = view.findViewById<TextView>(R.id.tvWeatherAlert)
+
+        viewModel.weather.observe(viewLifecycleOwner) { weather ->
             tvLocation.text = weather.location
             tvCondition.text = weather.condition
             tvTemp.text = "${weather.temperatureC}°C"
@@ -45,23 +52,23 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
-        viewModel.quickActions.observe(this) { actions ->
-            renderQuickActions(actions)
+        viewModel.quickActions.observe(viewLifecycleOwner) { actions ->
+            renderQuickActions(view, actions)
         }
 
-        viewModel.crops.observe(this) { crops ->
-            renderCrops(crops)
+        viewModel.crops.observe(viewLifecycleOwner) { crops ->
+            renderCrops(view, crops)
         }
 
-        viewModel.alerts.observe(this) { alerts ->
-            renderAlerts(alerts)
+        viewModel.alerts.observe(viewLifecycleOwner) { alerts ->
+            renderAlerts(view, alerts)
         }
     }
 
-    private fun renderQuickActions(actions: List<QuickAction>) {
-        val container = findViewById<LinearLayout>(R.id.containerQuickActions)
+    private fun renderQuickActions(view: View, actions: List<QuickAction>) {
+        val container = view.findViewById<LinearLayout>(R.id.containerQuickActions)
         container.removeAllViews()
-        val inflater = LayoutInflater.from(this)
+        val inflater = LayoutInflater.from(requireContext())
 
         for (action in actions) {
             val itemView = inflater.inflate(R.layout.item_quick_action, container, false)
@@ -90,10 +97,14 @@ class DashboardActivity : AppCompatActivity() {
 
             itemView.setOnClickListener {
                 if (action.actionType == ActionType.DIAGNOSE_PATHOLOGY) {
-                    val intent = android.content.Intent(this, ai.cropsense.app.ui.diagnose.DiagnoseActivity::class.java)
-                    startActivity(intent)
+                    parentFragmentManager.beginTransaction()
+                        .replace(R.id.nav_host_fragment, DiagnoseFragment())
+                        .addToBackStack(null)
+                        .commit()
+
+                    // Update bottom navigation selected item if possible (handled in MainActivityShell typically, but ok for now)
                 } else {
-                    android.widget.Toast.makeText(this, "${action.title} coming soon!", android.widget.Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "${action.title} coming soon!", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -101,10 +112,10 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderCrops(crops: List<CropOverview>) {
-        val container = findViewById<LinearLayout>(R.id.containerCrops)
+    private fun renderCrops(view: View, crops: List<CropOverview>) {
+        val container = view.findViewById<LinearLayout>(R.id.containerCrops)
         container.removeAllViews()
-        val inflater = LayoutInflater.from(this)
+        val inflater = LayoutInflater.from(requireContext())
 
         for (crop in crops) {
             val itemView = inflater.inflate(R.layout.item_crop_card, container, false)
@@ -124,10 +135,10 @@ class DashboardActivity : AppCompatActivity() {
         }
     }
 
-    private fun renderAlerts(alerts: List<DiseaseAlert>) {
-        val container = findViewById<LinearLayout>(R.id.containerAlerts)
+    private fun renderAlerts(view: View, alerts: List<DiseaseAlert>) {
+        val container = view.findViewById<LinearLayout>(R.id.containerAlerts)
         container.removeAllViews()
-        val inflater = LayoutInflater.from(this)
+        val inflater = LayoutInflater.from(requireContext())
 
         for (alert in alerts) {
             val itemView = inflater.inflate(R.layout.item_disease_alert, container, false)

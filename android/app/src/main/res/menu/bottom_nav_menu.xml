@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@android:drawable/ic_menu_crop"
+        android:title="Home" />
+    <item
+        android:id="@+id/nav_diagnose"
+        android:icon="@android:drawable/ic_menu_camera"
+        android:title="Diagnose" />
+    <item
+        android:id="@+id/nav_pashu"
+        android:icon="@android:drawable/ic_menu_info_details"
+        android:title="Pashu" />
+    <item
+        android:id="@+id/nav_mandi"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Mandi" />
+    <item
+        android:id="@+id/nav_menu"
+        android:icon="@android:drawable/ic_menu_sort_by_size"
+        android:title="Menu" />
+</menu>
