@@ -36,6 +36,14 @@ class SessionManager(context: Context) {
         return prefs.getString(KEY_ACCESS_TOKEN, null)
     }
 
+    fun getUserEmail(): String {
+        return prefs.getString(KEY_USER_EMAIL, "farmer@cropsense.ai") ?: "farmer@cropsense.ai"
+    }
+
+    fun getUserName(): String {
+        return prefs.getString(KEY_USER_NAME, "Demo Farmer") ?: "Demo Farmer"
+    }
+
     fun isLoggedIn(): Boolean {
         return prefs.getBoolean(KEY_IS_LOGGED_IN, false)
     }
