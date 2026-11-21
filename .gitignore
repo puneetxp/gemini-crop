@@ -49,3 +49,4 @@ override.tf.json
 .mcp.json
 artifacts/
 .playwright-mcp/
+colab/snapshot/
