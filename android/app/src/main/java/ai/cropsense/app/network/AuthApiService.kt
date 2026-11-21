@@ -61,6 +61,12 @@ data class DiagnoseResponse(
     val diagnosis: DiagnosisResult
 )
 
+data class GenericListResponse<T>(
+    val success: Boolean,
+    val items: List<T>? = null,
+    val data: List<T>? = null // Some endpoints might wrap arrays in data
+)
+
 interface AuthApiService {
     @POST("api/v1/auth/signin")
     suspend fun signIn(@Body request: SignInRequest): Response<SignInResponse>
@@ -70,4 +76,10 @@ interface AuthApiService {
 
     @POST("api/v1/vision/diagnose-crop")
     suspend fun diagnoseCrop(@Body request: DiagnoseRequest): Response<DiagnoseResponse>
+
+    @retrofit2.http.GET("api/v1/livestock/")
+    suspend fun getLivestock(): Response<List<Any>>
+
+    @retrofit2.http.GET("api/v1/marketplace/listings")
+    suspend fun getMarketplaceListings(): Response<Any>
 }
